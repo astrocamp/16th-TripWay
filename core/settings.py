@@ -1,4 +1,8 @@
+import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -66,12 +70,12 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "test",
-        "USER": "yunju",
-        "PASSWORD": "password",
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "TripWay",
+        "USER": "root",
+        "PASSWORD": os.getenv("MYSQL_PASSWORD"),
         "HOST": "localhost",
-        "PORT": "5432",
+        "PORT": "3306",
     }
 }
 
