@@ -4,7 +4,7 @@ install:
 run poetry:
 	- poetry install
 	- poetry shell
-runserver:
+run server:
 	poetry run python manage.py runserver
 migrations:
 	poetry run python manage.py makemigrations
