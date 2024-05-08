@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect # 渲染和轉址
+from django.shortcuts import render, redirect, get_object_or_404 # 渲染轉址和判斷有沒有資料
 from django.views.decorators.http import require_POST # 判斷是不是 POST
 from .models import Schedules # 從同家的 model 取 class
 
@@ -24,3 +24,10 @@ def create(req):
     schedule.save()
         
     return redirect("schedules:index")
+
+# 刪除資料
+@require_POST    
+def delete(req, id):
+    schedule = get_object_or_404(Schedules, pk=id)
+    schedule.delete()
+    return redirect('schedules:index')
