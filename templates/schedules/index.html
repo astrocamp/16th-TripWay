@@ -1,8 +1,28 @@
 {% extends "layouts/base.html" %}
 
 {% block content %}
-
-  <h1>行程</h1>
-  <a href="#">建立新行程</a>
-
+<div class="bg-color">
+    <header class="header-color">
+        <a class="px-2 py-2 text-white bg-sky-800 hover:bg-sky-950" href="{% url 'home' %}"><i class="fa-solid fa-house-chimney"></i></a>
+        <h1 class="px-2 py-2 text-white bg-sky-800">{{ spots.date }}景點列表</h1>
+    </header>
+    {% comment %} <div id="daySelect" class="flex">
+        <option value="1">第一天</option>
+        <option value="2">第二天</option>
+        <option value="3">第三天</option>
+    </div> {% endcomment %}
+    {% for s in schedules %}
+    <div class="flex items-center px-2 py-3 mx-2 my-2 bg-white border rounded-lg hover:bg-blue-300 h-100">
+      <div class="text-black">{{ s.name }}</div>
+      <p>{{ s.start_date }}</p>
+      <p>{{ s.end_date }}</p>
+      
+    </div>
+    {% endfor %}
+    <br>
+    <div class="flex justify-center">
+        <a class="px-2 py-2 text-white border rounded-lg bg-sky-800 hover:bg-sky-950" href="{% url 'schedules:new' %}">建立新行程</a>
+    </div>
+</div>
+    {% comment %} <p><a href="{% url 'home' %}">回首頁</a></p> {% endcomment %}
 {% endblock %}

@@ -10,7 +10,7 @@ def home(req):
 
 # 新增行程
 def new(req):
-    return render(req, "schedules/build.html")
+    return render(req, "schedules/new.html")
 
 # 寫入資料庫
 @require_POST
@@ -23,4 +23,4 @@ def create(req):
     )
     schedule.save()
         
-    return redirect("root")
+    return redirect("schedules:index")
