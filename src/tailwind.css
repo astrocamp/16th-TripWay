@@ -9,3 +9,19 @@
 .header-color {
   @apply flex justify-start bg-sky-800
 }
+
+.icon {
+  @apply px-2 py-2 text-white bg-sky-800 hover:bg-sky-950
+}
+
+.title {
+  @apply px-2 py-2 text-white bg-sky-800
+}
+
+.item {
+  @apply flex items-center justify-between px-2 py-3 mx-2 my-2 bg-white border rounded-lg hover:bg-blue-300 h-100
+}
+
+.btn {
+  @apply px-2 py-2 text-white border rounded-lg bg-sky-800 hover:bg-sky-950
+}
