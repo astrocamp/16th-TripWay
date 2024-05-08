@@ -28,7 +28,6 @@ class SignUp(UserCreationForm):
             ),
             "password1": forms.PasswordInput(
                 attrs={
-                    "autocomplete": "new-password",
                     "class": "form-control w-72 px-2 py-2 border-2 rounded-lg focus:outline-none",
                 }
             ),
