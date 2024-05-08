@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.bg-color {
+  @apply h-screen bg-blue-50
+}
+
+.header-color {
+  @apply flex justify-start bg-sky-800
+}
