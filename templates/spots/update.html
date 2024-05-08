@@ -1,0 +1,40 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<div class="bg-blue-50 h-screen">
+    <header class="flex justify-start bg-sky-800">
+        <a class="px-2 py-2 bg-sky-800 hover:bg-sky-950 text-white" href="{% url 'Spot:index' %}"><i class="fa-solid fa-house-chimney"></i></a>
+        <h1 class="bg-sky-800 px-2 py-2 text-white">編輯景點資訊</h1>
+    </header>    
+    <form action="{% url 'Spot:show' spots.id %}" method="post" class="mt-8">
+        {% csrf_token %}
+    
+        <div class="max-w-md mx-auto flex min-h-full flex-col justify-center px-6 py-5 lg:px-10 justify-self-start">
+            <div class="mb-6">
+                <label for="spot_name" class="block text-sm font-medium leading-6 text-cyan-800 text-base font-bold">景點名稱：</label>
+                <input type="text" name="spot_name" id="spot_name" required="required" class="form-input block w-full mt-1 mb-3 rounded-md border-cyan-300 shadow-sm focus:border-indigo-600 focus:ring focus:ring-cyan-800 focus:ring-opacity-50 h-12 pl-1" value="{{ spots.spot_name }}">
+            </div>
+        
+            <div class="mb-6">
+                <label for="start_time" class="block text-sm font-medium leading-6 text-cyan-800 text-base font-bold">抵達時間：</label>
+                <input type="time" name="start_time" id="start_time"  required="required" class="form-input block w-full mt-1 mb-3 rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring focus:ring-cyan-800 focus:ring-opacity-50 h-12 pl-1" value="{{ spots.start_time|time:'H:i' }}">
+            </div>
+
+            <div class="mb-6">
+                <label for="end_time" class="block text-sm font-medium leading-6 text-cyan-800 text-base font-bold">結束時間：</label>
+                <input type="time" name="end_time" id="end_time" required="required" class="form-input block w-full mt-1 mb-3 rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring focus:ring-cyan-800 focus:ring-opacity-50 h-12 pl-1" value="{{ spots.end_time|time:'H:i' }}">
+            </div>
+
+            <div class="mb-6">
+                <label for="note" class="block text-sm font-medium leading-6 text-cyan-800 text-base font-bold">行程筆記：</label>
+                <textarea name="note" id="note" type="text" class="form-input block w-full mt-1 mb-3 rounded-md border-gray-800 shadow-sm focus:border-indigo-600 focus:ring focus:ring-cyan-800 focus:ring-opacity-50 h-12 pl-1">{{ spots.note }}</textarea>
+            </div>
+        </div>
+        <div class="flex justify-center">
+            <button class="bg-sky-800 hover:bg-sky-950 text-white font-bold py-2 px-4 rounded">
+                <input type="submit" value="更新景點資訊">
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
