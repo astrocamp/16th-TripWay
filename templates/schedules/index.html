@@ -11,12 +11,14 @@
         <option value="2">第二天</option>
         <option value="3">第三天</option>
     </div> {% endcomment %}
-    {% for s in schedules %}
-    <div class="flex items-center px-2 py-3 mx-2 my-2 bg-white border rounded-lg hover:bg-blue-300 h-100">
-      <div class="text-black">{{ s.name }}</div>
-      <p>{{ s.start_date }}</p>
-      <p>{{ s.end_date }}</p>
-      
+    {% for schedule in schedules %}
+    <div class="flex items-center justify-between px-2 py-3 mx-2 my-2 bg-white border rounded-lg hover:bg-blue-300 h-100">
+      <div class="flex text-black">{{ schedule.name }}
+      </div>
+      <form action="{% url 'schedules:delete' schedule.id %}" method="post">
+        {% csrf_token %}
+        <button>X</button>
+      </form>
     </div>
     {% endfor %}
     <br>
