@@ -15,7 +15,9 @@
     <div class="flex px-2 py-3 mx-2 my-2 border rounded-lg bg-white hover:bg-blue-300 items-center h-100"> 
         <a href="{% url 'Spot:show' spot.id %}">
             <span class="inline-block text-center w-6 h-6 bg-orange-500 text-white rounded-lg mr-2">{{ forloop.counter }}</span> 
-            <i class="fa-sharp fa-solid fa-building-columns" style="color: #1b3f5a;"></i> {{ spot.spot_name }} </a> 
+        <div>
+            <i class="fa-sharp fa-solid fa-building-columns" style="color: #1b3f5a;"></i> {{ spot.spot_name }} <div class="px-5 text-red-500">{{ spot.start_time|time:'H:i' }}</div></a> 
+        </div>
     </div>
     {% endfor %}
     <br>

@@ -4,7 +4,7 @@ from .models import spots_list
 
 
 def index(request):
-    spots=spots_list.objects.all().order_by("start_time")
+    spots=spots_list.objects.all().filter(deleted_at__isnull=True).order_by("start_time")
     return render(request, "spots/index.html", {"spots":spots})
 
 
@@ -40,6 +40,7 @@ def show(request, id):
 def update(request, id):
     spots=get_object_or_404(spots_list, pk=id)
     return render(request, "spots/update.html", {"spots":spots})
+
 
 @require_POST
 def delete(request, id):
