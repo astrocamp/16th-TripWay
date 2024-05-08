@@ -1,4 +1,6 @@
-{% extends "layouts/base.html" %} {% block content %}
+{% extends "layouts/base.html" %} 
+{% load socialaccount %}
+{% block content %}
 
 <div
   class="mx-auto my-10 flex w-[350px] flex-col border-2 bg-white text-black shadow-xl"
@@ -9,25 +11,28 @@
       <h1>Login</h1>
     </div>
   </div>
-  <div class="my-6 mx-auto">
-    <button
-      class="flex justify-center rounded-3xl border-2 bg-white p-1 text-black hover:bg-gray-200 sm:p-2"
-    >
-      <img
-        src="https://freesvg.org/img/1534129544.png"
-        class="mr-2 w-6 object-fill"
-      />Sign in with Google
-    </button>
-  </div>
+
   <div>
     <form action="{% url 'login' %}" method="post">
       {% csrf_token %}
+      <div class="my-6 text-center mx-auto flex justify-center items-center">
+        <button
+          class="flex justify-center rounded-3xl border-2 bg-white p-1 text-black hover:bg-gray-200 sm:p-2"
+        >
+          <img
+            src="https://freesvg.org/img/1534129544.png"
+            class="mr-2 w-6 object-fill"
+          /><a href="{% provider_login_url 'google' %}?next=/"
+            >Sign in with Google</a
+          ></img>
+        </button>
+      </div>
       <div class="flex flex-col items-center">
         <input
           class="w-72 px-2 py-2 border-2 rounded-lg focus:outline-none"
-          type="text"
-          placeholder="Username"
-          name="username"
+          type="email"
+          placeholder="Email"
+          name="email"
         />
 
         <input
