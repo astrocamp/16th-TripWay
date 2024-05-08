@@ -19,7 +19,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-SITE_ID = 3
+SITE_ID = 4
 
 # Application definition
 
@@ -90,13 +90,8 @@ WSGI_APPLICATION = "core.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-<<<<<<< HEAD
         "NAME": "TripWay",
-        "USER": "",
-=======
-        "NAME": "aaa",
         "USER": "josh",
->>>>>>> 7d22c3a (issue#14 Upadate Members: Google Login)
         "PASSWORD": "",
         "HOST": "localhost",
         "PORT": "5432",
