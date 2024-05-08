@@ -8,10 +8,10 @@ from .forms import SignUp
 # Login
 def login_user(req):
     if req.method == "POST":
-        username = req.POST["username"]
+        email = req.POST["email"]
         password = req.POST["password"]
 
-        user = authenticate(req, username=username, password=password)
+        user = authenticate(req, username=email, password=password)
 
         if user is not None and user.is_active:
             login(req, user)

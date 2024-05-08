@@ -19,6 +19,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SITE_ID = 3
 
 # Application definition
 
@@ -32,7 +33,24 @@ INSTALLED_APPS = [
     "members",
     "schedules",
     "spots",
+    "django.contrib.sites",  # new
+    "allauth",  # new
+    "allauth.account",  # new
+    "allauth.socialaccount",  # new
+    "allauth.socialaccount.providers.google",
 ]
+
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "SCOPE": [
+            "profile",
+            "email",
+        ],
+        "AUTH_PARAMS": {
+            "access_type": "online",
+        },
+    }
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -42,6 +60,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = "core.urls"
@@ -71,8 +90,13 @@ WSGI_APPLICATION = "core.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
+<<<<<<< HEAD
         "NAME": "TripWay",
         "USER": "",
+=======
+        "NAME": "aaa",
+        "USER": "josh",
+>>>>>>> 7d22c3a (issue#14 Upadate Members: Google Login)
         "PASSWORD": "",
         "HOST": "localhost",
         "PORT": "5432",
@@ -121,3 +145,17 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+AUTH_USER_MODEL = "members.Members"
+
+AUTHENTICATION_BACKENDS = (
+    "members.backends.EmailBackend",
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
+
+LOGIN_REDIRECT_URL = "home"
+LOGOUT_REDIRECT_URL = "/"
+
+ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_LOGOUT_ON_GET = True
+SOCIALACCOUNT_LOGIN_ON_GET = True

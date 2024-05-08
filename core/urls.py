@@ -9,4 +9,5 @@ urlpatterns = [
     path("schedules/", include('schedules.urls')),
     path("spots/", include("spots.urls")),
     path("admin/", admin.site.urls),
+    path("accounts/", include("allauth.urls")),
 ]
