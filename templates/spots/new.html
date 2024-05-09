@@ -3,10 +3,10 @@
 {% block content %}
 <div class="bg-blue-50 h-screen">
     <header class="flex justify-start bg-sky-800">
-        <a class="px-2 py-2 bg-sky-800 hover:bg-sky-950 text-white" href="{% url 'Spot:index' %}"><i class="fa-solid fa-house-chimney"></i></a>
+        <a class="px-2 py-2 bg-sky-800 hover:bg-sky-950 text-white" href="{% url 'spots:index' %}"><i class="fa-solid fa-house-chimney"></i></a>
         <h1 class="bg-sky-800 px-2 py-2 text-white"> 新增景點</h1>
     </header>
-    <form action="{% url 'Spot:add' %}" method="post" class="mt-8">
+    <form action="{% url 'spots:add' %}" method="post" class="mt-8">
         {% csrf_token %}
     
         <div class="max-w-md mx-auto flex min-h-full flex-col justify-center px-6 py-5 lg:px-10 justify-self-start">   

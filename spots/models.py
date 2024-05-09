@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
 
-class spots_list(models.Model):
+class SpotsList(models.Model):
     spot_name = models.CharField(max_length=100)
     start_time = models.TimeField()
     end_time = models.TimeField() 
