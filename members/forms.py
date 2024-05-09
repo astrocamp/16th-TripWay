@@ -1,13 +1,28 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from .models import Members
 
 
 class SignUp(UserCreationForm):
     # username = forms.CharField(required=False)
+    password1 = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                "class": "form-control w-72 px-2 py-2 border-2 rounded-lg focus:outline-none",
+            }
+        )
+    )
+
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                "class": "form-control w-72 px-2 py-2 border-2 rounded-lg focus:outline-none",
+            }
+        )
+    )
 
     class Meta:
-        model = User
+        model = Members
         fields = ("username", "email", "password1", "password2")
         labels = {
             "username": "帳號",
