@@ -5,3 +5,4 @@ static/styles/style.css
 db.sqlite3
 **/.DS_Store
 .env
+.vscode/
