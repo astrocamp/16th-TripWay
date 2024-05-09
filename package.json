@@ -11,7 +11,15 @@
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^8.2.2",
+<<<<<<< HEAD
     "daisyui": "^4.11.1",
+=======
+    "daisyui": "^4.10.5",
+    "esbuild": "0.21.1",
+>>>>>>> 87c5472 (Issue#18 Update Members alert)
     "tailwindcss": "^3.4.3"
+  },
+  "dependencies": {
+    "sweetalert2": "^11.10.8"
   }
 }

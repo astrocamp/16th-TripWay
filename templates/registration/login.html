@@ -1,57 +1,40 @@
-{% extends "layouts/base.html" %} 
+{% extends 'layouts/base.html' %}
 {% load socialaccount %}
 {% block content %}
+  <div class="mx-auto my-10 flex w-[350px] flex-col border-2 bg-white text-black shadow-xl">
+    <div class="mx-8 mt-7 mb-1 flex flex-row justify-start space-x-2">
+      <div class="h-7 w-3 bg-[#0DE6AC]"></div>
+      <div class="w-3 text-center font-sans text-xl font-bold">
+        <h1>Login</h1>
+      </div>
+    </div>
 
-<div
-  class="mx-auto my-10 flex w-[350px] flex-col border-2 bg-white text-black shadow-xl"
->
-  <div class="mx-8 mt-7 mb-1 flex flex-row justify-start space-x-2">
-    <div class="h-7 w-3 bg-[#0DE6AC]"></div>
-    <div class="w-3 text-center font-sans text-xl font-bold">
-      <h1>Login</h1>
+    <div>
+      <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        <div class="my-6 text-center mx-auto flex justify-center items-center">
+          <button class="flex justify-center rounded-3xl border-2 bg-white p-1 text-black hover:bg-gray-200 sm:p-2">
+            <img src="https://freesvg.org/img/1534129544.png" class="mr-2 w-6 object-fill" />
+            <a href="{% provider_login_url 'google' %}?next=/">Sign in with Google</a>
+          </button>
+        </div>
+        <div class="flex flex-col items-center">
+          <input class="w-72 px-2 py-2 border-2 rounded-lg focus:outline-none" type="email" placeholder="Email" name="email" />
+
+          <input class="w-72 px-2 py-2 my-2 border-2 rounded-lg focus:outline-none" type="password" placeholder="Password" name="password" />
+        </div>
+        <div class="my-2 flex justify-center">
+          <button type="submit" class="w-72 border bg-[#0DE6AC] p-2 font-sans">Login</button>
+        </div>
+      </form>
+    </div>
+    <div class="mx-7 my-3 flex justify-between text-sm font-semibold">
+      <div>
+        <a class="underline underline-offset-2">Forget Password</a>
+      </div>
+      <div>
+        <a class="underline underline-offset-2">Signup</a>
+      </div>
     </div>
   </div>
-
-  <div>
-    <form action="{% url 'login' %}" method="post">
-      {% csrf_token %}
-      <div class="my-6 text-center mx-auto flex justify-center items-center">
-        <button
-          class="flex justify-center rounded-3xl border-2 bg-white p-1 text-black hover:bg-gray-200 sm:p-2"
-        >
-          <img
-            src="https://freesvg.org/img/1534129544.png"
-            class="mr-2 w-6 object-fill"
-          /><a href="{% provider_login_url 'google' %}?next=/"
-            >Sign in with Google</a
-          ></img>
-        </button>
-      </div>
-      <div class="flex flex-col items-center">
-        <input
-          class="w-72 px-2 py-2 border-2 rounded-lg focus:outline-none"
-          type="email"
-          placeholder="Email"
-          name="email"
-        />
-
-        <input
-          class="w-72 px-2 py-2 my-2 border-2 rounded-lg focus:outline-none"
-          type="password"
-          placeholder="Password"
-          name="password"
-        />
-      </div>
-      <div class="my-2 flex justify-center">
-        <button type="submit" class="w-72 border bg-[#0DE6AC] p-2 font-sans">
-          Login
-        </button>
-      </div>
-    </form>
-  </div>
-  <div class="mx-7 my-3 flex justify-between text-sm font-semibold">
-    <div><a class="underline underline-offset-2">Forget Password</a></div>
-    <div><a class="underline underline-offset-2">Signup</a></div>
-  </div>
-</div>
 {% endblock %}
