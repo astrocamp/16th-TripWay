@@ -4,26 +4,20 @@
 <div class="bg-blue-50 h-screen">
     <header class="flex justify-start bg-sky-800">
         <a class="px-2 py-2 bg-sky-800 hover:bg-sky-950 text-white" href="{% url 'home' %}"><i class="fa-solid fa-house-chimney"></i></a>
-        <h1 class="bg-sky-800 px-2 py-2 text-white">{{ spots.date }}景點列表</h1>
+        <h1 class="bg-sky-800 px-2 py-2 text-white">景點列表</h1>
     </header>
-    {% comment %} <div id="daySelect" class="flex">
-        <option value="1">第一天</option>
-        <option value="2">第二天</option>
-        <option value="3">第三天</option>
-    </div> {% endcomment %}
     {% for spot in spots %}
     <div class="flex px-2 py-3 mx-2 my-2 border rounded-lg bg-white hover:bg-blue-300 items-center h-100"> 
-        <a href="{% url 'Spot:show' spot.id %}">
+        <a href="{% url 'spots:show' spot.id %}">
             <span class="inline-block text-center w-6 h-6 bg-orange-500 text-white rounded-lg mr-2">{{ forloop.counter }}</span> 
         <div>
-            <i class="fa-sharp fa-solid fa-building-columns" style="color: #1b3f5a;"></i> {{ spot.spot_name }} <div class="px-5 text-red-500">{{ spot.start_time|time:'H:i' }}</div></a> 
+            <i class="fa-sharp fa-solid fa-building-columns" style="color: #1b3f5a;"></i> {{ spot.spot_name }} <div class="px-1 text-red-500">{{ spot.start_time|time:'H:i' }}</div></a> 
         </div>
     </div>
     {% endfor %}
     <br>
     <div class="flex justify-center">
-        <a class="px-2 py-2 bg-sky-800 hover:bg-sky-950 text-white border rounded-lg" href="{% url 'Spot:new' %}">新增景點</a>
+        <a class="px-2 py-2 bg-sky-800 hover:bg-sky-950 text-white border rounded-lg" href="{% url 'spots:new' %}">新增景點</a>
     </div>
 </div>
-    {% comment %} <p><a href="{% url 'home' %}">回首頁</a></p> {% endcomment %}
 {% endblock %}
