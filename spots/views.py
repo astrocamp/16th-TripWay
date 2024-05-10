@@ -5,7 +5,6 @@ from schedules.models import Schedules
 from django.utils import timezone
 
 
-@require_POST
 def index(request, id):
     spots = SpotsList.objects.all().filter(schedule=id)
     # spots = spots_list.objects.all().order_by("start_time")
@@ -18,17 +17,21 @@ def new(request, id):
 
 
 @require_POST
-def create(request):
+def create(request, id):
+    schedule = get_object_or_404(Schedules, id=id)
+
     spots = SpotsList(
         # date=request.POST["date"],
         spot_name=request.POST["spot_name"],
         start_time=request.POST["start_time"],
         end_time=request.POST["end_time"],
         note=request.POST["note"],
+        schedule=schedule,
     )
+    schedule.spots = spots
     spots.save()
 
-    return redirect("spots:index")
+    return redirect(f"/schedules/{schedule.id}/spots")
 
 
 def show(request, id):
@@ -47,7 +50,6 @@ def show(request, id):
 def update(request, id):
     spots = get_object_or_404(SpotsList, pk=id)
     return render(request, "spots/update.html", {"spots": spots})
-
 
 
 @require_POST
