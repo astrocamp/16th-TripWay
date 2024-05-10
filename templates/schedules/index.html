@@ -1,30 +1,22 @@
-{% extends "layouts/base.html" %}
+{% extends 'layouts/base.html' %}
 
 {% block content %}
-<div class="h-screen bg-blue-50">
+  <div class="h-screen bg-blue-50">
     <header class="flex justify-start bg-sky-800">
-        <a class="px-2 py-2 text-white bg-sky-800 hover:bg-sky-950" href="{% url 'home' %}"><i class="fa-solid fa-house-chimney"></i></a>
-        <h1 class="px-2 py-2 text-white bg-sky-800">行程列表</h1>
+      <a class="px-2 py-2 text-white bg-sky-800 hover:bg-sky-950" href="{% url 'home' %}"><i class="fa-solid fa-house-chimney"></i></a>
+      <h1 class="px-2 py-2 text-white bg-sky-800">景點列表</h1>
     </header>
-
     {% for schedule in schedules %}
-    <div class="flex justify-between my-2 bg-white border rounded-lg fmx-2 center just juspx-2 jus hover:bg-blue-300 h-100">
-      <div class="flex">
-        <form action="{{ schedule.id }}/spots/" method="post">
-          {% csrf_token %}
-        <button>{{ schedule.name }}</button>
-      </form>
-        {% comment %} <a href=""></a> {% endcomment %}
+      <div class="flex items-center px-2 py-3 mx-2 my-2 bg-white border rounded-lg hover:bg-blue-300 h-100">
+        <a href="{% url 'schedules:show' schedule.id %}">
+          <span class="inline-block w-6 h-6 mr-2 text-center text-white bg-orange-500 rounded-lg">{{ forloop.counter }}</span>
+          <i class="fa-sharp fa-solid fa-building-columns" style="color: #1b3f5a;"></i> {{ schedule.spot_name }}
+        </a>
       </div>
-      <form action="{% url 'schedules:delete' schedule.id %}" method="post">
-        {% csrf_token %}
-        <button>X</button>
-      </form>
-    </div>
     {% endfor %}
-    <br>
+    <br />
     <div class="flex justify-center">
-        <a class="px-2 py-2 text-white border rounded-lg bg-sky-800 hover:bg-sky-950" href="{% url 'schedules:new' %}">建立新行程</a>
+      <a class="px-2 py-2 text-white border rounded-lg bg-sky-800 hover:bg-sky-950" href="new">新增景點</a>
     </div>
-</div>
+  </div>
 {% endblock %}
