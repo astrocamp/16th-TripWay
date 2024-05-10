@@ -1,27 +1,39 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@tailwind screens;
 
 .bg-color {
-  @apply h-screen bg-blue-50
+  @apply h-screen
+  @apply bg-blue-50
 }
 
 .header-color {
-  @apply flex justify-start bg-sky-800
+  @apply flex justify-start
+  @apply bg-sky-800
 }
 
 .icon {
-  @apply px-2 py-2 text-white bg-sky-800 hover:bg-sky-950
+  @apply px-2 py-2
+  @apply text-white bg-sky-800
+  @apply hover:bg-sky-950
 }
 
 .title {
-  @apply px-2 py-2 text-white bg-sky-800
+  @apply px-2 py-2
+  @apply text-white bg-sky-800
 }
 
 .item {
-  @apply flex items-center justify-between px-2 py-3 mx-2 my-2 bg-white border rounded-lg hover:bg-blue-300 h-100
+  @apply flex items-center justify-between
+  @apply px-2 py-3 mx-2 my-2
+  @apply bg-white border rounded-lg
+  @apply hover:bg-blue-300 h-100
 }
 
 .btn {
-  @apply px-2 py-2 text-white border rounded-lg bg-sky-800 hover:bg-sky-950
+  @apply px-2 py-2
+  @apply text-white border rounded-lg
+  @apply bg-sky-800
+  @apply hover:bg-sky-950
 }

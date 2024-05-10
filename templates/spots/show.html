@@ -1,29 +1,29 @@
 {% extends "layouts/base.html" %}
 
 {% block content %}
-<div class="bg-blue-50 h-screen">
+<div class="h-screen bg-blue-50">
     <header class="flex justify-start bg-sky-800">
-        <a class="px-2 py-2 bg-sky-800 hover:bg-sky-950 text-white" href="{% url 'spots:index' %}"><i class="fa-solid fa-house-chimney"></i></a>
-        <h1 class="bg-sky-800 px-2 py-2 text-white"> 景點：{{ spots.spot_name }}</h1>
+        <a class="px-2 py-2 text-white bg-sky-800 hover:bg-sky-950" href="{% url 'spots:index' %}"><i class="fa-solid fa-house-chimney"></i></a>
+        <h1 class="px-2 py-2 text-white bg-sky-800"> 景點：{{ spots.spot_name }}</h1>
     </header>
-    <section class="flex justify-between mx-3 my-3 px-3 py-3 border bg-white rounded-lg h-35">
+    <section class="flex justify-between px-3 py-3 mx-3 my-3 bg-white border rounded-lg h-35">
         <div class="flex items-center">
             <img class="h-full" src="https://picsum.photos/200" alt="">
             <div class="mx-5">
-                <p class="font-bold text-lg text-sky-700">{{ spots.spot_name }}</p>
-                <p class="text-start text-sky-700 text-opacity-75"><i class="fa-solid fa-clock"></i> {{ spots.start_time }}</p>
-                <p class="flex justify-center text-opacity-75 text-sky-700 transform rotate-90">......</p>
-                <p class="text-start text-sky-700 text-opacity-75"><i class="fa-solid fa-clock"></i> {{ spots.end_time }}</p>
+                <p class="text-lg font-bold text-sky-700">{{ spots.spot_name }}</p>
+                <p class="text-opacity-75 text-start text-sky-700"><i class="fa-solid fa-clock"></i> {{ spots.start_time }}</p>
+                <p class="flex justify-center text-opacity-75 transform rotate-90 text-sky-700">......</p>
+                <p class="text-opacity-75 text-start text-sky-700"><i class="fa-solid fa-clock"></i> {{ spots.end_time }}</p>
             </div>
         </div>
         <div class="flex items-center">
             <div> <p class="text-gray-500 "> 備註事項：{{ spots.note }}</p></div>
         </div>
         <div class="flex">
-            <a class="px-2 py-2 hover:text-gray-650 text-cyan-850 rounded-lg" href="{% url 'spots:update' spots.id %}"><i class="fa-solid fa-file-pen"></i></a>
+            <a class="px-2 py-2 rounded-lg hover:text-gray-650 text-cyan-850" href="{% url 'spots:update' spots.id %}"><i class="fa-solid fa-file-pen"></i></a>
             <form action="{% url 'spots:delete' spots.id %}" method="post">
                 {% csrf_token %}
-            <button class="px-2 py-2 hover:text-gray-650 text-red-700 rounded-lg"><i class="fa-regular fa-trash-can"></i></button>
+            <button class="px-2 py-2 text-red-700 rounded-lg hover:text-gray-650"><i class="fa-regular fa-trash-can"></i></button>
                 
             </form>
         </div>

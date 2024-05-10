@@ -1,15 +1,20 @@
 {% extends "layouts/base.html" %}
 
 {% block content %}
-<div class="bg-color">
-    <header class="header-color">
-        <a class="icon" href="{% url 'home' %}"><i class="fa-solid fa-house-chimney"></i></a>
-        <h1 class="title">行程列表</h1>
+<div class="h-screen bg-blue-50">
+    <header class="flex justify-start bg-sky-800">
+        <a class="px-2 py-2 text-white bg-sky-800 hover:bg-sky-950" href="{% url 'home' %}"><i class="fa-solid fa-house-chimney"></i></a>
+        <h1 class="px-2 py-2 text-white bg-sky-800">行程列表</h1>
     </header>
 
     {% for schedule in schedules %}
-    <div class="item">
-      <div class="flex">{{ schedule.name }}
+    <div class="flex justify-between my-2 bg-white border rounded-lg fmx-2 center just juspx-2 jus hover:bg-blue-300 h-100">
+      <div class="flex">
+        <form action="{{ schedule.id }}/spots/" method="post">
+          {% csrf_token %}
+        <button>{{ schedule.name }}</button>
+      </form>
+        {% comment %} <a href=""></a> {% endcomment %}
       </div>
       <form action="{% url 'schedules:delete' schedule.id %}" method="post">
         {% csrf_token %}
@@ -19,7 +24,7 @@
     {% endfor %}
     <br>
     <div class="flex justify-center">
-        <a class="btn" href="{% url 'schedules:new' %}">建立新行程</a>
+        <a class="px-2 py-2 text-white border rounded-lg bg-sky-800 hover:bg-sky-950" href="{% url 'schedules:new' %}">建立新行程</a>
     </div>
 </div>
 {% endblock %}
