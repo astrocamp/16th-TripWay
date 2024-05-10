@@ -1,36 +1,61 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
-from .models import Schedules
+from .models import Schedule
+from trips.models import Trip
+from django.utils import timezone
 
 
-# 列出目前行程
-def home(req):
-    schedules = Schedules.objects.all()
-    return render(req, "schedules/index.html", {"schedules": schedules})
-
-
-# 輸入行程資訊
-def new(req):
-    return render(req, "schedules/new.html")
-
-
-# 寫入資料庫
-@require_POST
-def create(req):
-    schedule = Schedules(
-        name=req.POST["name"],
-        start_date=req.POST["start_date"],
-        end_date=req.POST["end_date"],
-        transportation=req.POST["transportation"],
+def index(request, id):
+    schedules = Schedule.objects.all().filter()
+    # schedules = spots_list.objects.all().order_by("start_time")
+    trips = get_object_or_404(Trip, pk=id)
+    return render(
+        request, "schedules/index.html", {"schedules": schedules, "trips": trips}
     )
-    schedule.save()
-
-    return redirect("schedules:index")
 
 
-# 刪除行程(硬刪)
+def new(request, id):
+    return render(request, "schedules/new.html")
+
+
 @require_POST
-def delete(req, id):
-    schedule = get_object_or_404(Schedules, pk=id)
-    schedule.delete()
+def create(request, id):
+    trips = get_object_or_404(Trip, id=id)
+
+    schedules = Schedule(
+        # date=request.POST["date"],
+        spot_name=request.POST["spot_name"],
+        start_time=request.POST["start_time"],
+        end_time=request.POST["end_time"],
+        note=request.POST["note"],
+    )
+
+    schedules.save()
+
+    return redirect(f"/trips/{trips.id}/schedules")
+
+
+def show(request, id):
+    schedules = get_object_or_404(Schedule, pk=id)
+    if request.method == "POST":
+        schedules.spot_name = request.POST["spot_name"]
+        schedules.start_time = request.POST["start_time"]
+        schedules.end_time = request.POST["end_time"]
+        schedules.note = request.POST["note"]
+        schedules.save()
+        return redirect("schedules:show", id=id)
+    else:
+        return render(request, "schedules/show.html", {"schedules": schedules})
+
+
+def update(request, id):
+    schedules = get_object_or_404(Schedule, pk=id)
+    return render(request, "schedules/update.html", {"schedules": schedules})
+
+
+@require_POST
+def delete(request, id):
+    schedules = get_object_or_404(Schedule, pk=id)
+    schedules.deleted_at = timezone.now()
+    schedules.save()
     return redirect("schedules:index")

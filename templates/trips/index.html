@@ -1,0 +1,30 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+  <div class="h-screen bg-blue-50">
+    <header class="flex justify-start bg-sky-800">
+      <a class="px-2 py-2 text-white bg-sky-800 hover:bg-sky-950" href="{% url 'home' %}"><i class="fa-solid fa-house-chimney"></i></a>
+      <h1 class="px-2 py-2 text-white bg-sky-800">行程列表</h1>
+    </header>
+
+    {% for trip in trips %}
+      <div class="flex justify-between my-2 bg-white border rounded-lg fmx-2 center just juspx-2 jus hover:bg-blue-300 h-100">
+        <div class="flex">
+          <form action="{{ trip.id }}/schedules/" method="post">
+            {% csrf_token %}
+            <button>{{ trip.name }}</button>
+          </form>
+          {% comment %} <a href="{% url 'schedules:index' schedules.id %}">{{ trip.name }}</a> {% endcomment %}
+        </div>
+        <form action="{% url 'trips:delete' trip.id %}" method="post">
+          {% csrf_token %}
+          <button>X</button>
+        </form>
+      </div>
+    {% endfor %}
+    <br />
+    <div class="flex justify-center">
+      <a class="px-2 py-2 text-white border rounded-lg bg-sky-800 hover:bg-sky-950" href="{% url 'trips:new' %}">建立新行程</a>
+    </div>
+  </div>
+{% endblock %}
