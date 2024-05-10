@@ -4,7 +4,12 @@ from django.utils import timezone
 
 
 class Schedule(models.Model):
-    # trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
+    trip = models.ForeignKey(
+        Trip,
+        on_delete=models.CASCADE,
+        null=True,
+        default=None,
+    )
     spot_name = models.CharField(max_length=100)
     start_time = models.TimeField(default=timezone.now)
     end_time = models.TimeField(default=timezone.now)
