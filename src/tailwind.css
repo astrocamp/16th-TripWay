@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 @tailwind screens;
-
+/* 
 .bg-color {
   @apply h-screen
   @apply bg-blue-50
@@ -36,4 +36,4 @@
   @apply text-white border rounded-lg
   @apply bg-sky-800
   @apply hover:bg-sky-950
-}
+} */
