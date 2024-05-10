@@ -1,23 +1,21 @@
 {% extends "layouts/base.html" %}
 
 {% block content %}
-<div class="bg-blue-50 h-screen">
+<div class="h-screen bg-blue-50">
     <header class="flex justify-start bg-sky-800">
-        <a class="px-2 py-2 bg-sky-800 hover:bg-sky-950 text-white" href="{% url 'home' %}"><i class="fa-solid fa-house-chimney"></i></a>
-        <h1 class="bg-sky-800 px-2 py-2 text-white">景點列表</h1>
+        <a class="px-2 py-2 text-white bg-sky-800 hover:bg-sky-950" href="{% url 'home' %}"><i class="fa-solid fa-house-chimney"></i></a>
+        <h1 class="px-2 py-2 text-white bg-sky-800">景點列表</h1>
     </header>
     {% for spot in spots %}
-    <div class="flex px-2 py-3 mx-2 my-2 border rounded-lg bg-white hover:bg-blue-300 items-center h-100"> 
+    <div class="flex items-center px-2 py-3 mx-2 my-2 bg-white border rounded-lg hover:bg-blue-300 h-100"> 
         <a href="{% url 'spots:show' spot.id %}">
-            <span class="inline-block text-center w-6 h-6 bg-orange-500 text-white rounded-lg mr-2">{{ forloop.counter }}</span> 
-        <div>
-            <i class="fa-sharp fa-solid fa-building-columns" style="color: #1b3f5a;"></i> {{ spot.spot_name }} <div class="px-1 text-red-500">{{ spot.start_time|time:'H:i' }}</div></a> 
-        </div>
+            <span class="inline-block w-6 h-6 mr-2 text-center text-white bg-orange-500 rounded-lg">{{ forloop.counter }}</span> 
+            <i class="fa-sharp fa-solid fa-building-columns" style="color: #1b3f5a;"></i> {{ spot.spot_name }} </a> 
     </div>
     {% endfor %}
     <br>
     <div class="flex justify-center">
-        <a class="px-2 py-2 bg-sky-800 hover:bg-sky-950 text-white border rounded-lg" href="{% url 'spots:new' %}">新增景點</a>
+        <a class="px-2 py-2 text-white border rounded-lg bg-sky-800 hover:bg-sky-950" href="new">新增景點</a>
     </div>
 </div>
 {% endblock %}
