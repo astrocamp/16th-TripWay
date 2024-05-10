@@ -7,16 +7,19 @@ from django.urls import reverse
 
 
 def index(request, id):
-    schedules = Schedule.objects.all().filter()
-    # schedules = spots_list.objects.all().order_by("start_time")
     trip = get_object_or_404(Trip, pk=id)
+    schedules = Schedule.objects.filter(trip=trip.id, deleted_at=None).order_by(
+        "start_time"
+    )
+
     return render(
         request, "schedules/index.html", {"schedules": schedules, "trip": trip}
     )
 
 
 def new(request, id):
-    return render(request, "schedules/new.html")
+    trip = get_object_or_404(Trip, pk=id)
+    return render(request, "schedules/new.html", {"trip": trip})
 
 
 @require_POST
@@ -60,7 +63,7 @@ def update(request, id):
 
 @require_POST
 def delete(request, id):
-    schedules = get_object_or_404(Schedule, pk=id)
-    schedules.deleted_at = timezone.now()
-    schedules.save()
-    return redirect("schedules:index")
+    schedule = get_object_or_404(Schedule, pk=id)
+    schedule.deleted_at = timezone.now()
+    schedule.save()
+    return redirect("trips:schedules:index", id=schedule.trip_id)
