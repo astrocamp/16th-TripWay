@@ -8,7 +8,7 @@
     </header>
     {% for spot in spots %}
     <div class="flex items-center px-2 py-3 mx-2 my-2 bg-white border rounded-lg hover:bg-blue-300 h-100"> 
-        <a href="{% url 'spots:show' spot.id %}">
+        <a href="/schedules/{{ schedule.id }}/spots">
             <span class="inline-block w-6 h-6 mr-2 text-center text-white bg-orange-500 rounded-lg">{{ forloop.counter }}</span> 
             <i class="fa-sharp fa-solid fa-building-columns" style="color: #1b3f5a;"></i> {{ spot.spot_name }} </a> 
     </div>
