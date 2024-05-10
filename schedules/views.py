@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from .models import Schedules
-from spots.models import spots_list
 
 
 # 列出目前行程
 def home(req):
+    schedules = Schedules.objects.all()
     return render(req, "schedules/index.html", {"schedules": schedules})
 
 
