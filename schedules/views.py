@@ -46,6 +46,7 @@ def show(request, id):
     schedules = get_object_or_404(Schedule, pk=id)
     trip = schedules.trip
     if request.method == "POST":
+        schedules.date = request.POST["date"]
         schedules.spot_name = request.POST["spot_name"]
         schedules.start_time = request.POST["start_time"]
         schedules.end_time = request.POST["end_time"]
@@ -59,8 +60,11 @@ def show(request, id):
 
 
 def update(request, id):
-    schedules = get_object_or_404(Schedule, pk=id)
-    return render(request, "schedules/update.html", {"schedules": schedules})
+    schedule = get_object_or_404(Schedule, pk=id)
+    start_date = schedule.trip.start_date
+    end_date = schedule.trip.end_date
+    date_range = [(start_date + timedelta(days=x)).strftime('%Y-%m-%d') for x in range((end_date - start_date).days + 1)]
+    return render(request, "schedules/update.html", {"schedule": schedule, "date_range": date_range})
 
 
 @require_POST

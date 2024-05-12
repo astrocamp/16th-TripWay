@@ -10,6 +10,7 @@
       <div class="flex items-center">
         <img class="h-full" src="https://picsum.photos/200" alt="" />
         <div class="mx-5">
+          <p class="text-lg font-bold">{{ schedules.date|date:"m / d" }}</p>
           <p class="text-lg font-bold text-sky-700">{{ schedules.spot_name }}</p>
           <p class="text-opacity-75 text-start text-sky-700">
             <i class="fa-solid fa-clock"></i> {{ schedules.start_time }}
