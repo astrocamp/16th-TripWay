@@ -12,12 +12,12 @@
         <div class="mx-5">
           <p class="text-lg font-bold">{{ schedules.date|date:"m / d" }}</p>
           <p class="text-lg font-bold text-sky-700">{{ schedules.spot_name }}</p>
-          <p class="text-opacity-75 text-start text-sky-700">
-            <i class="fa-solid fa-clock"></i> {{ schedules.start_time }}
+          <p class="py-2 text-opacity-75 text-start text-sky-700">
+            <i class="fa-solid fa-clock"></i> {{ schedules.start_time|time:"H:i" }}
           </p>
-          <p class="flex justify-center text-opacity-75 transform rotate-90 text-sky-700">......</p>
-          <p class="text-opacity-75 text-start text-sky-700">
-            <i class="fa-solid fa-clock"></i> {{ schedules.end_time }}
+          <p class="flex px-10 text-opacity-75 transform text-sky-700">|</p>
+          <p class="py-2 text-opacity-75 text-start text-sky-700">
+            <i class="fa-solid fa-clock"></i> {{ schedules.end_time|time:"H:i"  }}
           </p>
         </div>
       </div>
