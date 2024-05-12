@@ -12,7 +12,7 @@
         <div class="flex">
           <form action="{{ trip.id }}/schedules/" method="post">
             {% csrf_token %}
-            <button>{{ trip.name }}</button>
+            <button class="mx-3 my-3"><div class="flex justify-start font-bold text-sky-800">{{ trip.name }}</div>{{ trip.start_date|date:"Y-m-d" }}~{{ trip.end_date|date:"Y-m-d" }}</button>
           </form>
           {% comment %} <a href="{% url 'schedules:index' schedules.id %}">{{ trip.name }}</a> {% endcomment %}
         </div>

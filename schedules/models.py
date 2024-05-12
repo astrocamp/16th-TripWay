@@ -10,6 +10,7 @@ class Schedule(models.Model):
         null=True,
         default=None,
     )
+    date = models.DateField(default=timezone.now)
     spot_name = models.CharField(max_length=100)
     start_time = models.TimeField(default=timezone.now)
     end_time = models.TimeField(default=timezone.now)
