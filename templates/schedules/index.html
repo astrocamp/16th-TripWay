@@ -14,6 +14,7 @@
         <a href="{% url 'schedules:show' schedule.id %}">
           <span class="inline-block w-6 h-6 mr-2 text-center text-white bg-orange-500 rounded-lg">{{ forloop.counter }}</span>
           <i class="fa-sharp fa-solid fa-building-columns" style="color: #1b3f5a;"></i> {{ schedule.spot_name }}
+          <div class="mx-7 px-2 text-gray-500">{{ schedule.start_time|time:"H:i" }}</div>
         </a>
       </div>
     {% endfor %}
