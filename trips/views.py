@@ -16,6 +16,11 @@ def new(req):
     return render(req, "trips/new.html")
 
 
+# google map
+def map(req):
+    return render(req, "trips/map.html")
+
+
 # 寫入資料庫
 @require_POST
 def create(req):
