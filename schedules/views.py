@@ -4,14 +4,13 @@ from .models import Schedule
 from trips.models import Trip
 from django.utils import timezone
 from django.urls import reverse
-
+from datetime import datetime, timedelta
 
 def index(request, id):
     trip = get_object_or_404(Trip, pk=id)
     schedules = Schedule.objects.filter(trip=trip.id, deleted_at=None).order_by(
-        "start_time"
+        "date", "start_time"
     )
-
     return render(
         request, "schedules/index.html", {"schedules": schedules, "trip": trip}
     )
@@ -19,7 +18,10 @@ def index(request, id):
 
 def new(request, id):
     trip = get_object_or_404(Trip, pk=id)
-    return render(request, "schedules/new.html", {"trip": trip})
+    start_date = trip.start_date
+    end_date = trip.end_date
+    date_range = [(start_date + timedelta(days=x)).strftime('%Y-%m-%d') for x in range((end_date - start_date).days + 1)]
+    return render(request, "schedules/new.html", {"trip": trip, "date_range": date_range})
 
 
 @require_POST
@@ -27,7 +29,7 @@ def create(request, id):
     trip = get_object_or_404(Trip, id=id)
 
     schedules = Schedule(
-        # date=request.POST["date"],
+        date=request.POST["date"],
         spot_name=request.POST["spot_name"],
         start_time=request.POST["start_time"],
         end_time=request.POST["end_time"],

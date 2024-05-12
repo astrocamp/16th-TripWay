@@ -5,7 +5,9 @@ from .models import Trip
 
 # 列出目前行程
 def home(req):
-    trips = Trip.objects.all()
+    trips = Trip.objects.all().order_by(
+        "start_date"
+    )
     return render(req, "trips/index.html", {"trips": trips})
 
 

@@ -7,6 +7,9 @@
       <h1 class="px-2 py-2 text-white bg-sky-800">景點列表</h1>
     </header>
     {% for schedule in schedules %}
+      <div class="flex items-center px-2 py-3 mx-2 my-2 rounded-lg h-100">
+      {{ schedule.date|date:"Y-m-d" }}
+      </div>
       <div class="flex items-center px-2 py-3 mx-2 my-2 bg-white border rounded-lg hover:bg-blue-300 h-100">
         <a href="{% url 'schedules:show' schedule.id %}">
           <span class="inline-block w-6 h-6 mr-2 text-center text-white bg-orange-500 rounded-lg">{{ forloop.counter }}</span>
