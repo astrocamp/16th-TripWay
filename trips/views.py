@@ -1,12 +1,23 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from .models import Trip
-
+from members.models import Members
 
 # 列出目前行程
+<<<<<<< HEAD
 def home(request):
     trips = Trip.objects.all().order_by("start_date")
     return render(request, "trips/index.html", {"trips": trips})
+=======
+def home(req):
+    trips = Trip.objects.all().order_by(
+        "start_date"
+    )
+    member = req.user
+    # member_trip = Members.objects.get(id=member.id).trips.all()
+    
+    return render(req, "trips/index.html", {"trips": trips, "member": member})
+>>>>>>> 9b64946 (build member-trip relation)
 
 
 # 輸入行程資訊
@@ -29,6 +40,9 @@ def create(request):
         transportation=request.POST["transportation"],
     )
     trip.save()
+    
+    member = req.user
+    trip.members.add(member)
 
     return redirect("trips:index")
 

@@ -30,6 +30,11 @@ def new(request, id):
     return render(request, "schedules/new.html", {"trip": trip, "date_range": date_range})
 
 
+def new_member(req, id):
+    trip = get_object_or_404(Trip, pk=id)
+    return 
+
+
 @require_POST
 def create(request, id):
     trip = get_object_or_404(Trip, id=id)
