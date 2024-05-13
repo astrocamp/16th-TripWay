@@ -19,7 +19,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-SITE_ID = 4
+SITE_ID = 5
 
 # Application definition
 
@@ -32,7 +32,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "members",
     "schedules",
-    "spots",
+    "trips",
     "django.contrib.sites",  # new
     "allauth",  # new
     "allauth.account",  # new

@@ -1,25 +1,26 @@
-{% extends "layouts/base.html" %}
+{% extends 'layouts/base.html' %}
 
 {% block content %}
-<div class="bg-color">
-    <header class="header-color">
-        <a class="icon" href="{% url 'home' %}"><i class="fa-solid fa-house-chimney"></i></a>
-        <h1 class="title">行程列表</h1>
+  <div class="h-screen bg-blue-50">
+    <header class="flex justify-start bg-sky-800">
+      <a class="px-2 py-2 text-white bg-sky-800 hover:bg-sky-950" href="{% url 'trips:index' %}"><i class="fa-solid fa-house-chimney"></i></a>
+      <h1 class="px-2 py-2 text-white bg-sky-800">景點列表</h1>
     </header>
-
     {% for schedule in schedules %}
-    <div class="item">
-      <div class="flex">{{ schedule.name }}
+      <div class="flex items-center px-2 py-3 mx-2 my-2 rounded-lg h-100">
+      {{ schedule.date|date:"Y-m-d" }}
       </div>
-      <form action="{% url 'schedules:delete' schedule.id %}" method="post">
-        {% csrf_token %}
-        <button>X</button>
-      </form>
-    </div>
+      <div class="flex items-center px-2 py-3 mx-2 my-2 bg-white border rounded-lg hover:bg-blue-300 h-100">
+        <a href="{% url 'schedules:show' schedule.id %}">
+          <span class="inline-block w-6 h-6 mr-2 text-center text-white bg-orange-500 rounded-lg">{{ forloop.counter }}</span>
+          <i class="fa-sharp fa-solid fa-building-columns" style="color: #1b3f5a;"></i> {{ schedule.spot_name }}
+          <div class="mx-7 px-2 text-gray-500">{{ schedule.start_time|time:"H:i" }}</div>
+        </a>
+      </div>
     {% endfor %}
-    <br>
+    <br />
     <div class="flex justify-center">
-        <a class="btn" href="{% url 'schedules:new' %}">建立新行程</a>
+      <a class="px-2 py-2 text-white border rounded-lg bg-sky-800 hover:bg-sky-950" href="new">新增景點</a>
     </div>
-</div>
+  </div>
 {% endblock %}
