@@ -1,55 +1,15 @@
-{% comment %} {% load static %}
-<html>
-    <head>
-        <title>Place ID Finder</title>
-        <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-
-        <link rel="stylesheet" type="text/css" href="{% static "styles/google.css" %}" />
-        <script type="module" src="{% static "scripts/map.js" %}"></script>
-        
-        <script type="module" src="https://unpkg.com/@googlemaps/extended-component-library"></script>
-        
-    </head>
-    <body>
-
-        <div style="display: none">
-            <input
-                id="pac-input"
-                class="controls"
-                type="text"
-                placeholder="Enter a location"
-            />
-            </div>
-            <div id="map"></div>
-            <div id="infowindow-content">
-            <span id="place-name" class="title"></span><br />
-    
-            
-            
-            <strong>Place ID:</strong> <span id="place-id"></span><br />
-            <strong>Place Address:</strong> <span id="place-address"></span><br />
-            <strong>Place Photo:</strong> <img id="place-photo" src="" alt="Place Photo"><br />
-    
-            <span id="place-address"></span>
-            </div>
-            <script
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZzfaT30wnP7RD1eUtvA1U3K-fCLn4O4w&callback=initMap&libraries=places&v=weekly"
-            defer loading="async"
-            ></script>
-    </body>
-</html> {% endcomment %}
-
 {% load static %}
 <html>
 <head>
     <title>TripWay</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <link rel="stylesheet" type="text/css" href="{% static "styles/google.css" %}" />
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}" />
     <script type="module" src="{% static "scripts/map.js" %}"></script>
     <script type="module" src="https://unpkg.com/@googlemaps/extended-component-library"></script>
 </head>
 <body>
-
+{% include 'shared/navbar.html' %}
 <div style="display: none">
     <input
             id="pac-input"
@@ -68,6 +28,7 @@
     <strong>Place Photo:</strong> <img id="place-photo" src="" alt="Place Photo"><br />
     <span id="place-address"></span>
 </div>
+
 <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZzfaT30wnP7RD1eUtvA1U3K-fCLn4O4w&callback=initMap&libraries=places&v=weekly"
         defer
