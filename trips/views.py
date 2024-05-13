@@ -9,10 +9,8 @@ def home(req):
         "start_date"
     )
     member = req.user
-    # member_trip = Members.objects.get(id=member.id).trips.all()
-    
-    return render(req, "trips/index.html", {"trips": trips, "member": member})
-
+    trips = [trip for trip in trips if member in trip.member.all()]
+    return render(req, "trips/index.html", {"trips": trips})
 
 
 # 輸入行程資訊
