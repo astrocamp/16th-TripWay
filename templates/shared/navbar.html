@@ -1,54 +1,60 @@
 <nav class="sticky top-0 left-0 z-50 flex items-center justify-between w-full shadow-md bg-blueGray-200">
   <!-- 左側: LOGO字樣TripWay -->
-  <a href="{% url 'home' %}" class="mb-2 ml-10 text-4xl font-bold">
-      <img src="https://i.imgur.com/EnpZ3Xv.png" alt="TripWay Logo" class="h-20 w-30" />
-  </a>
+  <a href="{% url 'home' %}" class="mb-2 ml-10 text-4xl font-bold"><img src="https://i.imgur.com/EnpZ3Xv.png" alt="TripWay Logo" class="h-20 w-30" /></a>
   <!-- 中間: 搜尋欄 -->
   <div class="flex flex-1 ml-5 justify-center-0">
-      <div class="relative w-80">
-          <input type="text" placeholder="搜尋景點，例:動物園..." class="w-full px-4 py-2 border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
-          <!-- 搜尋圖標 -->
-          <button class="absolute transform -translate-y-1/2 text-light-blue right-2 top-1/4 hover:text-gray-700">
-              <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6M17 9a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-          </button>
-      </div>
+    <div class="relative w-80">
+      <input type="text" placeholder="搜尋景點，例:動物園..." class="w-full px-4 py-2 border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      <!-- 搜尋圖標 -->
+      <button class="absolute transform -translate-y-1/2 text-light-blue right-2 top-1/4 hover:text-gray-700">
+        <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6M17 9a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      </button>
+    </div>
   </div>
 
   <!-- 右側: 導覽連結和按鈕 -->
   <div class="flex items-center space-x-4">
-      <!-- 導覽連結 -->
-      <ul class="flex space-x-4">
-        <li>
-            <a href="#" class="mr-10 flex space-x-1 text-xl font-bold items-center hover:text-light-blue">
-                <!-- 使用 span 標籤包裹圖標和文本 -->
-                <span class="fa-regular fa-map"></span>
-                <span>地圖探索</span>
-            </a>
-        </li>
-        <li>
-            <a href="#hotspots-section" class="mr-10 text-xl font-bold hover:text-light-blue">熱門景點</a>
-        </li>          
-        <li>
-            <a href="#" class="mr-10 text-xl font-bold hover:text-light-blue">立即規劃</a>
-        </li>    
-      </ul>
+    <!-- 導覽連結 -->
+    <ul class="flex space-x-4">
+      <li>
+        <a href="{% url 'trips:map' %}" class="mr-10 flex space-x-1 text-xl font-bold items-center hover:text-light-blue">
+          <!-- 使用 span 標籤包裹圖標和文本 -->
+          <span class="fa-regular fa-map"></span>
+          <span>地圖探索</span>
+        </a>
+      </li>
+      <li>
+        <a href="#hotspots-section" class="mr-10 text-xl font-bold hover:text-light-blue">熱門景點</a>
+      </li>
+      <li>
+        <a href="{% url 'trips:index' %}" class="mr-10 text-xl font-bold hover:text-light-blue">立即規劃</a>
+      </li>
+    </ul>
 
-      <div class="dropdown dropdown-end">
-          <!-- 下拉按鈕 -->
-          <button tabindex="0" class="mr-10 text-xl text-white btn bg-light-blue">登入</button>
-          <!-- 下拉選單內容 -->
-          <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
-              <!-- 下拉選單選項 -->
-              {% if user.is_authenticated %}
-              <li><a href="{% url 'logout' %}">Logout</a></li>
-              {% else %}
-              <li><a href="{% url 'login' %}">Login</a></li>
-              <li><a href="{% url 'register' %}">SignUp</a></li>
-              {% endif %}
-              <li><a>Settings</a></li>
-          </ul>
-      </div>
+    <div class="dropdown dropdown-end">
+      <!-- 下拉按鈕 -->
+      <button tabindex="0" class="mr-10 text-xl text-white btn bg-light-blue">登入</button>
+      <!-- 下拉選單內容 -->
+      <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
+        <!-- 下拉選單選項 -->
+        {% if user.is_authenticated %}
+          <li>
+            <a href="{% url 'logout' %}">Logout</a>
+          </li>
+        {% else %}
+          <li>
+            <a href="{% url 'login' %}">Login</a>
+          </li>
+          <li>
+            <a href="{% url 'register' %}">SignUp</a>
+          </li>
+        {% endif %}
+        <li>
+          <a>Settings</a>
+        </li>
+      </ul>
+    </div>
   </div>
 </nav>
