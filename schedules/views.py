@@ -5,14 +5,17 @@ from trips.models import Trip
 from django.utils import timezone
 from django.urls import reverse
 from datetime import datetime, timedelta
+from members.models import Members
 
 def index(request, id):
     trip = get_object_or_404(Trip, pk=id)
     schedules = Schedule.objects.filter(trip=trip.id, deleted_at=None).order_by(
         "date", "start_time"
     )
+    members = trip.member.all()
     return render(
-        request, "schedules/index.html", {"schedules": schedules, "trip": trip}
+        request, "schedules/index.html", 
+        {"schedules": schedules, "trip": trip, "members": members}
     )
 
 
@@ -24,9 +27,9 @@ def new(request, id):
     return render(request, "schedules/new.html", {"trip": trip, "date_range": date_range})
 
 
-def new_member(req, id):
+def new_member(request, id):
     trip = get_object_or_404(Trip, pk=id)
-    return 
+    return render(request, "schedules/new_member.html", {"trip": trip})
 
 
 @require_POST
@@ -44,6 +47,15 @@ def create(request, id):
 
     schedules.save()
 
+    return redirect(reverse("trips:schedules:index", kwargs={"id": trip.id}))
+
+
+@require_POST
+def create_member(request, id):
+    trip = get_object_or_404(Trip, id=id)
+    email = request.POST["email"]
+    member = get_object_or_404(Members, email=email)
+    trip.member.add(member)
     return redirect(reverse("trips:schedules:index", kwargs={"id": trip.id}))
 
 
@@ -78,3 +90,12 @@ def delete(request, id):
     schedule.deleted_at = timezone.now()
     schedule.save()
     return redirect("trips:schedules:index", id=schedule.trip_id)
+
+
+@require_POST
+def delete_member(request, id1, id2):
+    trip = get_object_or_404(Trip, pk=id1)
+    member = get_object_or_404(Members, pk=id2)
+    trip.member.remove(member)
+    return redirect("trips:schedules:index", id=id1)
+

@@ -4,11 +4,6 @@ from .models import Trip
 from members.models import Members
 
 # 列出目前行程
-<<<<<<< HEAD
-def home(request):
-    trips = Trip.objects.all().order_by("start_date")
-    return render(request, "trips/index.html", {"trips": trips})
-=======
 def home(req):
     trips = Trip.objects.all().order_by(
         "start_date"
@@ -17,7 +12,7 @@ def home(req):
     # member_trip = Members.objects.get(id=member.id).trips.all()
     
     return render(req, "trips/index.html", {"trips": trips, "member": member})
->>>>>>> 9b64946 (build member-trip relation)
+
 
 
 # 輸入行程資訊
