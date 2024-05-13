@@ -23,4 +23,6 @@ class Spot(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     rating = models.FloatField()
+    CommentTimes = models.CharField(max_length=50)
     SpotType = models.CharField(max_length=255)
+    FavTimes = models.CharField(max_length=50)
