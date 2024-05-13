@@ -33,11 +33,12 @@ INSTALLED_APPS = [
     "members",
     "schedules",
     "trips",
-    "django.contrib.sites",  # new
-    "allauth",  # new
-    "allauth.account",  # new
-    "allauth.socialaccount",  # new
+    "django.contrib.sites",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
+    "spots",
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -140,7 +141,7 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-AUTH_USER_MODEL = "members.Members"
+AUTH_USER_MODEL = "members.Member"
 
 AUTHENTICATION_BACKENDS = (
     "members.backend.EmailBackend",
