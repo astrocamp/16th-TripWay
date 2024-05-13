@@ -3065,9 +3065,30 @@
     }
   });
 
-  // src/scripts/app.js
+  // src/scripts/message.js
   var import_sweetalert2 = __toESM(require_sweetalert2_all());
-  window.Swal = import_sweetalert2.default;
+  var Toast = import_sweetalert2.default.mixin({
+    toast: true,
+    position: "top",
+    showConfirmButton: false,
+    timer: 2e3,
+    // timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = import_sweetalert2.default.stopTimer;
+      toast.onmouseleave = import_sweetalert2.default.resumeTimer;
+    },
+    html: '<button id="close-toast" class="swal2-close w-0 h-0" style="display: block; background-color: transparent; border: none; position: absolute; top: 0; right: 0;">&#x2715;</button>',
+    didRender: (toast) => {
+      const closeButton = toast.querySelector("#close-toast");
+      closeButton.addEventListener("click", () => {
+        import_sweetalert2.default.close();
+      });
+    }
+  });
+  var message_default = Toast;
+
+  // src/scripts/app.js
+  window.Toast = message_default;
 })();
 /*! Bundled license information:
 
