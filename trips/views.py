@@ -5,9 +5,7 @@ from .models import Trip
 
 # 列出目前行程
 def home(req):
-    trips = Trip.objects.all().order_by(
-        "start_date"
-    )
+    trips = Trip.objects.all().order_by("start_date")
     return render(req, "trips/index.html", {"trips": trips})
 
 
@@ -17,8 +15,8 @@ def new(req):
 
 
 # google map
-def map(req):
-    return render(req, "trips/map.html")
+def map(request):
+    return render(request, "trips/map.html")
 
 
 # 寫入資料庫
