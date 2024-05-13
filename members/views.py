@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from .forms import SignUp
 from django.contrib import messages
-from .models import Members
+from .models import Member
 
 # Create your views here.
 
@@ -35,7 +35,7 @@ def logout_user(req):
 
 # Register
 def register_user(req):
-    members = Members.objects.all()
+    members = Member.objects.all()
     if req.method == "POST":
         form = SignUp(req.POST)
         if form.is_valid():

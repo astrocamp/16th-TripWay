@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import Members
+from .models import Member
 
 
 class SignUp(UserCreationForm):
@@ -22,7 +22,7 @@ class SignUp(UserCreationForm):
     )
 
     class Meta:
-        model = Members
+        model = Member
         fields = ("username", "email", "password1", "password2")
         labels = {
             "username": "帳號",
