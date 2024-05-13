@@ -23,10 +23,10 @@ def map(request):
 @require_POST
 def create(request):
     trip = Trip(
-        name=req.POST["name"],
-        start_date=req.POST["start_date"],
-        end_date=req.POST["end_date"],
-        transportation=req.POST["transportation"],
+        name=request.POST["name"],
+        start_date=request.POST["start_date"],
+        end_date=request.POST["end_date"],
+        transportation=request.POST["transportation"],
     )
     trip.save()
 
