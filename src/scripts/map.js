@@ -16,6 +16,9 @@ function initMap() {
     // 獲取搜索輸入框
     const input = document.getElementById("pac-input");
 
+
+    console.log('test');
+
     // 指定需要的地點數據字段
     const autocomplete = new google.maps.places.Autocomplete(input, {
         fields: ["place_id", "geometry", "formatted_address", "name"],

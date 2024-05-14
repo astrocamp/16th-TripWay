@@ -1,0 +1,16 @@
+#map {
+    height: calc(100% - 88px);
+    position: relative;
+}
+
+.controls {
+    height: 40px;
+    border-radius: 8px;
+    width: 200px;
+}
+#restaurant-btn,
+#attraction-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
