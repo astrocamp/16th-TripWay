@@ -8,44 +8,44 @@ from .models import Members
 
 
 # Login
-def login_user(req):
-    if req.method == "POST":
-        email = req.POST["email"]
-        password = req.POST["password"]
+def login_user(request):
+    if request.method == "POST":
+        email = request.POST["email"]
+        password = request.POST["password"]
 
-        user = authenticate(req, username=email, password=password)
+        user = authenticate(request, username=email, password=password)
 
         if user is not None and user.is_active:
-            login(req, user)
-            messages.success(req, "登入成功！")
+            login(request, user)
+            messages.success(request, "登入成功！")
             return redirect("home")
         else:
-            messages.error(req, "登入失敗！")
+            messages.error(request, "登入失敗！")
             return redirect("login")
     else:
-        return render(req, "registration/login.html")
+        return render(request, "registration/login.html")
 
 
 # Logout
-def logout_user(req):
-    logout(req)
-    messages.success(req, "登出成功！")
+def logout_user(request):
+    logout(request)
+    messages.success(request, "登出成功！")
     return redirect("home")
 
 
 # Register
-def register_user(req):
+def register_user(request):
     members = Members.objects.all()
-    if req.method == "POST":
-        form = SignUp(req.POST)
+    if request.method == "POST":
+        form = SignUp(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(req, "註冊成功！")
+            messages.success(request, "註冊成功！")
             return redirect("login")
         else:
-            messages.error(req, "註冊失敗！")
+            messages.error(request, "註冊失敗！")
             print(form.errors)
     else:
         form = SignUp()
 
-    return render(req, "registration/register.html", {"form": form, "members": members})
+    return render(request, "registration/register.html", {"form": form, "members": members})
