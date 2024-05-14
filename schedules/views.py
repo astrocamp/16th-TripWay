@@ -20,7 +20,8 @@ def index(request, id):
         grouped_schedules[date] = list(group)
     # 獲取行程的日期範圍
     date_range = [trip.start_date + timedelta(days=x) for x in range((trip.end_date - trip.start_date).days + 1)]
-    return render(request, "schedules/index.html", {"schedule_dates": grouped_schedules, "date_range": date_range})
+    members = trip.member.all()
+    return render(request, "schedules/index.html", {"schedule_dates": grouped_schedules, "date_range": date_range, "members": members})
 
 
 def new(request, id):
