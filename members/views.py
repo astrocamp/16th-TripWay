@@ -27,25 +27,27 @@ def login_user(req):
 
 
 # Logout
-def logout_user(req):
-    logout(req)
-    messages.success(req, "登出成功！")
+def logout_user(request):
+    logout(request)
+    messages.success(request, "登出成功！")
     return redirect("home")
 
 
 # Register
-def register_user(req):
+def register_user(request):
     members = Member.objects.all()
-    if req.method == "POST":
-        form = SignUp(req.POST)
+    if request.method == "POST":
+        form = SignUp(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(req, "註冊成功！")
+            messages.success(request, "註冊成功！")
             return redirect("login")
         else:
-            messages.error(req, "註冊失敗！")
+            messages.error(request, "註冊失敗！")
             print(form.errors)
     else:
         form = SignUp()
 
-    return render(req, "registration/register.html", {"form": form, "members": members})
+    return render(
+        request, "registration/register.html", {"form": form, "members": members}
+    )
