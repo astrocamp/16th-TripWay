@@ -91,8 +91,8 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "TripWay",
-        "USER": "postgres",
-        "PASSWORD": "AAez8373",
+        "USER": os.getenv("YOUR_USER_NAME"),
+        "PASSWORD": os.getenv("YOUR_PASSWORD"),
         "HOST": "localhost",
         "PORT": "5432",
     }
