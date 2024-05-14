@@ -8,22 +8,22 @@ from .models import Member
 
 
 # Login
-def login_user(req):
-    if req.method == "POST":
-        email = req.POST["email"]
-        password = req.POST["password"]
+def login_user(request):
+    if request.method == "POST":
+        email = request.POST["email"]
+        password = request.POST["password"]
 
-        user = authenticate(req, username=email, password=password)
+        user = authenticate(request, username=email, password=password)
 
         if user is not None and user.is_active:
-            login(req, user)
-            messages.success(req, "登入成功！")
+            login(request, user)
+            messages.success(request, "登入成功！")
             return redirect("home")
         else:
-            messages.error(req, "登入失敗！")
+            messages.error(request, "登入失敗！")
             return redirect("login")
     else:
-        return render(req, "registration/login.html")
+        return render(request, "registration/login.html")
 
 
 # Logout
