@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from members.models import Members
+from members.models import Member
 
 
 class Trip(models.Model):

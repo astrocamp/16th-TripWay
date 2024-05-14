@@ -10,4 +10,5 @@ urlpatterns = [
     path("schedules/", include("schedules.urls")),
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
+    path("spots/", include("spots.urls")),
 ]

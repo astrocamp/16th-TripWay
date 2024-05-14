@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from .forms import SignUp
 from django.contrib import messages
-from .models import Members
+from .models import Member
 
 # Create your views here.
 
@@ -35,7 +35,7 @@ def logout_user(request):
 
 # Register
 def register_user(request):
-    members = Members.objects.all()
+    members = Member.objects.all()
     if request.method == "POST":
         form = SignUp(request.POST)
         if form.is_valid():
@@ -48,4 +48,6 @@ def register_user(request):
     else:
         form = SignUp()
 
-    return render(request, "registration/register.html", {"form": form, "members": members})
+    return render(
+        request, "registration/register.html", {"form": form, "members": members}
+    )

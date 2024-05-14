@@ -4,19 +4,22 @@ from .models import Schedule
 from trips.models import Trip
 from django.utils import timezone
 from django.urls import reverse
-from datetime import datetime, timedelta
-from members.models import Members
+from datetime import timedelta
+from itertools import groupby
+from operator import attrgetter
 
 def index(request, id):
     trip = get_object_or_404(Trip, pk=id)
     schedules = Schedule.objects.filter(trip=trip.id, deleted_at=None).order_by(
         "date", "start_time"
     )
-    members = trip.member.all()
-    return render(
-        request, "schedules/index.html", 
-        {"schedules": schedules, "trip": trip, "members": members}
-    )
+    grouped_schedules = {} 
+    # 根據行程的日期屬性將行程分組並提取日期
+    for date, group in groupby(schedules, key=attrgetter('date')):
+        grouped_schedules[date] = list(group)
+    # 獲取行程的日期範圍
+    date_range = [trip.start_date + timedelta(days=x) for x in range((trip.end_date - trip.start_date).days + 1)]
+    return render(request, "schedules/index.html", {"schedule_dates": grouped_schedules, "date_range": date_range})
 
 
 def new(request, id):

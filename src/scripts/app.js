@@ -1,2 +1,3 @@
-import Swal from "sweetalert2"
-window.Swal = Swal
+import Toast from "./message.js"
+
+window.Toast = Toast
