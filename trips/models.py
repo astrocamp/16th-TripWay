@@ -4,7 +4,7 @@ from members.models import Member
 
 
 class Trip(models.Model):
-    member = models.ManyToManyField(Members)
+    member = models.ManyToManyField(Member)
     name = models.CharField(max_length=100)
     start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField(default=timezone.now)

@@ -7,6 +7,7 @@ from django.urls import reverse
 from datetime import timedelta
 from itertools import groupby
 from operator import attrgetter
+from members.models import Member
 
 def index(request, id):
     trip = get_object_or_404(Trip, pk=id)
@@ -57,7 +58,7 @@ def create(request, id):
 def create_member(request, id):
     trip = get_object_or_404(Trip, id=id)
     email = request.POST["email"]
-    member = get_object_or_404(Members, email=email)
+    member = get_object_or_404(Member, email=email)
     trip.member.add(member)
     return redirect(reverse("trips:schedules:index", kwargs={"id": trip.id}))
 
@@ -98,7 +99,7 @@ def delete(request, id):
 @require_POST
 def delete_member(request, id1, id2):
     trip = get_object_or_404(Trip, pk=id1)
-    member = get_object_or_404(Members, pk=id2)
+    member = get_object_or_404(Member, pk=id2)
     trip.member.remove(member)
     return redirect("trips:schedules:index", id=id1)
 

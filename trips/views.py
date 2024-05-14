@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from .models import Trip
-from members.models import Members
+from members.models import Member
 
 # 列出目前行程
 def home(request):
