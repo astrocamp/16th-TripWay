@@ -7,7 +7,7 @@ class Members(AbstractUser):
 
 class MemberSpot(models.Model):
     member = models.ForeignKey(Members, on_delete=models.CASCADE, related_name='members')
-    spot = models.ForeignKey(Spot, on_delete=models.CASCADE, related_name='spots')
+    # spot = models.ForeignKey("Spot", on_delete=models.CASCADE, related_name='favorite_spots')
 
     def soft_delete(self):
         self.deleted_at = timezone.now()
