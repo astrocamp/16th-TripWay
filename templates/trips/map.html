@@ -3,7 +3,6 @@
 <head>
     <title>TripWay</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <link rel="stylesheet" type="text/css" href="{% static "styles/google.css" %}" />
     <link rel="stylesheet" href="{% static 'styles/style.css' %}" />
     <script type="module" src="{% static "scripts/app.js" %}"></script>
     <script type="module" src="https://unpkg.com/@googlemaps/extended-component-library"></script>
@@ -15,9 +14,11 @@
             id="pac-input"
             class="controls"
             type="text"
-            placeholder="Enter a location"
+            placeholder="搜索附近景點"
     />
 </div>
+
+
 <div id="map"></div>
 <div id="infowindow-content">
     <span id="place-name" class="title"></span><br />
@@ -25,10 +26,11 @@
     <strong>Place Address:</strong> <span id="place-address"></span><br />
     <strong>Place Distance:</strong> <span id="distance"></span><br />
     <strong>Spend Time:</strong> <span id="duration"></span><br />
-    <strong>Place Photo:</strong> <img id="place-photo" src="" alt="Place Photo"><br />
+    {% comment %} <strong>Place Photo:</strong> <img id="place-photo" src="" alt="Place Photo"><br /> {% endcomment %}
     <span id="place-address"></span>
+    <button id="restaurant-btn">附近餐廳</button>
+    <button id="attraction-btn">附近觀光景點</button>
 </div>
-
 <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZzfaT30wnP7RD1eUtvA1U3K-fCLn4O4w&callback=initMap&libraries=places&v=weekly"
         defer
