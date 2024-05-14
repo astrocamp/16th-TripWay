@@ -3,24 +3,65 @@
 {% block content %}
   <div class="h-screen bg-blue-50">
     <header class="flex justify-start bg-sky-800">
-      <a class="px-2 py-2 text-white bg-sky-800 hover:bg-sky-950" href="{% url 'trips:index' %}"><i class="fa-solid fa-house-chimney"></i></a>
+      <a class="px-2 py-2 text-white bg-sky-800 hover:bg-sky-950" href="{% url 'trips:index' %}">
+        <i class="fa-solid fa-house-chimney"></i>
+      </a>
       <h1 class="px-2 py-2 text-white bg-sky-800">景點列表</h1>
     </header>
-    {% for schedule in schedules %}
-      <div class="flex items-center px-2 py-3 mx-2 my-2 rounded-lg h-100">
-      {{ schedule.date|date:"Y-m-d" }}
-      </div>
-      <div class="flex items-center px-2 py-3 mx-2 my-2 bg-white border rounded-lg hover:bg-blue-300 h-100">
-        <a href="{% url 'schedules:show' schedule.id %}">
+
+    <!-- 日期頁籤 -->
+    <div class="tabs flex text-start h-14">
+      {% for day in date_range %}
+        <button id="btn-{{ day|date:"Y-m-d" }}" class="tab h-14 border transition-all ease-in-out text-slate-700 hover:bg-gray-200" onclick="openTab('{{ day|date:"Y-m-d" }}', 'btn-{{ day|date:"Y-m-d" }}')">
+          {{ day|date:"Y-m-d" }}
+        </button>
+      {% endfor %}
+    </div>
+
+    <!-- 行程內容 -->
+    {% for date, schedules in schedule_dates.items %}
+    <div id="schedule{{ schedules.0.date|date:'Y-m-d' }}" class="tab-content mt-3 bg-blueGray-100" style="{% if forloop.first %}display: block;{% else %}display: none;{% endif %}">
+      {% for schedule in schedules %}
+      <a href="{% url 'schedules:show' schedule.id %}">
+        <div class="flex items-center mb-1 px-2 py-3 shadow-md hover:bg-blue-300 h-36">
           <span class="inline-block w-6 h-6 mr-2 text-center text-white bg-orange-500 rounded-lg">{{ forloop.counter }}</span>
           <i class="fa-sharp fa-solid fa-building-columns" style="color: #1b3f5a;"></i> {{ schedule.spot_name }}
-          <div class="mx-7 px-2 text-gray-500">{{ schedule.start_time|time:"H:i" }}</div>
-        </a>
-      </div>
+          <div class="mx-3 px-2 text-gray-500">{{ schedule.start_time|time:"H:i" }}</div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
     {% endfor %}
+
     <br />
     <div class="flex justify-center">
       <a class="px-2 py-2 text-white border rounded-lg bg-sky-800 hover:bg-sky-950" href="new">新增景點</a>
     </div>
   </div>
+
+  <script>
+    // 頁籤顯示與隱藏
+    function openTab(tabName, btnId) {
+      let i, tabContent;
+      tabContent = document.getElementsByClassName("tab-content");
+      for (i = 0; i < tabContent.length; i++) {
+        tabContent[i].style.display = "none";
+      }
+      document.getElementById("schedule" + tabName).style.display = "block";
+
+      const buttons = document.querySelectorAll('.tab');
+      buttons.forEach(button => {
+        button.classList.remove('active-tab');
+      });
+      const btn = document.querySelector('#' + btnId);
+      btn.classList.add("active-tab");
+    }
+  </script>
+
+  <style>
+    .active-tab {
+      background-color: #c5d9ed;
+      color: black;
+    }
+  </style>
 {% endblock %}
