@@ -4,13 +4,13 @@ from .models import Trip
 from members.models import Members
 
 # 列出目前行程
-def home(req):
+def home(request):
     trips = Trip.objects.all().order_by(
         "start_date"
     )
-    member = req.user
+    member = request.user
     trips = [trip for trip in trips if member in trip.member.all()]
-    return render(req, "trips/index.html", {"trips": trips})
+    return render(request, "trips/index.html", {"trips": trips})
 
 
 # 輸入行程資訊
@@ -34,8 +34,8 @@ def create(request):
     )
     trip.save()
     
-    member = req.user
-    trip.members.add(member)
+    member = request.user
+    trip.member.add(member)
 
     return redirect("trips:index")
 
