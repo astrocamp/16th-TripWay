@@ -1,11 +1,18 @@
 from django.db import models
 from trips.models import Trip
 from django.utils import timezone
+from spots.models import Spot
 
 
 class Schedule(models.Model):
     trip = models.ForeignKey(
         Trip,
+        on_delete=models.CASCADE,
+        null=True,
+        default=None,
+    )
+    spot = models.ForeignKey(
+        Spot,
         on_delete=models.CASCADE,
         null=True,
         default=None,
