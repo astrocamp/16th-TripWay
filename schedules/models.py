@@ -21,7 +21,7 @@ class Schedule(models.Model):
     spot_name = models.CharField(max_length=100)
     start_time = models.TimeField(default=timezone.now, null=True)
     end_time = models.TimeField(default=timezone.now, null=True)
-    note = models.TextField(default="")
+    note = models.TextField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True)

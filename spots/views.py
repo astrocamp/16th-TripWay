@@ -33,10 +33,12 @@ def add(request, pk):
     trips = member.trips.all()
     spot = get_object_or_404(Spot, pk=pk)
 
+    trips_dates = []
     for trip in trips:
         date_range = [
             (trip.start_date + timedelta(days=x)).strftime("%Y-%m-%d")
             for x in range((trip.end_date - trip.start_date).days + 1)
         ]
-    context = {"spot": spot, "trips": trips, "date_range": date_range}
+        trips_dates.append({"trip": trip, "date_range": date_range})
+    context = {"spot": spot, "trips": trips, "trips_dates": trips_dates}
     return render(request, "spots/add.html", context)

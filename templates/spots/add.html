@@ -6,17 +6,18 @@
   <h2>要加在哪？</h2>
 </div>
 
-{% for trip in trips %}
+{% for item in trips_dates %}
 <div class="collapse collapse-arrow bg-base-200">
-  <input type="radio" name="my-accordion" id="trip-{{ trip.id }}" class="peer" />
-  <label class="collapse-title text-xl font-medium peer-checked:bg-blue-500" for="trip-{{ trip.id }}"> {{ trip.name }} </label>
+  <input type="radio" name="my-accordion" id="trip-{{ item.trip.id }}" class="peer" />
+  <label class="collapse-title text-xl font-medium peer-checked:bg-blue-500" for="trip-{{ item.trip.id }}"> {{ item.trip.name }} </label>
   <div class="collapse-content">
-    {% for day in date_range %}
+    {% for day in item.date_range %}
     <div class="py-2">
       <form action="{% url 'schedules:add' %}" method="post">
         {% csrf_token %}
-        <input type="hidden" name="trip_id" value="{{ trip.id }}" />
+        <input type="hidden" name="trip_id" value="{{ item.trip.id }}" />
         <input type="hidden" name="spot_id" value="{{ spot.id }}" />
+        <input type="hidden" name="spot_name" value="{{ spot.name }}" />
         <input type="hidden" name="day" value="{{ day }}" />
         <button type="submit" class="btn">{{ day }}</button>
       </form>

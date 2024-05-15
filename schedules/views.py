@@ -8,6 +8,7 @@ from datetime import timedelta
 from itertools import groupby
 from operator import attrgetter
 from members.models import Member
+from spots.models import Spot
 
 
 def index(request, id):
@@ -45,20 +46,24 @@ def new_member(request, id):
 
 
 @require_POST
-def create(request, id):
-    trip = get_object_or_404(Trip, id=id)
+def create(request):
+    trip_id = request.POST.get("trip_id")
+    trip = get_object_or_404(Trip, id=trip_id)
+
+    spot_id = request.POST.get("spot_id")
+    spot = get_object_or_404(Spot, id=spot_id)
 
     schedules = Schedule(
-        date=request.POST["date"],
+        date=request.POST["day"],
         spot_name=request.POST["spot_name"],
-        start_time=request.POST["start_time"],
-        end_time=request.POST["end_time"],
-        note=request.POST["note"],
+        start_time=None,
+        end_time=None,
+        note=None,
         trip=trip,
+        spot=spot,
     )
     schedules.save()
-
-    return redirect(reverse("trips:schedules:index", kwargs={"id": trip.id}))
+    return redirect(reverse("schedules:index", kwargs={"id": trip.id}))
 
 
 @require_POST
