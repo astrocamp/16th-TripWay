@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from .models import Schedule
-from trips.models import Trip
+from trips.models import Trip, TripMember
 from django.utils import timezone
 from django.urls import reverse
 from datetime import timedelta
@@ -20,7 +20,8 @@ def index(request, id):
         grouped_schedules[date] = list(group)
     # 獲取行程的日期範圍
     date_range = [trip.start_date + timedelta(days=x) for x in range((trip.end_date - trip.start_date).days + 1)]
-    members = trip.member.all()
+    member_ids = TripMember.objects.filter(trip_id=id).order_by('id').values_list('member_id', flat=True)
+    members = Member.objects.filter(id__in=member_ids)
     return render(request, "schedules/index.html", {"schedule_dates": grouped_schedules, "date_range": date_range, "trip": trip, "members": members})
 
 
@@ -49,7 +50,6 @@ def create(request, id):
         note=request.POST["note"],
         trip=trip,
     )
-
     schedules.save()
 
     return redirect(reverse("trips:schedules:index", kwargs={"id": trip.id}))
@@ -59,8 +59,11 @@ def create(request, id):
 def create_member(request, id):
     trip = get_object_or_404(Trip, id=id)
     email = request.POST["email"]
+    is_editable = (request.POST['editable'] == 'True')
     member = get_object_or_404(Member, email=email)
-    trip.member.add(member)
+    TripMember.objects.create(trip=trip, member=member, editable=is_editable)
+    trip.number += 1
+    trip.save()
     return redirect(reverse("trips:schedules:index", kwargs={"id": trip.id}))
 
 
@@ -99,8 +102,10 @@ def delete(request, id):
 
 @require_POST
 def delete_member(request, id1, id2):
+    trip_member = get_object_or_404(TripMember, trip_id=id1, member_id=id2)
+    trip_member.delete()
     trip = get_object_or_404(Trip, pk=id1)
-    member = get_object_or_404(Member, pk=id2)
-    trip.member.remove(member)
+    trip.number -= 1
+    trip.save()
     return redirect("trips:schedules:index", id=id1)
 
