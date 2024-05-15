@@ -3,14 +3,14 @@ from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 
 
-class Members(AbstractUser):
+class Member(AbstractUser):
     email = models.EmailField(max_length=255, 
     unique=True)
 
 
 class MemberSpot(models.Model):
     member = models.ForeignKey(
-        Members, on_delete=models.CASCADE, related_name="members"
+        Member, on_delete=models.CASCADE, related_name="members"
     )
     spot = models.ForeignKey("Spot", on_delete=models.CASCADE, related_name='favorite_spots')
     created_at = models.DateTimeField(auto_now_add=True)

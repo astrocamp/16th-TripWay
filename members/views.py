@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from .forms import SignUp
 from django.contrib import messages
-from .models import Members, Spot
+from .models import Member, Spot
 
 
 # Login
@@ -33,7 +33,7 @@ def logout_user(request):
 
 # Register
 def register_user(request):
-    members = Members.objects.all()
+    members = Member.objects.all()
     if request.method == "POST":
         form = SignUp(request.POST)
         if form.is_valid():
@@ -50,17 +50,17 @@ def register_user(request):
 
 
 # member profile index
-def index(request, id):
-    pass
+def index(request):
+    favorite_spots = Member.favorite_spots.all()
+    return render(request, "profile/index.html", {"favorite_spots":favorite_spots})
 
 
-def add_favorite_spot(request, member_id, spot_id):
-    # 獲取會員對象和景點對象，如果不存在則返回404錯誤
-    member = get_object_or_404(Members, pk=member_id)
+# 關聯
+def add_favorite_spot(member_id, spot_id):
+    member = get_object_or_404(Member, pk=member_id)
     spot = get_object_or_404(Spot, pk=spot_id)
     
-    # 使用 add() 方法將會員與景點關聯起來
+    # 將會員與景點關聯起來
     member.favorite_spots.add(spot)
     
-    # 返回適當的響應，例如重定向到一個新的頁面或者返回一個成功消息
     return redirect("index")
