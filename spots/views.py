@@ -4,6 +4,7 @@ from .models import Spot
 from .form import SpotForm
 from django.urls import reverse_lazy
 from trips.models import Trip
+from datetime import timedelta
 
 # Create your views here.
 
@@ -28,10 +29,14 @@ class CreateView(CreateView):
 
 
 def add(request, pk):
+    member = request.user
+    trips = member.trips.all()
     spot = get_object_or_404(Spot, pk=pk)
-    trips = Trip.objects.all()
-    context = {
-        "spot": spot,
-        "trips": trips,
-    }
+
+    for trip in trips:
+        date_range = [
+            (trip.start_date + timedelta(days=x)).strftime("%Y-%m-%d")
+            for x in range((trip.end_date - trip.start_date).days + 1)
+        ]
+    context = {"spot": spot, "trips": trips, "date_range": date_range}
     return render(request, "spots/add.html", context)

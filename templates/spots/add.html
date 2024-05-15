@@ -8,17 +8,20 @@
 
 {% for trip in trips %}
 <div class="collapse collapse-arrow bg-base-200">
-  <!-- 每個input都需要有唯一的id，label的for屬性指向該id -->
   <input type="radio" name="my-accordion" id="trip-{{ trip.id }}" class="peer" />
-  <!-- 使用label與input配對，點擊title即可控制開關 -->
   <label class="collapse-title text-xl font-medium peer-checked:bg-blue-500" for="trip-{{ trip.id }}"> {{ trip.name }} </label>
   <div class="collapse-content">
-    <form action="" method="post">
-      {% csrf_token %}
-      <input type="hidden" name="trip_id" value="{{ trip.id }}" />
-      <input type="hidden" name="spot_id" value="{{ spot.id }}" />
-      <button type="submit">{{ day|date:'Y-m-d' }} 日期</button>
-    </form>
+    {% for day in date_range %}
+    <div class="py-2">
+      <form action="{% url 'schedules:add' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="trip_id" value="{{ trip.id }}" />
+        <input type="hidden" name="spot_id" value="{{ spot.id }}" />
+        <input type="hidden" name="day" value="{{ day }}" />
+        <button type="submit" class="btn">{{ day }}</button>
+      </form>
+    </div>
+    {% endfor %}
   </div>
 </div>
-{% endfor %} {% endblock %}
+{% endfor %}{% endblock %}
