@@ -3097,7 +3097,6 @@
     const scheduleTab = document.getElementById("schedule" + tabName);
     if (scheduleTab) {
       scheduleTab.style.display = "block";
-    } else {
     }
     const buttons = document.querySelectorAll(".tab");
     buttons.forEach((button) => {
