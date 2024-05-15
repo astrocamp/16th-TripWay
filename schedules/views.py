@@ -63,7 +63,7 @@ def create(request):
         spot=spot,
     )
     schedules.save()
-    return redirect(reverse("schedules:index", kwargs={"id": trip.id}))
+    return redirect(f"/trips/{trip.id}/schedules/")
 
 
 @require_POST
