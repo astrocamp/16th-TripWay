@@ -1,15 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
-from .models import Trip
+from .models import Trip, TripMember
 from members.models import Member
 
 # 列出目前行程
 def home(request):
-    trips = Trip.objects.all().order_by(
+    member = request.user
+    trip_ids = TripMember.objects.filter(member_id=member.id).values_list('trip_id', flat=True)
+    trips = Trip.objects.filter(id__in=trip_ids).order_by(
         "start_date"
     )
-    member = request.user
-    trips = [trip for trip in trips if member in trip.member.all()]
     return render(request, "trips/index.html", {"trips": trips})
 
 
@@ -26,17 +26,17 @@ def map(request):
 # 寫入資料庫
 @require_POST
 def create(request):
+    member = request.user
     trip = Trip(
         name=request.POST["name"],
         start_date=request.POST["start_date"],
         end_date=request.POST["end_date"],
         transportation=request.POST["transportation"],
+        owner = member.id
     )
     trip.save()
+    TripMember.objects.create(trip=trip, member=member, editable=True)
     
-    member = request.user
-    trip.member.add(member)
-
     return redirect("trips:index")
 
 
