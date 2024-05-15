@@ -1,12 +1,10 @@
-{% extends 'layouts/base.html' %}
-
-{% block content %}
-  <div class="h-screen bg-blue-50">
-    <header class="flex justify-start bg-sky-800">
-      <a class="px-2 py-2 text-white bg-sky-800 hover:bg-sky-950" href="{% url 'spots:index' %}"><i class="fa-solid fa-house-chimney"></i></a>
-      <h1 class="px-2 py-2 text-white bg-sky-800">景點：{{ spot.name }}</h1>
-    </header>
-    <section class="flex justify-between px-3 py-3 mx-3 my-3 bg-white border rounded-lg h-35">
+{% extends 'layouts/base.html' %} {% block content %}
+<div class="h-screen bg-blue-50">
+  <header class="flex justify-start bg-sky-800">
+    <a class="px-2 py-2 text-white bg-sky-800 hover:bg-sky-950" href="{% url 'spots:index' %}"><i class="fa-solid fa-house-chimney"></i></a>
+    <h1 class="px-2 py-2 text-white bg-sky-800">景點：{{ spot.name }}</h1>
+  </header>
+  <section class="flex justify-between px-3 py-3 mx-3 my-3 bg-white border rounded-lg h-35">
       <div class="flex items-center">
         <img class="h-full" src="https://picsum.photos/200" alt="" />
         <div class="mx-5">
@@ -17,6 +15,13 @@
           <p class="text-gray-500">備註事項：{{ spot.description }}</p>
         </div>
       </div>
-    </section>
-  </div>
+      <div>
+        <a class='btn' href="{% url 'spots:add' spot.pk %}">加入行程+</a>
+      </div>
+      <div>
+        <a class='btn' href="{% url 'spots:add' spot.pk %}">收藏+</a>
+      </div>
+    </div>
+  </section>
+</div>
 {% endblock %}

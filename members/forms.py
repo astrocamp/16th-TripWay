@@ -3,22 +3,17 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import Member
 
 
+DEFAULT_TYPE = "form-control w-72 px-2 py-2 border-2 rounded-lg focus:outline-none"
+
+
 class SignUp(UserCreationForm):
     # username = forms.CharField(required=False)
     password1 = forms.CharField(
-        widget=forms.PasswordInput(
-            attrs={
-                "class": "form-control w-72 px-2 py-2 border-2 rounded-lg focus:outline-none",
-            }
-        )
+        widget=forms.PasswordInput(attrs={"class": DEFAULT_TYPE})
     )
 
     password2 = forms.CharField(
-        widget=forms.PasswordInput(
-            attrs={
-                "class": "form-control w-72 px-2 py-2 border-2 rounded-lg focus:outline-none",
-            }
-        )
+        widget=forms.PasswordInput(attrs={"class": DEFAULT_TYPE})
     )
 
     class Meta:
@@ -31,24 +26,8 @@ class SignUp(UserCreationForm):
             "password2": "密碼確認",
         }
         widgets = {
-            "username": forms.TextInput(
-                attrs={
-                    "class": "form-control w-72 px-2 py-2 border-2 rounded-lg focus:outline-none"
-                }
-            ),
-            "email": forms.EmailInput(
-                attrs={
-                    "class": "form-control w-72 px-2 py-2 border-2 rounded-lg focus:outline-none"
-                }
-            ),
-            "password1": forms.PasswordInput(
-                attrs={
-                    "class": "form-control w-72 px-2 py-2 border-2 rounded-lg focus:outline-none",
-                }
-            ),
-            "password2": forms.PasswordInput(
-                attrs={
-                    "class": "form-control w-72 px-2 py-2 border-2 rounded-lg focus:outline-none"
-                }
-            ),
+            "username": forms.TextInput(attrs={"class": DEFAULT_TYPE}),
+            "email": forms.EmailInput(attrs={"class": DEFAULT_TYPE}),
+            "password1": forms.PasswordInput(attrs={"class": DEFAULT_TYPE}),
+            "password2": forms.PasswordInput(attrs={"class": DEFAULT_TYPE}),
         }
