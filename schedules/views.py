@@ -9,14 +9,15 @@ from itertools import groupby
 from operator import attrgetter
 from members.models import Member
 
+
 def index(request, id):
     trip = get_object_or_404(Trip, pk=id)
     schedules = Schedule.objects.filter(trip=trip.id, deleted_at=None).order_by(
         "date", "start_time"
     )
-    grouped_schedules = {} 
+    grouped_schedules = {}
     # 根據行程的日期屬性將行程分組並提取日期
-    for date, group in groupby(schedules, key=attrgetter('date')):
+    for date, group in groupby(schedules, key=attrgetter("date")):
         grouped_schedules[date] = list(group)
     # 獲取行程的日期範圍
     date_range = [trip.start_date + timedelta(days=x) for x in range((trip.end_date - trip.start_date).days + 1)]
@@ -29,8 +30,13 @@ def new(request, id):
     trip = get_object_or_404(Trip, pk=id)
     start_date = trip.start_date
     end_date = trip.end_date
-    date_range = [(start_date + timedelta(days=x)).strftime('%Y-%m-%d') for x in range((end_date - start_date).days + 1)]
-    return render(request, "schedules/new.html", {"trip": trip, "date_range": date_range})
+    date_range = [
+        (start_date + timedelta(days=x)).strftime("%Y-%m-%d")
+        for x in range((end_date - start_date).days + 1)
+    ]
+    return render(
+        request, "schedules/new.html", {"trip": trip, "date_range": date_range}
+    )
 
 
 def new_member(request, id):
@@ -88,8 +94,15 @@ def update(request, id):
     schedule = get_object_or_404(Schedule, pk=id)
     start_date = schedule.trip.start_date
     end_date = schedule.trip.end_date
-    date_range = [(start_date + timedelta(days=x)).strftime('%Y-%m-%d') for x in range((end_date - start_date).days + 1)]
-    return render(request, "schedules/update.html", {"schedule": schedule, "date_range": date_range})
+    date_range = [
+        (start_date + timedelta(days=x)).strftime("%Y-%m-%d")
+        for x in range((end_date - start_date).days + 1)
+    ]
+    return render(
+        request,
+        "schedules/update.html",
+        {"schedule": schedule, "date_range": date_range},
+    )
 
 
 @require_POST
@@ -108,4 +121,3 @@ def delete_member(request, id1, id2):
     trip.number -= 1
     trip.save()
     return redirect("trips:schedules:index", id=id1)
-
