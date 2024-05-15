@@ -3087,8 +3087,115 @@
   });
   var message_default = Toast;
 
+  // src/scripts/schedules/index.js
+  function openTab(tabName, btnId) {
+    let i, tabContent;
+    tabContent = document.getElementsByClassName("tab-content");
+    for (i = 0; i < tabContent.length; i++) {
+      tabContent[i].style.display = "none";
+    }
+    const scheduleTab = document.getElementById("schedule" + tabName);
+    if (scheduleTab) {
+      scheduleTab.style.display = "block";
+    } else {
+    }
+    const buttons = document.querySelectorAll(".tab");
+    buttons.forEach((button) => {
+      button.classList.remove("active-tab");
+    });
+    const btn = document.querySelector("#" + btnId);
+    btn.classList.add("active-tab");
+  }
+  var schedules_default = openTab;
+
+  // src/scripts/map.js
+  var map;
+  var currentPosition;
+  var directionsService;
+  var directionsRenderer;
+  function initMap2() {
+    map = new google.maps.Map(document.getElementById("map"), {
+      center: currentPosition,
+      zoom: 16
+    });
+    directionsService = new google.maps.DirectionsService();
+    directionsRenderer = new google.maps.DirectionsRenderer();
+    directionsRenderer.setMap(map);
+    const input = document.getElementById("pac-input");
+    const autocomplete = new google.maps.places.Autocomplete(input, {
+      fields: ["place_id", "geometry", "formatted_address", "name"]
+    });
+    const circle = new google.maps.Circle({
+      center: currentPosition,
+      radius: 100
+      // 100 公尺
+    });
+    autocomplete.setBounds(circle.getBounds());
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    const infowindow = new google.maps.InfoWindow();
+    const infowindowContent = document.getElementById("infowindow-content");
+    infowindow.setContent(infowindowContent);
+    const marker = new google.maps.Marker({ map });
+    marker.addListener("click", () => {
+      infowindow.open(map, marker);
+    });
+    autocomplete.addListener("place_changed", () => {
+      infowindow.close();
+      const place = autocomplete.getPlace();
+      if (!place.geometry || !place.geometry.location) {
+        return;
+      }
+      if (place.geometry.viewport) {
+        map.fitBounds(place.geometry.viewport);
+      } else {
+        map.setCenter(place.geometry.location);
+        map.setZoom(7);
+      }
+      marker.setPlace({
+        placeId: place.place_id,
+        location: place.geometry.location
+      });
+      marker.setVisible(true);
+      infowindowContent.children.namedItem("place-name").textContent = place.name;
+      infowindowContent.children.namedItem("place-address").textContent = place.formatted_address;
+      infowindow.open(map, marker);
+      calculateAndDisplayRoute(currentPosition, place.geometry.location);
+    });
+  }
+  function calculateAndDisplayRoute(origin, destination) {
+    directionsService.route(
+      {
+        origin,
+        destination,
+        travelMode: "DRIVING"
+        // 這裡可以是 'DRIVING', 'WALKING', 'BICYCLING', 或 'TRANSIT'
+      },
+      (response, status) => {
+        if (status === "OK") {
+          directionsRenderer.setDirections(response);
+          const route = response.routes[0];
+          const distance = route.legs[0].distance.text;
+          const duration = route.legs[0].duration.text;
+          document.getElementById("distance").textContent = distance;
+          document.getElementById("duration").textContent = duration;
+        } else {
+          window.alert("Directions request failed due to " + status);
+        }
+      }
+    );
+  }
+  navigator.geolocation.getCurrentPosition(function(position) {
+    currentPosition = {
+      lat: position.coords.latitude,
+      lng: position.coords.longitude
+    };
+    initMap2();
+  });
+
   // src/scripts/app.js
   window.Toast = message_default;
+  window.openTab = schedules_default;
+  window.initMap = initMap;
 })();
 /*! Bundled license information:
 
