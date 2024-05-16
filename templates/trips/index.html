@@ -16,10 +16,14 @@
             <div>{{ trip.start_date|date:'Y-m-d' }}~{{ trip.end_date|date:'Y-m-d' }}</div>
           </button>
         </form>
-        <form action="{% url 'trips:delete' trip.id %}" method="post">
-          {% csrf_token %}
-          <button>X</button>
-        </form>
+        {% for trip_member in trip_members %}
+          {% if trip_member.editable and trip.id == trip_member.trip_id %}
+            <form action="{% url 'trips:delete' trip.id %}" method="post">
+              {% csrf_token %}
+              <button>X</button>
+            </form>
+          {% endif %}
+        {% endfor %}
       </div>
     {% endfor %}
     <br />

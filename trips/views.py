@@ -7,11 +7,10 @@ from members.models import Member
 # 列出目前行程
 def home(request):
     member = request.user
-    trip_ids = TripMember.objects.filter(member_id=member.id).values_list('trip_id', flat=True)
-    trips = Trip.objects.filter(id__in=trip_ids).order_by(
-        "start_date"
-    )
-    return render(request, "trips/index.html", {"trips": trips})
+    trip_members = TripMember.objects.filter(member_id=member.id)
+    trip_ids = trip_members.values_list('trip_id', flat=True)
+    trips = Trip.objects.filter(id__in=trip_ids).order_by("start_date")
+    return render(request, "trips/index.html", {"trips": trips, "trip_members": trip_members})
 
 
 # 輸入行程資訊
@@ -73,4 +72,8 @@ def delete_member(request, trip_id, member_id):
     trip = get_object_or_404(Trip, pk=trip_id)
     trip.number -= 1
     trip.save()
-    return redirect("trips:schedules:index", id=trip_id)
+    if trip.number == 0:
+        trip.delete()
+    if member_id != request.user.id:
+        return redirect("trips:schedules:index", id=trip_id)
+    return redirect("trips:index")
