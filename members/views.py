@@ -47,20 +47,3 @@ def register_user(request):
         form = SignUp()
 
     return render(request, "registration/register.html", {"form": form, "members": members})
-
-
-# member profile index
-def index(request):
-    favorite_spots = Member.favorite_spots.all()
-    return render(request, "profile/index.html", {"favorite_spots":favorite_spots})
-
-
-# 關聯
-def add_favorite_spot(member_id, spot_id):
-    member = get_object_or_404(Member, pk=member_id)
-    spot = get_object_or_404(Spot, pk=spot_id)
-    
-    # 將會員與景點關聯起來
-    member.favorite_spots.add(spot)
-    
-    return redirect("index")
