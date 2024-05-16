@@ -22,7 +22,8 @@ def index(request, id):
     date_range = [trip.start_date + timedelta(days=x) for x in range((trip.end_date - trip.start_date).days + 1)]
     member_ids = TripMember.objects.filter(trip_id=id).order_by('id').values_list('member_id', flat=True)
     members = Member.objects.filter(id__in=member_ids)
-    return render(request, "schedules/index.html", {"schedule_dates": grouped_schedules, "date_range": date_range, "trip": trip, "members": members})
+    trip_member = get_object_or_404(TripMember, trip_id=id, member_id=request.user.id)
+    return render(request, "schedules/index.html", {"schedule_dates": grouped_schedules, "date_range": date_range, "trip": trip, "members": members, "trip_member": trip_member})
 
 
 def new(request, id):
