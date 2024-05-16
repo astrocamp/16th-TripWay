@@ -34,11 +34,6 @@ def new(request, id):
     return render(request, "schedules/new.html", {"trip": trip, "date_range": date_range})
 
 
-def new_member(request, id):
-    trip = get_object_or_404(Trip, pk=id)
-    return render(request, "schedules/new_member.html", {"trip": trip})
-
-
 @require_POST
 def create(request, id):
     trip = get_object_or_404(Trip, id=id)
@@ -53,18 +48,6 @@ def create(request, id):
     )
     schedules.save()
 
-    return redirect(reverse("trips:schedules:index", kwargs={"id": trip.id}))
-
-
-@require_POST
-def create_member(request, id):
-    trip = get_object_or_404(Trip, id=id)
-    email = request.POST["email"]
-    is_editable = (request.POST['editable'] == 'True')
-    member = get_object_or_404(Member, email=email)
-    TripMember.objects.create(trip=trip, member=member, editable=is_editable)
-    trip.number += 1
-    trip.save()
     return redirect(reverse("trips:schedules:index", kwargs={"id": trip.id}))
 
 
@@ -99,14 +82,4 @@ def delete(request, id):
     schedule.deleted_at = timezone.now()
     schedule.save()
     return redirect("trips:schedules:index", id=schedule.trip_id)
-
-
-@require_POST
-def delete_member(request, id1, id2):
-    trip_member = get_object_or_404(TripMember, trip_id=id1, member_id=id2)
-    trip_member.delete()
-    trip = get_object_or_404(Trip, pk=id1)
-    trip.number -= 1
-    trip.save()
-    return redirect("trips:schedules:index", id=id1)
 

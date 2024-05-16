@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
+from django.urls import reverse
 from .models import Trip, TripMember
 from members.models import Member
 
@@ -16,6 +17,11 @@ def home(request):
 # 輸入行程資訊
 def new(request):
     return render(request, "trips/new.html")
+
+
+def new_member(request, id):
+    trip = get_object_or_404(Trip, pk=id)
+    return render(request, "trips/new_member.html", {"trip": trip})
 
 
 # google map
@@ -40,9 +46,31 @@ def create(request):
     return redirect("trips:index")
 
 
+@require_POST
+def create_member(request, id):
+    trip = get_object_or_404(Trip, id=id)
+    email = request.POST["email"]
+    is_editable = (request.POST['editable'] == 'True')
+    member = get_object_or_404(Member, email=email)
+    TripMember.objects.create(trip=trip, member=member, editable=is_editable)
+    trip.number += 1
+    trip.save()
+    return redirect(reverse("trips:schedules:index", kwargs={"id": trip.id}))
+
+
 # 刪除行程(硬刪)
 @require_POST
 def delete(request, id):
     trip = get_object_or_404(Trip, pk=id)
     trip.delete()
     return redirect("trips:index")
+
+
+@require_POST
+def delete_member(request, trip_id, member_id):
+    trip_member = get_object_or_404(TripMember, trip_id=trip_id, member_id=member_id)
+    trip_member.delete()
+    trip = get_object_or_404(Trip, pk=trip_id)
+    trip.number -= 1
+    trip.save()
+    return redirect("trips:schedules:index", id=trip_id)
