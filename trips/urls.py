@@ -10,4 +10,7 @@ urlpatterns = [
     path("add", views.create, name="add"),  # 寫入資料庫的觸發按鈕
     path("delete/<id>/", views.delete, name="delete"),  # 刪除行程
     path("<id>/schedules/", include("schedules.urls")),  # 連到 schedules:index
+    path("<id>/new-member", views.new_member, name="new-member"),
+    path("<id>/add-member", views.create_member, name="add-member"),
+    path("<trip_id>/<member_id>/delete-member", views.delete_member, name="delete-member"),
 ]

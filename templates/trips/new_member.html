@@ -3,7 +3,7 @@
 {% block content %}
   <div class="h-screen bg-blue-50">
     <h1 class="px-2 py-2 text-white bg-sky-800">新增成員</h1>
-    <form action="add-member" method="post" class="mt-8">
+    <form action="{% url 'trips:add-member' trip.id %}" method="post" class="mt-8">
         {% csrf_token %}
 
         <div class="mb-6">
