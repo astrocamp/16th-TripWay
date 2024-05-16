@@ -9,8 +9,8 @@ def home(request):
     member = request.user
     trip_members = TripMember.objects.filter(member_id=member.id)
     trip_ids = trip_members.values_list('trip_id', flat=True)
-    trips = Trip.objects.filter(id__in=trip_ids).order_by("start_date")
-    return render(request, "trips/index.html", {"trips": trips, "trip_members": trip_members})
+    trips = [{'t':trip, 'tm':trip_members.get(trip=trip)} for trip in Trip.objects.filter(id__in=trip_ids).order_by("start_date")]
+    return render(request, "trips/index.html", {"trips": trips})
 
 
 # 輸入行程資訊
