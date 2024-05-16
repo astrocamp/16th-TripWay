@@ -13,7 +13,13 @@
         </p>
         <!-- 將按鈕放在這裡 -->
         <div class="mt-8 flex justify-center">
-          <button class="text-2xl font-bold bg-light-blue px-8 py-3 rounded-3xl text-white hover:bg-gray-500"><a href="{% url 'trips:index' %}">立即趣玩</a></button>
+          <button class="text-2xl font-bold bg-light-blue px-8 py-3 rounded-3xl text-white hover:bg-gray-500">
+            {% if user.is_authenticated %}
+              <a href="{% url 'trips:index' %}">立即趣玩</a>
+            {% else %}
+              <a href="{% url 'login' %}">立即趣玩</a>
+            {% endif %}
+        </button>
         </div>
       </div>
       <div class="w-full lg:mt-0 lg:w-1/2 bg-blue flex items-start">
