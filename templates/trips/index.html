@@ -9,21 +9,19 @@
 
     {% for trip in trips %}
       <div class="flex justify-between my-2 bg-white border rounded-lg fmx-2 center just juspx-2 jus hover:bg-blue-300 h-100">
-        <form action="{{ trip.id }}/schedules/" method="post">
+        <form action="{{ trip.t.id }}/schedules/" method="post">
           {% csrf_token %}
           <button class="mx-3 my-3">
-            <div class="flex items-start font-bold text-sky-800">{{ trip.name }}</div>
-            <div>{{ trip.start_date|date:'Y-m-d' }}~{{ trip.end_date|date:'Y-m-d' }}</div>
+            <div class="flex items-start font-bold text-sky-800">{{ trip.t.name }}</div>
+            <div>{{ trip.t.start_date|date:'Y-m-d' }}~{{ trip.t.end_date|date:'Y-m-d' }}</div>
           </button>
         </form>
-        {% for trip_member in trip_members %}
-          {% if trip_member.editable and trip.id == trip_member.trip_id %}
-            <form action="{% url 'trips:delete' trip.id %}" method="post">
+          {% if trip.tm.editable %}
+            <form action="{% url 'trips:delete' trip.t.id %}" method="post">
               {% csrf_token %}
               <button>X</button>
             </form>
           {% endif %}
-        {% endfor %}
       </div>
     {% endfor %}
     <br />
