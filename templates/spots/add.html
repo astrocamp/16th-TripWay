@@ -18,8 +18,8 @@
         <input type="hidden" name="trip_id" value="{{ item.trip.id }}" />
         <input type="hidden" name="spot_id" value="{{ spot.id }}" />
         <input type="hidden" name="spot_name" value="{{ spot.name }}" />
-        <input type="hidden" name="day" value="{{ day }}" />
-        <button type="submit" class="btn">{{ day }}</button>
+        <input type="hidden" name="day" value="{{ day|date:'Y-m-d' }}" />
+        <button type="submit" class="btn">{{ day|date:'Y-m-d' }}</button>
       </form>
     </div>
     {% endfor %}

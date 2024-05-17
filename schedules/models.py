@@ -2,6 +2,7 @@ from django.db import models
 from trips.models import Trip
 from django.utils import timezone
 from spots.models import Spot
+from datetime import timedelta
 
 
 class Schedule(models.Model):
@@ -32,3 +33,6 @@ class Schedule(models.Model):
 
     def __str__(self):
         return self.spot_name
+    
+    def get_date_range(self):
+        return [self.start_date + timedelta(days=x) for x in range((self.end_date - self.start_date).days + 1)]
