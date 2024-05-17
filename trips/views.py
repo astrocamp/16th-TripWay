@@ -7,9 +7,9 @@ from members.models import Member
 # 列出目前行程
 def home(request):
     member = request.user
-    trip_members = TripMember.objects.filter(member_id=member.id)
-    trip_ids = trip_members.values_list('trip_id', flat=True)
-    trips = [{'t':trip, 'tm':trip_members.get(trip=trip)} for trip in Trip.objects.filter(id__in=trip_ids).order_by("start_date")]
+    trip_members = TripMember.objects.filter(member=member)
+    trip_ids = trip_members.values_list("trip_id", flat=True)
+    trips = [{"t":trip, "tm":trip_members.get(trip=trip)} for trip in Trip.objects.filter(id__in=trip_ids).order_by("start_date")]
     return render(request, "trips/index.html", {"trips": trips})
 
 
@@ -49,7 +49,7 @@ def create(request):
 def create_member(request, id):
     trip = get_object_or_404(Trip, id=id)
     email = request.POST["email"]
-    is_editable = (request.POST['editable'] == 'True')
+    is_editable = (request.POST["editable"] == "True")
     member = get_object_or_404(Member, email=email)
     TripMember.objects.create(trip=trip, member=member, editable=is_editable)
     trip.number += 1
@@ -65,8 +65,7 @@ def delete(request, id):
     return redirect("trips:index")
 
 
-@require_POST
-def delete_member(request, trip_id, member_id):
+def delete_TripMember(trip_id, member_id):
     trip_member = get_object_or_404(TripMember, trip_id=trip_id, member_id=member_id)
     trip_member.delete()
     trip = get_object_or_404(Trip, pk=trip_id)
@@ -74,6 +73,15 @@ def delete_member(request, trip_id, member_id):
     trip.save()
     if trip.number == 0:
         trip.delete()
-    if member_id != request.user.id:
-        return redirect("trips:schedules:index", id=trip_id)
+
+
+@require_POST
+def delete_member(request, trip_id, member_id):
+    delete_TripMember(trip_id, member_id)
+    return redirect("trips:schedules:index", id=trip_id)
+
+
+@require_POST
+def delete_self(request, trip_id, member_id):
+    delete_TripMember(trip_id, member_id)
     return redirect("trips:index")

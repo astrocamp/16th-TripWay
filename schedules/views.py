@@ -20,11 +20,14 @@ def index(request, id):
     for date, group in groupby(schedules, key=attrgetter("date")):
         grouped_schedules[date] = list(group)
     # 獲取行程的日期範圍
+
     date_range = Schedule.get_date_range(trip)
-    member_ids = TripMember.objects.filter(trip_id=id).order_by('id').values_list('member_id', flat=True)
+    member_ids = TripMember.objects.filter(trip_id=id).order_by("id").values_list("member_id", flat=True)
     members = Member.objects.filter(id__in=member_ids)
     trip_member = get_object_or_404(TripMember, trip=trip, member=request.user)
-    return render(request, "schedules/index.html", {"schedule_dates": grouped_schedules, "date_range": date_range, "trip": trip, "members": members, "trip_member": trip_member})
+    return render(
+        request, "schedules/index.html", {"schedule_dates": grouped_schedules, "date_range": date_range, "trip": trip, "members": members, "trip_member": trip_member}
+    )
 
 
 def new(request, id):
@@ -76,6 +79,7 @@ def show(request, id):
 
 
 def update(request, id):
+    trip = get_object_or_404(Trip, pk=id)
     schedule = get_object_or_404(Schedule, pk=id)
     start_date = timezone.localtime(schedule.trip.start_date)
     end_date = timezone.localtime(schedule.trip.end_date)
