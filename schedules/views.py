@@ -73,8 +73,9 @@ def show(request, id):
         schedules.save()
         return redirect("schedules:show", id=id)
     else:
+        trip_member = get_object_or_404(TripMember, trip=trip, member=request.user)
         return render(
-            request, "schedules/show.html", {"schedules": schedules, "trip": trip}
+            request, "schedules/show.html", {"schedules": schedules, "trip": trip, "trip_member": trip_member}
         )
 
 
