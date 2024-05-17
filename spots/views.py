@@ -3,8 +3,9 @@ from django.views.generic import DetailView, ListView, CreateView
 from .models import Spot
 from .form import SpotForm
 from django.urls import reverse_lazy
-from trips.models import Trip
+from trips.models import Trip, TripMember
 from datetime import timedelta
+
 
 # Create your views here.
 
@@ -30,7 +31,8 @@ class CreateView(CreateView):
 
 def add(request, pk):
     member = request.user
-    trips = member.trips.all()
+    trips_members = TripMember.objects.filter(member=member)
+    trips = [trip_member.trip for trip_member in trips_members]
     spot = get_object_or_404(Spot, pk=pk)
 
     trips_dates = []
