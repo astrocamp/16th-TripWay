@@ -16,6 +16,7 @@
         -
       </button>
     {% endfor %}
+
     <!-- 新增一天的行程 -->
     <button id="add-day" class="tab h-14 border transition-all ease-in-out text-slate-700 hover:bg-gray-200" onclick="addDay()">
         +
@@ -40,18 +41,27 @@
   <h2>成員列表</h2>
   {% for member in members %}
     <div class="flex items-center px-2 py-3 mx-2 my-2 bg-white border rounded-lg hover:bg-blue-300 h-100">
-      <form action="{% url 'schedules:delete-member' trip.id member.id %}" method="post">
-        {% csrf_token %}
-        {{ member.email }}
-        <input type="submit" value="X">
-      </form>
+      {{ member.email }}
+      {% if trip_member.member_id == member.id %}
+        <form action="{% url 'trips:delete-self' trip.id member.id %}" method="post">
+          {% csrf_token %}
+          <input type="submit" value="X">
+        </form>
+      {% elif trip_member.editable and member.id != trip.owner %}
+        <form action="{% url 'trips:delete-member' trip.id member.id %}" method="post">
+          {% csrf_token %}
+          <input type="submit" value="X">
+        </form>
+      {% endif %}
     </div>
   {% endfor %}
 
   <br />
   <div class="flex justify-center">
-    <a class="px-2 py-2 text-white border rounded-lg bg-sky-800 hover:bg-sky-950" href="{% url 'spots:index' %}">新增景點</a>
-    <a class="px-2 py-2 text-white border rounded-lg bg-sky-800 hover:bg-sky-950" href="new-member">新增成員</a>
+    {% if trip_member.editable %}
+    <a class="px-2 py-2 text-white border rounded-lg bg-sky-800 hover:bg-sky-950" href="new">新增景點</a>
+    <a class="px-2 py-2 text-white border rounded-lg bg-sky-800 hover:bg-sky-950" href="{% url 'trips:new-member' trip.id %}">新增成員</a>
+    {% endif %}
   </div>
 </div>
 
