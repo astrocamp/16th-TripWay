@@ -1,9 +1,14 @@
+import boto3
+from botocore.exceptions import NoCredentialsError
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from django.urls import reverse
 from .models import Trip, TripMember
 from members.models import Member
 from django.contrib import messages
+from .models import Trip, Photo
+from .forms import UploadModelForm
+from django.conf import settings
 
 # 列出目前行程
 def home(request):
@@ -94,3 +99,48 @@ def delete_member(request, trip_id, member_id):
 def delete_self(request, trip_id, member_id):
     delete_TripMember(trip_id, member_id)
     return redirect("trips:index")
+
+# 新增圖片功能
+def upload_photo(request):
+    form = UploadModelForm()
+    if request.method == "POST":
+        form = UploadModelForm(request.POST, request.FILES)
+        breakpoint()
+        if form.is_valid():
+            # 保存表单数据到数据库
+            form.save()
+
+            # 将图片上传到 AWS S3
+            try:
+                upload_to_s3(
+                    request.FILES['image/'],  # 从请求中获取上传的图片文件
+                    settings.AWS_STORAGE_BUCKET_NAME,  # 存储桶名称
+                    f"photos/{request.FILES['image'].name}"  # 对象名称，使用图片文件名作为对象名称
+                )
+            except Exception as e:
+                print("Failed to upload image to S3:", e)
+
+            return redirect("trips:new")
+    photos = Photo.objects.all()  # 从数据库中获取所有图片数据
+    context = {
+        'photos': photos,
+        'form': form
+    }
+    return render(request, 'trips/new.html', context)
+
+def upload_to_s3(file, bucket_name, object_name):
+    # 创建 S3 客户端
+    s3_client = boto3.client(
+        's3',
+        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+    )
+
+    try:
+        # 将文件上传到 S3 存储桶中
+        response = s3_client.upload_fileobj(file, bucket_name, object_name)
+        print("Upload successful")
+        return True
+    except NoCredentialsError:
+        print("AWS credentials not available")
+        return False
