@@ -11,12 +11,9 @@ class Trip(models.Model):
     owner = models.IntegerField(default=0)
     number = models.IntegerField(default=1)
 
-    # def __str__(self):
-    #     return self.spot_name
-
 
 class TripMember(models.Model):
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
     member = models.ForeignKey(Member, on_delete=models.CASCADE)
-    editable = models.BooleanField(default=True)
+    is_editable = models.BooleanField(default=True)
     

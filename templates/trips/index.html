@@ -21,12 +21,12 @@
             <div>{{ trip.t.start_date|date:'Y-m-d' }}~{{ trip.t.end_date|date:'Y-m-d' }}</div>
           </button>
         </form>
-        {% if trip.tm.editable %}
-          <form action="{% url 'trips:delete' trip.t.id %}" method="post">
-            {% csrf_token %}
-            <button>X</button>
-          </form>
-        {% endif %}
+          {% if trip.tm.is_editable %}
+            <form action="{% url 'trips:delete' trip.t.id %}" method="post">
+              {% csrf_token %}
+              <button>X</button>
+            </form>
+          {% endif %}
       </div>
     {% endfor %}
   <br />

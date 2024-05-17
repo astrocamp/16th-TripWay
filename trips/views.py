@@ -40,7 +40,7 @@ def create(request):
         owner = member.id
     )
     trip.save()
-    TripMember.objects.create(trip=trip, member=member, editable=True)
+    TripMember.objects.create(trip=trip, member=member, is_editable=True)
     
     return redirect("trips:index")
 
@@ -49,9 +49,9 @@ def create(request):
 def create_member(request, id):
     trip = get_object_or_404(Trip, id=id)
     email = request.POST["email"]
-    is_editable = (request.POST["editable"] == "True")
+    is_editable = (request.POST["is_editable"] == "True")
     member = get_object_or_404(Member, email=email)
-    TripMember.objects.create(trip=trip, member=member, editable=is_editable)
+    TripMember.objects.create(trip=trip, member=member, is_editable=is_editable)
     trip.number += 1
     trip.save()
     return redirect(reverse("trips:schedules:index", kwargs={"id": trip.id}))
