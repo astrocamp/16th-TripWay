@@ -16,11 +16,11 @@ def index(request, id):
     )
     grouped_schedules = {} 
     # 根據行程的日期屬性將行程分組並提取日期
-    for date, group in groupby(schedules, key=attrgetter('date')):
+    for date, group in groupby(schedules, key=attrgetter("date")):
         grouped_schedules[date] = list(group)
     # 獲取行程的日期範圍
     date_range = [trip.start_date + timedelta(days=x) for x in range((trip.end_date - trip.start_date).days + 1)]
-    member_ids = TripMember.objects.filter(trip_id=id).order_by('id').values_list('member_id', flat=True)
+    member_ids = TripMember.objects.filter(trip_id=id).order_by("id").values_list("member_id", flat=True)
     members = Member.objects.filter(id__in=member_ids)
     trip_member = get_object_or_404(TripMember, trip=trip, member=request.user)
     return render(request, "schedules/index.html", {"schedule_dates": grouped_schedules, "date_range": date_range, "trip": trip, "members": members, "trip_member": trip_member})
@@ -30,7 +30,7 @@ def new(request, id):
     trip = get_object_or_404(Trip, pk=id)
     start_date = trip.start_date
     end_date = trip.end_date
-    date_range = [(start_date + timedelta(days=x)).strftime('%Y-%m-%d') for x in range((end_date - start_date).days + 1)]
+    date_range = [(start_date + timedelta(days=x)).strftime("%Y-%m-%d") for x in range((end_date - start_date).days + 1)]
     return render(request, "schedules/new.html", {"trip": trip, "date_range": date_range})
 
 
@@ -72,7 +72,7 @@ def update(request, id):
     schedule = get_object_or_404(Schedule, pk=id)
     start_date = schedule.trip.start_date
     end_date = schedule.trip.end_date
-    date_range = [(start_date + timedelta(days=x)).strftime('%Y-%m-%d') for x in range((end_date - start_date).days + 1)]
+    date_range = [(start_date + timedelta(days=x)).strftime("%Y-%m-%d") for x in range((end_date - start_date).days + 1)]
     return render(request, "schedules/update.html", {"schedule": schedule, "date_range": date_range})
 
 

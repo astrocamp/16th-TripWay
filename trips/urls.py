@@ -13,4 +13,5 @@ urlpatterns = [
     path("<id>/new-member", views.new_member, name="new-member"),
     path("<id>/add-member", views.create_member, name="add-member"),
     path("<trip_id>/<member_id>/delete-member", views.delete_member, name="delete-member"),
+    path("<trip_id>/<member_id>/delete-self", views.delete_self, name="delete-self"),
 ]

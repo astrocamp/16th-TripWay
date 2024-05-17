@@ -45,12 +45,12 @@
     {% for member in members %}
       <div class="flex items-center px-2 py-3 mx-2 my-2 bg-white border rounded-lg hover:bg-blue-300 h-100">
         {{ member.email }}
-        {% if trip_member.editable and member.id != trip.owner %}
-          <form action="{% url 'trips:delete-member' trip.id member.id %}" method="post">
+        {% if trip_member.member_id == member.id %}
+          <form action="{% url 'trips:delete-self' trip.id member.id %}" method="post">
             {% csrf_token %}
             <input type="submit" value="X">
           </form>
-        {% elif trip_member.member_id == member.id %}
+        {% elif trip_member.editable and member.id != trip.owner %}
           <form action="{% url 'trips:delete-member' trip.id member.id %}" method="post">
             {% csrf_token %}
             <input type="submit" value="X">
