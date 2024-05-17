@@ -2,6 +2,7 @@ node_modules/
 .venv/
 __pycache__
 static/styles/style.css
+static/scripts/output.js
 db.sqlite3
 **/.DS_Store
 .env
