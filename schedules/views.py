@@ -28,8 +28,8 @@ def index(request, id):
 
 def new(request, id):
     trip = get_object_or_404(Trip, pk=id)
-    start_date = trip.start_date
-    end_date = trip.end_date
+    start_date = timezone.localtime(trip.start_date)
+    end_date = timezone.localtime(trip.end_date)
     date_range = Schedule.get_date_range(trip)
     return render(
         request, "schedules/new.html", {"trip": trip, "date_range": date_range}
@@ -93,9 +93,9 @@ def show(request, id):
 
 def update(request, id):
     schedule = get_object_or_404(Schedule, pk=id)
-    start_date = schedule.trip.start_date
+    start_date = timezone.localtime(schedule.trip.start_date)
     end_date = schedule.trip.end_date
-    date_range = Schedule.get_date_range(trip)
+    date_range = Schedule.get_date_range(schedule.trip)
     return render(
         request,
         "schedules/update.html",
