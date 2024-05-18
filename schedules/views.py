@@ -80,7 +80,6 @@ def show(request, id):
 
 
 def update(request, id):
-    trip = get_object_or_404(Trip, pk=id)
     schedule = get_object_or_404(Schedule, pk=id)
     start_date = timezone.localtime(schedule.trip.start_date)
     end_date = timezone.localtime(schedule.trip.end_date)
