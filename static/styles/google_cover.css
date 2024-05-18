@@ -5,12 +5,32 @@
 
 .controls {
     height: 40px;
-    border-radius: 8px;
+    border-radius: 20px;
     width: 200px;
 }
-#restaurant-btn,
-#attraction-btn {
+.map-search {
     position: absolute;
-    top: 0;
-    right: 0;
+    margin: 10px 0 0;
+    z-index: 100;
+    left: 426px;
 }
+.search{
+    display: flex;
+    gap: 10px;
+    height: 40px;
+}
+.search button {
+    display: flex;
+    align-items: center;
+    background-color: rgb(252, 252, 252);
+    padding: 0 13px;
+    border-radius: 20px;
+    font-weight: 500;
+    gap: 5px;
+}
+.search button img {
+    height: 20px;
+    width: 20px;
+}
+
+
