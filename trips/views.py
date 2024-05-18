@@ -1,5 +1,3 @@
-import boto3
-from botocore.exceptions import NoCredentialsError
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from django.urls import reverse
@@ -17,7 +15,6 @@ def home(request):
     trip_ids = trip_members.values_list("trip_id", flat=True)
     trips = [{"t":trip, "tm":trip_members.get(trip=trip)} for trip in Trip.objects.filter(id__in=trip_ids).order_by("start_date")]
     return render(request, "trips/index.html", {"trips": trips})
-
 
 # 輸入行程資訊
 def new(request):
@@ -101,46 +98,20 @@ def delete_self(request, trip_id, member_id):
     return redirect("trips:index")
 
 # 新增圖片功能
+# 上傳圖片功能
+@require_POST
 def upload_photo(request):
-    form = UploadModelForm()
-    if request.method == "POST":
-        form = UploadModelForm(request.POST, request.FILES)
-        breakpoint()
-        if form.is_valid():
-            # 保存表单数据到数据库
-            form.save()
+    form = UploadModelForm(request.POST, request.FILES)
+    if form.is_valid():
+        # 刪除舊的圖片
+        Photo.objects.all().delete()
+        # 儲存新圖片
+        form.save()
+    return redirect("trips:new")
 
-            # 将图片上传到 AWS S3
-            try:
-                upload_to_s3(
-                    request.FILES['image/'],  # 从请求中获取上传的图片文件
-                    settings.AWS_STORAGE_BUCKET_NAME,  # 存储桶名称
-                    f"photos/{request.FILES['image'].name}"  # 对象名称，使用图片文件名作为对象名称
-                )
-            except Exception as e:
-                print("Failed to upload image to S3:", e)
-
-            return redirect("trips:new")
-    photos = Photo.objects.all()  # 从数据库中获取所有图片数据
-    context = {
-        'photos': photos,
-        'form': form
-    }
-    return render(request, 'trips/new.html', context)
-
-def upload_to_s3(file, bucket_name, object_name):
-    # 创建 S3 客户端
-    s3_client = boto3.client(
-        's3',
-        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-    )
-
-    try:
-        # 将文件上传到 S3 存储桶中
-        response = s3_client.upload_fileobj(file, bucket_name, object_name)
-        print("Upload successful")
-        return True
-    except NoCredentialsError:
-        print("AWS credentials not available")
-        return False
+# 刪除圖片功能
+@require_POST
+def delete_photo(request):
+    # 刪除所有圖片
+    Photo.objects.all().delete()
+    return redirect("trips:new")

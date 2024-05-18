@@ -23,7 +23,7 @@ class TripMember(models.Model):
 
 
 class Photo(models.Model):
-    image = models.ImageField(blank=False, null=False)
+    image = models.ImageField(blank=False, null=False,  upload_to="trips_coverPhoto/")
     upload_date = models.DateField(default=timezone.now)
 
     def __str__(self):
