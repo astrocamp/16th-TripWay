@@ -2,121 +2,145 @@ let map;
 let currentPosition;
 let directionsService;
 let directionsRenderer;
+let infowindow;
+const markers = [];
 
 function initMap() {
-    map = new google.maps.Map(document.getElementById("map"), {
-        center: currentPosition,
-        zoom: 16,
-    });
+    navigator.geolocation.getCurrentPosition(function (position) {
+        currentPosition = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+        };
 
-    directionsService = new google.maps.DirectionsService();
-    directionsRenderer = new google.maps.DirectionsRenderer();
-    directionsRenderer.setMap(map);
-
-    // 獲取搜索輸入框
-    const input = document.getElementById("pac-input");
-
-
-    console.log('test');
-
-    // 指定需要的地點數據字段
-    const autocomplete = new google.maps.places.Autocomplete(input, {
-        fields: ["place_id", "geometry", "formatted_address", "name"],
-    });
-
-    // 創建一個圓形區域，半徑為100公尺
-    const circle = new google.maps.Circle({
-        center: currentPosition,
-        radius: 100, // 100 公尺
-    });
-
-    // 設置 Autocomplete 的搜索範圍為圓形區域
-    autocomplete.setBounds(circle.getBounds());
-
-    // 添加搜索輸入框到地圖上方左側
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-
-    const infowindow = new google.maps.InfoWindow();
-    const infowindowContent = document.getElementById("infowindow-content");
-
-    infowindow.setContent(infowindowContent);
-
-    const marker = new google.maps.Marker({ map: map });
-
-    marker.addListener("click", () => {
-        infowindow.open(map, marker);
-    });
-
-    autocomplete.addListener("place_changed", () => {
-        infowindow.close();
-
-        const place = autocomplete.getPlace();
-
-        if (!place.geometry || !place.geometry.location) {
-            return;
-        }
-
-        if (place.geometry.viewport) {
-            map.fitBounds(place.geometry.viewport);
-        } else {
-            map.setCenter(place.geometry.location);
-            map.setZoom(7);
-        }
-
-        marker.setPlace({
-            placeId: place.place_id,
-            location: place.geometry.location,
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: currentPosition,
+            zoom: 16,
         });
-        marker.setVisible(true);
-        infowindowContent.children.namedItem("place-name").textContent = place.name;
-        // infowindowContent.children.namedItem("place-id").textContent =
-            // place.place_id;
-        infowindowContent.children.namedItem("place-address").textContent =
-            place.formatted_address;
-        infowindow.open(map, marker);
 
-        // 計算並顯示路線
-        calculateAndDisplayRoute(currentPosition, place.geometry.location);
+        directionsService = new google.maps.DirectionsService();
+        directionsRenderer = new google.maps.DirectionsRenderer();
+        directionsRenderer.setMap(map);
+
+        infowindow = new google.maps.InfoWindow();
+
+        const input = document.getElementById("pac-input");
+        const autocomplete = new google.maps.places.Autocomplete(input, {
+            fields: ["place_id", "geometry", "formatted_address", "name"],
+        });
+
+        autocomplete.bindTo('bounds', map);
+
+        autocomplete.addListener('place_changed', () => {
+            infowindow.close();
+            const place = autocomplete.getPlace();
+            if (!place.geometry || !place.geometry.location) {
+                window.alert("No details available for input: '" + place.name + "'");
+                return;
+            }
+
+            if (place.geometry.viewport) {
+                map.fitBounds(place.geometry.viewport);
+            } else {
+                map.setCenter(place.geometry.location);
+                map.setZoom(17);
+            }
+
+            // Create marker and show details immediately
+            createMarkerWithDetails(place);
+        });
+
+        const circle = new google.maps.Circle({
+            center: currentPosition,
+            radius: 1000,
+        });
+
+        autocomplete.setBounds(circle.getBounds());
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    }, function () {
+        alert("Error: The Geolocation service failed.");
     });
 }
 
+function searchNearby(type) {
+    if (!currentPosition) {
+        alert("請先獲取用戶位置！");
+        return;
+    }
 
-function calculateAndDisplayRoute(origin, destination) {
-    directionsService.route(
-        {
-            origin: origin,
-            destination: destination,
-            travelMode: 'DRIVING', // 這裡可以是 'DRIVING', 'WALKING', 'BICYCLING', 或 'TRANSIT'
-        },
-        (response, status) => {
-            if (status === 'OK') {
-                directionsRenderer.setDirections(response);
-                const route = response.routes[0];
-                // 计算总距离和预计行驶时间
-                const distance = route.legs[0].distance.text;
-                const duration = route.legs[0].duration.text;
-
-                document.getElementById("distance").textContent = distance;
-                document.getElementById("duration").textContent = duration;
-                // console.log('Distance: ' + distance);
-                // console.log('Duration: ' + duration);
-            } else {
-                window.alert('Directions request failed due to ' + status);
-            }
-        }
-    );
-}
-
-// 獲取用戶位置
-navigator.geolocation.getCurrentPosition(function (position) {
-    currentPosition = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
+    map.setCenter(currentPosition); // 重新定位到用户当前位置
+    map.setZoom(16);
+    const request = {
+        location: currentPosition,
+        radius: 1000,
+        type: [type]
     };
 
-    // 初始化地圖
-    initMap();
-});
+    const service = new google.maps.places.PlacesService(map);
+    service.nearbySearch(request, nearbyCallback);
+}
 
+function nearbyCallback(results, status) {
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+        clearMarkers();
+        for (let i = 0; i < results.length; i++) {
+            createMarker(results[i]);
+        }
+    } else {
+        alert("附近搜索失敗，原因：" + status);
+    }
+}
 
+function createMarker(place) {
+    const marker = new google.maps.Marker({
+        map: map,
+        position: place.geometry.location
+    });
+
+    google.maps.event.addListener(marker, "click", function () {
+        showPlaceDetails(place, marker);
+    });
+
+    markers.push(marker);
+}
+
+function createMarkerWithDetails(place) {
+    const marker = new google.maps.Marker({
+        map: map,
+        position: place.geometry.location
+    });
+
+    markers.push(marker);
+    showPlaceDetails(place, marker);
+}
+
+function showPlaceDetails(place, marker) {
+    const service = new google.maps.places.PlacesService(map);
+    service.getDetails({ placeId: place.place_id }, (details, status) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+            const contentString = `
+                <div class="info-window">
+                    <h3>${details.name}</h3>
+                    <img src="${details.photos ? details.photos[0].getUrl({ maxWidth: 200, maxHeight: 200 }) : ''}" alt="${details.name}">
+                    <p><strong>地址:</strong> ${details.formatted_address}</p>
+                    <p><strong>電話:</strong> ${details.formatted_phone_number || 'N/A'}</p>
+                    <p><strong>營業時間:</strong> ${details.opening_hours ? details.opening_hours.weekday_text.join('<br>') : 'N/A'}</p>
+                    <button class="add-to-favorite-button">加入喜愛名單</button>
+                </div>
+                
+            `;
+            infowindow.setContent(contentString);
+            infowindow.open(map, marker);
+        }
+    });
+}
+
+function clearMarkers() {
+    for (let i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+    }
+    markers.length = 0;
+}
+
+window.initMap = initMap;
+window.searchNearby = searchNearby;
 export default initMap
