@@ -3,20 +3,21 @@ body {
     padding: 0;
 }
 #map-container {
+    display: flex;
     position: relative;
     height: calc(100vh - 87.99px);
 }
 
 #map {
     height: 100%;
-    width: 80%;
+    width: 100%;
 }
 
 #search-container {
     display: flex;
     position: absolute;
     align-items: center;
-    top: 20px;
+    top: 10px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
@@ -38,6 +39,8 @@ body {
     background-color: #fff;
     border: 1px solid #ccc;
     cursor: pointer;
+    font-weight: 700;
+    /* margin: 10px 0 0; */
 }
 
 .info-window {
