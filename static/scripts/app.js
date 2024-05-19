@@ -3090,7 +3090,6 @@
   // src/scripts/map.js
   var map;
   var currentPosition;
-  var directionsService;
   var directionsRenderer;
   var infowindow;
   var markers = [];
@@ -3192,7 +3191,6 @@
                     <p><strong>\u5730\u5740:</strong> ${details.formatted_address}</p>
                     <p><strong>\u96FB\u8A71:</strong> ${details.formatted_phone_number || "N/A"}</p>
                     <p><strong>\u71DF\u696D\u6642\u9593:</strong> ${details.opening_hours ? details.opening_hours.weekday_text.join("<br>") : "N/A"}</p>
-                    <button class="add-to-favorite-button">\u52A0\u5165\u559C\u611B\u540D\u55AE</button>
                 </div>
                 
             `;

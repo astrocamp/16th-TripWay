@@ -1,6 +1,6 @@
 let map;
 let currentPosition;
-let directionsService;
+// let directionsService;
 let directionsRenderer;
 let infowindow;
 const markers = [];
@@ -67,7 +67,7 @@ function searchNearby(type) {
         return;
     }
 
-    map.setCenter(currentPosition); // 重新定位到用户当前位置
+    map.setCenter(currentPosition); // 重新定位到用戶當前位置
     map.setZoom(16);
     const request = {
         location: currentPosition,
@@ -117,6 +117,7 @@ function showPlaceDetails(place, marker) {
     const service = new google.maps.places.PlacesService(map);
     service.getDetails({ placeId: place.place_id }, (details, status) => {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
+            // const detailsString = JSON.stringify(details);
             const contentString = `
                 <div class="info-window">
                     <h3>${details.name}</h3>
@@ -124,12 +125,13 @@ function showPlaceDetails(place, marker) {
                     <p><strong>地址:</strong> ${details.formatted_address}</p>
                     <p><strong>電話:</strong> ${details.formatted_phone_number || 'N/A'}</p>
                     <p><strong>營業時間:</strong> ${details.opening_hours ? details.opening_hours.weekday_text.join('<br>') : 'N/A'}</p>
-                    <button class="add-to-favorite-button">加入喜愛名單</button>
                 </div>
                 
             `;
             infowindow.setContent(contentString);
             infowindow.open(map, marker);
+
+            
         }
     });
 }
