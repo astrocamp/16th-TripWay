@@ -7,6 +7,7 @@ from django.contrib import messages
 from .models import Trip, Photo
 from .forms import UploadModelForm
 from django.conf import settings
+from django.contrib import messages
 
 # 列出目前行程
 def home(request):
@@ -107,6 +108,7 @@ def upload_photo(request):
         Photo.objects.all().delete()
         # 儲存新圖片
         form.save()
+        messages.success(request, "圖片上傳成功！")
     return redirect("trips:new")
 
 # 刪除圖片功能
@@ -114,4 +116,5 @@ def upload_photo(request):
 def delete_photo(request):
     # 刪除所有圖片
     Photo.objects.all().delete()
+    messages.success(request, "圖片刪除成功！")
     return redirect("trips:new")
