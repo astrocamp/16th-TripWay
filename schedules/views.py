@@ -94,7 +94,7 @@ def show(request, id):
 def update(request, id):
     schedule = get_object_or_404(Schedule, pk=id)
     start_date = timezone.localtime(schedule.trip.start_date)
-    end_date = schedule.trip.end_date
+    end_date = timezone.localtime(schedule.trip.end_date)
     date_range = Schedule.get_date_range(schedule.trip)
     return render(
         request,
