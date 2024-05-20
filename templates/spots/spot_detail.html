@@ -18,13 +18,13 @@
       <div>
         <a class='btn' href="{% url 'spots:add' spot.pk %}">加入行程+</a>
       </div>
-    </div>
-    <i
-			id="favoriteIcon"
-			class="mt-4 fa-regular fa-heart fa-2xl"
-			onclick="toggleFavorite()"
-		><div class="mt-5 text-base font-thin">收藏</div>
-		</i>
+      <div>
+        <i
+          id="favoriteIcon"
+          class="mt-4 fa-regular fa-heart fa-2xl"
+          onclick="toggleFavorite()">
+        </i>
+      </div>
 	</section>
 </div>
 {% endblock %}
