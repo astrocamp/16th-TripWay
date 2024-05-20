@@ -14,7 +14,7 @@ function endTimeInputValidation() {
 
         // 檢查離開時間是否早於或等於抵達時間
         if (endTime <= startTime) {
-            // 如果是，設置自定義的錯誤訊息
+            // 如果是，顯示錯誤訊息
             endTimeInput.setCustomValidity("離開時間不可早於抵達時間！");
         } else {
             // 如果不是，清除錯誤訊息

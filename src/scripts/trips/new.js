@@ -7,5 +7,4 @@ function handleDateChange() {
         document.getElementById("end_date").min = startDateValue;
     });
 }
-handleDateChange()
 export default handleDateChange; 
