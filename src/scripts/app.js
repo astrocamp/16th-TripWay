@@ -4,12 +4,12 @@ import "./schedules/update.js"
 // import "./map.js"
 import Alpine from "alpinejs"
 import "./trips/new.js"
-import favoriteIcon from "./favorite.js"
+import toggleFavorite from "./favorite.js"
 
 window.Toast = Toast
 window.showTab = showTab
 // window.initMap = initMap
 window.Alpine = Alpine
-window.favoriteIcon = favoriteIcon
+window.toggleFavorite = toggleFavorite
 
 Alpine.start()

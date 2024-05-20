@@ -46,15 +46,14 @@ def add(request, pk):
 @csrf_exempt
 def toggle_favorite(request, pk):
     if request.method == "POST":
-        spot_id = pk
         # 檢查會員和景點是否存在
         member = request.user
-        spot = get_object_or_404(Spot, id=spot_id)
+        spot = get_object_or_404(Spot, id=pk)
 
         # 檢查是否已經有紀錄，若無就創建
         try:
             member_spot = MemberSpot.objects.get(member=member, spot=spot)
-            member_spot.soft_delete()  # 若有紀錄，則軟刪
+            member_spot.delete()
             is_favorite = False
         except MemberSpot.DoesNotExist:
             MemberSpot.objects.create(member=member, spot=spot)
