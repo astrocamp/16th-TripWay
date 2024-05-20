@@ -1,15 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView, ListView, CreateView
-from spots.models import Spot
+from .models import Spot
 from members.models import MemberSpot
+from schedules.models import Schedule
+from trips.models import TripMember
 from .form import SpotForm
 from django.urls import reverse_lazy
-from trips.models import Trip, TripMember
-from datetime import timedelta
-from schedules.models import Schedule
-
-
-# Create your views here.
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
@@ -50,9 +46,7 @@ def add(request, pk):
 @csrf_exempt
 def toggle_favorite(request, pk):
     if request.method == "POST":
-        # 取得會員和景點
         spot_id = pk
-
         # 檢查會員和景點是否存在
         member = request.user
         spot = get_object_or_404(Spot, id=spot_id)
