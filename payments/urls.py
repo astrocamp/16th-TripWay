@@ -5,5 +5,6 @@ app_name = "payments"
 
 urlpatterns = [
     path("", views.upgrade, name="upgrade"),
+    path("create", views.create_order, name="create")
 
 ]

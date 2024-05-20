@@ -2,7 +2,7 @@
 name = "tripway"
 version = "0.1.0"
 description = ""
-authors = ["Josh Lin <mingyi1223@gmail.com>"]
+authors = ["TripWay Dev <mingyi1223@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]

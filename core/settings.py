@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
     "spots",
+    "payments",
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -156,3 +157,14 @@ LOGOUT_REDIRECT_URL = "/"
 ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_LOGOUT_ON_GET = True
 SOCIALACCOUNT_LOGIN_ON_GET = True
+
+ENCRYPTION_KEY = {
+    "MERCHANT_ID": os.getenv("MerchantID"),
+    "HASH_KEY": os.getenv("HASHKEY"),
+    "HASH_IV": os.getenv("HASHIV"),
+    "VERSION": os.getenv("Version"),
+    "RETURN_URL": os.getenv("ReturnUrl"),
+    "NOTIFY_URL": os.getenv("NotifyUrl"),
+    "PAY_GATEWAY": os.getenv("PayGateWay"),
+    "RESPOND_TYPE": os.getenv("RespondType"),
+}

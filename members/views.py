@@ -42,7 +42,6 @@ def register_user(request):
             return redirect("login")
         else:
             messages.error(request, "註冊失敗！")
-            print(form.errors)
     else:
         form = SignUp()
 
