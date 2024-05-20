@@ -4,7 +4,7 @@ import endTimeInputValidation from "./schedules/update.js"
 import "./map.js"
 import Alpine from "alpinejs"
 import handleDateChange from "./trips/new.js"
-import favoriteIcon from "./favorite.js"
+import toggleFavorite from "./favorite.js"
 
 window.Toast = Toast
 window.openTab = openTab
@@ -14,4 +14,4 @@ window.Alpine = Alpine
 Alpine.start()
 window.endTimeInputValidation = endTimeInputValidation
 window.handleDateChange = handleDateChange
-window.favoriteIcon = favoriteIcon
+window.toggleFavorite = toggleFavorite

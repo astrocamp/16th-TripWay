@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView, ListView, CreateView
-from .models import Spot
+from spots.models import Spot
+from members.models import MemberSpot
 from .form import SpotForm
 from django.urls import reverse_lazy
 from trips.models import Trip, TripMember
@@ -9,6 +10,8 @@ from schedules.models import Schedule
 
 
 # Create your views here.
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 
 class IndexView(ListView):
@@ -42,3 +45,28 @@ def add(request, pk):
         trips_dates.append({"trip": trip, "date_range": date_range})
     context = {"spot": spot, "trips": trips, "trips_dates": trips_dates}
     return render(request, "spots/add.html", context)
+
+
+@csrf_exempt
+def toggle_favorite(request, pk):
+    if request.method == "POST":
+        # 取得會員和景點
+        spot_id = pk
+
+        # 檢查會員和景點是否存在
+        member = request.user
+        spot = get_object_or_404(Spot, id=spot_id)
+
+        # 檢查是否已經有紀錄，若無就創建
+        try:
+            member_spot = MemberSpot.objects.get(member=member, spot=spot)
+            member_spot.soft_delete()  # 若有紀錄，則軟刪
+            is_favorite = False
+        except MemberSpot.DoesNotExist:
+            MemberSpot.objects.create(member=member, spot=spot)
+            is_favorite = True
+
+        # 告知前端是否已經新增或刪除(暫時寫法，還未設置)
+        return JsonResponse({"is_favorite": is_favorite})
+    else:
+        return JsonResponse({"error": "Invalid request method"})
