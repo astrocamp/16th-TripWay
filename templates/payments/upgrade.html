@@ -1,0 +1,38 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+
+<h2 class="text-center text-3xl m-4 p-2">選擇升級方案</h2>
+<ul class="grid grid-cols-5 gap-2">
+	<li class="col-start-2">
+		<div class="flex flex-col items-center text-center p-3 gap-3">
+			<img src="https://picsum.photos/200/200" alt="">
+			<p class="text-center text-xl">$ 50 / 月</p>
+			<form action="" class="flex justify-center">
+				<input type="hidden" name="price" value="50">
+				<button type="submit" class="bg-indigo-300 rounded-md p-2">立即升級</button>
+			</form>
+		</div>
+	</li>
+	<li>
+		<div class="flex flex-col items-center text-center p-3 gap-3">
+			<img src="https://picsum.photos/200/200" alt="">
+			<p class="text-center text-xl">$ 100 / 月</p>
+			<form action="" class="flex justify-center">
+				<input type="hidden" name="price" value="100">
+				<button type="submit" class="bg-indigo-300 rounded-md p-2">立即升級</button>
+			</form>
+		</div>
+	</li>
+	<li>
+		<div class="flex flex-col items-center text-center p-3 gap-3">
+			<img src="https://picsum.photos/200/200" alt="">
+			<p class="text-center text-xl">$ 200 / 月</p>
+			<form action="" class="flex justify-center">
+				<input type="hidden" name="price" value="200">
+				<button type="submit" class="bg-indigo-300 rounded-md p-2">立即升級</button>
+			</form>
+		</div>
+	</li>
+</ul>
+
+{% endblock  %}
