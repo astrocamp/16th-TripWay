@@ -1,15 +1,16 @@
-document.getElementById("favoriteIcon").addEventListener("click", () => {
-    const icon = document.getElementById("favoriteIcon");
-    if (icon.classList.contains("fa-regular")) {
-        icon.classList.remove("fa-regular");
-        icon.classList.add("fa-solid");
-        toggleFavorite();  // 呼叫發送收藏請求的函式
-    } else {
-        icon.classList.remove("fa-solid");
-        icon.classList.add("fa-regular");
-        toggleFavorite();  // 呼叫發送取消收藏請求的函式
-    }
-});
+const icon = document.getElementById("favoriteIcon")
+
+if (icon) {
+    icon.addEventListener("click", () => {
+        if (icon.classList.contains("fa-regular")) {
+            icon.classList.remove("fa-regular")
+            icon.classList.add("fa-solid")
+        } else {
+            icon.classList.remove("fa-solid")
+            icon.classList.add("fa-regular")
+        }
+    })
+}
 
 // 取得當前頁面的url
 const currentUrl = window.location.href
