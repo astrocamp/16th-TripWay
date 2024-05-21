@@ -37,8 +37,8 @@ class Command(BaseCommand):
                     "address": place["formatted_address"],
                     "latitude": place["geometry"]["location"]["lat"],
                     "longitude": place["geometry"]["location"]["lng"],
-                    "phone": place["formatted_phone_number"],
-                    "url": place["website"],
+                    "phone": place.get("formatted_phone_number", "N/A"),
+                    "url": place.get("website", "N/A"),
                     "rating": place["rating"],
                 }
             )
