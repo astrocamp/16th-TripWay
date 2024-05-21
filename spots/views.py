@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView, ListView, CreateView
-from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
+from datetime import timedelta
+
 from members.models import MemberSpot
-from trips.models import TripMember
+from trips.models import Trip, TripMember
+from schedules.models import Schedule
 from .form import SpotForm
 from .models import Spot, LoginRequired
 
@@ -16,11 +19,11 @@ class IndexView(LoginRequired, ListView):
 
 class ShowView(LoginRequired, DetailView):
     model = Spot
-    
+
     def post(self, request, pk):
         spot = self.get_object()
         return redirect("spots:show", pk=spot.id)
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         spot = self.get_object()
@@ -35,7 +38,7 @@ class ShowView(LoginRequired, DetailView):
         return context
 
 
-class CreateView(LoginRequired,CreateView):
+class CreateView(LoginRequired, CreateView):
     model = Spot
     template_name = "spots/create.html"
     form_class = SpotForm
@@ -62,10 +65,10 @@ def add_schedule(request, pk):
 def toggle_favorite(request, pk):
     member = request.user
     spot = get_object_or_404(Spot, id=pk)
-    
+
     if request.method == "POST":
         is_favorite = MemberSpot.objects.filter(member=member, spot=spot).exists()
-        
+
         if is_favorite:
             MemberSpot.objects.filter(member=member, spot=spot).delete()
             return JsonResponse({"status": "removed"})

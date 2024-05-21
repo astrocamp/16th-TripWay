@@ -1,6 +1,5 @@
 let map;
 let currentPosition;
-// let directionsService;
 let directionsRenderer;
 let infowindow;
 const markers = [];
@@ -125,12 +124,13 @@ function showPlaceDetails(place, marker) {
                     <p><strong>地址:</strong> ${details.formatted_address}</p>
                     <p><strong>電話:</strong> ${details.formatted_phone_number || 'N/A'}</p>
                     <p><strong>營業時間:</strong> ${details.opening_hours ? details.opening_hours.weekday_text.join('<br>') : 'N/A'}</p>
+                    
                 </div>
                 
             `;
             infowindow.setContent(contentString);
             infowindow.open(map, marker);
-
+            
             
         }
     });
@@ -143,6 +143,3 @@ function clearMarkers() {
     markers.length = 0;
 }
 
-window.initMap = initMap;
-window.searchNearby = searchNearby;
-export default initMap
