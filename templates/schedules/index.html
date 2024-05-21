@@ -18,9 +18,12 @@
     {% endfor %}
 
     <!-- 新增一天的行程 -->
-    <button id="add-day" class="tab h-14 border transition-all ease-in-out text-slate-700 hover:bg-gray-200" onclick="addDay()">
-        +
-    </button>
+    <form action="{% url 'trips:schedules:add_day' trip.id %}" method="post">
+      {% csrf_token %}
+      <button id="add-day" class="tab h-14 border transition-all ease-in-out text-slate-700 hover:bg-gray-200" >
+          +
+      </button>
+    </form>
   </div>
 
     <!-- 行程內容 -->

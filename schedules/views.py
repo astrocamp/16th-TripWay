@@ -30,6 +30,14 @@ def index(request, id):
     )
 
 
+@require_POST
+def add_day(request, id):
+    trip = get_object_or_404(Trip, pk=id)
+    trip.end_date = trip.end_date + timedelta(days=1)
+    trip.save()
+    return redirect(f"/trips/{trip.id}/schedules/")
+
+
 def new(request, id):
     trip = get_object_or_404(Trip, pk=id)
     start_date = timezone.localtime(trip.start_date)
