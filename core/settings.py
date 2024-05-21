@@ -17,11 +17,6 @@ SECRET_KEY = "django-insecure-&u@2d$fi47oaawy#os8ak*nn7zx_g7e$!ci*w=&i(8#j^xs@%^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
-    "aa97-61-220-182-115.ngrok-free.app",
-]
 
 SITE_ID = 5
 
@@ -162,15 +157,22 @@ ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_LOGOUT_ON_GET = True
 SOCIALACCOUNT_LOGIN_ON_GET = True
 
+HOST_NAME = os.getenv("HOST_NAME")
+
 ENCRYPTION_KEY = {
     "MERCHANT_ID": os.getenv("MerchantID"),
     "HASH_KEY": os.getenv("HASHKEY"),
     "HASH_IV": os.getenv("HASHIV"),
     "VERSION": os.getenv("Version"),
-    "RETURN_URL": os.getenv("ReturnUrl"),
+    "RETURN_URL": f"https://{HOST_NAME}/members/upgrade/return",
     "NOTIFY_URL": os.getenv("NotifyUrl"),
     "PAY_GATEWAY": os.getenv("PayGateWay"),
     "RESPOND_TYPE": os.getenv("RespondType"),
 }
 
-CSRF_TRUSTED_ORIGINS = ["https://aa97-61-220-182-115.ngrok-free.app"]
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    HOST_NAME,
+]
+CSRF_TRUSTED_ORIGINS = [f"https://{HOST_NAME}"]
