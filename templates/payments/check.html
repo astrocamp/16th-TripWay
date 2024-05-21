@@ -1,0 +1,20 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+
+<h2 class="text-center text-2xl m-2">訂單資訊</h2>
+  <div>
+			<div class="w-1/3 mx-auto p-3">
+				<h3 class="text-lg">{{ member }} 您好</h3>
+				<p>以下是您的訂單資訊</p>
+				<p>訂單總金額： {{ price }} </p>
+			</div>
+      <form action="https://ccore.newebpay.com/MPG/mpg_gateway" method="post" class="flex justify-center">
+          <input type="hidden" name="MerchantID" value="{{ MerchantID }}" />
+          <input type="hidden" name="TradeSha" value="{{ TradeSha }}" />
+          <input type="hidden" name="TradeInfo" value="{{ TradeInfo }}" />
+          <input type="hidden" name="Version" value="{{ Version }}" />
+          <button type="submit" class="btn btn-active m-3">確認付款</button>
+      </form>
+  </div>
+
+{% endblock  %}
