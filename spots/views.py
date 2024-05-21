@@ -1,12 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView, ListView, CreateView
-from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.urls import reverse_lazy
+
+from datetime import timedelta
+
+from trips.models import Trip, TripMember
 from members.models import MemberSpot
-from trips.models import TripMember
-from .form import SpotForm
+from schedules.models import Schedule
 from .models import Spot
+from .form import SpotForm
 
 
 class IndexView(ListView):
@@ -59,3 +63,74 @@ def toggle_favorite(request, pk):
         return JsonResponse({"is_favorite": is_favorite})
     else:
         return JsonResponse({"error": "Invalid request method"})
+
+
+def search(request):
+    spots = Spot.objects.all()
+    return render(request, "spots/search.html", {"spots": spots})
+
+
+def my_view(request):
+    show_footer = False
+    return render(request, "spots/search.html", {"show_footer": show_footer})
+
+
+@csrf_exempt
+def save_spot(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        address = request.POST.get("address")
+        latitude = request.POST.get("latitude")
+        longitude = request.POST.get("longitude")
+        phone = request.POST.get("phone")
+        url = request.POST.get("url")
+        rating = request.POST.get("rating")
+        place_id = request.POST.get("place_id")
+
+        if not place_id:
+            return JsonResponse(
+                {"status": "error", "message": "place_id is required"}, status=400
+            )
+
+        spot, created = Spot.objects.get_or_create(
+            place_id=place_id,
+            defaults={
+                "name": name,
+                "address": address,
+                "latitude": latitude,
+                "longitude": longitude,
+                "phone": phone,
+                "url": url,
+                "rating": rating,
+            },
+        )
+
+        if not created:
+            spot.name = name
+            spot.address = address
+            spot.latitude = latitude
+            spot.longitude = longitude
+            spot.phone = phone
+            spot.url = url
+            spot.rating = rating
+            spot.save()
+
+        return JsonResponse(
+            {"status": "success", "message": "Spot saved successfully!"}
+        )
+    return JsonResponse(
+        {"status": "error", "message": "Invalid request method"}, status=400
+    )
+
+
+@csrf_exempt
+def delete(request, spot_id):
+    if request.method == "DELETE":
+        spot = get_object_or_404(Spot, place_id=spot_id)
+        spot.delete()
+        return JsonResponse(
+            {"status": "success", "message": "Spot deleted successfully!"}
+        )
+    return JsonResponse(
+        {"status": "error", "message": "Invalid request method"}, status=400
+    )
