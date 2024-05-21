@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView, ListView, CreateView
-from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
+from datetime import timedelta
+
 from members.models import MemberSpot
-from trips.models import TripMember
+from trips.models import Trip, TripMember
+from schedules.models import Schedule
 from .form import SpotForm
 from .models import Spot, LoginRequired
 
@@ -16,13 +19,13 @@ class IndexView(LoginRequired, ListView):
 
 class ShowView(LoginRequired, DetailView):
     model = Spot
-    
+
     def post(self, request, pk):
         spot = self.get_object()
         return redirect("spots:show", pk=spot.id)
 
 
-class CreateView(LoginRequired,CreateView):
+class CreateView(LoginRequired, CreateView):
     model = Spot
     template_name = "spots/create.html"
     form_class = SpotForm
@@ -62,3 +65,26 @@ def toggle_favorite(request, pk):
         return JsonResponse({"is_favorite": is_favorite})
     else:
         return JsonResponse({"error": "Invalid request method"})
+
+
+def search(request):
+    spots = Spot.objects.all()
+    return render(request, "spots/search.html", {"spots": spots})
+
+
+def my_view(request):
+    show_footer = False
+    return render(request, "spots/search.html", {"show_footer": show_footer})
+
+
+@csrf_exempt
+def delete(request, spot_id):
+    if request.method == "DELETE":
+        spot = get_object_or_404(Spot, place_id=spot_id)
+        spot.delete()
+        return JsonResponse(
+            {"status": "success", "message": "Spot deleted successfully!"}
+        )
+    return JsonResponse(
+        {"status": "error", "message": "Invalid request method"}, status=400
+    )

@@ -8,7 +8,7 @@ class SpotForm(forms.ModelForm):
         fields = ["name", "address", "latitude", "longitude", "phone", "url", "rating"]
         labels = {
             "name": "名稱",
-            "address": "城市",
+            "address": "地址",
             "latitude": "經度",
             "longitude": "緯度",
             "phone": "電話",
