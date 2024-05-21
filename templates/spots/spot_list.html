@@ -23,9 +23,13 @@
   </form>
 </div>
 {% endfor %}
-
 <div class="flex justify-center">
-  <a class="px-2 py-2 text-white border rounded-lg bg-sky-800 hover:bg-sky-950" href="{% url 'spots:new' %}">新增景點</a>
+  <div class="flex justify-center">
+    <a class="px-2 py-2 text-white border rounded-lg bg-sky-800 hover:bg-sky-950" href="{% url 'spots:new' %}">新增景點</a>
+  </div>
+  <div class="flex justify-center">
+    <a class="px-2 py-2 text-white border rounded-lg bg-sky-800 hover:bg-sky-950" href="{% url 'spots:search' %}">搜索景點</a>
+  </div>
 </div>
 
 
