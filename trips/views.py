@@ -3,6 +3,7 @@ from django.views.decorators.http import require_POST
 from django.urls import reverse
 from .models import Trip, TripMember
 from members.models import Member
+from django.contrib import messages
 
 # 列出目前行程
 def home(request):
@@ -28,21 +29,33 @@ def map(request):
     return render(request, "trips/map.html")
 
 
-# 寫入資料庫
 @require_POST
 def create(request):
-    member = request.user
-    trip = Trip(
-        name=request.POST["name"],
-        start_date=request.POST["start_date"],
-        end_date=request.POST["end_date"],
-        transportation=request.POST["transportation"],
-        owner = member.id
-    )
-    trip.save()
-    TripMember.objects.create(trip=trip, member=member, is_editable=True)
-    
-    return redirect("trips:index")
+    if request.method == "POST":
+        name = request.POST["name"]
+        start_date = request.POST["start_date"]
+        end_date = request.POST["end_date"]
+        transportation = request.POST["transportation"]
+
+        if end_date < start_date:
+            messages.error(request, "結束日期不能早於開始日期")
+            return redirect("trips:new") 
+
+        member = request.user
+        trip = Trip(
+            name=name,
+            start_date=start_date,
+            end_date=end_date,
+            transportation=transportation,
+            owner=member.id
+        )
+        trip.save()
+        TripMember.objects.create(trip=trip, member=member, is_editable=True)
+        messages.success(request, "旅程創建成功！")
+        return redirect("trips:index")
+    else:
+        return render(request, "trips/new.html")
+
 
 
 @require_POST

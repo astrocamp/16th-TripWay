@@ -3,12 +3,11 @@ from django.views.decorators.http import require_POST
 from .models import Schedule
 from trips.models import Trip, TripMember
 from django.utils import timezone
-from django.urls import reverse
-from datetime import timedelta
 from itertools import groupby
 from operator import attrgetter
 from members.models import Member
 from spots.models import Spot
+from django.contrib import messages
 
 def index(request, id):
     trip = get_object_or_404(Trip, pk=id)
@@ -30,6 +29,7 @@ def index(request, id):
     )
 
 
+<<<<<<< HEAD
 @require_POST
 def add_day(request, id):
     trip = get_object_or_404(Trip, pk=id)
@@ -48,6 +48,8 @@ def new(request, id):
     )
 
 
+=======
+>>>>>>> 05fbcbf (Issue #54 added backend verification in trips/views.py & schedules/views.py)
 @require_POST
 def create(request):
     trip_id = request.POST.get("trip_id")
@@ -78,23 +80,25 @@ def show(request, id):
         schedules.start_time = request.POST["start_time"]
         schedules.end_time = request.POST["end_time"]
         schedules.note = request.POST["note"]
-        schedules.save()
-        return redirect("schedules:show", id=id)
+        
+        if schedules.end_time > schedules.start_time:
+            schedules.save()
+            messages.success(request, "更新成功！")
+            return redirect("schedules:show", id=id) 
+        else:
+            messages.error(request, "離開時間不可早於抵達時間！")
+            return redirect("schedules:update", id=id) 
     else:
         trip_member = get_object_or_404(TripMember, trip=trip, member=request.user)
-        return render(
-            request, "schedules/show.html", {"schedules": schedules, "trip": trip, "trip_member": trip_member}
+        return render(request, "schedules/show.html", {"schedules": schedules, "trip": trip, "trip_member": trip_member}
         )
 
 
 def update(request, id):
     schedule = get_object_or_404(Schedule, pk=id)
-    start_date = timezone.localtime(schedule.trip.start_date)
-    end_date = timezone.localtime(schedule.trip.end_date)
     date_range = Schedule.get_date_range(schedule.trip)
     return render(
-        request,
-        "schedules/update.html",
+        request, "schedules/update.html",
         {"schedule": schedule, "date_range": date_range},
     )
 
