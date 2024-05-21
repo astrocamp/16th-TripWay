@@ -12,10 +12,8 @@ class Command(BaseCommand):
         # Google Places API 金鑰
         api_key = "AIzaSyCZzfaT30wnP7RD1eUtvA1U3K-fCLn4O4w"  
 
-
         # 請求 URL
         url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
-
 
         # 準備請求參數
         query = "熱門景點"  # 查詢關鍵字（根據需要更改）
@@ -32,21 +30,17 @@ class Command(BaseCommand):
             data = response.json()
             data = data["results"]
 
-
         for place in data:  
             Spot.objects.get_or_create(
                 name = place["name"],
                 defaults={
+                    "address": place["formatted_address"],
                     "latitude": place["geometry"]["location"]["lat"],
                     "longitude": place["geometry"]["location"]["lng"],
-                    "city": place["formatted_address"],
-                    "description": place["rating"],
-                    # "rating": place["rating"],
-                    # "phone": place["formatted_phone_number"],
-                    # "url": place["website"]
+                    "phone": place["formatted_phone_number"],
+                    "url": place["website"],
+                    "rating": place["rating"],
                 }
-                
-                
             )
             
         self.stdout.write('腳本執行完畢')
