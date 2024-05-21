@@ -36,6 +36,5 @@ class Spot(models.Model):
         return self.name
 
     def clean(self):
-        # 檢查 rating 是否為有效值，若為 'N/A' 則將其設置為 None
         if self.rating == "N/A":
             self.rating = None
