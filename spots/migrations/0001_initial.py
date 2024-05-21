@@ -7,21 +7,39 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Spot',
+            name="Spot",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=1000)),
-                ('address', models.CharField(max_length=255, null=True)),
-                ('latitude', models.DecimalField(decimal_places=6, max_digits=9)),
-                ('longitude', models.DecimalField(decimal_places=6, max_digits=9)),
-                ('phone', models.CharField(max_length=20, null=True)),
-                ('url', models.URLField(max_length=255, null=True)),
-                ('rating', models.FloatField(max_length=5, null=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=1000, unique=True)),
+                ("address", models.CharField(max_length=255, null=True, unique=True)),
+                (
+                    "latitude",
+                    models.DecimalField(
+                        blank=True, decimal_places=6, max_digits=9, null=True
+                    ),
+                ),
+                (
+                    "longitude",
+                    models.DecimalField(
+                        blank=True, decimal_places=6, max_digits=9, null=True
+                    ),
+                ),
+                ("phone", models.CharField(max_length=20, null=True)),
+                ("url", models.URLField(max_length=255, null=True)),
+                ("rating", models.FloatField(null=True)),
+                ("place_id", models.CharField(max_length=255, null=True)),
             ],
         ),
     ]
