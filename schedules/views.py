@@ -29,7 +29,6 @@ def index(request, id):
     )
 
 
-<<<<<<< HEAD
 @require_POST
 def add_day(request, id):
     trip = get_object_or_404(Trip, pk=id)
@@ -38,18 +37,6 @@ def add_day(request, id):
     return redirect(f"/trips/{trip.id}/schedules/")
 
 
-def new(request, id):
-    trip = get_object_or_404(Trip, pk=id)
-    start_date = timezone.localtime(trip.start_date)
-    end_date = timezone.localtime(trip.end_date)
-    date_range = Schedule.get_date_range(trip)
-    return render(
-        request, "schedules/new.html", {"trip": trip, "date_range": date_range}
-    )
-
-
-=======
->>>>>>> 05fbcbf (Issue #54 added backend verification in trips/views.py & schedules/views.py)
 @require_POST
 def create(request):
     trip_id = request.POST.get("trip_id")
