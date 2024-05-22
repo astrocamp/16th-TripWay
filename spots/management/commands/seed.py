@@ -1,16 +1,19 @@
 from django.core.management.base import BaseCommand
 from spots.models import Spot 
 import requests
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class Command(BaseCommand):
     help = "填寫spot初始資料"
 
     def handle(self, *args, **options):
         self.stdout.write('正在執行你的腳本...')
-        # 你的腳本邏輯
         
         # Google Places API 金鑰
-        api_key = "AIzaSyCZzfaT30wnP7RD1eUtvA1U3K-fCLn4O4w"  
+        api_key = os.getenv("API_KEY") 
 
         # 請求 URL
         url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
