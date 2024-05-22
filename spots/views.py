@@ -80,12 +80,15 @@ def save_spot(request):
     if request.method == "POST":
         name = request.POST.get("name")
         address = request.POST.get("address")
+        city = request.POST.get("city")
         latitude = request.POST.get("latitude")
         longitude = request.POST.get("longitude")
         phone = request.POST.get("phone")
         url = request.POST.get("url")
         rating = request.POST.get("rating")
         place_id = request.POST.get("place_id")
+
+        rating = float(rating) if rating and rating != "N/A" else None
 
         if not place_id:
             return JsonResponse(
@@ -97,6 +100,7 @@ def save_spot(request):
             defaults={
                 "name": name,
                 "address": address,
+                "city": city,
                 "latitude": latitude,
                 "longitude": longitude,
                 "phone": phone,
@@ -108,6 +112,7 @@ def save_spot(request):
         if not created:
             spot.name = name
             spot.address = address
+            spot.city = city
             spot.latitude = latitude
             spot.longitude = longitude
             spot.phone = phone

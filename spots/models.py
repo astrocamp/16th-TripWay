@@ -6,6 +6,7 @@ from django.db import models
 class Spot(models.Model):
     name = models.CharField(max_length=1000, unique=True)
     address = models.CharField(max_length=255, null=True, unique=True)
+    city = models.CharField(max_length=100, null=True)  # 新增 city 字段
     latitude = models.DecimalField(
         max_digits=9, decimal_places=6, null=True, blank=True
     )
@@ -17,7 +18,6 @@ class Spot(models.Model):
     rating = models.FloatField(null=True)
     place_id = models.CharField(max_length=255, null=True)
 
-    # city = models.CharField(max_length=100, default="")
     # description = models.TextField(default="")
     # MondayHr = models.CharField(max_length=50)
     # TuesdayHr = models.CharField(max_length=50)
