@@ -1,14 +1,11 @@
 {% extends 'layouts/base.html' %}
 {% block content %}
 <main>
-    <!-- 上面的 section -->
     <section class="w-full px-4 py-10 lg:h-128 lg:space-x-8 lg:flex lg:justify-center lg:items-center bg-blue">
-        <!-- 上面的部分 -->
         <div class="w-full text-center lg:w-1/2">
             <h1 class="text-4xl font-bold leading-snug text-gray-800 dark:text-gray-200 md:text-4xl">快速規劃行程</h1>
     
             <p class="mt-4 text-lg font-bold text-gray-500 dark:text-gray-300">即刻啟程，<br>和朋友來趟難忘的旅行吧!</p>
-            <!-- 將按鈕放在這裡 -->
             <div class="flex justify-center mt-8">
               <button class="px-8 py-3 text-2xl font-bold text-white bg-light-blue rounded-3xl hover:bg-gray-500">
               {% if user.is_authenticated %}
@@ -26,78 +23,68 @@
         </div>
     </section>
 
-    <!-- 下面的 section -->
     <section id="hotspots-section" class="container px-4 pt-4 pb-10 mx-auto">
         <h2 class="mt-12 mb-10 text-4xl font-bold text-center text-gray-800">熱門旅遊景點</h2>
         <div class="grid grid-cols-4 gap-4 mt-8">
-            <!-- 八張不同的圖片 -->
-            <div> <!-- 父元素設置為相對定位 -->
+            <div>
                 <a href="#" class="relative group">
                     <img src="https://i.imgur.com/F9TKUDy.png" alt="台北木柵動物園" class="object-cover w-full transition duration-300 ease-in-out transform rounded-lg h-4/5 group-hover:scale-105">
-                    <!-- 絕對定位在圖片的底部，並覆蓋住圖片 -->
                     <div class="absolute bottom-0 left-0 right-0 p-2 transition duration-300 ease-in-out transform bg-gray-600 bg-opacity-50 rounded-lg group-hover:scale-105">
                         <p class="text-xl font-bold text-center text-white">台北木柵動物園</p>
                     </div>
                 </a>
             </div>
-            <div> <!-- 父元素設置為相對定位 -->
+            <div>
                 <a href="#" class="relative group">
                     <img src="https://i.imgur.com/KZ77I0O.png" alt="圖台南奇美博物館" class="object-cover w-full transition duration-300 ease-in-out transform rounded-lg h-4/5 group-hover:scale-105">
-                    <!-- 絕對定位在圖片的底部，並覆蓋住圖片 -->
                     <div class="absolute bottom-0 left-0 right-0 p-2 transition duration-300 ease-in-out transform bg-gray-600 bg-opacity-50 rounded-lg group-hover:scale-105">
                         <p class="text-xl font-bold text-center text-white">台南奇美博物館</p>
                     </div>
                 </a>
             </div>
-            <div> <!-- 父元素設置為相對定位 -->
+            <div>
                 <a href="#" class="relative group">
                     <img src="https://imgur.com/i0cqfvq.png" alt="宜蘭加羅湖" class="object-cover w-full transition duration-300 ease-in-out transform rounded-lg h-4/5 group-hover:scale-105">
-                    <!-- 絕對定位在圖片的底部，並覆蓋住圖片 -->
                     <div class="absolute bottom-0 left-0 right-0 p-2 transition duration-300 ease-in-out transform bg-gray-600 bg-opacity-50 rounded-lg group-hover:scale-105">
                         <p class="text-xl font-bold text-center text-white">宜蘭加羅湖</p>
                     </div>
                 </a>
             </div>
-            <div> <!-- 父元素設置為相對定位 -->
+            <div>
                 <a href="#" class="relative group">
                     <img src="https://imgur.com/D07RS0U.png" alt="台東知本溫泉" class="object-cover w-full transition duration-300 ease-in-out transform rounded-lg h-4/5 group-hover:scale-105">
-                    <!-- 絕對定位在圖片的底部，並覆蓋住圖片 -->
                     <div class="absolute bottom-0 left-0 right-0 p-2 transition duration-300 ease-in-out transform bg-gray-600 bg-opacity-50 rounded-lg group-hover:scale-105">
                         <p class="text-xl font-bold text-center text-white">台東知本溫泉</p>
                     </div>
                 </a>
             </div>
-            <div> <!-- 父元素設置為相對定位 -->
+            <div>
                 <a href="#" class="relative group">
                     <img src="https://imgur.com/YYuKtp0.png" alt="雪霸國家公園" class="object-cover w-full transition duration-300 ease-in-out transform rounded-lg h-4/5 group-hover:scale-105">
-                    <!-- 絕對定位在圖片的底部，並覆蓋住圖片 -->
                     <div class="absolute bottom-0 left-0 right-0 p-2 transition duration-300 ease-in-out transform bg-gray-600 bg-opacity-50 rounded-lg group-hover:scale-105">
                         <p class="text-xl font-bold text-center text-white">雪霸國家公園</p>
                     </div>
                 </a>
             </div>
-            <div> <!-- 父元素設置為相對定位 -->
+            <div>
                 <a href="#" class="relative group">
                     <img src="https://imgur.com/rpLRDvZ.png" alt="新竹六福村" class="object-cover w-full transition duration-300 ease-in-out transform rounded-lg h-4/5 group-hover:scale-105">
-                    <!-- 絕對定位在圖片的底部，並覆蓋住圖片 -->
                     <div class="absolute bottom-0 left-0 right-0 p-2 transition duration-300 ease-in-out transform bg-gray-600 bg-opacity-50 rounded-lg group-hover:scale-105">
                         <p class="text-xl font-bold text-center text-white">新竹六福村</p>
                     </div>
                 </a>
             </div>
-            <div> <!-- 父元素設置為相對定位 -->
+            <div>
                 <a href="#" class="relative group">
                     <img src="https://imgur.com/XH5sUPF.png" alt="花蓮翡翠谷" class="object-cover w-full transition duration-300 ease-in-out transform rounded-lg h-4/5 group-hover:scale-105">
-                    <!-- 絕對定位在圖片的底部，並覆蓋住圖片 -->
                     <div class="absolute bottom-0 left-0 right-0 p-2 transition duration-300 ease-in-out transform bg-gray-600 bg-opacity-50 rounded-lg group-hover:scale-105">
                         <p class="text-xl font-bold text-center text-white">花蓮翡翠谷</p>
                     </div>
                 </a>
             </div>
-            <div> <!-- 父元素設置為相對定位 -->
+            <div>
                 <a href="#" class="relative group">
                     <img src="https://imgur.com/xKWCmXP.png" alt="台中逢甲夜市" class="object-cover w-full transition duration-300 ease-in-out transform rounded-lg h-4/5 group-hover:scale-105">
-                    <!-- 絕對定位在圖片的底部，並覆蓋住圖片 -->
                     <div class="absolute bottom-0 left-0 right-0 p-2 transition duration-300 ease-in-out transform bg-gray-600 bg-opacity-50 rounded-lg group-hover:scale-105">
                         <p class="text-xl font-bold text-center text-white">台中逢甲夜市</p>
                     </div>

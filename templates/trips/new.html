@@ -31,7 +31,6 @@
           enctype="multipart/form-data"
         >
           {% csrf_token %}
-          <!-- 將上傳圖片按鈕改為文件選擇框 -->
           <input
             type="file"
             id="image-upload"
@@ -39,7 +38,6 @@
             name="image"
             accept="image/*"
           />
-          <!-- 給一個觸發文件選擇框的按鈕 -->
           <button
             type="button"
             class="px-4 py-2 mt-2 mr-2 font-bold text-white rounded bg-sky-800 hover:bg-sky-950"
@@ -56,7 +54,6 @@
           </button>
         </form>
 
-        <!-- 新增刪除圖片按鈕 -->
         <form
           id="delete-form"
           action="{% url 'trips:delete_photo' %}"
@@ -169,8 +166,8 @@
       });
     });
     document.getElementById("save-image-btn").addEventListener("click", function(event) {
-      event.preventDefault(); // 防止按鈕默認行為
-        document.getElementById("upload-form").submit(); // 提交表單
+      event.preventDefault();
+        document.getElementById("upload-form").submit();
     });
 </script>
 

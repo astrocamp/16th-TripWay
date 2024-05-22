@@ -12,7 +12,7 @@ class Trip(models.Model):
     trips_image = models.ImageField(null=True, blank=True, upload_to="images/")
 
     def __str__(self):
-        return self.name  # 确保返回的是实际存在的字段
+        return self.name 
 
 
 class TripMember(models.Model):
@@ -27,4 +27,4 @@ class Photo(models.Model):
     upload_date = models.DateField(default=timezone.now)
 
     def __str__(self):
-        return self.image.url  # 或者使用 self.image.name 返回文件名
+        return self.image.url

@@ -99,24 +99,19 @@ def delete_self(request, trip_id, member_id):
     delete_TripMember(trip_id, member_id)
     return redirect("trips:index")
 
-# 新增圖片功能
-# 上傳圖片功能
+
 @require_POST
 def upload_photo(request):
     form = UploadModelForm(request.POST, request.FILES)
     photos = Photo.objects.all()
     if form.is_valid():
-        # 刪除舊的圖片
         Photo.objects.all().delete()
-        # 儲存新圖片
         form.save()
         messages.success(request, "圖片上傳成功！")
     return render(request, "trips/new.html", {"photos":photos})
 
-# 刪除圖片功能
 @require_POST
 def delete_photo(request):
-    # 刪除所有圖片
     Photo.objects.all().delete()
     messages.success(request, "圖片刪除成功！")
     return redirect("trips:new")
