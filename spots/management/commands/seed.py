@@ -10,7 +10,7 @@ class Command(BaseCommand):
     help = "填寫spot初始資料"
 
     def handle(self, *args, **options):
-        self.stdout.write('正在執行你的腳本...')
+        self.stdout.write("正在執行你的腳本...")
         
         # Google Places API 金鑰
         api_key = os.getenv("API_KEY") 
@@ -46,7 +46,7 @@ class Command(BaseCommand):
                 }
             )
             
-        self.stdout.write('腳本執行完畢')
+        self.stdout.write("腳本執行完畢")
 
 
 
