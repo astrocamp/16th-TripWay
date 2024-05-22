@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 from datetime import timedelta
 
 from members.models import MemberSpot

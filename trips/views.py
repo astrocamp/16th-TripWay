@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from django.urls import reverse
+from django.conf import settings
 from .models import Trip, TripMember
 from members.models import Member
 from django.contrib import messages
@@ -31,7 +32,7 @@ def home(request):
         trip_members = TripMember.objects.filter(member=member)
         trip_ids = trip_members.values_list("trip_id", flat=True)
         trips = Trip.objects.filter(id__in=trip_ids).order_by("start_date")
-        trips = [{"t":trip, "tm":trip_members.get(trip=trip)} for trip in trips]
+        trips = [{"t": trip, "tm": trip_members.get(trip=trip)} for trip in trips]
         return render(request, "trips/index.html", {"trips": trips})
 
 
@@ -49,7 +50,8 @@ def new_member(request, id):
 # google map
 @login_required
 def map(request):
-    return render(request, "trips/map.html")
+    google_api_key = settings.GOOGLE_API_KEY
+    return render(request, "trips/map.html", {"google_api_key": google_api_key})
 
 
 @login_required
@@ -63,7 +65,7 @@ def create(request):
 
         if end_date < start_date:
             messages.error(request, "結束日期不能早於開始日期")
-            return redirect("trips:new") 
+            return redirect("trips:new")
 
         member = request.user
         trip = Trip(
@@ -72,17 +74,18 @@ def create(request):
             end_date=end_date,
             transportation=transportation,
             owner=member.id,
-            image=image
+            image=image,
         )
         trip.save()
         TripMember.objects.create(trip=trip, member=member, is_editable=True)
         messages.success(request, "旅程創建成功！")
         return redirect("trips:index")
 
+
 @login_required
 def update(request, id):
     trips = get_object_or_404(Trip, pk=id)
-    return render (request, "trips/update.html", {"trips":trips})
+    return render(request, "trips/update.html", {"trips": trips})
 
 
 @require_POST
@@ -90,7 +93,7 @@ def update(request, id):
 def create_member(request, id):
     trip = get_object_or_404(Trip, id=id)
     email = request.POST["email"]
-    is_editable = (request.POST["is_editable"] == "True")
+    is_editable = request.POST["is_editable"] == "True"
 
     if email == request.user.email:
         messages.error(request, "不能添加自己為成員")
@@ -100,7 +103,7 @@ def create_member(request, id):
         member = Member.objects.get(email=email)
     except Member.DoesNotExist:
         messages.error(request, "該電子郵件地址的用戶不存在")
-        return render (request, "trips/new_member.html", {"id":trip.id, "trip":trip})
+        return render(request, "trips/new_member.html", {"id": trip.id, "trip": trip})
 
     TripMember.objects.create(trip=trip, member=member, is_editable=is_editable)
     trip.number += 1

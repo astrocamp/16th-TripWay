@@ -24,6 +24,7 @@ class Migration(migrations.Migration):
                 ),
                 ("name", models.CharField(max_length=1000, unique=True)),
                 ("address", models.CharField(max_length=255, null=True, unique=True)),
+                ("city", models.CharField(max_length=100, null=True)),
                 (
                     "latitude",
                     models.DecimalField(
