@@ -61,18 +61,21 @@
 
 {% block content %}
 {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}" />
+    <link rel="stylesheet" href="{% static "styles/save_spot.css" %}">
 
-    <input id="searchInput" type="text" placeholder="Search for places...">
+    {% comment %} <input id="searchInput" type="text" placeholder="Search for places..."> {% endcomment %}
     <div id="map"></div>
-    <div id="sidebar"></div>
+    <div id="sidebar">
+        <input id="searchInput" class="block mx-auto border border-blueGray-300" type="text" placeholder="Search for places...">
+
+    </div>
 
     
     
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZzfaT30wnP7RD1eUtvA1U3K-fCLn4O4w&libraries=places&callback=initMap" loading=async defer></script>
-
-    <script src="{% static 'scripts/pick.js' %}"></script>
-    <link rel="stylesheet" href="{% static "styles/save_spot.css" %}">
-    <link rel="stylesheet" href="{% static 'styles/style.css' %}" />
+    <script src="{% static "scripts/pick.js" %}"></script>
+    
 {% endblock %}
 
 
