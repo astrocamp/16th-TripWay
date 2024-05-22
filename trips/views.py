@@ -9,6 +9,7 @@ from .forms import UploadModelForm
 from django.conf import settings
 from django.contrib import messages
 
+
 # 列出目前行程
 def home(request):
     member = request.user
@@ -103,13 +104,14 @@ def delete_self(request, trip_id, member_id):
 @require_POST
 def upload_photo(request):
     form = UploadModelForm(request.POST, request.FILES)
+    photos = Photo.objects.all()
     if form.is_valid():
         # 刪除舊的圖片
         Photo.objects.all().delete()
         # 儲存新圖片
         form.save()
         messages.success(request, "圖片上傳成功！")
-    return redirect("trips:new")
+    return render(request, "trips/new.html", {"photos":photos})
 
 # 刪除圖片功能
 @require_POST

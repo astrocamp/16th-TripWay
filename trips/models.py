@@ -20,7 +20,7 @@ class TripMember(models.Model):
     member = models.ForeignKey(Member, on_delete=models.CASCADE)
     is_editable = models.BooleanField(default=True)
     
-
+    
 
 class Photo(models.Model):
     image = models.ImageField(blank=False, null=False,  upload_to="trips_coverPhoto/")

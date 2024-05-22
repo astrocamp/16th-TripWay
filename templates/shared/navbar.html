@@ -46,11 +46,11 @@
         <button
           tabindex="0"
           class="w-10 h-10 mr-10 bg-cover rounded-full bg-light-blue"
-          {% if user.profile.avatar %}
+          {%if user.profile.avatar%}
           style="background-image: url('{{ user.profile.avatar.url }}')"
-          {% else %}
-          style="background-image: url(&quot;https://i.imgur.com/gd0IEZY.png&quot;)"
-          {% endif %}
+          {%else %}
+          style="background-image: url('https://i.imgur.com/gd0IEZY.png')"
+          {%endif %}
         ></button>
 
         <!-- 下拉選單內容 -->
@@ -62,6 +62,7 @@
       </div>
       {% else %}
       <button tabindex="0" class="mr-10 text-xl text-white btn bg-light-blue">登入</button>
+      {% endif %}
       <!-- 下拉選單內容 -->
       <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 absolute top-14 right-0">
         <!-- 下拉選單選項 -->
