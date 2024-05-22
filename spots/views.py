@@ -46,20 +46,17 @@ def add(request, pk):
 @csrf_exempt
 def toggle_favorite(request, pk):
     if request.method == "POST":
-        # 檢查會員和景點是否存在
         member = request.user
         spot = get_object_or_404(Spot, id=pk)
 
-        # 檢查是否已經有紀錄，若無就創建
         try:
             member_spot = MemberSpot.objects.get(member=member, spot=spot)
-            member_spot.soft.delete()
+            member_spot.delete()
             is_favorite = False
         except MemberSpot.DoesNotExist:
             MemberSpot.objects.create(member=member, spot=spot)
             is_favorite = True
 
-        # 告知前端是否已經新增或刪除(暫時寫法，還未設置)
         return JsonResponse({"is_favorite": is_favorite})
     else:
         return JsonResponse({"error": "Invalid request method"})

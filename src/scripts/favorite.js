@@ -12,13 +12,8 @@ if (icon) {
     })
 }
 
-// 取得當前頁面的url
 const currentUrl = window.location.href
-
-// 從url中取出該景點的id
 const spotId = currentUrl.split('/').slice(-2)[0]
-
-// 重新組成路徑
 const toggleFavoriteUrl = `/spots/${spotId}/toggle_favorite`
 
 function toggleFavorite() {
@@ -30,7 +25,6 @@ function toggleFavorite() {
     })
     .then(response => response.json())
     .then(data => console.log(data))
-    // (暫時寫法，還未設置)
     .catch(error => console.error("Error:", error)) 
 }
 
