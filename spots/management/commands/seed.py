@@ -30,8 +30,7 @@ class Command(BaseCommand):
         response = requests.get(url, params=parameters)
 
         if response.status_code == 200:
-            data = response.json()
-            data = data["results"]
+            data = response.json()["results"]
 
         for place in data:  
             Spot.objects.get_or_create(
