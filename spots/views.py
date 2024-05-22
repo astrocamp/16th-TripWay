@@ -3,7 +3,7 @@ from django.views.generic import DetailView, ListView, CreateView
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse_lazy
-
+from django.conf import settings
 from datetime import timedelta
 
 from trips.models import Trip, TripMember
@@ -66,8 +66,8 @@ def toggle_favorite(request, pk):
 
 
 def search(request):
-    spots = Spot.objects.all()
-    return render(request, "spots/search.html", {"spots": spots})
+    google_api_key = settings.GOOGLE_API_KEY
+    return render(request, "spots/search.html", {"google_api_key": google_api_key})
 
 
 def my_view(request):

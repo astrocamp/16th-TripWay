@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from django.urls import reverse
+from django.conf import settings
 from .models import Trip, TripMember
 from members.models import Member
 from django.contrib import messages
@@ -14,8 +15,12 @@ def home(request):
     member = request.user
     trip_members = TripMember.objects.filter(member=member)
     trip_ids = trip_members.values_list("trip_id", flat=True)
-    trips = [{"t":trip, "tm":trip_members.get(trip=trip)} for trip in Trip.objects.filter(id__in=trip_ids).order_by("start_date")]
+    trips = [
+        {"t": trip, "tm": trip_members.get(trip=trip)}
+        for trip in Trip.objects.filter(id__in=trip_ids).order_by("start_date")
+    ]
     return render(request, "trips/index.html", {"trips": trips})
+
 
 def new(request):
     return render(request, "trips/new.html")
@@ -28,7 +33,8 @@ def new_member(request, id):
 
 # google map
 def map(request):
-    return render(request, "trips/map.html")
+    google_api_key = settings.GOOGLE_API_KEY
+    return render(request, "trips/map.html", {"google_api_key": google_api_key})
 
 
 def create(request):
@@ -40,7 +46,7 @@ def create(request):
 
         if end_date < start_date:
             messages.error(request, "結束日期不能早於開始日期")
-            return redirect("trips:new") 
+            return redirect("trips:new")
 
         member = request.user
         trip = Trip(
@@ -48,7 +54,7 @@ def create(request):
             start_date=start_date,
             end_date=end_date,
             transportation=transportation,
-            owner=member.id
+            owner=member.id,
         )
         trip.save()
         TripMember.objects.create(trip=trip, member=member, is_editable=True)
@@ -60,7 +66,7 @@ def create(request):
 def create_member(request, id):
     trip = get_object_or_404(Trip, id=id)
     email = request.POST["email"]
-    is_editable = (request.POST["is_editable"] == "True")
+    is_editable = request.POST["is_editable"] == "True"
     member = get_object_or_404(Member, email=email)
     TripMember.objects.create(trip=trip, member=member, is_editable=is_editable)
     trip.number += 1
@@ -105,7 +111,8 @@ def upload_photo(request):
         Photo.objects.all().delete()
         form.save()
         messages.success(request, "圖片上傳成功！")
-    return render(request, "trips/new.html", {"photos":photos})
+    return render(request, "trips/new.html", {"photos": photos})
+
 
 @require_POST
 def delete_photo(request):
