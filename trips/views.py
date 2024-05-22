@@ -29,7 +29,6 @@ def map(request):
     return render(request, "trips/map.html")
 
 
-@require_POST
 def create(request):
     if request.method == "POST":
         name = request.POST["name"]
@@ -53,9 +52,6 @@ def create(request):
         TripMember.objects.create(trip=trip, member=member, is_editable=True)
         messages.success(request, "旅程創建成功！")
         return redirect("trips:index")
-    else:
-        return render(request, "trips/new.html")
-
 
 
 @require_POST
