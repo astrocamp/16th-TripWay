@@ -159,17 +159,6 @@ SOCIALACCOUNT_LOGIN_ON_GET = True
 
 HOST_NAME = os.getenv("HOST_NAME")
 
-ENCRYPTION_KEY = {
-    "MERCHANT_ID": os.getenv("MerchantID"),
-    "HASH_KEY": os.getenv("HASHKEY"),
-    "HASH_IV": os.getenv("HASHIV"),
-    "VERSION": os.getenv("Version"),
-    "RETURN_URL": f"https://{HOST_NAME}/members/upgrade/return",
-    "NOTIFY_URL": os.getenv("NotifyUrl"),
-    "PAY_GATEWAY": os.getenv("PayGateWay"),
-    "RESPOND_TYPE": os.getenv("RespondType"),
-}
-
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",

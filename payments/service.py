@@ -7,15 +7,18 @@ from urllib.parse import urlencode
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import padding
+import os
 
-MerchantID = settings.ENCRYPTION_KEY["MERCHANT_ID"]
-HASHKEY = settings.ENCRYPTION_KEY["HASH_KEY"]
-HASHIV = settings.ENCRYPTION_KEY["HASH_IV"]
-Version = settings.ENCRYPTION_KEY["VERSION"]
-ReturnUrl = settings.ENCRYPTION_KEY["RETURN_URL"]
-NotifyUrl = settings.ENCRYPTION_KEY["NOTIFY_URL"]
-PayGateWay = settings.ENCRYPTION_KEY["PAY_GATEWAY"]
-RespondType = settings.ENCRYPTION_KEY["RESPOND_TYPE"]
+HOST_NAME = os.getenv("HOST_NAME")
+
+MerchantID = os.getenv("MerchantID")
+HASHKEY = os.getenv("HASHKEY")
+HASHIV = os.getenv("HASHIV")
+Version = os.getenv("Version")
+ReturnUrl = f"https://{HOST_NAME}/members/upgrade/return"
+# NotifyUrl = settings.ENCRYPTION_KEY["NOTIFY_URL"] #待完成
+PayGateWay = os.getenv("PayGateWay")
+RespondType = os.getenv("RespondType")
 
 
 class PaymentService:
