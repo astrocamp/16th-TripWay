@@ -53,7 +53,7 @@ def toggle_favorite(request, pk):
         # 檢查是否已經有紀錄，若無就創建
         try:
             member_spot = MemberSpot.objects.get(member=member, spot=spot)
-            member_spot.delete()
+            member_spot.soft.delete()
             is_favorite = False
         except MemberSpot.DoesNotExist:
             MemberSpot.objects.create(member=member, spot=spot)
