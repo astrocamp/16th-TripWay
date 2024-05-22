@@ -68,6 +68,15 @@ function addMarker(location, name, place) {
     var photos = place.photos;
     var photoUrl = photos ? photos[0].getUrl({ maxWidth: 200, maxHeight: 200 }) : '';
 
+
+    place.address_components.forEach((element)=>{
+        if (element.types[0] === 'administrative_area_level_1') {
+            console.log(element.long_name);
+            city = element.long_name;
+        }
+    })
+    
+
     var infowindow = new google.maps.InfoWindow({
         content:
         `
@@ -75,6 +84,7 @@ function addMarker(location, name, place) {
             <h3>${name}</h3>
             <img src="${photoUrl}" alt="${name}">
             <p><strong>地址：</strong> ${place.formatted_address}</p>
+            <p><strong>城市：</strong> ${city}</p>
             <p><strong>電話：</strong> ${place.formatted_phone_number || '無'}</p>
             <p><strong>營業時間：</strong> ${place.opening_hours ? place.opening_hours.weekday_text.join('<br>') : '無'}</p>
             <p><strong>網址：</strong> ${place.website ? `<a href="${place.website}" target="_blank">${place.website}</a>` : '無'}</p>
@@ -118,10 +128,20 @@ function submitPlaceDetails(placeId) {
         alert('地點ID不匹配');
         return;
     }
+
+    place.address_components.forEach((element)=>{
+        if (element.types[0] === 'administrative_area_level_1') {
+            console.log(element.long_name);
+            city = element.long_name;
+        }
+    })
+    
+
     var formData = new FormData();
     formData.append('csrfmiddlewaretoken', getCookie('csrftoken'));
     formData.append('name', place.name);
     formData.append('address', place.formatted_address);
+    formData.append('city', city || 'N/A'); 
     formData.append('latitude', place.geometry.location.lat());
     formData.append('longitude', place.geometry.location.lng());
     formData.append('phone', place.formatted_phone_number || 'N/A');
