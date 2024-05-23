@@ -7,7 +7,6 @@ DEFAULT_STYLE = "form-control w-72 px-2 py-2 border-2 rounded-lg focus:outline-n
 
 
 class SignUp(UserCreationForm):
-    # username = forms.CharField(required=False)
     password1 = forms.CharField(
         widget=forms.PasswordInput(attrs={"class": DEFAULT_STYLE})
     )

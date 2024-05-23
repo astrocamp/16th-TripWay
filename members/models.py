@@ -4,8 +4,7 @@ from spots.models import Spot
 
 
 class Member(AbstractUser):
-    email = models.EmailField(max_length=255, 
-    unique=True)
+    email = models.EmailField(max_length=255, unique=True)
 
 
 class MemberSpot(models.Model):
