@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import DetailView, ListView, CreateView
+from django.views.generic import DetailView, ListView, CreateView, DeleteView
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse_lazy
@@ -70,12 +70,7 @@ def toggle_favorite(request, pk):
 
 def search(request):
     google_api_key = settings.GOOGLE_API_KEY
-    return render(request, "spots/search.html", {"google_api_key": google_api_key})
-
-
-def my_view(request):
-    show_footer = False
-    return render(request, "spots/search.html", {"show_footer": show_footer})
+    return render(request, "spots/save_spot.html", {"google_api_key": google_api_key})
 
 
 @csrf_exempt
