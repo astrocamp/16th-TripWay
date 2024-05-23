@@ -61,23 +61,39 @@
 
 {% block content %}
 {% load static %}
+
     <link rel="stylesheet" href="{% static 'styles/style.css' %}" />
     <link rel="stylesheet" href="{% static "styles/save_spot.css" %}">
+    <link rel="stylesheet" href="{% static "styles/wait_web.css" %}">
+    
 
-    {% comment %} <input id="searchInput" type="text" placeholder="Search for places..."> {% endcomment %}
+    <div id="loading-spinner" class="spinner" style="none"></div>
+
+
     <div id="map"></div>
-    <div id="sidebar">
-        <input id="searchInput" class="block mx-auto border border-blueGray-300" type="text" placeholder="Search for places...">
-
+    <div id="sidebar-container">
+        <div id="sidebar">
+            <div>
+                <h2>景點清單</h2>
+                <ul>
+                    {% for spot in spots %}
+                        <li>{{ spot.name }} - {{ spot.description }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+            <input id="searchInput" class="block mx-auto border border-blueGray-300" type="text" placeholder="Search for places...">
+            <div class="flex justify-center">
+                <a class="px-2 py-2 text-white border rounded-lg bg-sky-800 hover:bg-sky-950" href="{% url 'spots:index' %}">回到景點清單</a>
+            </div>
+        </div>
     </div>
 
     
-    
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZzfaT30wnP7RD1eUtvA1U3K-fCLn4O4w&libraries=places&callback=initMap" loading=async defer></script>
-    <script src="{% static "scripts/pick.js" %}"></script>
-    
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&libraries=places&callback=initMap" loading=async defer></script>
+    <script src="{% static "scripts/save_spot.js" %}"></script>
+    <script src="{% static "scripts/wait_web.js" %}"></script>
 {% endblock %}
-
 
 
 
