@@ -4,7 +4,7 @@ from .models import Photo
 class UploadModelForm(forms.ModelForm):
     class Meta:
         model = Photo
-        fields = ("image")
+        fields = ("image",)
         widgets = {
             "image": forms.FileInput(attrs={"class": "form-control-file"})
         }
