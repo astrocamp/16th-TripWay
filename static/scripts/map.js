@@ -91,6 +91,8 @@ function searchNearby(type) {
         return;
     }
 
+    map.setCenter(currentPosition);
+    map.setZoom(16);
     const request = {
         location: currentPosition,
         radius: 2000,
