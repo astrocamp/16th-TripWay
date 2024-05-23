@@ -4,24 +4,27 @@
 <head>
     <link rel="stylesheet" href="{% static 'styles/style.css' %}" />
     <link rel="stylesheet" href="{% static 'styles/detail.css' %}">
+    <link rel="stylesheet" href="{% static "styles/wait_web.css" %}">
     
+    <script src="{% static "scripts/wait_web.js" %}"></script>
     <script src="{% static "scripts/map.js" %}"></script>
 </head>
 <body>
     {% include 'shared/navbar.html' %}
     <div id="map-container">
 
-
-        
         <div id="search-container">
-
             <input id="pac-input" class="controls" type="text" placeholder="搜索地點"/>
             <button class="search-button" onclick="searchNearby('restaurant')">搜索附近餐廳</button>
             <button class="search-button" onclick="searchNearby('tourist_attraction')">搜索附近觀光景點</button>
-            <button class="search-button" onclick="searchNearby('park')">公園</button>
+            <button class="search-button" onclick="searchNearby('park')">搜索附近公園</button>
         </div>
+
+        <div id="loading-spinner" class="spinner" style="none"></div>
         <div id="map"></div>
+
         <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&libraries=places&callback=initMap" defer loading="async"></script>
+
     </div>
 </body>
 </html>
