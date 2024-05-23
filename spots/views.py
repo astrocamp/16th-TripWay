@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import DetailView, ListView, CreateView
+from django.views.generic import DetailView, ListView, CreateView, DeleteView
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse_lazy
@@ -7,8 +7,8 @@ from django.conf import settings
 from datetime import timedelta
 
 from trips.models import Trip, TripMember
-from members.models import MemberSpot
 from schedules.models import Schedule
+from members.models import MemberSpot
 from .models import Spot
 from .form import SpotForm
 
@@ -23,6 +23,15 @@ class ShowView(DetailView):
     def post(self, request, pk):
         spot = self.get_object()
         return redirect("spots:show", pk=spot.id)
+
+
+class DeleteSpotView(DetailView):
+    model = Spot
+
+    def post(self, request, pk):
+        spot = self.get_object()
+        spot.delete()
+        return redirect(reverse_lazy("spots:index"))
 
 
 class CreateView(CreateView):
@@ -67,12 +76,7 @@ def toggle_favorite(request, pk):
 
 def search(request):
     google_api_key = settings.GOOGLE_API_KEY
-    return render(request, "spots/search.html", {"google_api_key": google_api_key})
-
-
-def my_view(request):
-    show_footer = False
-    return render(request, "spots/search.html", {"show_footer": show_footer})
+    return render(request, "spots/save_spot.html", {"google_api_key": google_api_key})
 
 
 @csrf_exempt
@@ -123,13 +127,14 @@ def save_spot(request):
         return JsonResponse(
             {"status": "success", "message": "Spot saved successfully!"}
         )
+
     return JsonResponse(
         {"status": "error", "message": "Invalid request method"}, status=400
     )
 
 
 @csrf_exempt
-def delete(request, spot_id):
+def delete_spot(request, spot_id):
     if request.method == "DELETE":
         spot = get_object_or_404(Spot, place_id=spot_id)
         spot.delete()
