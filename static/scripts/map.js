@@ -66,7 +66,7 @@ function searchNearby(type) {
         return;
     }
 
-    map.setCenter(currentPosition); // 重新定位到用戶當前位置
+    map.setCenter(currentPosition);
     map.setZoom(16);
     const request = {
         location: currentPosition,
@@ -116,7 +116,6 @@ function showPlaceDetails(place, marker) {
     const service = new google.maps.places.PlacesService(map);
     service.getDetails({ placeId: place.place_id }, (details, status) => {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
-            // const detailsString = JSON.stringify(details);
             const contentString = `
                 <div class="info-window">
                     <h3>${details.name}</h3>
@@ -141,5 +140,5 @@ function clearMarkers() {
         markers[i].setMap(null);
     }
     markers.length = 0;
+    
 }
-
