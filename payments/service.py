@@ -35,6 +35,7 @@ class PaymentService:
             "Amt": str(self.price),
             "ItemDesc": "MemberUpgrade",
             "ReturnURL": ReturnUrl,
+            "NotifyUrl": NotifyUrl,
         }
         return data
 
@@ -76,4 +77,4 @@ class PaymentService:
             "price": self.price,
         }
 
-        return render(request, 'payments/check.html', content)
+        return content
