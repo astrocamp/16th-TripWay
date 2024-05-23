@@ -5,7 +5,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 class Spot(models.Model):
     name = models.CharField(max_length=1000, unique=True)
     address = models.CharField(max_length=255, null=True, unique=True)
-    city = models.CharField(max_length=100, null=True)  # 新增 city 字段
+    city = models.CharField(max_length=100, null=True)
     latitude = models.DecimalField(
         max_digits=9, decimal_places=6, null=True, blank=True
     )
