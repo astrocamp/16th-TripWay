@@ -19,9 +19,8 @@ def index(request, id):
     # 根據行程的日期屬性將行程分組並提取日期
     for date, group in groupby(schedules, key=attrgetter("date")):
         grouped_schedules[date] = list(group)
-    # 獲取行程的日期範圍
 
-    date_range = Schedule.get_date_range(trip)
+    date_range = trip.get_date_range()
     member_ids = TripMember.objects.filter(trip_id=id).order_by("id").values_list("member_id", flat=True)
     members = Member.objects.filter(id__in=member_ids)
     trip_member = get_object_or_404(TripMember, trip=trip, member=request.user)
@@ -84,7 +83,7 @@ def show(request, id):
 
 def update(request, id):
     schedule = get_object_or_404(Schedule, pk=id)
-    date_range = Schedule.get_date_range(schedule.trip)
+    date_range = schedule.trip.get_date_range()
     return render(
         request, "schedules/update.html",
         {"schedule": schedule, "date_range": date_range},
@@ -97,4 +96,3 @@ def delete(request, id):
     schedule.deleted_at = timezone.now()
     schedule.save()
     return redirect("trips:schedules:index", id=schedule.trip_id)
-
