@@ -37,7 +37,7 @@ def add_schedule(request, pk):
 
     trips_dates = []
     for trip in trips:
-        date_range = Schedule.get_date_range(trip)
+        date_range = trip.get_date_range()
         trips_dates.append({"trip": trip, "date_range": date_range})
     context = {"spot": spot, "trips": trips, "trips_dates": trips_dates}
     return render(request, "spots/add.html", context)
