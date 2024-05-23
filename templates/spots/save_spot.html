@@ -73,19 +73,13 @@
     <div id="map"></div>
     <div id="sidebar-container">
         <div id="sidebar">
-            <div>
-                <h2>景點清單</h2>
-                <ul>
-                    {% for spot in spots %}
-                        <li>{{ spot.name }} - {{ spot.description }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
             
             <input id="searchInput" class="block mx-auto border border-blueGray-300" type="text" placeholder="Search for places...">
+
             <div class="flex justify-center">
                 <a class="px-2 py-2 text-white border rounded-lg bg-sky-800 hover:bg-sky-950" href="{% url 'spots:index' %}">回到景點清單</a>
             </div>
+            
         </div>
     </div>
 

@@ -5,66 +5,83 @@
     <h1 class="px-2 py-2 text-white bg-sky-800">行程列表</h1>
   </header>
 
-    <!-- 日期頁籤 -->
-  <div role="tab" class="tabs flex text-start h-14">
-    {% for day in date_range %}
-      <button id="btn-{{ day|date:'Y-m-d' }}" class="tab h-14 border transition-all ease-in-out text-slate-700 hover:bg-gray-200 {% if forloop.first %}active-tab{% endif %}" onclick="showTab('{{ day|date:'Y-m-d' }}', 'btn-{{ day|date:'Y-m-d' }}')">
-        {{ day|date:"Y-m-d" }}
-      </button>
-      <!-- 刪除行程按鈕 -->
-      <button id="delete-schedule-{{ day|date:'Y-m-d' }}" class="h-14 border transition-all ease-in-out text-slate-700 hover:bg-gray-200" onclick="deleteSchedule('{{ day|date:'Y-m-d' }}')">
-        -
-      </button>
-    {% endfor %}
+  <div class="wrap flex">
 
-    <!-- 新增一天的行程 -->
-    <form action="{% url 'trips:schedules:add_day' trip.id %}" method="post">
-      {% csrf_token %}
-      <button id="add-day" class="tab h-14 border transition-all ease-in-out text-slate-700 hover:bg-gray-200" >
-          +
-      </button>
-    </form>
-  </div>
+    <div class="w-2/5">
+  
+      <div class="label-block overflow-scroll">
+    
+        <!-- 日期頁籤 -->
+        <div role="tab" class="tabs flex text-start h-14">
+          {% for day in date_range %}
+            <button id="btn-{{ day|date:'Y-m-d' }}" class="tab h-14 border transition-all ease-in-out text-slate-700 hover:bg-gray-200 {% if forloop.first %}active-tab{% endif %}" onclick="showTab('{{ day|date:'Y-m-d' }}', 'btn-{{ day|date:'Y-m-d' }}')">
+              {{ day|date:"Y-m-d" }}
+            </button>
+            <!-- 刪除行程按鈕 -->
+            <button id="delete-schedule-{{ day|date:'Y-m-d' }}" class="h-14 border transition-all ease-in-out text-slate-700 hover:bg-gray-200" onclick="deleteSchedule('{{ day|date:'Y-m-d' }}')">
+              -
+            </button>
+          {% endfor %}
+    
+          <!-- 新增一天的行程 -->
+          <form action="{% url 'trips:schedules:add_day' trip.id %}" method="post">
+            {% csrf_token %}
+            <button id="add-day" class="tab h-14 border transition-all ease-in-out text-slate-700 hover:bg-gray-200" >
+                +
+            </button>
+          </form>
+        </div>
 
-    <!-- 行程內容 -->
-  {% for date, schedules in schedule_dates.items %}
-  <div id="schedule{{ schedules.0.date|date:'Y-m-d' }}" class="tab-content mt-3 bg-blueGray-100" style="{% if forloop.first %}display: block;{% else %}display: none;{% endif %}">
-    {% for schedule in schedules %}
-    <a href="{% url 'schedules:show' schedule.id %}">
-      <div class="flex items-center mb-1 px-2 py-3 shadow-md hover:bg-blue-300 h-36">
-        <span class="inline-block w-6 h-6 mr-2 text-center text-white bg-orange-500 rounded-lg">{{ forloop.counter }}</span>
-        <i class="fa-sharp fa-solid fa-building-columns" style="color: #1b3f5a;"></i> {{ schedule.spot_name }}
-        <div class="mx-3 px-2 text-gray-500">{{ schedule.start_time|time:"H:i" }}</div>
       </div>
-    </a>
-    {% endfor %}
-  </div>
-  {% endfor %}
+    
+      <div class="bottom-block">
+    
+          <!-- 行程內容 -->
+        {% for date, schedules in schedule_dates.items %}
+        <div id="schedule{{ schedules.0.date|date:'Y-m-d' }}" class="tab-content mt-3 bg-blueGray-100" style="{% if forloop.first %}display: block;{% else %}display: none;{% endif %}">
+          {% for schedule in schedules %}
+          <a href="{% url 'schedules:show' schedule.id %}">
+            <div class="flex items-center mb-1 px-2 py-3 shadow-md hover:bg-blue-300 h-36">
+              <span class="inline-block w-6 h-6 mr-2 text-center text-white bg-orange-500 rounded-lg">{{ forloop.counter }}</span>
+              <i class="fa-sharp fa-solid fa-building-columns" style="color: #1b3f5a;"></i> {{ schedule.spot_name }}
+              <div class="mx-3 px-2 text-gray-500">{{ schedule.start_time|time:"H:i" }}</div>
+            </div>
+          </a>
+          {% endfor %}
+        </div>
+        {% endfor %}
+    
+        <h2>成員列表</h2>
+        {% for member in members %}
+          <div class="flex items-center px-2 py-3 mx-2 my-2 bg-white border rounded-lg hover:bg-blue-300 h-100">
+            {{ member.email }}
+            {% if trip_member.member_id == member.id %}
+              <form action="{% url 'trips:delete-self' trip.id member.id %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="X">
+              </form>
+            {% elif trip_member.is_editable and member.id != trip.owner %}
+              <form action="{% url 'trips:delete-member' trip.id member.id %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="X">
+              </form>
+            {% endif %}
+          </div>
+        {% endfor %}
+    
+        <br />
+        <div class="flex justify-center">
+          {% if trip_member.is_editable %}
+          <a class="px-2 py-2 text-white border rounded-lg bg-sky-800 hover:bg-sky-950" href="{% url 'spots:index' %}">新增景點</a>
+          <a class="px-2 py-2 text-white border rounded-lg bg-sky-800 hover:bg-sky-950" href="{% url 'trips:new-member' trip.id %}">新增成員</a>
+          {% endif %}
+        </div>
+      </div>
 
-  <h2>成員列表</h2>
-  {% for member in members %}
-    <div class="flex items-center px-2 py-3 mx-2 my-2 bg-white border rounded-lg hover:bg-blue-300 h-100">
-      {{ member.email }}
-      {% if trip_member.member_id == member.id %}
-        <form action="{% url 'trips:delete-self' trip.id member.id %}" method="post">
-          {% csrf_token %}
-          <input type="submit" value="X">
-        </form>
-      {% elif trip_member.is_editable and member.id != trip.owner %}
-        <form action="{% url 'trips:delete-member' trip.id member.id %}" method="post">
-          {% csrf_token %}
-          <input type="submit" value="X">
-        </form>
-      {% endif %}
     </div>
-  {% endfor %}
 
-  <br />
-  <div class="flex justify-center">
-    {% if trip_member.is_editable %}
-    <a class="px-2 py-2 text-white border rounded-lg bg-sky-800 hover:bg-sky-950" href="{% url 'spots:index' %}">新增景點</a>
-    <a class="px-2 py-2 text-white border rounded-lg bg-sky-800 hover:bg-sky-950" href="{% url 'trips:new-member' trip.id %}">新增成員</a>
-    {% endif %}
+    <div class="w-3/5 map bg-blueGray-800 text-white">i'm map</div>
+
   </div>
 </div>
 
@@ -75,4 +92,6 @@
     color: black;
   }
 </style>
+{% comment %} <script src=""></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=initMap" async defer></script> {% endcomment %}
 {% endblock %}
