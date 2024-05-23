@@ -7,8 +7,8 @@
 - `npm run dev`to start the frontend server.<br>
 
 ## MIGRATION TO POSTGRESQL
-- python manage.py `makemigrations`<br>
-- python manage.py `migrate`<br>
+- `python manage.py makemigrations`<br>
+- `python manage.py migrate`<br>
 
 ## SEED
 - python manage.py `seed` <br>
