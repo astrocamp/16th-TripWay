@@ -33,7 +33,6 @@ def logout_user(request):
 
 # Register
 def register_user(request):
-    members = Member.objects.all()
     if request.method == "POST":
         form = SignUp(request.POST)
         if form.is_valid():
@@ -45,4 +44,4 @@ def register_user(request):
     else:
         form = SignUp()
 
-    return render(request, "registration/register.html", {"form": form, "members": members})
+    return render(request, "registration/register.html", {"form": form})
