@@ -45,28 +45,15 @@
           >
             上傳圖片
           </button>
-          <button
-            type="submit"
-            id="save-image-btn"
-            class="px-4 py-2 mt-2 font-bold text-white rounded bg-sky-800 hover:bg-sky-950"
-          >
+          <button type="submit" id="save-image-btn" class="px-4 py-2 mt-2 font-bold text-white rounded bg-sky-800 hover:bg-sky-950" >
             儲存圖片
           </button>
         </form>
 
-        <form
-          id="delete-form"
-          action="{% url 'trips:delete_photo' %}"
-          method="post"
-          style="margin-left: 10px"
+        <form id="delete-form" action="{% url 'trips:delete_photo' %}" method="post" style="margin-left: 10px"
         >
           {% csrf_token %}
-          <button
-            type="button"
-            id="delete-photo-btn"
-            class="px-4 py-2 mt-2 font-bold text-white bg-red-600 rounded hover:bg-red-800"
-          >
-            刪除圖片
+          <button type="button" id="delete-photo-btn" class="px-4 py-2 mt-2 font-bold text-white bg-red-600 rounded hover:bg-red-800">刪除圖片
           </button>
         </form>
       </div>
@@ -75,61 +62,31 @@
     <form action="{% url 'trips:add' %}" method="post" class="mt-8">
       {% csrf_token %}
       <div class="mb-6">
-        <label for="name" class="block text-sm font-bold -6 text-cyan-800"
-          >行程名稱：</label
-        >
-        <input
-          type="text"
-          name="name"
-          id="name"
-          required="required"
-          class="block w-full h-12 pl-1 mt-1 mb-3 border-gray-300 rounded-md shadow-sm form-input focus:border-indigo-600 focus:ring focus:ring-cyan-800 focus:ring-opacity-50"
-        />
-      </div>
-
-      <form action="{% url 'trips:add' %}" method="post" class="mt-8">
-        {% csrf_token %}
-        <div class="mb-6">
-          <label for="name" class="block text-sm font-bold leading-6 text-cyan-800">行程名稱：</label>
-          <input type="text" name="name" id="name" required="required" class="block w-full h-12 pl-1 mt-1 mb-3 border-gray-300 rounded-md shadow-sm form-input focus:border-indigo-600 focus:ring focus:ring-cyan-800 focus:ring-opacity-50" />
-        </div>
-
-        <div class="mb-6">
-          <label for="start_date" class="block text-sm font-bold leading-6 text-cyan-800">出發日：</label>
-          <input type="date" name="start_date" id="start_date" value="" required min="{% now 'Y-m-d' %}" class="block w-full h-12 pl-1 mt-1 mb-3 border-gray-300 rounded-md shadow-sm form-input focus:border-indigo-600 focus:ring focus:ring-cyan-800 focus:ring-opacity-50" />
-        </div>
-
-        <div class="mb-6">
-          <label for="end_date" class="block text-sm font-bold leading-6 text-cyan-800">結束日：</label>
-          <input type="date" name="end_date" id="end_date" value="" required min="{% now 'Y-m-d' %}" class="block w-full h-12 pl-1 mt-1 mb-3 border-gray-300 rounded-md shadow-sm form-input focus:border-indigo-600 focus:ring focus:ring-cyan-800 focus:ring-opacity-50" />
-        </div>
-
-        <div class="mb-6">
-          <label for="transportation" class="block text-sm font-bold leading-6 text-cyan-800">交通方式：</label>
-          <select class="block w-full h-12 pl-1 mt-1 mb-3 border-gray-300 rounded-md shadow-sm form-input focus:border-indigo-600 focus:ring focus:ring-cyan-800 focus:ring-opacity-50" name="transportation">
-            <option value="">走路</option>
-            <option value="">汽車</option>
-            <option value="">機車</option>
-            <option value="">大眾運輸</option>
-          </select>
-        </div>
+        <label for="name" class="block text-sm font-bold leading-6 text-cyan-800">行程名稱：</label>
+        <input type="text" name="name" id="name" required="required" class="block w-full h-12 pl-1 mt-1 mb-3 border-gray-300 rounded-md shadow-sm form-input focus:border-indigo-600 focus:ring focus:ring-cyan-800 focus:ring-opacity-50" />
       </div>
 
       <div class="mb-6">
-        <label
-          for="transportation"
-          class="block text-sm font-bold leading-6 text-cyan-800"
-          >交通方式：</label
-        >
-        <select
-          class="block w-full h-12 pl-1 mt-1 mb-3 border-gray-300 rounded-md shadow-sm form-input focus:border-indigo-600 focus:ring focus:ring-cyan-800 focus:ring-opacity-50"
-          name="transportation"
-        >
+        <label for="start_date" class="block text-sm font-bold leading-6 text-cyan-800">出發日：</label>
+        <input type="date" name="start_date" id="start_date" value="" required min="{% now 'Y-m-d' %}" class="block w-full h-12 pl-1 mt-1 mb-3 border-gray-300 rounded-md shadow-sm form-input focus:border-indigo-600 focus:ring focus:ring-cyan-800 focus:ring-opacity-50" />
+      </div>
+
+      <div class="mb-6">
+        <label for="end_date" class="block text-sm font-bold leading-6 text-cyan-800">結束日：</label>
+        <input type="date" name="end_date" id="end_date" value="" required min="{% now 'Y-m-d' %}" class="block w-full h-12 pl-1 mt-1 mb-3 border-gray-300 rounded-md shadow-sm form-input focus:border-indigo-600 focus:ring focus:ring-cyan-800 focus:ring-opacity-50" />
+      </div>
+
+      <div class="mb-6">
+        <label for="transportation" class="block text-sm font-bold leading-6 text-cyan-800">交通方式：</label>
+        <select class="block w-full h-12 pl-1 mt-1 mb-3 border-gray-300 rounded-md shadow-sm form-input focus:border-indigo-600 focus:ring focus:ring-cyan-800 focus:ring-opacity-50" name="transportation">
           <option value="">走路</option>
           <option value="">汽車</option>
           <option value="">機車</option>
           <option value="">大眾運輸</option>
         </select>
+      </div>
+      <div class="flex justify-center">
+        <button class="px-4 py-2 font-bold text-white rounded bg-sky-800 hover:bg-sky-950"><input type="submit" value="建立新行程" /></button>
       </div>
     </form>
   </div>
