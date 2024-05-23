@@ -1,5 +1,11 @@
 from django.urls import path
-from .views import ShowView, IndexView, CreateView, toggle_favorite, add_schedule
+from .views import (
+    ShowView,
+    IndexView,
+    CreateView,
+    toggle_favorite,
+    add_schedule,
+)
 
 app_name = "spots"
 
