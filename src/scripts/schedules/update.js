@@ -3,7 +3,6 @@ function endTimeInputValidation() {
     const startTimeInput = document.querySelector("#start_time");
     const endTimeInput = document.querySelector("#end_time");
 
-    // 監聽離開時間的輸入事件
     if (endTimeInput) {
         endTimeInput.addEventListener("input", function() {
         const startTime = new Date("1970-01-01 " + startTimeInput.value);

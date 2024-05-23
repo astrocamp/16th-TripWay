@@ -1,13 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView, ListView, CreateView
-from .models import Spot
-from members.models import MemberSpot
-from schedules.models import Schedule
-from trips.models import TripMember
-from .form import SpotForm
 from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from members.models import MemberSpot
+from trips.models import TripMember
+from .form import SpotForm
+from .models import Spot
 
 
 class IndexView(ListView):

@@ -10,7 +10,6 @@ from django.conf import settings
 from django.contrib import messages
 
 
-# 列出目前行程
 def home(request):
     member = request.user
     trip_members = TripMember.objects.filter(member=member)
@@ -18,7 +17,6 @@ def home(request):
     trips = [{"t":trip, "tm":trip_members.get(trip=trip)} for trip in Trip.objects.filter(id__in=trip_ids).order_by("start_date")]
     return render(request, "trips/index.html", {"trips": trips})
 
-# 輸入行程資訊
 def new(request):
     return render(request, "trips/new.html")
 
@@ -70,7 +68,6 @@ def create_member(request, id):
     return redirect(reverse("trips:schedules:index", kwargs={"id": trip.id}))
 
 
-# 刪除行程(硬刪)
 @require_POST
 def delete(request, id):
     trip = get_object_or_404(Trip, pk=id)

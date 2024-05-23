@@ -11,22 +11,15 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self.stdout.write("正在執行你的腳本...")
-        
-        # Google Places API 金鑰
         api_key = os.getenv("API_KEY") 
-
-        # 請求 URL
         url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
 
-        # 準備請求參數
         query = "熱門景點"  # 查詢關鍵字（根據需要更改）
         parameters = {
             "query": query,
             "language": "zh-TW",
             "key": api_key,
         }
-
-        # 發送 GET 請求
         response = requests.get(url, params=parameters)
 
         if response.status_code == 200:
