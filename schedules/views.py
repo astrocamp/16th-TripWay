@@ -1,14 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
-from .models import Schedule
-from trips.models import Trip, TripMember
 from django.utils import timezone
+from django.contrib import messages
+from trips.models import Trip, TripMember
+from .models import Schedule
 from datetime import timedelta
 from itertools import groupby
 from operator import attrgetter
 from members.models import Member
 from spots.models import Spot
-from django.contrib import messages
 
 def index(request, id):
     trip = get_object_or_404(Trip, pk=id)

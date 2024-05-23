@@ -1,11 +1,8 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from .forms import SignUp
 from django.contrib import messages
-from .models import Member, Spot
 
-
-# Login
 def login_user(request):
     if request.method == "POST":
         email = request.POST["email"]
@@ -24,14 +21,12 @@ def login_user(request):
         return render(request, "registration/login.html")
 
 
-# Logout
 def logout_user(request):
     logout(request)
     messages.success(request, "登出成功！")
     return redirect("home")
 
 
-# Register
 def register_user(request):
     if request.method == "POST":
         form = SignUp(request.POST)
