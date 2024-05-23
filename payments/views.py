@@ -27,12 +27,6 @@ def create_order(request):
     order = PaymentService(member, price).call(request)
     return render(request, 'payments/check.html', order)
 
-
-# @csrf_exempt
-# def newpay_return(request):
-#     return render(request, "payments/success.html")
-
-
 @csrf_exempt
 def newpay_return(request):
     if request.method == "POST":
