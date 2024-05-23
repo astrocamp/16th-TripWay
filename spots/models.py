@@ -1,7 +1,6 @@
 from django.db import models
 from django.shortcuts import redirect
-
-# Create your models here.
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Spot(models.Model):
