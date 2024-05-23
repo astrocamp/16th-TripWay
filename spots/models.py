@@ -1,6 +1,5 @@
 from django.db import models
-
-# Create your models here.
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Spot(models.Model):
@@ -15,23 +14,11 @@ class Spot(models.Model):
     )
     phone = models.CharField(max_length=20, null=True)
     url = models.URLField(max_length=255, null=True)
-    rating = models.FloatField(null=True)
+    rating = models.FloatField(
+        null=True, validators=[MinValueValidator(0.0), MaxValueValidator(5.0)]
+    )
     place_id = models.CharField(max_length=255, null=True)
 
-    # description = models.TextField(default="")
-    # MondayHr = models.CharField(max_length=50)
-    # TuesdayHr = models.CharField(max_length=50)
-    # WednesdayHr = models.CharField(max_length=50)
-    # ThursdayHr = models.CharField(max_length=50)
-    # FridayHr = models.CharField(max_length=50)
-    # SaturdayHr = models.CharField(max_length=50)
-    # SundayHr = models.CharField(max_length=50)
-    # PhotoReference1 = models.CharField(max_length=255)
-    # created_at = models.DateTimeField(auto_now_add=True)
-    # updated_at = models.DateTimeField(auto_now=True)
-    # CommentTimes = models.CharField(max_length=50)
-    # SpotType = models.CharField(max_length=255)
-    # FavTimes = models.CharField(max_length=50)
     def __str__(self):
         return self.name
 
