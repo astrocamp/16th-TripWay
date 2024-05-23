@@ -29,15 +29,15 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "members",
-    "schedules",
-    "trips",
     "django.contrib.sites",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
     "allauth.socialaccount.providers.line",
+    "members",
+    "schedules",
+    "trips",
     "spots",
     "payments",
 ]
@@ -164,19 +164,18 @@ AUTHENTICATION_BACKENDS = (
 
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "/"
-
 ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_LOGOUT_ON_GET = True
 SOCIALACCOUNT_LOGIN_ON_GET = True
 
 HOST_NAME = os.getenv("HOST_NAME")
-
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     HOST_NAME,
 ]
 CSRF_TRUSTED_ORIGINS = [f"https://{os.getenv('HOST_NAME')}"]
+
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")

@@ -29,7 +29,7 @@ class CreateView(CreateView):
     success_url = reverse_lazy("spots:index")
 
 
-def add(request, pk):
+def add_schedule(request, pk):
     member = request.user
     trips_member = TripMember.objects.filter(member=member)
     trips = [trip_member.trip for trip_member in trips_member]

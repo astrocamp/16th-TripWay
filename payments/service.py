@@ -1,12 +1,11 @@
 from django.shortcuts import render
-from django.conf import settings
 from django.utils import timezone
-import binascii
-import hashlib
-from urllib.parse import urlencode
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import padding
+from urllib.parse import urlencode
+import binascii
+import hashlib
 import os
 
 HOST_NAME = os.getenv("HOST_NAME")
@@ -16,7 +15,6 @@ HASHKEY = os.getenv("HASHKEY")
 HASHIV = os.getenv("HASHIV")
 Version = os.getenv("Version")
 ReturnUrl = f"https://{HOST_NAME}/members/upgrade/return"
-# NotifyUrl = settings.ENCRYPTION_KEY["NOTIFY_URL"] #待完成
 PayGateWay = os.getenv("PayGateWay")
 RespondType = os.getenv("RespondType")
 
