@@ -11,4 +11,4 @@
 - `python manage.py migrate`<br>
 
 ## SEED
-- python manage.py `seed` <br>
+- `python manage.py seed` <br>
