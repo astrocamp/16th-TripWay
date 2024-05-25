@@ -1,0 +1,88 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="flex flex-col items-center justify-center py-12">
+    <div class="w-full max-w-md">
+        <h1 class="mb-8 text-2xl font-bold text-center">評論景點</h1>
+
+        {% if messages %}
+        <div class="mb-4">
+            {% for message in messages %}
+            <div class="p-4 mb-4 text-white bg-{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Rating and Comment System -->
+        <form id="ratingForm" method="post" action="{% url 'comments:index' %}">
+            {% csrf_token %}
+            <div>
+                <h2 class="mb-4 text-xl font-semibold text-center">推薦指數</h2>
+                <div class="flex justify-center rating">
+                    <input type="radio" name="rating" value="1" class="bg-orange-400 mask mask-star-2" />
+                    <input type="radio" name="rating" value="2" class="bg-orange-400 mask mask-star-2" />
+                    <input type="radio" name="rating" value="3" class="bg-orange-400 mask mask-star-2" />
+                    <input type="radio" name="rating" value="4" class="bg-orange-400 mask mask-star-2" />
+                    <input type="radio" name="rating" value="5" class="bg-orange-400 mask mask-star-2" />
+                </div>
+                <textarea name="comment" class="w-full px-4 py-2 mt-5 mb-4 border rounded-md" rows="4" maxlength="1000" placeholder="留下你對此景點的評價吧!"></textarea>
+                <input type="hidden" id="id_rating" name="rating">
+                <button type="submit" class="block px-8 py-3 mx-auto text-xl font-bold text-white bg-light-blue rounded-3xl hover:bg-gray-500">提交</button>
+            </div>
+        </form>
+
+        <!-- Display Comments -->
+        <div class="mt-8">
+            <h2 class="mb-4 text-xl font-semibold text-center">評論內容</h2>
+            {% for comment in comments %}
+            <div class="p-4 mb-4 border rounded-md">
+                <p>{{ comment.content }}</p>
+                <p>評分:
+                    {% for rating in comment.ratings.all %}
+                        {{ rating.value }}
+                    {% endfor %}
+                </p>
+                <form method="post" action="{% url 'comments:index' %}" class="hidden edit-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="edit_comment_id" value="{{ comment.id }}">
+                    <textarea name="edit_comment_content" class="w-full px-4 py-2 mb-4 border rounded-md" rows="2">{{ comment.content }}</textarea>
+                    <button type="submit" class="text-blue-500 hover:underline">保存</button>
+                    <button type="button" class="text-gray-500 hover:underline" onclick="toggleEditForm(this)">取消</button>
+                </form>
+                <div class="flex items-center justify-between mt-2">
+                    <button class="text-blue-500 hover:underline" onclick="toggleEditForm(this)">編輯留言</button>
+                    <form method="post" action="{% url 'comments:index' %}" class="delete-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="delete_comment_id" value="{{ comment.id }}">
+                        <button type="button" class="text-red-500 hover:underline" onclick="confirmDelete(this)">刪除留言</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll('input[name="rating"]').forEach(input => {
+        input.addEventListener('change', function() {
+            document.getElementById('id_rating').value = this.value;
+        });
+    });
+
+    function toggleEditForm(button) {
+        const form = button.closest('div').previousElementSibling;
+        form.classList.toggle('hidden');
+    }
+
+    function confirmDelete(button) {
+        if (confirm("是否刪除留言?")) {
+            button.closest('form').submit();
+        }
+    }
+</script>
+
+{% endblock %}
