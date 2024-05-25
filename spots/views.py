@@ -7,41 +7,26 @@ from django.contrib.auth.decorators import login_required
 from members.models import MemberSpot
 from trips.models import TripMember
 from .form import SpotForm
-from .models import Spot
+from .models import Spot, LoginRequired
 
 
-class IndexView(ListView):
+class IndexView(LoginRequired, ListView):
     model = Spot
 
-    # 執行身份驗證，檢查使用者是否已登入
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect("login")
-        return super().dispatch(request, *args, **kwargs)
 
-class ShowView(DetailView):
+class ShowView(LoginRequired, DetailView):
     model = Spot
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect("login")
-        return super().dispatch(request, *args, **kwargs)
     
     def post(self, request, pk):
         spot = self.get_object()
         return redirect("spots:show", pk=spot.id)
 
 
-class CreateView(CreateView):
+class CreateView(LoginRequired,CreateView):
     model = Spot
     template_name = "spots/create.html"
     form_class = SpotForm
     success_url = reverse_lazy("spots:index")
-    
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect("login")
-        return super().dispatch(request, *args, **kwargs)
 
 
 @login_required
