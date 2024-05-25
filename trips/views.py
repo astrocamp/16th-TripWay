@@ -84,7 +84,6 @@ def delete(request, id):
     return redirect("trips:index")
 
 
-@login_required
 def delete_TripMember(trip_id, member_id):
     trip_member = get_object_or_404(TripMember, trip_id=trip_id, member_id=member_id)
     trip_member.delete()

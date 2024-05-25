@@ -16,7 +16,7 @@ class IndexView(ListView):
     # 執行身份驗證，檢查使用者是否已登入
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return redirect('login')
+            return redirect("login")
         return super().dispatch(request, *args, **kwargs)
 
 class ShowView(DetailView):
@@ -24,7 +24,7 @@ class ShowView(DetailView):
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return redirect('login')
+            return redirect("login")
         return super().dispatch(request, *args, **kwargs)
     
     def post(self, request, pk):
@@ -40,7 +40,7 @@ class CreateView(CreateView):
     
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return redirect('login')
+            return redirect("login")
         return super().dispatch(request, *args, **kwargs)
 
 
