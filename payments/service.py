@@ -4,6 +4,7 @@ from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import padding
 from urllib.parse import urlencode
+from .models import Payment
 import binascii
 import hashlib
 import os
@@ -35,7 +36,6 @@ class PaymentService:
             "Amt": str(self.price),
             "ItemDesc": "MemberUpgrade",
             "ReturnURL": ReturnUrl,
-            "NotifyUrl": NotifyUrl,
         }
         return data
 
@@ -67,6 +67,16 @@ class PaymentService:
         data_query = urlencode(data).encode("utf-8")
         edata = self.encrypt_data(data_query)
         hash_result = self.create_hash(edata)
+
+        payment = Payment(
+            member = self.member,
+            order = data["MerchantOrderNo"],
+            price = data["Amt"],
+            trade_no = None,
+            status = None,
+            paid_at = None 
+        )
+        payment.save()
 
         content = {
             "MerchantID": MerchantID,
