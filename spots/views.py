@@ -13,7 +13,7 @@ from .models import Spot
 class IndexView(ListView):
     model = Spot
 
-    # 執行身份驗證，檢查用戶是否已登錄
+    # 執行身份驗證，檢查使用者是否已登入
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('login')
