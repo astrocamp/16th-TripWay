@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.utils import timezone
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
@@ -31,7 +30,7 @@ class PaymentService:
             "MerchantID": MerchantID,
             "RespondType": RespondType,
             "TimeStamp": self.timestamp,
-            "Version": "2.0",
+            "Version": Version,
             "MerchantOrderNo": self.timestamp,
             "Amt": str(self.price),
             "ItemDesc": "MemberUpgrade",
@@ -72,9 +71,6 @@ class PaymentService:
             member = self.member,
             order = data["MerchantOrderNo"],
             price = data["Amt"],
-            trade_no = None,
-            status = None,
-            paid_at = None 
         )
         payment.save()
 

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
@@ -31,9 +31,6 @@ def create_order(request):
 def newpay_return(request):
     if request.method == "POST":
         params = request.POST.get("TradeInfo")
-        print(request)
-        print("-----------------")
-        print(params)
         if params:
             try:
                 key = os.getenv("HASHKEY").encode("utf-8")
@@ -52,6 +49,7 @@ def newpay_return(request):
 
                 response = json.loads(plain)
 
+                # 更新Payment & member
                 order = response["Result"]["MerchantOrderNo"]
                 price = response["Result"]["Amt"]
                 trade_no = response["Result"]["TradeNo"]
@@ -66,13 +64,13 @@ def newpay_return(request):
                 member = payment.member
 
                 if  payment.price >= 200:
-                    member.level = "svip"  # 高級會員
+                    member.level = "svip"  
                 elif payment.price >= 100:
-                    member.level = "vvip"  # 中級會員
+                    member.level = "vvip"  
                 elif payment.price >= 50:
-                    member.level = "vip"  # 中級會員
+                    member.level = "vip"  
                 else:
-                    member.level = "basic"  # 初級會員
+                    member.level = "basic"  
 
                 member.save()
 
@@ -93,8 +91,5 @@ def newpay_return(request):
 # 移除填充字節
 def strip_padding(data):
     slast = data[-1]
-    pcheck = data[-slast:]
-    if pcheck == bytes([slast]) * slast:
-        return data[:-slast].decode("utf-8")
-    else:
-        return data.decode("utf-8")
+    return data[:-slast].decode("utf-8")
+
