@@ -175,7 +175,7 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     HOST_NAME,
 ]
-CSRF_TRUSTED_ORIGINS = [f"https://{os.getenv('HOST_NAME')}"]
+CSRF_TRUSTED_ORIGINS = [f"https://{HOST_NAME}"]
 
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")

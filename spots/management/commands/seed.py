@@ -38,8 +38,5 @@ class Command(BaseCommand):
                     "rating": place["rating"],
                 }
             )
-            
+
         self.stdout.write("腳本執行完畢")
-
-
-
