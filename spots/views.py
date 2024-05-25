@@ -3,6 +3,7 @@ from django.views.generic import DetailView, ListView, CreateView
 from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 from members.models import MemberSpot
 from trips.models import TripMember
 from .form import SpotForm
@@ -11,11 +12,21 @@ from .models import Spot
 
 class IndexView(ListView):
     model = Spot
-
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('login')
+        return super().dispatch(request, *args, **kwargs)
 
 class ShowView(DetailView):
     model = Spot
 
+    # 執行身份驗證，檢查用戶是否已登錄
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def post(self, request, pk):
         spot = self.get_object()
         return redirect("spots:show", pk=spot.id)
@@ -26,8 +37,14 @@ class CreateView(CreateView):
     template_name = "spots/create.html"
     form_class = SpotForm
     success_url = reverse_lazy("spots:index")
+    #
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('login')
+        return super().dispatch(request, *args, **kwargs)
 
 
+@login_required
 def add_schedule(request, pk):
     member = request.user
     trips_member = TripMember.objects.filter(member=member)
@@ -43,6 +60,7 @@ def add_schedule(request, pk):
 
 
 @csrf_exempt
+@login_required
 def toggle_favorite(request, pk):
     if request.method == "POST":
         member = request.user
