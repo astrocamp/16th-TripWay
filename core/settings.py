@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "trips",
     "spots",
     "payments",
+    "comments",
 ]
 
 SOCIALACCOUNT_PROVIDERS = {

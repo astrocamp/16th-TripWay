@@ -1,7 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{% static 'styles/style.css' %}" />
@@ -9,27 +9,26 @@
     <!-- SweetAlert -->
     <script src="{% static 'scripts/output.js' %}" type="module"></script>
     <title>
-      {% block title %}
-        TripWay
-      {% endblock %}
+        {% block title %}
+            TripWay
+        {% endblock %}
     </title>
     <style>
-      html {
-        scroll-behavior: smooth;
-      }
-      #hotspots-section {
-        scroll-margin-top: 50px;
-      }
-      .relative:hover img {
-        transition: transform-300 ease-in-out, scale 1.05;
-      }
-      .relative:hover p {
-        transition: transform-300 ease-in-out, scale 1.05;
-      }
+        html {
+            scroll-behavior: smooth;
+        }
+        #hotspots-section {
+            scroll-margin-top: 50px;
+        }
+        .relative:hover img {
+            transition: transform-300 ease-in-out, scale 1.05;
+        }
+        .relative:hover p {
+            transition: transform-300 ease-in-out, scale 1.05;
+        }
     </style>
-  </head>
-  
-  <body>
+</head>
+<body class="flex flex-col min-h-screen">
     {% include 'shared/navbar.html' %}
     {% block content %}
     {% endblock %}
