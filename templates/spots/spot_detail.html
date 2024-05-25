@@ -20,10 +20,9 @@
       </div>
       <div>
         <i
-          id="favoriteIcon"
-          class="mt-4 fa-regular fa-heart fa-2xl"
-          onclick="toggleFavorite()">
-        </i>
+				id="favoriteIcon"
+				class="mt-4 fa-heart fa-2xl {% if is_favorite %}fa-solid {% else %}fa-regular {% endif %}"
+			></i>
       </div>
 	</section>
 </div>

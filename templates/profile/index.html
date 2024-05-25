@@ -1,5 +1,26 @@
 {% extends 'layouts/base.html' %} {% block content %}
 
-<h1>收藏列表</h1>
+<h2>收藏列表</h2>
 
-{% endblock %}
+{% for member_spot in member_spots %}
+<div class="shadow-xl card w-96 bg-base-100">
+  <figure><img src="https://picsum.photos/370/200" alt="" /></figure>
+  <div class="favorite-spot">
+    <h2 class="title">
+      {{ member_spot.spot.name }}
+      <i
+        id="favoriteIcon"
+        class="mt-4 fa-regular fa-heart fa-2xl"
+        onclick="toggleFavorite()">
+      </i>
+    </h2>
+    <p>{{ member_spot.spot.description }}</p>
+    <div class="justify-end card-actions">
+      <div class="badge badge-outline">rating</div> 
+      <div class="badge badge-outline">city</div>
+      <div class="badge badge-outline">map</div>
+    </div>
+  </div>
+</div>
+
+{% endfor %} {% endblock %}
