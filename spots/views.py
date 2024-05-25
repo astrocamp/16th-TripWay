@@ -42,12 +42,18 @@ def add_schedule(request, pk):
     return render(request, "spots/add.html", context)
 
 
+def spot_detail(request, pk):
+    spot = get_object_or_404(Spot, id=pk)
+    member = request.user
+    is_favorite = MemberSpot.objects(member=member, spot=spot).exists()
+    return render(request, "spots/spot_detail.html", {"is_favorite": is_favorite})
+
 @csrf_exempt
 def toggle_favorite(request, pk):
-    if request.method == "POST":
-        member = request.user
-        spot = get_object_or_404(Spot, id=pk)
+    member = request.user
+    spot = get_object_or_404(Spot, id=pk)
 
+    if request.method == "POST":
         try:
             member_spot = MemberSpot.objects.get(member=member, spot=spot)
             member_spot.delete()
