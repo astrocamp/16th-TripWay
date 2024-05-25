@@ -12,7 +12,8 @@ from .models import Spot
 
 class IndexView(ListView):
     model = Spot
-    
+
+    # 執行身份驗證，檢查用戶是否已登錄
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('login')
@@ -21,7 +22,6 @@ class IndexView(ListView):
 class ShowView(DetailView):
     model = Spot
 
-    # 執行身份驗證，檢查用戶是否已登錄
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('login')
@@ -37,7 +37,7 @@ class CreateView(CreateView):
     template_name = "spots/create.html"
     form_class = SpotForm
     success_url = reverse_lazy("spots:index")
-    #
+    
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('login')
