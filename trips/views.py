@@ -4,12 +4,14 @@ from django.urls import reverse
 from .models import Trip, TripMember
 from members.models import Member
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from .models import Trip, Photo
 from .forms import UploadModelForm
 from django.conf import settings
 from django.contrib import messages
 
 
+@login_required
 def home(request):
     member = request.user
     trip_members = TripMember.objects.filter(member=member)
@@ -17,20 +19,25 @@ def home(request):
     trips = [{"t":trip, "tm":trip_members.get(trip=trip)} for trip in Trip.objects.filter(id__in=trip_ids).order_by("start_date")]
     return render(request, "trips/index.html", {"trips": trips})
 
+
+@login_required
 def new(request):
     return render(request, "trips/new.html")
 
 
+@login_required
 def new_member(request, id):
     trip = get_object_or_404(Trip, pk=id)
     return render(request, "trips/new_member.html", {"trip": trip})
 
 
 # google map
+@login_required
 def map(request):
     return render(request, "trips/map.html")
 
 
+@login_required
 def create(request):
     if request.method == "POST":
         name = request.POST["name"]
@@ -57,6 +64,7 @@ def create(request):
 
 
 @require_POST
+@login_required
 def create_member(request, id):
     trip = get_object_or_404(Trip, id=id)
     email = request.POST["email"]
@@ -69,12 +77,14 @@ def create_member(request, id):
 
 
 @require_POST
+@login_required
 def delete(request, id):
     trip = get_object_or_404(Trip, pk=id)
     trip.delete()
     return redirect("trips:index")
 
 
+@login_required
 def delete_TripMember(trip_id, member_id):
     trip_member = get_object_or_404(TripMember, trip_id=trip_id, member_id=member_id)
     trip_member.delete()
@@ -86,18 +96,21 @@ def delete_TripMember(trip_id, member_id):
 
 
 @require_POST
+@login_required
 def delete_member(request, trip_id, member_id):
     delete_TripMember(trip_id, member_id)
     return redirect("trips:schedules:index", id=trip_id)
 
 
 @require_POST
+@login_required
 def delete_self(request, trip_id, member_id):
     delete_TripMember(trip_id, member_id)
     return redirect("trips:index")
 
 
 @require_POST
+@login_required
 def upload_photo(request):
     form = UploadModelForm(request.POST, request.FILES)
     photos = Photo.objects.all()
@@ -107,7 +120,9 @@ def upload_photo(request):
         messages.success(request, "圖片上傳成功！")
     return render(request, "trips/new.html", {"photos":photos})
 
+
 @require_POST
+@login_required
 def delete_photo(request):
     Photo.objects.all().delete()
     messages.success(request, "圖片刪除成功！")
