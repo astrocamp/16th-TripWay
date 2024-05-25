@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Comment
 from spots.models import Spot
+from django.contrib import messages
+from .models import Comment
 from .forms import CommentForm
 
 def index(request):
@@ -41,3 +43,4 @@ def index(request):
     spots = Spot.objects.all()
     alert = request.session.pop('alert', None)
     return render(request, 'comments/index.html', {'comments': comments, 'form': form, 'spots': spots, 'alert': alert})
+    
