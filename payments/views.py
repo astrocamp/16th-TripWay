@@ -20,7 +20,6 @@ def create_order(request):
 
 
 @csrf_exempt
-@login_required
 def newpay_return(request):
     print(request)
     return render(request, "payments/success.html")
