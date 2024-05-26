@@ -14,6 +14,6 @@ urlpatterns = [
     path("<id>/add-member", views.create_member, name="add-member"),
     path("<trip_id>/<member_id>/delete-member", views.delete_member, name="delete-member"),
     path("<trip_id>/<member_id>/delete-self", views.delete_self, name="delete-self"),
-    path("upload_photo", views.upload_photo, name="upload_photo"),
-    path("delete_photo", views.delete_photo, name="delete_photo"), 
+    # path("upload_photo", views.upload_photo, name="upload_photo"),
+    # path("delete_photo", views.delete_photo, name="delete_photo"), 
 ]

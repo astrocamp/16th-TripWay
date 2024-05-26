@@ -5,8 +5,7 @@ from .models import Trip, TripMember
 from members.models import Member
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import Trip, Photo
-from .forms import UploadModelForm
+from .models import Trip
 from django.conf import settings
 from django.contrib import messages
 
@@ -44,6 +43,7 @@ def create(request):
         start_date = request.POST["start_date"]
         end_date = request.POST["end_date"]
         transportation = request.POST["transportation"]
+        image = request.FILES["image"]
 
         if end_date < start_date:
             messages.error(request, "結束日期不能早於開始日期")
@@ -55,7 +55,8 @@ def create(request):
             start_date=start_date,
             end_date=end_date,
             transportation=transportation,
-            owner=member.id
+            owner=member.id,
+            image=image
         )
         trip.save()
         TripMember.objects.create(trip=trip, member=member, is_editable=True)
@@ -108,21 +109,19 @@ def delete_self(request, trip_id, member_id):
     return redirect("trips:index")
 
 
-@require_POST
-@login_required
-def upload_photo(request):
-    form = UploadModelForm(request.POST, request.FILES)
-    photos = Photo.objects.all()
-    if form.is_valid():
-        Photo.objects.all().delete()
-        form.save()
-        messages.success(request, "圖片上傳成功！")
-    return render(request, "trips/new.html", {"photos":photos})
+# @require_POST
+# @login_required
+# def upload_photo(request, id):
+#     trips = get_object_or_404(Trip, id=id)
+#     trips.image = request.FILES["image"]
+#     messages.success(request, "圖片上傳成功！")
+#     return render(request, "trips/new.html", {"trips":trips})
 
 
-@require_POST
-@login_required
-def delete_photo(request):
-    Photo.objects.all().delete()
-    messages.success(request, "圖片刪除成功！")
-    return redirect("trips:new")
+# @require_POST
+# @login_required
+# def delete_photo(request):
+#     trips = get_object_or_404(Trip, id=id)
+#     trips.image = None
+#     messages.success(request, "圖片刪除成功！")
+#     return redirect("trips:new")
