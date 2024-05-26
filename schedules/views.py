@@ -2,19 +2,25 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from django.utils import timezone
 from django.contrib import messages
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from trips.models import Trip, TripMember
-from .models import Schedule
 from datetime import timedelta
 from itertools import groupby
 from operator import attrgetter
-from members.models import Member
+
+from .models import Schedule
 from spots.models import Spot
+from members.models import Member
+from trips.models import Trip, TripMember
+
 
 @login_required
 def index(request, id):
+    google_api_key = settings.GOOGLE_API_KEY
     trip = get_object_or_404(Trip, pk=id)
-    schedules = Schedule.objects.filter(trip=trip.id, deleted_at=None).order_by("date", "start_time")
+    schedules = Schedule.objects.filter(trip=trip.id, deleted_at=None).order_by(
+        "date", "start_time"
+    )
 
     grouped_schedules = {}
     # 根據行程的日期屬性將行程分組並提取日期
@@ -22,17 +28,25 @@ def index(request, id):
         grouped_schedules[date] = list(group)
 
     date_range = trip.get_date_range()
-    member_ids = TripMember.objects.filter(trip_id=id).order_by("id").values_list("member_id", flat=True)
+    member_ids = (
+        TripMember.objects.filter(trip_id=id)
+        .order_by("id")
+        .values_list("member_id", flat=True)
+    )
     members = Member.objects.filter(id__in=member_ids)
     trip_member = get_object_or_404(TripMember, trip=trip, member=request.user)
-    
+
     return render(
-        request, "schedules/index.html", {
-            "schedule_dates": grouped_schedules, 
-            "date_range": date_range, 
-            "trip": trip, "members": members, 
-            "trip_member": trip_member
-        }
+        request,
+        "schedules/index.html",
+        {
+            "schedule_dates": grouped_schedules,
+            "date_range": date_range,
+            "trip": trip,
+            "members": members,
+            "trip_member": trip_member,
+            "google_api_key": google_api_key,
+        },
     )
 
 
@@ -77,21 +91,21 @@ def show(request, id):
         schedules.start_time = request.POST["start_time"]
         schedules.end_time = request.POST["end_time"]
         schedules.note = request.POST["note"]
-        
+
         if schedules.end_time > schedules.start_time:
             schedules.save()
             messages.success(request, "更新成功！")
-            return redirect("schedules:show", id=id) 
+            return redirect("schedules:show", id=id)
         else:
             messages.error(request, "離開時間不可早於抵達時間！")
-            return redirect("schedules:update", id=id) 
+            return redirect("schedules:update", id=id)
     else:
         trip_member = get_object_or_404(TripMember, trip=trip, member=request.user)
-        return render(request, "schedules/show.html", {
-            "schedules": schedules, 
-            "trip": trip, 
-            "trip_member": trip_member
-        })
+        return render(
+            request,
+            "schedules/show.html",
+            {"schedules": schedules, "trip": trip, "trip_member": trip_member},
+        )
 
 
 @login_required
@@ -99,7 +113,8 @@ def update(request, id):
     schedule = get_object_or_404(Schedule, pk=id)
     date_range = schedule.trip.get_date_range()
     return render(
-        request, "schedules/update.html",
+        request,
+        "schedules/update.html",
         {"schedule": schedule, "date_range": date_range},
     )
 
