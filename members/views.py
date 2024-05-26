@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from .forms import SignUp
 from django.contrib import messages
+from .forms import SignUp
+from .models import MemberSpot
 
 def login_user(request):
     if request.method == "POST":
@@ -40,3 +41,9 @@ def register_user(request):
         form = SignUp()
 
     return render(request, "registration/register.html", {"form": form})
+
+
+def profile(request):
+    member = request.user
+    spots = MemberSpot.objects.filter(member=member).select_related("spot")
+    return render(request, "profile/index.html", {"spots": spots})

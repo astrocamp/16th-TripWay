@@ -1,26 +1,18 @@
 {% extends 'layouts/base.html' %} {% block content %}
 
-<h2>收藏列表</h2>
+<h2 class="p-2 m-4 text-3xl text-center">收藏列表</h2>
 
-{% for member_spot in member_spots %}
-<div class="shadow-xl card w-96 bg-base-100">
-  <figure><img src="https://picsum.photos/370/200" alt="" /></figure>
-  <div class="favorite-spot">
-    <h2 class="title">
-      {{ member_spot.spot.name }}
-      <i
-        id="favoriteIcon"
-        class="mt-4 fa-regular fa-heart fa-2xl"
-        onclick="toggleFavorite()">
-      </i>
-    </h2>
-    <p>{{ member_spot.spot.description }}</p>
-    <div class="justify-end card-actions">
-      <div class="badge badge-outline">rating</div> 
-      <div class="badge badge-outline">city</div>
-      <div class="badge badge-outline">map</div>
-    </div>
-  </div>
+{% for spot in spots %}
+
+<div class="flex flex-wrap ml-10 shadow-xl wa card w-96 bg-baseflex">
+	<figure><img src="https://picsum.photos/400" alt="" /></figure>
+	<div class="card-body">
+		<h2 class="card-title">{{ spot.spot.name }}</h2>
+		<div class="justify-end card-actions">
+			<div class="badge badge-outline">rating</div>
+			<div class="badge badge-outline">city</div>
+		</div>
+	</div>
 </div>
 
-{% endfor %} {% endblock %}
+{% endfor %}{% endblock %}
