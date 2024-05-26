@@ -12,11 +12,27 @@ from django.contrib import messages
 
 @login_required
 def home(request):
-    member = request.user
-    trip_members = TripMember.objects.filter(member=member)
-    trip_ids = trip_members.values_list("trip_id", flat=True)
-    trips = [{"t":trip, "tm":trip_members.get(trip=trip)} for trip in Trip.objects.filter(id__in=trip_ids).order_by("start_date")]
-    return render(request, "trips/index.html", {"trips": trips})
+    if request.method == "POST":
+        trip_id = request.POST.get("trip_id")
+        trip = get_object_or_404(Trip, id=trip_id)
+
+        trip.name = request.POST["name"]
+        trip.start_date = request.POST["start_date"]
+        trip.end_date = request.POST["end_date"]
+        trip.transportation = request.POST["transportation"]
+        if "image" in request.FILES:
+            trip.image = request.FILES["image"]
+
+        trip.save()
+        return redirect("trips:index")
+
+    else:
+        member = request.user
+        trip_members = TripMember.objects.filter(member=member)
+        trip_ids = trip_members.values_list("trip_id", flat=True)
+        trips = Trip.objects.filter(id__in=trip_ids).order_by("start_date")
+        trips = [{"t":trip, "tm":trip_members.get(trip=trip)} for trip in trips]
+        return render(request, "trips/index.html", {"trips": trips})
 
 
 @login_required
@@ -63,6 +79,11 @@ def create(request):
         messages.success(request, "旅程創建成功！")
         return redirect("trips:index")
 
+@login_required
+def update(request, id):
+    trips = get_object_or_404(Trip, pk=id)
+    return render (request, "trips/update.html", {"trips":trips})
+
 
 @require_POST
 @login_required
@@ -107,21 +128,3 @@ def delete_member(request, trip_id, member_id):
 def delete_self(request, trip_id, member_id):
     delete_TripMember(trip_id, member_id)
     return redirect("trips:index")
-
-
-# @require_POST
-# @login_required
-# def upload_photo(request, id):
-#     trips = get_object_or_404(Trip, id=id)
-#     trips.image = request.FILES["image"]
-#     messages.success(request, "圖片上傳成功！")
-#     return render(request, "trips/new.html", {"trips":trips})
-
-
-# @require_POST
-# @login_required
-# def delete_photo(request):
-#     trips = get_object_or_404(Trip, id=id)
-#     trips.image = None
-#     messages.success(request, "圖片刪除成功！")
-#     return redirect("trips:new")

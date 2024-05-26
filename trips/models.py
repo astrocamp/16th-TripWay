@@ -15,14 +15,9 @@ class Trip(models.Model):
     )
     upload_date = models.DateField(default=timezone.now)
 
-    def __str__(self):
-        return self.name 
-
     def get_date_range(self):
         return [self.start_date + timedelta(days=x) for x in range((self.end_date - self.start_date).days + 1)]
 
-    def __str__(self):
-        return self.image.url
 
 
 class TripMember(models.Model):
