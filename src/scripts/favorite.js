@@ -6,6 +6,7 @@ const icon = document.getElementById("favoriteIcon")
 let isFavorite = false
 
 document.addEventListener("DOMContentLoaded", () => {
+if (icon) {
     fetch(toggleFavoriteUrl, {
         method: "GET",
         headers: {
@@ -23,13 +24,13 @@ document.addEventListener("DOMContentLoaded", () => {
             icon.classList.add("fa-regular")
         }
     })
-})
 
-if (icon) {
     icon.addEventListener("click", () => {
         toggleFavorite()
         }
     )}
+})
+
 
 function toggleFavorite() {
     fetch(toggleFavoriteUrl, {
