@@ -2,14 +2,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from django.urls import reverse
 from django.conf import settings
-from .models import Trip, TripMember
-from members.models import Member
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+
+from .models import Trip, TripMember
+from members.models import Member
 from .models import Trip, Photo
 from .forms import UploadModelForm
-from django.conf import settings
-from django.contrib import messages
 
 
 @login_required
@@ -35,7 +34,6 @@ def new_member(request, id):
     return render(request, "trips/new_member.html", {"trip": trip})
 
 
-# google map
 @login_required
 def map(request):
     google_api_key = settings.GOOGLE_API_KEY
