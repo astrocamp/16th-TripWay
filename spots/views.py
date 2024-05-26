@@ -44,27 +44,22 @@ def add_schedule(request, pk):
     return render(request, "spots/add.html", context)
 
 
-def spot_detail(request, pk):
-    spot = get_object_or_404(Spot, id=pk)
-    member = request.user
-    is_favorite = MemberSpot.objects(member=member, spot=spot).exists()
-    return render(request, "spots/spot_detail.html", {"is_favorite": is_favorite})
-
 @csrf_exempt
 @login_required
 def toggle_favorite(request, pk):
     member = request.user
     spot = get_object_or_404(Spot, id=pk)
-
-    if request.method == "POST":
-        try:
-            member_spot = MemberSpot.objects.get(member=member, spot=spot)
-            member_spot.delete()
-            is_favorite = False
-        except MemberSpot.DoesNotExist:
-            MemberSpot.objects.create(member=member, spot=spot)
-            is_favorite = True
-
+    
+    if request.method == "GET":
+        is_favorite = MemberSpot.objects.filter(member=member, spot=spot).exists()
         return JsonResponse({"is_favorite": is_favorite})
-    else:
-        return JsonResponse({"error": "Invalid request method"})
+    
+    elif request.method == "POST":
+        is_favorite = MemberSpot.objects.filter(member=member, spot=spot).exists()
+        
+        if is_favorite:
+            MemberSpot.objects.filter(member=member, spot=spot).delete()
+            return JsonResponse({"status": "removed"})
+        else:
+            MemberSpot.objects.create(member=member, spot=spot)
+            return JsonResponse({"status": "added"})
