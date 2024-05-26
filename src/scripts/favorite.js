@@ -1,13 +1,29 @@
 const currentUrl = window.location.href
-const spotId = currentUrl.split('/').slice(-2)[0]
-const toggleFavoriteUrl = `/spots/${spotId}/toggle_favorite`
+const spotId = currentUrl.split("/").slice(-2)[0]
+const toggleFavoriteUrl = `/spots/${spotId}/favorite`
 const icon = document.getElementById("favoriteIcon")
 
 let isFavorite = false
 
-if (icon && icon.classList.contains("fa-solid")) {
-  isFavorite = true;
-}
+document.addEventListener("DOMContentLoaded", () => {
+    fetch(toggleFavoriteUrl, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        isFavorite = data.is_favorite;
+        if (isFavorite) {
+            icon.classList.remove("fa-regular")
+            icon.classList.add("fa-solid");
+        } else {
+            icon.classList.remove("fa-solid")
+            icon.classList.add("fa-regular")
+        }
+    })
+})
 
 if (icon) {
     icon.addEventListener("click", () => {
@@ -21,24 +37,19 @@ function toggleFavorite() {
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({})
     })
     .then(response => response.json())
     .then(data => {
-        if (data.is_favorite !== undefined) {
-          isFavorite = data.is_favorite
-          if (isFavorite) {
+        if (data.status === "added") {
+            isFavorite = true;
             icon.classList.remove("fa-regular")
             icon.classList.add("fa-solid")
-        } else {
+        } else if (data.status === "removed") {
+            isFavorite = false;
             icon.classList.remove("fa-solid")
             icon.classList.add("fa-regular")
         }
-        } else {
-          console.error("Error: Invalid response", data)
-        }
     })
-    .catch(error => console.error("Error:", error))
 }
 
 export default toggleFavorite

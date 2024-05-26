@@ -8,5 +8,5 @@ urlpatterns = [
     path("new", CreateView.as_view(), name="new"),
     path("<int:pk>/show", ShowView.as_view(), name="show"),
     path("<int:pk>/show/add", add_schedule, name="add_schedule"),
-    path("<int:pk>/toggle_favorite", toggle_favorite, name="toggle_favorite"),
+    path("<int:pk>/favorite", toggle_favorite, name="favorite"),
 ]
