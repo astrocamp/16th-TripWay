@@ -1,10 +1,10 @@
 from django import forms
-from .models import Photo
+from .models import Trip
 
-class UploadModelForm(forms.ModelForm):
-    class Meta:
-        model = Photo
-        fields = ("image",)
-        widgets = {
-            "image": forms.FileInput(attrs={"class": "form-control-file"})
-        }
+# class UploadModelForm(forms.ModelForm):
+#     class Meta:
+#         model = Trip
+#         fields = ("image",)
+#         widgets = {
+#             "image": forms.FileInput(attrs={"class": "form-control-file"})
+#         }

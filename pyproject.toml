@@ -15,6 +15,8 @@ ipython = "^8.24.0"
 cryptography = "^42.0.7"
 pillow = "^10.3.0"
 requests = "^2.32.2"
+django-storages = "^1.14.3"
+boto3 = "^1.34.113"
 
 
 [build-system]
