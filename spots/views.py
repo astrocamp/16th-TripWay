@@ -57,12 +57,6 @@ def add_schedule(request, pk):
     return render(request, "spots/add.html", context)
 
 
-def spot_detail(request, pk):
-    spot = get_object_or_404(Spot, id=pk)
-    member = request.user
-    is_favorite = MemberSpot.objects(member=member, spot=spot).exists()
-    return render(request, "spots/spot_detail.html", {"is_favorite": is_favorite})
-
 @csrf_exempt
 @login_required
 def toggle_favorite(request, pk):
