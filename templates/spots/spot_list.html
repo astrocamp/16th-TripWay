@@ -1,5 +1,7 @@
+
 {% extends "layouts/base.html" %} 
 {% block content %}
+{% load static %}
 
 <div class="h-screen bg-blue-50">
 
@@ -25,4 +27,5 @@
     </div>
   {% endfor %}
 
+  <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&libraries=places&callback=initMap" async defer></script>
 {% endblock %}
