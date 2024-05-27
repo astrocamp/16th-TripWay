@@ -1,5 +1,9 @@
+import re
+import googlemaps
+from hanziconv import HanziConv
+
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import DetailView, ListView, CreateView
+from django.views.generic import DetailView, ListView, CreateView, View
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse_lazy
@@ -24,6 +28,74 @@ class ShowView(LoginRequired, DetailView):
     def post(self, request, pk):
         spot = self.get_object()
         return redirect("spots:show", pk=spot.id)
+
+
+class SearchView(View):
+    def get(self, request):
+        query = request.GET.get("q")
+
+        if not query:
+            return JsonResponse({"error": "沒有提供搜索關鍵詞"}, status=400)
+
+        spot = Spot.objects.filter(name__icontains=query).first()
+
+        if spot:
+            return JsonResponse({"redirect_url": spot.get_absolute_url()})
+        else:
+            gmaps = googlemaps.Client(key=settings.GOOGLE_API_KEY)
+            places_result = gmaps.places(query=query, language="zh-TW")
+
+            if places_result["results"]:
+                top_result = places_result["results"][0]
+                name = HanziConv.toTraditional(top_result["name"]).replace("颱", "台")
+                address = HanziConv.toTraditional(
+                    top_result.get("formatted_address", "")
+                ).replace("颱", "台")
+                location = top_result["geometry"]["location"]
+                place_id = top_result["place_id"]
+                city = extract_city(address)
+                phone = top_result.get("formatted_phone_number")
+                url = top_result.get("url")
+                rating = top_result.get("rating")
+
+                spot, created = Spot.objects.get_or_create(
+                    name=name,
+                    defaults={
+                        "address": address,
+                        "city": city,
+                        "latitude": location["lat"],
+                        "longitude": location["lng"],
+                        "phone": phone,
+                        "url": url,
+                        "rating": rating,
+                        "place_id": place_id,
+                    },
+                )
+
+                result = {
+                    "名稱": spot.name,
+                    "地址": spot.address,
+                    "城市": spot.city,
+                    "緯度": spot.latitude,
+                    "經度": spot.longitude,
+                    "電話": spot.phone,
+                    "網址": spot.url,
+                    "評分": spot.rating,
+                    "地點ID": spot.place_id,
+                    "重定向鏈接": spot.get_absolute_url(),
+                }
+                return JsonResponse(result)
+            else:
+                return JsonResponse({"error": "未找到結果"}, status=404)
+
+
+def extract_city(address):
+    match = re.search(r"台灣(.+?)[市縣區]", address)
+    if match:
+        city = match.group(1)
+        return city.strip()
+    else:
+        return None
 
 
 class CreateView(LoginRequired, CreateView):

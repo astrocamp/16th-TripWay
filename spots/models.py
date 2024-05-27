@@ -27,6 +27,11 @@ class Spot(models.Model):
         if self.rating == "N/A":
             self.rating = None
 
+    def get_absolute_url(self):
+        from django.urls import reverse
+
+        return reverse("spots:show", kwargs={"pk": self.pk})
+
 
 class LoginRequired:
     def dispatch(self, request, *args, **kwargs):
