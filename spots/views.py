@@ -34,6 +34,11 @@ class ShowView(LoginRequired, DetailView):
 
         return context
 
+        # 將用戶和景點之間的關係添加到上下文中
+        context["member_spot"] = member_spot
+
+        return context
+
 
 class CreateView(LoginRequired,CreateView):
     model = Spot
