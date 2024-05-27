@@ -2,8 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Comment
 from spots.models import Spot
+<<<<<<< HEAD
 from django.contrib import messages
 from .models import Comment
+=======
+>>>>>>> 54e9969 (modified comments)
 from .forms import CommentForm
 
 def index(request):
@@ -28,7 +31,12 @@ def index(request):
             if form.is_valid():
                 form.save()
                 request.session['alert'] = {'type': 'success', 'message': "留言已修改！"}
+<<<<<<< HEAD
 
+=======
+            else:
+                request.session['alert'] = {'type': 'error', 'message': "修改失敗，請重試！"}
+>>>>>>> 54e9969 (modified comments)
             return redirect('comments:index')
 
         if 'delete_comment_id' in request.POST:
@@ -43,4 +51,7 @@ def index(request):
     spots = Spot.objects.all()
     alert = request.session.pop('alert', None)
     return render(request, 'comments/index.html', {'comments': comments, 'form': form, 'spots': spots, 'alert': alert})
+<<<<<<< HEAD
     
+=======
+>>>>>>> 54e9969 (modified comments)
