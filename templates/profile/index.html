@@ -16,7 +16,7 @@
 	></div>
 	<div class="flex flex-col mb-10 ml-10 justify-evenly">
 		<p class="text-lg font-black">{{ member.username }}</p>
-		<p>{{ member.level }}</p>
+		<p>會員等級：{{ member.level }}</p>
 		<a class="text-cyan-700" href="{% url 'payments:upgrade' %}">馬上升級！</a>
 	</div>
 </div>
