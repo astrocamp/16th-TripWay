@@ -19,6 +19,19 @@ class ShowView(DetailView):
     def post(self, request, pk):
         spot = self.get_object()
         return redirect("spots:show", pk=spot.id)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        spot = self.get_object()
+        user = self.request.user
+
+        # 確認當前用戶是否喜愛該景點
+        member_spot = MemberSpot.objects.filter(spot=spot, member=user).exists()
+
+        # 將用戶和景點之間的關係添加到上下文中
+        context["member_spot"] = member_spot
+
+        return context
 
 
 class CreateView(CreateView):
@@ -47,11 +60,7 @@ def toggle_favorite(request, pk):
     member = request.user
     spot = get_object_or_404(Spot, id=pk)
     
-    if request.method == "GET":
-        is_favorite = MemberSpot.objects.filter(member=member, spot=spot).exists()
-        return JsonResponse({"is_favorite": is_favorite})
-    
-    elif request.method == "POST":
+    if request.method == "POST":
         is_favorite = MemberSpot.objects.filter(member=member, spot=spot).exists()
         
         if is_favorite:
