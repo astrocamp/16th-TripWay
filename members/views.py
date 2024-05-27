@@ -46,4 +46,4 @@ def register_user(request):
 def profile(request):
     member = request.user
     spots = MemberSpot.objects.filter(member=member).select_related("spot")
-    return render(request, "profile/index.html", {"spots": spots})
+    return render(request, "profile/index.html", {"spots": spots, "member": member })

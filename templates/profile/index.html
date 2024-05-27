@@ -1,19 +1,44 @@
 {% extends 'layouts/base.html' %} {% block content %}
 
-<h2 class="p-2 m-4 text-3xl text-center">收藏列表</h2>
-
-<div class="container flex flex-wrap mt-6">
-{% for spot in spots %}
-
-<div class="ml-10 shadow-xl wa card w-96 bg-baseflex">
-	<figure><img src="https://picsum.photos/400" alt="" /></figure>
-	<div class="card-body">
-		<h2 class="card-title">{{ spot.spot.name }}</h2>
-		<div class="card-actions">
-			<div class="badge badge-outline">{{ spot.spot.rating }}</div>
-			<div class="badge badge-outline">{{ spot.spot.city }}</div>
-		</div>
+<h2 class="p-2 m-4 text-3xl">會員</h2>
+<div class="container flex mt-6">
+	<div
+		tabindex="0"
+		class="w-40 h-40 mb-10 ml-10 bg-cover rounded-full bg-light-blue"
+		{%if
+		user.profile.avatar%}
+		style="background-image: url('{{ user.profile.avatar.url }}')"
+		{%else
+		%}
+		style="background-image: url('https://i.imgur.com/gd0IEZY.png')"
+		{%endif
+		%}
+	></div>
+	<div class="flex flex-col mb-10 ml-10 justify-evenly">
+		<p class="text-lg font-black">{{ member.username }}</p>
+		<p>{{ member.level }}</p>
+		<a class="text-cyan-700" href="{% url 'payments:upgrade' %}">馬上升級！</a>
 	</div>
 </div>
 
-{% endfor %}</div>{% endblock %}
+<p class="after:content-[''] after:w-1 h-0.5 bg-slate-400"></p>
+
+<h2 class="p-2 m-4 text-3xl">收藏列表</h2>
+
+<div class="container flex flex-wrap mt-6">
+	{% for spot in spots %}
+
+	<div class="ml-10 shadow-xl wa card w-96 bg-baseflex">
+		<figure><img src="https://picsum.photos/400" alt="" /></figure>
+		<div class="card-body">
+			<h2 class="card-title">{{ spot.spot.name }}</h2>
+			<div class="card-actions">
+				<div class="badge badge-outline">{{ spot.spot.rating }}</div>
+				<div class="badge badge-outline">{{ spot.spot.city }}</div>
+			</div>
+		</div>
+	</div>
+
+	{% endfor %}
+</div>
+{% endblock %}
