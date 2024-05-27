@@ -401,6 +401,29 @@ files = [
 tests = ["asttokens (>=2.1.0)", "coverage", "coverage-enable-subprocess", "ipython", "littleutils", "pytest", "rich"]
 
 [[package]]
+name = "googlemaps"
+version = "4.10.0"
+description = "Python client library for Google Maps Platform"
+optional = false
+python-versions = ">=3.5"
+files = [
+    {file = "googlemaps-4.10.0.tar.gz", hash = "sha256:3055fcbb1aa262a9159b589b5e6af762b10e80634ae11c59495bd44867e47d88"},
+]
+
+[package.dependencies]
+requests = ">=2.20.0,<3.0"
+
+[[package]]
+name = "hanziconv"
+version = "0.3.2"
+description = "Hanzi Converter for Traditional and Simplified Chinese"
+optional = false
+python-versions = "*"
+files = [
+    {file = "hanziconv-0.3.2.tar.gz", hash = "sha256:208866da6ae305bca19eb98702b65c93bb3a803b496e4287ca740d68892fc4c4"},
+]
+
+[[package]]
 name = "idna"
 version = "3.7"
 description = "Internationalized Domain Names in Applications (IDNA)"
@@ -926,4 +949,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "d3d7877b72732c28c4d6f0bf6166096b73dd1bb58321c9eda371fa90df4e5214"
+content-hash = "cf3df1d3a5e741d60a7b42b8833f4c6f7e385644f9dade74c7d48b365e3b80d8"
