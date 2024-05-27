@@ -5,31 +5,11 @@ const icon = document.getElementById("favoriteIcon")
 
 let isFavorite = false
 
-document.addEventListener("DOMContentLoaded", () => {
 if (icon) {
-    fetch(toggleFavoriteUrl, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        isFavorite = data.is_favorite;
-        if (isFavorite) {
-            icon.classList.remove("fa-regular")
-            icon.classList.add("fa-solid");
-        } else {
-            icon.classList.remove("fa-solid")
-            icon.classList.add("fa-regular")
-        }
-    })
-
     icon.addEventListener("click", () => {
         toggleFavorite()
-        }
-    )}
-})
+    }
+)}
 
 
 function toggleFavorite() {
@@ -42,11 +22,11 @@ function toggleFavorite() {
     .then(response => response.json())
     .then(data => {
         if (data.status === "added") {
-            isFavorite = true;
+            isFavorite = true
             icon.classList.remove("fa-regular")
             icon.classList.add("fa-solid")
         } else if (data.status === "removed") {
-            isFavorite = false;
+            isFavorite = false
             icon.classList.remove("fa-solid")
             icon.classList.add("fa-regular")
         }

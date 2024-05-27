@@ -11,8 +11,9 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self.stdout.write("正在執行你的腳本...")
-        api_key = os.getenv("API_KEY") 
+        api_key = os.getenv("GOOGLE_API_KEY") 
         url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
+    
 
         query = "熱門景點"  # 查詢關鍵字（根據需要更改）
         parameters = {
