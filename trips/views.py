@@ -91,7 +91,17 @@ def create_member(request, id):
     trip = get_object_or_404(Trip, id=id)
     email = request.POST["email"]
     is_editable = (request.POST["is_editable"] == "True")
-    member = get_object_or_404(Member, email=email)
+
+    if email == request.user.email:
+        messages.error(request, "不能添加自己為成員")
+        return render(request, "trips/new_member.html", {"id": trip.id, "trip": trip})
+
+    try:
+        member = Member.objects.get(email=email)
+    except Member.DoesNotExist:
+        messages.error(request, "該電子郵件地址的用戶不存在")
+        return render (request, "trips/new_member.html", {"id":trip.id, "trip":trip})
+
     TripMember.objects.create(trip=trip, member=member, is_editable=is_editable)
     trip.number += 1
     trip.save()

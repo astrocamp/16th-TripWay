@@ -2,16 +2,27 @@
 
 {% block content %}
   <div class="h-screen bg-blue-50">
-    <h1 class="px-2 py-2 text-white bg-sky-800">新增成員</h1>
-    <form action="{% url 'trips:add-member' trip.id %}" method="post" class="mt-8">
+    <header class="flex justify-start bg-sky-800">
+      <a class="px-2 py-2 text-white bg-sky-800 hover:bg-sky-950" href="{% url 'trips:schedules:index' trip.id %}"><i class="fa-solid fa-left-long"></i></a>
+      <h1 class="px-2 py-2 text-white bg-sky-800">新增成員</h1>
+    </header>
+    <form action="{% url 'trips:add-member' trip.id %}" method="post" class="mt-4">
         {% csrf_token %}
 
-        <div class="mb-6">
+        <div class="m-3 p-2">
             <label for="email" class="block text-base font-bold leading-6 text-cyan-800">email：</label>
-            <input type="text" name="email" id="email" required="required" class="block w-full h-12 pl-1 mt-1 mb-3 border-gray-300 rounded-md shadow-sm form-input focus:border-indigo-600 focus:ring focus:ring-cyan-800 focus:ring-opacity-50" />
-            <label for="editable" class="block text-base font-bold leading-6 text-cyan-800">編輯：</label>
-            <input type="radio" name="is_editable" value="True" required="required" class="block h-12 pl-1 mt-1 mb-3 border-gray-300 rounded-md shadow-sm form-input focus:border-indigo-600 focus:ring focus:ring-cyan-800 focus:ring-opacity-50" />可編輯
-            <input type="radio" name="is_editable" value="False" required="required" class="block h-12 pl-1 mt-1 mb-3 border-gray-300 rounded-md shadow-sm form-input focus:border-indigo-600 focus:ring focus:ring-cyan-800 focus:ring-opacity-50" />只能閱讀
+            <input type="email" name="email" id="email" required="required" class="block w-full h-12 pl-1 mt-1 mb-3 border-gray-300 rounded-md shadow-sm form-input focus:border-indigo-600 focus:ring focus:ring-cyan-800 focus:ring-opacity-50" />
+            <label for="editable" class="block text-base font-bold leading-6 text-cyan-800">權限：</label>
+            <ul class="flex">
+              <li class="flex m-2 p-2">
+                <input type="radio" name="is_editable" value="True" required="required" class="pl-1 mt-1 mb-3 border-gray-300 rounded-md shadow-sm form-input focus:border-indigo-600 focus:ring focus:ring-cyan-800 focus:ring-opacity-50" />
+                <label for="">可編輯</label>
+              </li>
+              <li class="flex m-2 p-2">
+                <input type="radio" name="is_editable" value="False" required="required" class="pl-1 mt-1 mb-3 border-gray-300 rounded-md shadow-sm form-input focus:border-indigo-600 focus:ring focus:ring-cyan-800 focus:ring-opacity-50" />
+                <label for="">只能閱讀</label>
+              </li>
+            </ul>
         </div>
 
         <div class="flex justify-center">
