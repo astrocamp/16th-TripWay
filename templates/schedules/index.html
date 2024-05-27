@@ -47,6 +47,7 @@
           {% for schedule in schedules %}
           <a href="{% url 'schedules:show' schedule.id %}">
             <div class="flex items-center mb-1 px-2 py-3 shadow-md hover:bg-blue-300 h-36">
+              <span class="inline-block w-6 h-6 mr-2 text-center text-white bg-orange-500 rounded-lg">{{ forloop.counter }}</span>
               <i class="fa-sharp fa-solid fa-building-columns" style="color: #1b3f5a;">{{ schedule.spot_name }}</i>
               <div class="mx-3 px-2 text-gray-500">{{ schedule.start_time|time:"H:i" }}</div>
             </div>
@@ -89,7 +90,6 @@
     </div>
     
     <div id="map" style="flex-grow: 1;">I'm map</div>
-    <div id="totalDistance">Total Distance: 0 km</div>
     <div id="loading-spinner" class="spinner" style="none"></div>
     
   </div>
