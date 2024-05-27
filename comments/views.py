@@ -26,8 +26,7 @@ def index(request):
             if form.is_valid():
                 form.save()
                 request.session['alert'] = {'type': 'success', 'message': "留言已修改！"}
-            else:
-                request.session['alert'] = {'type': 'error', 'message': "修改失敗，請重試！"}
+
             return redirect('comments:index')
 
         if 'delete_comment_id' in request.POST:
