@@ -1,36 +1,44 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
-from .models import Comment, Rating
+from django.contrib.auth.decorators import login_required
+from .models import Comment
+from spots.models import Spot
 from .forms import CommentForm
 
 def index(request):
     if request.method == 'POST':
-        if 'comment' in request.POST:
-            comment_content = request.POST.get('comment', None)
-            rating_value = request.POST.get('rating', None)
+        if 'comment' in request.POST and 'rating' in request.POST:
+            comment_content = request.POST.get('comment')
+            rating_value = request.POST.get('rating')
+            spot_id = request.POST.get('spot', None)  # 獲取 spot_id，可以為空
 
             if comment_content and rating_value:
-                comment = Comment.objects.create(content=comment_content)
-                Rating.objects.create(value=int(rating_value), comment=comment)
-                messages.success(request, '留言已保存')
-                print(f"留言已保存: {comment_content}，評分: {rating_value}")
+                spot = get_object_or_404(Spot, id=spot_id) if spot_id else None
+                Comment.objects.create(content=comment_content, spot=spot, user=request.user, value=int(rating_value))
+                request.session['alert'] = {'type': 'success', 'message': "已提交留言！"}
+            else:
+                request.session['alert'] = {'type': 'error', 'message': "請先完成評分！"}
             return redirect('comments:index')
 
-        elif 'edit_comment_id' in request.POST:
+        if 'edit_comment_id' in request.POST:
             comment_id = request.POST['edit_comment_id']
             comment = get_object_or_404(Comment, id=comment_id)
-            comment.content = request.POST.get('edit_comment_content', comment.content)
-            comment.save()
-            messages.success(request, '留言已更新')
+            form = CommentForm(request.POST, instance=comment)
+            if form.is_valid():
+                form.save()
+                request.session['alert'] = {'type': 'success', 'message': "留言已修改！"}
+            else:
+                request.session['alert'] = {'type': 'error', 'message': "修改失敗，請重試！"}
             return redirect('comments:index')
 
-        elif 'delete_comment_id' in request.POST:
+        if 'delete_comment_id' in request.POST:
             comment_id = request.POST['delete_comment_id']
             comment = get_object_or_404(Comment, id=comment_id)
             comment.delete()
-            messages.success(request, '留言已刪除')
+            request.session['alert'] = {'type': 'success', 'message': "留言已刪除！"}
             return redirect('comments:index')
 
     comments = Comment.objects.all()
     form = CommentForm()
-    return render(request, 'comments/index.html', {'comments': comments, 'form': form})
+    spots = Spot.objects.all()
+    alert = request.session.pop('alert', None)
+    return render(request, 'comments/index.html', {'comments': comments, 'form': form, 'spots': spots, 'alert': alert})

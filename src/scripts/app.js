@@ -1,6 +1,7 @@
 import Toast from "./message.js"
 import showTab from "./schedules/index.js"
 import "./schedules/update.js"
+import "./spots/comments.js"
 import "./trips/new.js"
 import toggleFavorite from "./favorite.js"
 import Swal from "sweetalert2";
