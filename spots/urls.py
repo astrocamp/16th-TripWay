@@ -5,6 +5,7 @@ from .views import (
     CreateView,
     toggle_favorite,
     add_schedule,
+    SearchView,
 )
 
 app_name = "spots"
