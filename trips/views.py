@@ -44,6 +44,11 @@ def home(request):
 
 
 @login_required
+def hot_spot(request):
+    return render(request, "trips/hot_spot.html")
+
+
+@login_required
 def new(request):
     return render(request, "trips/new.html")
 
