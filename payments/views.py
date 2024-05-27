@@ -24,7 +24,7 @@ def create_order(request):
     member = request.user
     price = request.POST["price"]
     order = PaymentService(member, price).call(request)
-    return render(request, 'payments/check.html', order)
+    return render(request, "payments/check.html", order)
 
 
 @csrf_exempt
@@ -74,7 +74,7 @@ def newpay_return(request):
 
                 member.save()
 
-                return render(request, 'payments/success.html')
+                return render(request, "payments/success.html")
             except Exception as e:
                 return HttpResponse(
                     f"Error: {str(e)}", status=500, content_type="text/plain"
