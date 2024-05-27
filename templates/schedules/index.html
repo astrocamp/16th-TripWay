@@ -30,13 +30,24 @@
   {% for date, schedules in schedule_dates.items %}
   <div id="schedule{{ schedules.0.date|date:'Y-m-d' }}" class="tab-content mt-3 bg-blueGray-100" style="{% if forloop.first %}display: block;{% else %}display: none;{% endif %}">
     {% for schedule in schedules %}
-    <a href="{% url 'schedules:show' schedule.id %}">
-      <div class="flex items-center mb-1 px-2 py-3 shadow-md hover:bg-blue-300 h-36">
-        <span class="inline-block w-6 h-6 mr-2 text-center text-white bg-orange-500 rounded-lg">{{ forloop.counter }}</span>
-        <i class="fa-sharp fa-solid fa-building-columns" style="color: #1b3f5a;"></i> {{ schedule.spot_name }}
-        <div class="mx-3 px-2 text-gray-500">{{ schedule.start_time|time:"H:i" }}</div>
+    <div class="flex mb-1 px-2 py-3 shadow-md hover:bg-blue-300 h-36">
+      <div class="flex grow">
+        <a href="{% url 'schedules:show' schedule.id %}" class="inline-block w-full h-full flex  items-center">
+          <span class="inline-block w-6 h-6 mr-2 text-center text-white bg-orange-500 rounded-lg">{{ forloop.counter }}</span>
+          <i class="fa-sharp fa-solid fa-building-columns" style="color: #1b3f5a;"></i> {{ schedule.spot_name }}
+          <div class="mx-3 px-2 text-gray-500">{{ schedule.start_time|time:"H:i" }}</div>
+        </a>
       </div>
-    </a>
+      {% if trip_member.is_editable %}
+      <div class="flex grow-0">
+        <a class="px-2 py-2 rounded-lg hover:text-gray-650 text-cyan-850" href="{% url 'schedules:update' schedule.id %}"><i class="fa-solid fa-file-pen"></i></a>
+        <form action="{% url 'schedules:delete' schedule.id %}" method="post">
+          {% csrf_token %}
+        <button class="px-2 py-2 text-red-700 rounded-lg hover:text-gray-650"><i class="fa-regular fa-trash-can"></i></button>
+        </form>
+      </div>
+    {% endif %}
+    </div>
     {% endfor %}
   </div>
   {% endfor %}
