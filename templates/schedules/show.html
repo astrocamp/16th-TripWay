@@ -31,10 +31,23 @@
           <p class="text-gray-500">備註事項：{{ schedules.note }}</p>
         </div>
       </div>
-      <div class="flex">
+      <div class="flex" x-data="{ deleteSchedule() {
+        Swal.fire({
+          icon: 'question',
+          title: '確定要刪除嗎?',
+          text: '若選擇刪除，資料將會消失',
+          showCancelButton: true,
+          cancelButtonText: '取消',
+          confirmButtonText: '刪除',
+        }).then((result) => {
+          if(result.isConfirmed){
+            this.$refs['id{{ schedules.id }}'].submit()
+          }
+        })
+      } }">
         {% if trip_member.is_editable %}
           <a class="px-2 py-2 rounded-lg hover:text-gray-650 text-cyan-850" href="{% url 'schedules:update' schedules.id %}"><i class="fa-solid fa-file-pen"></i></a>
-          <form action="{% url 'schedules:delete' schedules.id %}" method="post">
+          <form @submit.prevent="deleteSchedule()" action="{% url 'schedules:delete' schedules.id %}" method="post" x-ref="id{{ schedules.id }}">
             {% csrf_token %}
             <button class="px-2 py-2 text-red-700 rounded-lg hover:text-gray-650"><i class="fa-regular fa-trash-can"></i></button>
           </form>
