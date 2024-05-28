@@ -69,7 +69,7 @@ function showScheduleForDate(date) {
     dayData.sort((a, b) => new Date('1970/01/01 ' + a.start_time) - new Date('1970/01/01 ' + b.start_time));
     dayData.forEach(function(item, index) {
         var position = { lat: parseFloat(item.spot__latitude), lng: parseFloat(item.spot__longitude) };
-        var markerLabel = String.fromCharCode(65 + index);
+        var markerLabel = (index + 1).toString();
         var marker = new google.maps.Marker({
             map: map,
             position: position,
