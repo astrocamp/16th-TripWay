@@ -30,7 +30,7 @@
         <!-- 日期頁籤 -->
         <div role="tab" class="tabs flex text-start h-14">
           {% for day in date_range %}
-            <button id="btn-{{ day|date:'Y-m-d' }}" class="tab h-14 border transition-all ease-in-out text-slate-700 hover:bg-gray-200 {% if forloop.first %}active-tab{% endif %}" onclick="showTab('{{ day|date:'Y-m-d' }}', 'btn-{{ day|date:'Y-m-d' }}')">
+            <button id="btn-{{ day|date:'Y-m-d' }}" class="tab h-14 border transition-all ease-in-out text-slate-700 hover:bg-gray-200 {% if forloop.first %}active-tab{% endif %}" data-date="{{ day|date:'Y-m-d' }}" onclick="showTab('{{ day|date:'Y-m-d' }}', 'btn-{{ day|date:'Y-m-d' }}')">
               {{ day|date:"Y-m-d" }}
             </button>
             <!-- 刪除行程按鈕 -->
@@ -64,11 +64,7 @@
             </div>
           </a>
           
-          <div class="spot" data-spot-name="{{ schedule.spot_name }}"></div>
           {% endfor %}
-          
-          
-          <button class="px-2 py-2 text-white border rounded-lg bg-sky-800 hover:bg-sky-950" onclick="addAllSpotsToMap('{{ date|date:'Y-m-d' }}')" style="display: block; margin: 0 auto;">規劃行程 Go Go !</button>
         </div>
         {% endfor %}
 
@@ -101,7 +97,7 @@
     </div>
     
     <div id="map" style="flex-grow: 1;">I'm map</div>
-    <div id="loading-spinner" class="spinner" style="none"></div>
+    <div id="loading-spinner" class="spinner" style="display: block;"></div>
     
   </div>
 </div>
@@ -110,7 +106,5 @@
 
 <script src="{% static "scripts/route.js" %}"></script>
 <script src="{% static "scripts/wait_web.js" %}"></script>
-<link rel="stylesheet" href="{% static "styles/wait_web.css" %}">
-
-<script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=initMap" async defer></script>
+<link rel="stylesheet" href="{% static "styles/wait_web.css" %}"><script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&libraries=places&callback=initMap" async defer></script>
 {% endblock %}
