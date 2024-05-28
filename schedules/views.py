@@ -74,7 +74,7 @@ def create(request):
         spot_name=request.POST["spot_name"],
         start_time=None,
         end_time=None,
-        note=None,
+        note="",
         trip=trip,
         spot=spot,
     )
