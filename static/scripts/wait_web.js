@@ -5,6 +5,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     setTimeout(function() {
         spinner.style.display = "none";
-        content.style.display = "block";
-    }, 3500); 
+        // content.style.display = "block";
+    }, 4000); 
 });

@@ -3,6 +3,7 @@ from django.views.decorators.http import require_POST
 from django.utils import timezone
 from django.contrib import messages
 from django.conf import settings
+from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from datetime import timedelta
 from itertools import groupby
@@ -126,3 +127,20 @@ def delete(request, id):
     schedule.deleted_at = timezone.now()
     schedule.save()
     return redirect("trips:schedules:index", id=schedule.trip_id)
+
+
+@login_required
+def get_schedule(request):
+    schedule_data = (
+        Schedule.objects.filter(deleted_at__isnull=True)
+        .select_related("spot")
+        .values(
+            "spot__latitude",
+            "spot__longitude",
+            "spot__name",
+            "start_time",
+            "date",
+        )
+        .order_by("date", "start_time")
+    )
+    return JsonResponse(list(schedule_data), safe=False)

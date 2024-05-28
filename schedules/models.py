@@ -32,3 +32,11 @@ class Schedule(models.Model):
 
     def __str__(self):
         return self.spot_name
+
+    @property
+    def spot_latitude(self):
+        return self.spot.latitude if self.spot else None
+
+    @property
+    def spot_longitude(self):
+        return self.spot.longitude if self.spot else None

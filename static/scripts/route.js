@@ -1,146 +1,92 @@
 var map;
 var markers = [];
-var totalDistance = 0;
-var geocoder;
-var distanceService;
-var autocomplete;
-var polyline;
-var spots = {}; 
+var polylines = [];
+var bounds;
+var scheduleData = {};
 
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 14,
-        center: { lat: 25.0330, lng: 121.5654 } 
-    });
-    geocoder = new google.maps.Geocoder();
-    distanceService = new google.maps.DistanceMatrixService();
-    polyline = new google.maps.Polyline({
-        strokeColor: '#FF0000',
-        strokeOpacity: 1.0,
-        strokeWeight: 3,
-        map: map
+        zoom: 16,
+        center: { lat: 25.0330, lng: 121.5654 }
     });
 
-    
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-            var pos = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-            };
-            map.setCenter(pos);
-        }, function () {
-            handleLocationError(true, map.getCenter());
+    bounds = new google.maps.LatLngBounds();
+    loadSchedule();
+}
+
+function loadSchedule() {
+    fetch('/schedules/get_schedule/')
+        .then(response => response.json())
+        .then(data => {
+            scheduleData = groupByDate(data);
+            const firstDate = Object.keys(scheduleData)[0];
+            if (firstDate) {
+                showScheduleForDate(firstDate);
+            }
+        })
+        .catch(error => console.error('Error fetching schedule data:', error));
+    const tabButtons = document.querySelectorAll('.tab');
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const selectedDate = this.getAttribute('data-date');
+            showScheduleForDate(selectedDate);
         });
-    } else {
-        handleLocationError(false, map.getCenter());
-    }
+    });
 }
 
-function handleLocationError(browserHasGeolocation, pos) {
-    window.alert(browserHasGeolocation ?
-        'Error: The Geolocation service failed.' :
-        'Error: Your browser doesn\'t support geolocation.');
-}
-
-function addSpotToMap(spotName) {
-    geocoder.geocode({ address: spotName }, function (results, status) {
-        if (status === 'OK') {
-            var location = results[0].geometry.location;
-            addMarker(location);
-            spots[spotName] = location; 
-        } else {
-            alert('Geocode was not successful for the following reason: ' + status);
+function groupByDate(data) {
+    return data.reduce((acc, item) => {
+        const date = item.date;
+        if (!acc[date]) {
+            acc[date] = [];
         }
+        acc[date].push(item);
+        return acc;
+    }, {});
+}
+
+function showTab(date, buttonId) {
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active-tab');
     });
+    document.getElementById(buttonId).classList.add('active-tab');
+    showScheduleForDate(date);
 }
 
-function addMarker(location,spotName) {
-    var markerLabel = String.fromCharCode(65 + markers.length); 
-    var marker = new google.maps.Marker({
-        map: map,
-        position: location,
-        label: markerLabel,
-        title: spotName 
-    });
-    markers.push(marker);
-    updateRoute();
-    updateTotalDistance(distanceService);
-}
-
-function updateRoute() {
-    var path = markers.map(marker => marker.getPosition());
-    polyline.setPath(path);
-}
-
-function updateTotalDistance(distanceService) {
-    if (markers.length < 2) {
-        document.getElementById('totalDistance').innerText = 'Total Distance: 0 km';
+function showScheduleForDate(date) {
+    var dayData = scheduleData[date];
+    if (!dayData) {
+        console.error("No schedule data for date: " + date);
         return;
     }
 
-    var origins = markers.map(marker => marker.getPosition());
-    var destinations = markers.map(marker => marker.getPosition());
+    markers.forEach(marker => marker.setMap(null));
+    markers = [];
+    polylines.forEach(polyline => polyline.setMap(null));
+    polylines = [];
+    bounds = new google.maps.LatLngBounds();
 
-    distanceService.getDistanceMatrix({
-        origins: origins,
-        destinations: destinations,
-        travelMode: 'DRIVING',
-        unitSystem: google.maps.UnitSystem.METRIC
-    }, function (response, status) {
-        if (status !== 'OK') {
-            alert('Error was: ' + status);
-            return;
-        }
-
-        var totalDistance = 0;
-        var segmentDistances = []; 
-        var results = response.rows;
-        for (var i = 0; i < results.length - 1; i++) {
-            var segmentDistance = results[i].elements[i + 1].distance.value;
-            segmentDistances.push(segmentDistance / 1000); 
-            totalDistance += segmentDistance;
-        }
-
-        
-        var totalDistanceText = 'Total Distance: ' + (totalDistance / 1000).toFixed(2) + ' km';
-        document.getElementById('totalDistance').innerHTML = totalDistanceText
+    dayData.sort((a, b) => new Date('1970/01/01 ' + a.start_time) - new Date('1970/01/01 ' + b.start_time));
+    dayData.forEach(function(item, index) {
+        var position = { lat: parseFloat(item.spot__latitude), lng: parseFloat(item.spot__longitude) };
+        var markerLabel = String.fromCharCode(65 + index);
+        var marker = new google.maps.Marker({
+            map: map,
+            position: position,
+            label: markerLabel,
+            title: item.spot__name
+        });
+        markers.push(marker);
+        bounds.extend(position);
     });
-}
 
-function connectAllSpots() {
-    var spotNames = Object.keys(spots);
-    for (var i = 0; i < spotNames.length; i++) {
-        addMarker(spots[spotNames[i]]);
-    }
-    updateRoute();
-    updateTotalDistance();
-}
-
-function addAllSpotsToMap(date) {
-    
-    markers.forEach(function(marker) {
-        marker.setMap(null);
-    });
-    markers = []; 
-
-    
-    polyline.setMap(null);
-
-    
-    polyline = new google.maps.Polyline({
+    var path = markers.map(marker => marker.getPosition());
+    var polyline = new google.maps.Polyline({
+        path: path,
         strokeColor: '#FF0000',
-        strokeOpacity: 1.0,
-        strokeWeight: 4,
-        geodesic: true,
+        strokeWeight: 3,
         map: map
     });
-
-    document.querySelectorAll('#schedule' + date + ' .spot').forEach(function(spotElement) {
-        var spotName = spotElement.dataset.spotName;
-        addSpotToMap(spotName); 
-    });
+    polylines.push(polyline);
+    map.fitBounds(bounds);
 }
-
-document.addEventListener('DOMContentLoaded', initMap);
-
