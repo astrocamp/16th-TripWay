@@ -113,6 +113,7 @@ def create_member(request, id):
 def delete(request, id):
     trip = get_object_or_404(Trip, pk=id)
     trip.delete()
+    messages.success(request, "旅程刪除成功！")
     return redirect("trips:index")
 
 
