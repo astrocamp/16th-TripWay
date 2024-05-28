@@ -126,6 +126,7 @@ def delete(request, id):
     schedule = get_object_or_404(Schedule, pk=id)
     schedule.deleted_at = timezone.now()
     schedule.save()
+    messages.success(request, "成功刪除行程！")
     return redirect("trips:schedules:index", id=schedule.trip_id)
 
 
