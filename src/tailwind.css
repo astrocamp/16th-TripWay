@@ -2,3 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 @tailwind screens;
+
+
+
+.active-tab {
+background-color: #c5d9ed;
+color: black;
+}
