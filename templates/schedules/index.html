@@ -2,7 +2,7 @@
 <div class="h-screen bg-blue-50">
   <header class="flex justify-start bg-sky-800">
     <a class="px-2 py-2 text-white bg-sky-800 hover:bg-sky-950" href="{% url 'trips:index' %}"><i class="fa-solid fa-house-chimney"></i></a>
-    <h1 class="px-2 py-2 text-white bg-sky-800">行程列表</h1>
+    <h1 class="px-2 py-2 text-white bg-sky-800">{{trip.name}}</h1>
   </header>
 
     <!-- 日期頁籤 -->
@@ -10,10 +10,6 @@
     {% for day in date_range %}
       <button id="btn-{{ day|date:'Y-m-d' }}" class="tab h-14 border transition-all ease-in-out text-slate-700 hover:bg-gray-200 {% if forloop.first %}active-tab{% endif %}" onclick="showTab('{{ day|date:'Y-m-d' }}', 'btn-{{ day|date:'Y-m-d' }}')">
         {{ day|date:"Y-m-d" }}
-      </button>
-      <!-- 刪除行程按鈕 -->
-      <button id="delete-schedule-{{ day|date:'Y-m-d' }}" class="h-14 border transition-all ease-in-out text-slate-700 hover:bg-gray-200" onclick="deleteSchedule('{{ day|date:'Y-m-d' }}')">
-        -
       </button>
     {% endfor %}
 
