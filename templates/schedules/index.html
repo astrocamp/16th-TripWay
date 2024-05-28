@@ -1,14 +1,19 @@
 {% extends 'layouts/base.html' %} {% block content %}
 <div class="h-screen bg-blue-50">
   <header class="flex justify-start bg-sky-800">
-    <a class="px-2 py-2 text-white bg-sky-800 hover:bg-sky-950" href="{% url 'trips:index' %}"><i class="fa-solid fa-house-chimney"></i></a>
-    <h1 class="px-2 py-2 text-white bg-sky-800">{{trip.name}}</h1>
+    <a class="px-2 py-2 text-white bg-sky-800 hover:bg-sky-950" href="{% url 'home' %}">
+      <i class="fa-solid fa-house-chimney"></i>
+    </a>
+    <a class="px-2 py-2 text-white bg-sky-800 hover:bg-sky-950" href="javascript:history.go(-1)">
+      <i class="fa-solid fa-reply"></i>
+    </a>
+    <h1 class="px-2 py-2 text-white bg-sky-800">行程列表</h1>
   </header>
 
     <!-- 日期頁籤 -->
   <div role="tab" class="tabs flex text-start h-14">
     {% for day in date_range %}
-      <button id="btn-{{ day|date:'Y-m-d' }}" class="tab h-14 border transition-all ease-in-out text-slate-700 hover:bg-gray-200 {% if forloop.first %}active-tab{% endif %}" onclick="showTab('{{ day|date:'Y-m-d' }}', 'btn-{{ day|date:'Y-m-d' }}')">
+      <button id="btn-{{ day|date:'Y-m-d' }}" class="tab h-14 border transition-all ease-in-out text-slate-700 hover:bg-gray-200" onclick="showTab('{{ day|date:'Y-m-d' }}', 'btn-{{ day|date:'Y-m-d' }}')">
         {{ day|date:"Y-m-d" }}
       </button>
     {% endfor %}
@@ -24,7 +29,7 @@
 
     <!-- 行程內容 -->
   {% for date, schedules in schedule_dates.items %}
-  <div id="schedule{{ schedules.0.date|date:'Y-m-d' }}" class="tab-content mt-3 bg-blueGray-100" style="{% if forloop.first %}display: block;{% else %}display: none;{% endif %}">
+  <div id="schedule{{ schedules.0.date|date:'Y-m-d' }}" class="tab-content mt-3 bg-blueGray-100">
     {% for schedule in schedules %}
     <div class="flex mb-1 px-2 py-3 shadow-md hover:bg-blue-300 h-36">
       <div class="flex grow">
@@ -74,12 +79,4 @@
     {% endif %}
   </div>
 </div>
-
-
-<style>
-  .active-tab {
-    background-color: #c5d9ed;
-    color: black;
-  }
-</style>
 {% endblock %}
