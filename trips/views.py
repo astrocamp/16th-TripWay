@@ -131,6 +131,7 @@ def delete_TripMember(trip_id, member_id):
 @login_required
 def delete_member(request, trip_id, member_id):
     delete_TripMember(trip_id, member_id)
+    messages.success(request, "成員刪除成功！")
     return redirect("trips:schedules:index", id=trip_id)
 
 
