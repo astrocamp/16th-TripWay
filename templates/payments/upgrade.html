@@ -5,33 +5,48 @@
 <ul class="grid grid-cols-5 gap-2">
 	<li class="col-start-2">
 		<div class="flex flex-col items-center text-center p-3 gap-3">
-			<img src="https://picsum.photos/200/200" alt="">
-			<p class="text-center text-xl">$ 50 / 月</p>
+			<img src="https://picsum.photos/200/200?random=1" alt="">
+			<p class="text-center text-xl font-bold">高級會員 </p>
+			<div class="h-32">
+				<p>能邀請3人以上共同編輯行程</p>
+			</div>
+			<p class="text-center text-lg font-semibold">$ 300</p>
 			<form action="{% url 'payments:create' %}" class="flex justify-center" method="post">
 				{% csrf_token %}
-				<input type="hidden" name="price" value="50">
+				<input type="hidden" name="price" value="300">
 				<button type="submit" class="bg-indigo-300 rounded-md p-2">立即升級</button>
 			</form>
 		</div>
 	</li>
 	<li>
 		<div class="flex flex-col items-center text-center p-3 gap-3">
-			<img src="https://picsum.photos/200/200" alt="">
-			<p class="text-center text-xl">$ 100 / 月</p>
+			<img src="https://picsum.photos/200/200?random=2" alt="">
+			<p class="text-center text-xl font-bold">白金會員</p>
+			<div class="h-32">
+				<p>收藏清單無限制</p>
+				<p>能邀請5人以上共同編輯行程</p>
+			</div>
+			<p class="text-center text-lg font-semibold">$ 666</p>
 			<form action="{% url 'payments:create' %}" class="flex justify-center" method="post">
 				{% csrf_token %}
-				<input type="hidden" name="price" value="100">
+				<input type="hidden" name="price" value="666">
 				<button type="submit" class="bg-indigo-300 rounded-md p-2">立即升級</button>
 			</form>
 		</div>
 	</li>
 	<li>
 		<div class="flex flex-col items-center text-center p-3 gap-3">
-			<img src="https://picsum.photos/200/200" alt="">
-			<p class="text-center text-xl">$ 200 / 月</p>
+			<img src="https://picsum.photos/200/200?random=3" alt="">
+			<p class="text-center text-xl font-bold">鑽石會員 </p>
+			<div class="h-32">
+				<p>收藏清單無限制</p>
+				<p>每年4次機場接送服務</p>
+				<p>專人安排客製化行程服務</p>
+			</div>
+			<p class="text-center text-lg font-semibold">$ 888</p>
 			<form action="{% url 'payments:create' %}" class="flex justify-center" method="post">
 				{% csrf_token %}
-				<input type="hidden" name="price" value="200">
+				<input type="hidden" name="price" value="888">
 				<button type="submit" class="bg-indigo-300 rounded-md p-2">立即升級</button>
 			</form>
 		</div>

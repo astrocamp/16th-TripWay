@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
@@ -63,18 +63,18 @@ def newpay_return(request):
                 payment = Payment.objects.get(order=order)
                 member = payment.member
 
-                if  payment.price >= 200:
+                if  payment.price >= 888:
                     member.level = "svip"  
-                elif payment.price >= 100:
+                elif payment.price >= 666:
                     member.level = "vvip"  
-                elif payment.price >= 50:
+                elif payment.price >= 300:
                     member.level = "vip"  
                 else:
                     member.level = "basic"  
 
                 member.save()
 
-                return render(request, "payments/success.html")
+                return redirect("payments:transition")
             except Exception as e:
                 return HttpResponse(
                     f"Error: {str(e)}", status=500, content_type="text/plain"
@@ -93,3 +93,6 @@ def strip_padding(data):
     slast = data[-1]
     return data[:-slast].decode("utf-8")
 
+
+def transition(request):
+    return render(request, "payments/success.html")

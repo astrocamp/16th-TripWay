@@ -3,7 +3,7 @@
 {% block content %}
   <div class="h-screen bg-blue-50">
     <header class="flex justify-start bg-sky-800">
-      <a class="px-2 py-2 text-white bg-sky-800 hover:bg-sky-950" href="{% url 'trips:schedules:index' trip.id %}"><i class="fa-solid fa-left-long"></i></a>
+      <a class="px-2 py-2 text-white bg-sky-800 hover:bg-sky-950" href="{% url 'trips:schedules:index' trip.id %}"><i class="fa-solid fa-reply"></i></a>
       <h1 class="px-2 py-2 text-white bg-sky-800">新增成員</h1>
     </header>
     <form action="{% url 'trips:add-member' trip.id %}" method="post" class="mt-4">
