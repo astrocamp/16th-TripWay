@@ -22,7 +22,7 @@
         <!-- 日期頁籤 -->
         <div role="tab" class="tabs flex text-start h-14">
           {% for day in date_range %}
-            <button id="btn-{{ day|date:'Y-m-d' }}" class="tab h-14 border transition-all ease-in-out text-slate-700 hover:bg-gray-200" onclick="showTab('{{ day|date:'Y-m-d' }}', 'btn-{{ day|date:'Y-m-d' }}')">
+            <button id="btn-{{ day|date:'Y-m-d' }}" class="tab h-14 border transition-all ease-in-out text-slate-700 hover:bg-gray-200" data-date="{{ day|date:'Y-m-d' }}" onclick="showTab('{{ day|date:'Y-m-d' }}', 'btn-{{ day|date:'Y-m-d' }}')">
               {{ day|date:"Y-m-d" }}
             </button>
           {% endfor %}
