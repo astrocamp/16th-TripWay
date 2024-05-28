@@ -27,7 +27,7 @@ def home(request):
 
     else:
         member = request.user
-        trip_members = TripMember.objects.filter(member=member).select_related('trip')
+        trip_members = TripMember.objects.filter(member=member).select_related("trip")
         trips = trip_members.order_by("trip__start_date")
         trips = [{"t": trip.trip, "tm": trip} for trip in trips]
         return render(request, "trips/index.html", {"trips": trips})
