@@ -1,4 +1,5 @@
 {% extends 'layouts/base.html' %} 
+{% load static %}
 
 {% block content %}
   <div class="h-screen bg-blue-50">
@@ -12,7 +13,7 @@
     {% for trip in trips %}
       <div class="flex justify-between my-2 bg-white border rounded-lg fmx-2 center just juspx-2 jus hover:bg-blue-300 h-100">
         <div class="flex">
-          <img src="{{ trip.t.image.url }}" class="w-[200px] h-[200px]" alt="">
+          <img src="{% if trip.t.image %}{{ trip.t.image.url }}{% else %}{% static 'img/tripdefault.png' %}{% endif %}" class="w-[266px] h-[200px]" alt="">
           <form action="{{ trip.t.id }}/schedules/" method="post">
             {% csrf_token %}
             <button class="mx-3 my-3">
