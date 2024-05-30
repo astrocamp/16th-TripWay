@@ -58,7 +58,11 @@ def create(request):
         start_date = request.POST["start_date"]
         end_date = request.POST["end_date"]
         transportation = request.POST["transportation"]
-        image = request.FILES["image"]
+
+        if "image" in request.FILES:
+            image = request.FILES["image"]
+        else:
+            image = None
 
         if end_date < start_date:
             messages.error(request, "結束日期不能早於開始日期")

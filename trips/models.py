@@ -11,7 +11,7 @@ class Trip(models.Model):
     owner = models.IntegerField(default=0)
     number = models.IntegerField(default=1)
     image = models.ImageField(
-        blank=False, null=False, upload_to="trips_coverPhoto/"
+        null=True, default=None,  upload_to="trips_coverPhoto/"
     )
     upload_date = models.DateField(default=timezone.now)
 
