@@ -21,16 +21,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // 顯示 Sweet Alert 的消息
-  // const alertType = document.querySelector('input[name="alert_type"]').value;
-  // const alertMessage = document.querySelector('input[name="alert_message"]').value;
-  // if (alertType && alertMessage) {
-  //   Swal.fire({
-  //     text: alertMessage,
-  //     icon: alertType,
-  //   });
-  // }
-
   // 編輯留言功能
   const editCommentButtons = document.querySelectorAll(".edit-comment-btn");
   editCommentButtons.forEach((button) => {
