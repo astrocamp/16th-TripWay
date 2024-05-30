@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const ratingStars = document.querySelectorAll(".rating-star");
   const isLoggedIn = document.querySelector('input[name="is_logged_in"]').value;
 
-  ratingStars.forEach((star) => {
+  ratingStars.forEach((star, index) => {
     star.addEventListener("click", function (event) {
       if (isLoggedIn === "False") {
         // 如果用戶未登錄
@@ -17,6 +17,18 @@ document.addEventListener("DOMContentLoaded", function () {
             window.location.href = loginUrl; // 重定向到登錄頁面
           }
         });
+      } else {
+        // 檢查是否已經選取了該星星
+        if (star.classList.contains("bg-orange-400")) {
+          // 如果是，則清除所有星星的選取
+          ratingStars.forEach((btn) => btn.classList.remove("bg-orange-400"));
+        } else {
+          // 如果否，則點亮相應數量的星星
+          ratingStars.forEach((btn) => btn.classList.remove("bg-orange-400"));
+          for (let i = 0; i <= index; i++) {
+            ratingStars[i].classList.add("bg-orange-400");
+          }
+        }
       }
     });
   });

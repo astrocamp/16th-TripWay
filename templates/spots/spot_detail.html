@@ -1,5 +1,7 @@
-{% extends 'layouts/base.html' %} {% block content %}
-<div class="h-screen bg-blue-50">
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block content %}
+<div class="flex flex-col min-h-screen bg-blue-50">
   <header class="flex justify-start bg-sky-800">
     <a class="px-2 py-2 text-white bg-sky-800 hover:bg-sky-950" href="{% url 'home' %}">
       <i class="fa-solid fa-house-chimney"></i>
@@ -9,25 +11,91 @@
     </a>
     <h1 class="px-2 py-2 text-white bg-sky-800">景點：{{ spot.name }}</h1>
   </header>
-  <section class="flex justify-between px-3 py-3 mx-3 my-3 bg-white border rounded-lg h-35">
-      <div class="flex items-center">
-        <img class="h-full" src="https://picsum.photos/200" alt="" />
-        <div class="mx-5">
-          <p class="text-lg font-bold text-sky-700">{{ spot.name }}</p>
-          <p class="py-2 text-opacity-75 text-start text-sky-700">{{ spot.latitude }}</p>
-          <p class="py-2 text-opacity-75 text-start text-sky-700">{{ spot.longitude }}</p>
-          <p class="py-2 text-opacity-75 text-start text-sky-700">{{ spot.address }}</p>
+
+  <div class="flex-grow">
+    <section class="flex justify-between px-3 py-3 mx-3 my-3 bg-white border rounded-lg h-35">
+        <div class="flex items-center">
+            <img class="h-full" src="https://picsum.photos/200" alt="" />
+            <div class="mx-5">
+                <p class="text-lg font-bold text-sky-700">{{ spot.name }}</p>
+                <p class="py-2 text-opacity-75 text-start text-sky-700">{{ spot.latitude }}</p>
+                <p class="py-2 text-opacity-75 text-start text-sky-700">{{ spot.longitude }}</p>
+                <p class="py-2 text-opacity-75 text-start text-sky-700">{{ spot.address }}</p>
+            </div>
         </div>
-      </div>
-      <div>
-        <a class='btn' href="{% url 'spots:add_schedule' spot.pk %}">加入行程+</a>
-      </div>
-      <div>
-        <i
-				id="favoriteIcon"
-				class="mt-4 fa-heart fa-2xl {% if member_spot %}fa-solid{% else %}fa-regular{% endif %} cursor-pointer"
-			></i>
-      </div>
-	</section>
+        <div>
+            <a class='btn' href="{% url 'spots:add_schedule' spot.pk %}">加入行程+</a>
+        </div>
+        <div>
+            <i
+                id="favoriteIcon"
+                class="mt-4 fa-heart fa-2xl {% if member_spot %}fa-solid{% else %}fa-regular{% endif %} cursor-pointer"
+            ></i>
+        </div>
+    </section>
+
+    <section class="flex flex-col items-center justify-center py-12">
+        <div class="w-full max-w-md">
+            <h1 class="mb-8 text-2xl font-bold text-center">評論景點</h1>
+
+            <!-- 評分和評論系統 -->
+            <form id="ratingForm" method="post" action="{% url 'spots:show' spot.pk %}">
+                {% csrf_token %}
+                <div>
+                    <h2 class="mb-4 text-xl font-semibold text-center">推薦指數</h2>
+                    <div class="flex justify-center rating">
+                        <input type="radio" name="rating" value="1" class="bg-orange-400 mask mask-star-2 rating-star" />
+                        <input type="radio" name="rating" value="2" class="bg-orange-400 mask mask-star-2 rating-star" />
+                        <input type="radio" name="rating" value="3" class="bg-orange-400 mask mask-star-2 rating-star" />
+                        <input type="radio" name="rating" value="4" class="bg-orange-400 mask mask-star-2 rating-star" />
+                        <input type="radio" name="rating" value="5" class="bg-orange-400 mask mask-star-2 rating-star" />
+                    </div>
+                    <textarea name="comment" class="w-full px-4 py-2 mt-5 mb-4 border rounded-md" rows="4" maxlength="1000" placeholder="留下你對該景點的評價吧!"></textarea>
+                    <button type="submit" class="block px-8 py-3 mx-auto text-xl font-bold text-white bg-light-blue rounded-3xl hover:bg-gray-500">提交</button>
+                </div>
+            </form>
+
+            <!-- 顯示評論 -->
+            <div class="mt-8">
+                <h2 class="mb-4 text-xl font-semibold text-center">評論內容</h2>
+                {% for comment in comments %}
+                <div class="p-4 mb-4 border rounded-md comment">
+                    <p class="comment-content">{{ comment.content }}</p>
+                    <p>評分: {{ comment.value }}</p>
+                    <form method="post" action="{% url 'spots:show' spot.pk %}" class="hidden edit-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="edit_comment_id" value="{{ comment.id }}">
+                        <textarea name="edit_comment_content" class="w-full px-4 py-2 mb-4 border rounded-md" rows="2">{{ comment.content }}</textarea>
+                        <button type="submit" class="text-blue-500 hover:underline">保存</button>
+                        <button type="button" class="text-gray-500 cancel-edit-btn hover:underline">取消</button>
+                    </form>
+                    <div class="flex items-center justify-between mt-2">
+                        <button class="text-blue-500 edit-comment-btn hover:underline">編輯留言</button>
+                        <form method="post" action="{% url 'spots:show' spot.pk %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="delete_comment_id" value="{{ comment.id }}">
+                            <button type="submit" class="text-red-500 delete-comment-btn hover:underline">刪除留言</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+  </div>
+
+  <!-- 放置脚本和隐藏输入 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+      const loginUrl = "{% url 'login' %}";
+      const csrfToken = "{{ csrf_token }}";
+  </script>
+  <script src="{% static 'js/comments.js' %}"></script>
+
+  {% if alert %}
+  <input type="hidden" name="alert_type" value="{{ alert.type }}">
+  <input type="hidden" name="alert_message" value="{{ alert.message }}">
+  {% endif %}
+  <input type="hidden" name="is_logged_in" value="{{ user.is_authenticated }}">
 </div>
 {% endblock %}
