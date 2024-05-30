@@ -1,6 +1,6 @@
 <nav class="sticky top-0 left-0 z-50 flex items-center justify-between w-full shadow-md bg-blueGray-200">
   <a href="{% url 'home' %}" class="mb-2 ml-10 text-4xl font-bold">
-    <img src="https://i.imgur.com/EnpZ3Xv.png" alt="TripWay Logo" class="h-20 w-30" />
+    <img src="static/img/LOGO.png" alt="TripWay Logo" class="h-20 w-30" />
   </a>
   <div class="flex flex-1 ml-5 justify-center-0">
     <div class="relative w-80">
@@ -40,7 +40,7 @@
           {%if user.profile.avatar%}
           style="background-image: url('{{ user.profile.avatar.url }}')"
           {%else %}
-          style="background-image: url('https://i.imgur.com/gd0IEZY.png')"
+          style="background-image: url('static/img/membericon.png')"
           {%endif %}
         ></button>
 
