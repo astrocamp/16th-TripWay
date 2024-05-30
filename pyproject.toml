@@ -17,6 +17,8 @@ pillow = "^10.3.0"
 requests = "^2.32.2"
 django-storages = "^1.14.3"
 boto3 = "^1.34.113"
+googlemaps = "^4.10.0"
+hanziconv = "^0.3.2"
 
 
 [build-system]
