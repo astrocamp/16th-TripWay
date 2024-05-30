@@ -43,4 +43,3 @@ def index(request):
     spots = Spot.objects.all()
     alert = request.session.pop('alert', None)
     return render(request, 'comments/index.html', {'comments': comments, 'form': form, 'spots': spots, 'alert': alert})
-    

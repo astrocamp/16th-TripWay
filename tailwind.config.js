@@ -23,5 +23,10 @@ module.exports = {
       },
     },
   },
+  variants: {
+    extend: {
+      textColor: ["checked"],
+    },
+  },
   plugins: [require("daisyui")],
 };
