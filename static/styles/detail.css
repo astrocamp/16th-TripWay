@@ -5,7 +5,7 @@ body {
 #map-container {
     display: flex;
     position: relative;
-    height: calc(100vh - 87.99px);
+    height: 100vh;
 }
 
 #map {
