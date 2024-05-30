@@ -6,6 +6,3 @@ document.getElementById("confirm-delete-btn").addEventListener("click", function
   document.getElementById("delete-form").submit();
 });
 
-document.getElementById("cancel-delete-btn").addEventListener("click", function () {
-  document.getElementById("delete-photo-modal").style.display = "none";
-});
