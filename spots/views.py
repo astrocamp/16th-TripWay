@@ -17,16 +17,47 @@ from schedules.models import Schedule
 from .form import SpotForm
 from .models import Spot, LoginRequired
 
+from comments.models import Comment
+from comments.forms import CommentForm
 
 class IndexView(LoginRequired, ListView):
     model = Spot
-
 
 class ShowView(LoginRequired, DetailView):
     model = Spot
 
     def post(self, request, pk):
         spot = self.get_object()
+
+        # 處理評論邏輯
+        if 'comment' in request.POST and 'rating' in request.POST:
+            comment_content = request.POST.get('comment')
+            rating_value = request.POST.get('rating')
+
+            if comment_content and rating_value:
+                Comment.objects.create(content=comment_content, spot=spot, user=request.user, value=int(rating_value))
+                request.session['alert'] = {'type': 'success', 'message': "已提交留言！"}
+            else:
+                request.session['alert'] = {'type': 'error', 'message': "請先完成評分！"}
+            return redirect('spots:show', pk=spot.id)
+
+        if 'edit_comment_id' in request.POST:
+            comment_id = request.POST['edit_comment_id']
+            comment = get_object_or_404(Comment, id=comment_id)
+            comment_content = request.POST.get('edit_comment_content')
+            if comment_content:
+                comment.content = comment_content
+                comment.save()
+                request.session['alert'] = {'type': 'success', 'message': "留言已修改！"}
+            return redirect('spots:show', pk=spot.id)
+
+        if 'delete_comment_id' in request.POST:
+            comment_id = request.POST['delete_comment_id']
+            comment = get_object_or_404(Comment, id=comment_id)
+            comment.delete()
+            request.session['alert'] = {'type': 'success', 'message': "留言已刪除！"}
+            return redirect('spots:show', pk=spot.id)
+
         return redirect("spots:show", pk=spot.id)
 
     def get_context_data(self, **kwargs):
@@ -40,10 +71,15 @@ class ShowView(LoginRequired, DetailView):
         # 將用戶和景點之間的關係添加到上下文中
         context["member_spot"] = member_spot
 
-        return context
-
-        # 將用戶和景點之間的關係添加到上下文中
-        context["member_spot"] = member_spot
+        # 添加評論表單和評論數據到上下文
+        comments = Comment.objects.filter(spot=spot)
+        form = CommentForm()
+        alert = self.request.session.pop('alert', None)
+        context.update({
+            'comments': comments,
+            'form': form,
+            'alert': alert,
+        })
 
         return context
 
@@ -147,7 +183,7 @@ def toggle_favorite(request, pk):
     if request.method == "POST":
         is_favorite = MemberSpot.objects.filter(member=member, spot=spot).exists()
 
-        if is_favorite:
+        if (is_favorite):
             MemberSpot.objects.filter(member=member, spot=spot).delete()
             return JsonResponse({"status": "removed"})
         else:
