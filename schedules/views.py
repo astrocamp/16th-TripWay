@@ -138,10 +138,12 @@ def get_schedule(request):
         .values(
             "spot__latitude",
             "spot__longitude",
+            "updated_at",
             "spot__name",
             "start_time",
             "date",
+            "trip_id",
         )
-        .order_by("date", "start_time")
+        .order_by("date", "start_time", "updated_at")
     )
     return JsonResponse(list(schedule_data), safe=False)
