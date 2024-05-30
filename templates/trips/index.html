@@ -1,6 +1,5 @@
 {% extends 'layouts/base.html' %} 
 {% load static %}
-
 {% block content %}
   <div class="h-screen bg-blue-50">
     <header class="flex justify-start bg-sky-800">
@@ -27,9 +26,9 @@
       } }">
         <div class="flex">
           <img src="{% if trip.t.image %}{{ trip.t.image.url }}{% else %}{% static 'img/tripdefault.png' %}{% endif %}" class="w-[266px] h-[200px]" alt="">
-          <form action="{{ trip.t.id }}/schedules/" method="post">
+          <form id="trip-form" action="{{ trip.t.id }}/schedules/" method="post">
             {% csrf_token %}
-            <button class="mx-3 my-3">
+            <button  id="trip-button" type="submit" class="mx-3 my-3">
               <div class="flex items-start font-bold text-sky-800 text-xl">{{ trip.t.name }}</div>
               <div>{{ trip.t.start_date|date:'Y-m-d' }}~{{ trip.t.end_date|date:'Y-m-d' }}</div>
             </button>
@@ -53,4 +52,5 @@
     <a class="px-2 py-2 text-white border rounded-lg bg-sky-800 hover:bg-sky-950" href="{% url 'spots:index' %}">景點清單</a>
   </div>
 </div>
+<script src="{% static "scripts/route.js" %}"></script>
 {% endblock %}
