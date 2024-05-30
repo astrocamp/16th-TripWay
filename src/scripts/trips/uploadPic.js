@@ -5,4 +5,3 @@ document.getElementById("delete-photo-btn").addEventListener("click", function (
 document.getElementById("confirm-delete-btn").addEventListener("click", function () {
   document.getElementById("delete-form").submit();
 });
-
