@@ -13,9 +13,27 @@ document.addEventListener("DOMContentLoaded", function() {
     google.maps.event.addListenerOnce(map, 'tilesloaded', function() {
         spinner.style.display = "none";
         content.style.display = "block";
-        
-        showCurrentPosition();
-        searchNearby(); 
+    });
+
+    var input = document.getElementById('pac-input');
+    var autocomplete = new google.maps.places.Autocomplete(input);
+    autocomplete.bindTo('bounds', map);
+
+    autocomplete.addListener('place_changed', function() {
+        var place = autocomplete.getPlace();
+        if (!place.geometry) {
+            console.log("No details available for input: '" + place.name + "'");
+            return;
+        }
+
+        if (place.geometry.viewport) {
+            map.fitBounds(place.geometry.viewport);
+        } else {
+            map.setCenter(place.geometry.location);
+            map.setZoom(16);
+        }
+
+        createMarker(place);
     });
 });
 
@@ -46,6 +64,7 @@ function initMap() {
         alert("Error: The Geolocation service failed.");
     });
 }
+
 function showCurrentPosition() {
     navigator.geolocation.getCurrentPosition(function(position) {
         currentPosition = {
@@ -66,13 +85,15 @@ function showCurrentPosition() {
 }
 
 function searchNearby(type) {
+    showCurrentPosition();
+    
     if (!currentPosition) {
         return;
     }
 
     const request = {
         location: currentPosition,
-        radius: 1000,
+        radius: 2000,
         type: [type]
     };
 
@@ -83,8 +104,10 @@ function searchNearby(type) {
 function nearbyCallback(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
         clearMarkers();
+        
         for (let i = 0; i < results.length; i++) {
             createMarker(results[i]);
+            map.setZoom(15);
         }
     } else {
         alert("搜索附近失敗，原因：" + status);
