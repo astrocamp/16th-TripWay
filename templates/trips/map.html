@@ -4,7 +4,6 @@
     <link rel="stylesheet" href="{% static 'styles/detail.css' %}">
     <link rel="stylesheet" href="{% static "styles/wait_web.css" %}">
     
-    <script src="{% static "scripts/wait_web.js" %}"></script>
     <script src="{% static "scripts/map.js" %}"></script>
 </head>
 <body>
@@ -21,6 +20,8 @@
 
         <div id="loading-spinner" class="spinner" style="block"></div>
         <div id="map"></div>
-        <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&libraries=places&callback=initMap" async defer></script>
+
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&libraries=places&callback=initMap" defer loading="async"></script>
+
     </div>
 </body>
