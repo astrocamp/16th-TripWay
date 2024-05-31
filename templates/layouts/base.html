@@ -13,12 +13,13 @@
             TripWay
         {% endblock %}
     </title>
-
 </head>
 <body class="flex flex-col min-h-screen">
     {% include 'shared/navbar.html' %}
-    {% block content %}
-    {% endblock %}
+    <div class="flex-grow">
+      {% block content %}
+      {% endblock %}
+    </div>
     {% if messages %}
       {% for message in messages %}
         <script>
@@ -31,10 +32,10 @@
         </script>
       {% endfor %}
     {% endif %}
-    
+    <footer class="mt-auto">
     {% block footer %}
         {% include 'shared/footer.html' %}
     {% endblock %}
-
+    </footer>
   </body>
 </html>
