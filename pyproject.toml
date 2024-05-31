@@ -11,7 +11,6 @@ django = "^5.0.4"
 psycopg = "^3.1.18"
 django-allauth = {extras = ["socialaccount"], version = "^0.62.1"}
 python-dotenv = "^1.0.1"
-ipython = "^8.24.0"
 cryptography = "^42.0.7"
 pillow = "^10.3.0"
 requests = "^2.32.2"
