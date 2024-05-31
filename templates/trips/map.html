@@ -9,15 +9,13 @@
 </head>
 <body>
 
-    
-    <div id="map-container">
-        <a href="{% url 'home' %}" class="absolute mt-1 z-10 text-4xl font-bold hidden lg:block" style="top:0; right:100px;">
-            <div class="w-20">
-            <img src="{% static 'img/LOGO.png' %}" alt="TripWay Logo" class="w-full object-cover" />
-            </div>
-        </a>
+    {% include "shared/navbar-map.html" %}
+    <div id="map-container relative">
+        <!-- 手機版 獨立搜索框 -->
+        <input id="pac-input" type="text" class="absolute z-40 left-1/2 top-24 translate-x-[-30%] block lg:hidden" placeholder="搜索地點"/>
+
         <div id="search-container">
-            <input id="pac-input" class="controls" type="text" placeholder="搜索地點"/>
+            <input id="pac-input" type="text" class="hidden lg:block"placeholder="搜索地點"/>
             <button class="search-button-map hidden lg:block" onclick="searchNearby('restaurant')">
                 <i class="fa-solid fa-utensils"></i>
                 餐廳</button>
@@ -30,8 +28,7 @@
             </button>
         </div>
 
-        {% comment %} <div id="loading-spinner" class="spinner" style="block"></div> {% endcomment %}
-        <span id="loading-spinner" class="loading loading-ball loading-lg"></span>
+        <span id="loading-spinner" class="absolute loading loading-ball loading-lg top-1/2 translate-y-[-50%] left-1/2 translate-x-[-50%] lg:left-1/2 translate-x-[-50%]"></span>
         <div id="map"></div>
 
         <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&libraries=places&callback=initMap" defer loading="async"></script>

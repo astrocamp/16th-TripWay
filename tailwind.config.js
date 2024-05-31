@@ -4,17 +4,17 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        "home-yellow": "#EDC951",
+        "btn-red":" #CC333F",
+        "number-black": "#101828",
+        "base-white":"#FFFFFF",
         "light-blue": "#85B6FF",
-        "blueGray": "#EBF0F6",
+        "blueGray": '#EBF0F6',
         "btn-blue": "#649DFF",
-        "yellow": "#EDC951",
-        "red":" #CC333F",
-        "black": "#101828",
-        "white":"#FFFFFF",
         "blue-btn":"#00A0B0",
         'blue-dc': '#005a64',
         "dark-gray":"#0F1828",
-        "gray": "#878B93",
+        "hover-gray": "#878B93",
         "light-gray":"#CFD1D4",
       },
       borderRadius: {
