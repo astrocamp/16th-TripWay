@@ -1,5 +1,6 @@
 from django.db import models
 from django.shortcuts import redirect
+from django.urls import reverse
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 
@@ -28,8 +29,6 @@ class Spot(models.Model):
             self.rating = None
 
     def get_absolute_url(self):
-        from django.urls import reverse
-
         return reverse("spots:show", kwargs={"pk": self.pk})
 
 
