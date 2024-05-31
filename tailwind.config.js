@@ -10,7 +10,6 @@ module.exports = {
         "base-white":"#FFFFFF",
         "light-blue": "#85B6FF",
         "blueGray": "#EBF0F6",
-        "blue": "#EBF0F6",
         "btn-blue": "#649DFF",
         "blue-btn":"#00A0B0",
         'blue-dc': '#005a64',
