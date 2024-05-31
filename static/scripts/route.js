@@ -33,8 +33,8 @@ function initMap() {
 function getTripIdFromUrl() {
     var currentUrl = window.location.href;
     var urlParts = currentUrl.split('/');
-    var idIndex = urlParts.indexOf('trips') + 1; // 找到 "trips" 后面的部分
-    return idIndex !== -1 ? urlParts[idIndex] : null; // 获取 ID
+    var idIndex = urlParts.indexOf('trips') + 1;
+    return idIndex !== -1 ? urlParts[idIndex] : null; 
 }
 
 function loadSchedule() {
