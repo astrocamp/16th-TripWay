@@ -29,9 +29,18 @@ def home(request):
         member = request.user
         trip_members = TripMember.objects.filter(member=member)
         trip_ids = trip_members.values_list("trip_id", flat=True)
-        trips = Trip.objects.filter(id__in=trip_ids).order_by("start_date")
+        trips = Trip.objects.filter(id__in=trip_ids)
+
+        sort_option = request.GET.get('sort', 'created_desc')
+        if sort_option == 'date_asc':
+            trips = trips.order_by('start_date')
+        elif sort_option == 'date_desc':
+            trips = trips.order_by('-start_date')
+        else:
+            trips = trips.order_by('-id')
+
         trips = [{"t": trip, "tm": trip_members.get(trip=trip)} for trip in trips]
-        return render(request, "trips/index.html", {"trips": trips})
+        return render(request, "trips/index.html", {"trips": trips, "sort_option": sort_option})
 
 
 @login_required
