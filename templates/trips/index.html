@@ -43,12 +43,16 @@
               <button id="menu-toggle-{{ trip.t.id }}" class="btn p-2 border-0 rounded-3xl text-xl bg-gray-300 hover:bg-slate-400 w-14">
                 <i class="fas fa-ellipsis-h text-gray-600"></i>
               </button>
-              <div id="menu-{{ trip.t.id }}" class="hidden absolute right-0 mt-3 bg-white border rounded-lg shadow-md">
+              <div id="menu-{{ trip.t.id }}" class="hidden absolute right-0 mt-3 bg-white border rounded-lg shadow-md w-28">
                 {% if trip.tm.is_editable %}
-                  <a href="{% url 'trips:update' trip.t.id %}" class="block px-4 py-2 hover:bg-gray-300 border-b rounded-t-lg text-center w-20 font-bold">編輯</a>
+                  <a href="{% url 'trips:update' trip.t.id %}" class="block px-4 py-2 hover:bg-gray-300 border-b rounded-t-lg text-center text-xl w-28 font-bold">
+                    <i class="fa-solid fa-pen-to-square"></i>編輯
+                  </a>
                   <form @submit.prevent="deleteTrip()" action="{% url 'trips:delete' trip.t.id %}" method="post" x-ref="id{{ trip.t.id }}">
                     {% csrf_token %}
-                    <button type="submit" class="block w-full px-4 py-2 text-left hover:bg-gray-100 rounded-b-lg text-center font-bold">刪除</button>
+                    <button type="submit" class="block w-full px-4 py-2 text-left hover:bg-gray-100 rounded-b-lg text-center text-xl  font-bold">
+                      <i class="fa-solid fa-trash-can"></i>刪除
+                    </button>
                   </form>
                 {% endif %}
               </div>
