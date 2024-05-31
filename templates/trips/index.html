@@ -28,7 +28,7 @@
           <img src="{% if trip.t.image %}{{ trip.t.image.url }}{% else %}{% static 'img/tripdefault.png' %}{% endif %}" class="w-[266px] h-[200px]" alt="">
           <form id="trip-form" action="{{ trip.t.id }}/schedules/" method="post">
             {% csrf_token %}
-            <button  id="trip-button" type="submit" class="mx-3 my-3">
+            <button class="mx-3 my-3">
               <div class="flex items-start font-bold text-sky-800 text-xl">{{ trip.t.name }}</div>
               <div>{{ trip.t.start_date|date:'Y-m-d' }}~{{ trip.t.end_date|date:'Y-m-d' }}</div>
             </button>
