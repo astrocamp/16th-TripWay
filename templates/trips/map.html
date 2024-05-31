@@ -11,11 +11,11 @@
     <div id="map-container">
 
         <div id="search-container">
-            <input id="pac-input" class="controls" type="text" placeholder="搜索地點"/>
             <button class="search-button" onclick="searchNearby('restaurant')">搜索附近餐廳
             </button>
             <button class="search-button" onclick="searchNearby('tourist_attraction')">搜索附近觀光景點</button>
             <button class="search-button" onclick="searchNearby('park')">搜索附近公園</button>
+            <input id="pac-input" class="controls" type="text" placeholder="搜索地點"/>
         </div>
 
         <div id="loading-spinner" class="spinner" style="block"></div>
@@ -25,3 +25,5 @@
 
     </div>
 </body>
+{% block footer %}
+{% endblock %}

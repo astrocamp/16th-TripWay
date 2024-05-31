@@ -4,12 +4,19 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'light-blue': '#85B6FF',
-        'blue': '#EBF0F6',
-        'blue-btn': '#00A0B0',
-        'blue-dc': '#005a64',
-        'btn-blue': '#649DFF',
-      }
+        "light-blue": "#85B6FF",
+        "blueGray": '#EBF0F6',
+        "btn-blue": "#649DFF",
+        "yellow": "#EDC951",
+        "red":" #CC333F",
+        "black": "#101828",
+        "gray": "#878B93",
+        "white":"#FFFFFF",
+      },
+      borderRadius: {
+        "custom-20": "20px",
+        "custom-50": "50px",
+      },
     },
   },
   plugins: [require("daisyui")],
