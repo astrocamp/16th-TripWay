@@ -54,7 +54,7 @@
               </div>
             </div>
             <a href="{{ trip.t.id }}/schedules/" class="block bg-white border-2 rounded-xl hover:bg-blue-300 cursor-pointer h-full duration-300 ease-in-out hover:scale-105">
-              <img src="{{ trip.t.image.url }}" class="w-full h-[350px] rounded-t-lg" alt="">
+              <img src="{% if trip.t.image %}{{ trip.t.image.url }}{% else %}{% static 'img/tripdefault.png' %}{% endif %}" class="w-full h-[350px] rounded-t-lg" alt="">
               <div class="card-body">
                 <h2 class="card-title font-bold text-3xl">{{ trip.t.name }}</h2>
                 <p class="text-2xl text-slate-700">{{ trip.t.start_date|date:'Y-m-d' }}~{{ trip.t.end_date|date:'Y-m-d' }}</p>
