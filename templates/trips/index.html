@@ -1,55 +1,77 @@
 {% extends 'layouts/base.html' %} 
 {% load static %}
-{% block content %}
-  <div class="h-screen bg-blue-50">
-    <header class="flex justify-start bg-sky-800">
-      <a class="px-2 py-2 text-white bg-sky-800 hover:bg-sky-950" href="{% url 'home' %}">
-        <i class="fa-solid fa-house-chimney"></i>
-      </a>
-      <h1 class="px-2 py-2 text-white bg-sky-800">行程列表</h1>
-    </header>
 
-    {% for trip in trips %}
-      <div class="flex justify-between my-2 bg-white border rounded-lg fmx-2 center just juspx-2 jus hover:bg-blue-300 h-100" x-data="{ deleteTrip() {
-        Swal.fire({
-          icon: 'question',
-          title: '確定要刪除嗎?',
-          text: '若選擇刪除，資料將會消失',
-          showCancelButton: true,
-          cancelButtonText: '取消',
-          confirmButtonText: '刪除',
-        }).then((result) => {
-          if(result.isConfirmed){
-            this.$refs['id{{ trip.t.id }}'].submit()
-          }
-        })
-      } }">
-        <div class="flex">
-          <img src="{% if trip.t.image %}{{ trip.t.image.url }}{% else %}{% static 'img/tripdefault.png' %}{% endif %}" class="w-[266px] h-[200px]" alt="">
-          <form id="trip-form" action="{{ trip.t.id }}/schedules/" method="post">
-            {% csrf_token %}
-            <button class="mx-3 my-3">
-              <div class="flex items-start font-bold text-sky-800 text-xl">{{ trip.t.name }}</div>
-              <div>{{ trip.t.start_date|date:'Y-m-d' }}~{{ trip.t.end_date|date:'Y-m-d' }}</div>
-            </button>
-          </form>
-        </div>
-        <div class="flex">
-          {% if trip.tm.is_editable %}
-            <a class="px-2 py-2 rounded-lg hover:text-gray-650 text-cyan-850" href="{% url 'trips:update' trip.t.id %}"><i class="fa-solid fa-file-pen"></i></a>
-            <form @submit.prevent="deleteTrip()" action="{% url 'trips:delete' trip.t.id %}" method="post" x-ref="id{{ trip.t.id }}">
-              {% csrf_token %}
-              <button class="px-2 py-2 text-red-700 rounded-lg hover:text-gray-650"><i class="fa-regular fa-trash-can"></i></button>
-            </form>
-          {% endif %}
+{% block content %}
+  <div class="pt-8">
+    <header class="flex justify-between items-center mx-24">
+      <div class="flex items-center">
+        <a class="ml-8 transition-colors duration-300 hover:text-sky-700" href="{% url 'home' %}">
+          <i class="fa-solid fa-house-chimney text-2xl"></i>
+        </a>
+        <h1 class="p-2 text-3xl font-bold">行程列表</h1>
+      </div>  
+      <div class="relative">
+        <select id="sort-options" class="block appearance-none bg-white text-black text-2xl border-0 rounded-lg mx-8 mt-3 px-3 py-2 w-52">
+          <div class="absolute left-0 w-full bg-white border border-gray-300 rounded-lg mt-12">
+            <option value="created_desc" {% if sort_option == 'created_desc' %}selected{% endif %} class="appearance-none bg-white hover:bg-slate-200">依建立時間</option>
+            <option value="date_asc" {% if sort_option == 'date_asc' %}selected{% endif %} class="appearance-none bg-white hover:bg-slate-200">出發日(近到遠)</option>
+            <option value="date_desc" {% if sort_option == 'date_desc' %}selected{% endif %} class="appearance-none bg-white hover:bg-slate-200">出發日(遠到近)</option>
+          </div>
+        </select>
+      </div>
+    </header>
+    
+    {% if trips %}
+      <div class="mx-24 mt-8">
+        <div class="flex flex-wrap justify-start gap-6 h-full">
+          {% for trip in trips %}
+          <div class="relative xl:w-[32%] lg:w-[48%] sm:w-full mt-5 mb-8" x-data="{ deleteTrip() {
+            Swal.fire({
+              icon: 'question',
+              title: '確定要刪除嗎?',
+              text: '若選擇刪除，資料將會消失',
+              showCancelButton: true,
+              cancelButtonText: '取消',
+              confirmButtonText: '刪除',
+            }).then((result) => {
+              if(result.isConfirmed){
+                this.$refs['id{{ trip.t.id }}'].submit()
+              }
+            })
+          } }">
+            <div class="absolute top-0 right-0 m-4 z-10">
+              <button id="menu-toggle-{{ trip.t.id }}" class="btn p-2 border-0 rounded-3xl text-xl bg-gray-300 hover:bg-slate-400 w-14">
+                <i class="fas fa-ellipsis-h text-gray-600"></i>
+              </button>
+              <div id="menu-{{ trip.t.id }}" class="hidden absolute right-0 mt-3 bg-white border rounded-lg shadow-md">
+                {% if trip.tm.is_editable %}
+                  <a href="{% url 'trips:update' trip.t.id %}" class="block px-4 py-2 hover:bg-gray-300 border-b rounded-t-lg text-center w-20 font-bold">編輯</a>
+                  <form @submit.prevent="deleteTrip()" action="{% url 'trips:delete' trip.t.id %}" method="post" x-ref="id{{ trip.t.id }}">
+                    {% csrf_token %}
+                    <button type="submit" class="block w-full px-4 py-2 text-left hover:bg-gray-100 rounded-b-lg text-center font-bold">刪除</button>
+                  </form>
+                {% endif %}
+              </div>
+            </div>
+            <a href="{{ trip.t.id }}/schedules/" class="block bg-white border-2 rounded-xl hover:bg-blue-300 cursor-pointer h-full duration-300 ease-in-out hover:scale-105">
+              <img src="{{ trip.t.image.url }}" class="w-full h-[350px] rounded-t-lg" alt="">
+              <div class="card-body">
+                <h2 class="card-title font-bold text-3xl">{{ trip.t.name }}</h2>
+                <p class="text-2xl text-slate-700">{{ trip.t.start_date|date:'Y-m-d' }}~{{ trip.t.end_date|date:'Y-m-d' }}</p>
+              </div>
+            </a>
+          </div>
+          {% endfor %}
         </div>
       </div>
-    {% endfor %}
-  <br />
-  <div class="flex justify-center">
-    <a class="px-2 py-2 text-white border rounded-lg bg-sky-800 hover:bg-sky-950" href="{% url 'trips:new' %}">建立新行程</a>
-    <a class="px-2 py-2 text-white border rounded-lg bg-sky-800 hover:bg-sky-950" href="{% url 'trips:map' %}">查看地圖</a>
-    <a class="px-2 py-2 text-white border rounded-lg bg-sky-800 hover:bg-sky-950" href="{% url 'spots:index' %}">景點清單</a>
+      <br />
+    {% else %}
+      <p class="text-center text-3xl font-bold mt-48 mb-24">目前還没有行程喔</p>
+    {% endif %}
+
+    <div class="flex justify-center items-center mb-20">
+      <a class="w-1/3 h-14 flex items-center justify-center p-2 text-2xl text-white text-center font-bold border rounded-3xl bg-blue-btn hover:bg-blue-dc" href="{% url 'trips:new' %}">建立新行程</a>
+    </div>
   </div>
 </div>
 <script src="{% static "scripts/route.js" %}"></script>
