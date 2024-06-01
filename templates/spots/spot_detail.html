@@ -43,7 +43,8 @@
                 {% csrf_token %}
                 <div>
                   <h2 class="mb-4 text-xl font-semibold text-center">推薦指數</h2>
-                    <div class="flex justify-center rating">
+                    <div id="rating" class="flex justify-center rating">
+                        <input type="radio" name="rating" class="hidden" value="0" checked />
                         <input type="radio" name="rating" class="bg-orange-400 mask mask-star-2" value="1" />
                         <input type="radio" name="rating" class="bg-orange-400 mask mask-star-2" value="2" />
                         <input type="radio" name="rating" class="bg-orange-400 mask mask-star-2" value="3" />
@@ -91,11 +92,28 @@
       const csrfToken = "{{ csrf_token }}";
   </script>
   <script src="{% static 'js/comments.js' %}"></script>
+  <script>
+        const ratingContainer = document.getElementById('rating');
+        const stars = ratingContainer.querySelectorAll('input[name="rating"]');
+        let lastChecked = null;
+
+        stars.forEach(star => {
+            star.addEventListener('click', function() {
+                if (this === lastChecked) {
+                    this.checked = false;
+                    lastChecked = null;
+                    // 取消所有选中的星星
+                    ratingContainer.querySelector('input[value="0"]').checked = true;
+                } else {
+                    lastChecked = this;
+                }
+            });
+        });
+    </script>
 
   {% if alert %}
   <input type="hidden" name="alert_type" value="{{ alert.type }}">
   <input type="hidden" name="alert_message" value="{{ alert.message }}">
   {% endif %}
   <input type="hidden" name="is_logged_in" value="{{ user.is_authenticated }}">
-</div>
 {% endblock %}
