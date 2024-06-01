@@ -9,17 +9,14 @@ from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.conf import settings
-from datetime import timedelta
-
+from django.db.models import Avg
+from .form import SpotForm
+from .models import Spot, LoginRequired
+from comments.models import Comment
+from comments.forms import CommentForm
 from members.models import MemberSpot
 from trips.models import Trip, TripMember
 from schedules.models import Schedule
-from .form import SpotForm
-from .models import Spot, LoginRequired
-
-from comments.models import Comment
-from comments.forms import CommentForm
 
 class IndexView(LoginRequired, ListView):
     model = Spot
@@ -35,9 +32,16 @@ class ShowView(LoginRequired, DetailView):
             comment_content = request.POST.get('comment')
             rating_value = request.POST.get('rating')
 
-            if comment_content and rating_value:
+            if comment_content and rating_value and rating_value != '0':
                 Comment.objects.create(content=comment_content, spot=spot, user=request.user, value=int(rating_value))
                 messages.success(request, "已提交留言！")
+                
+                # 更新景點的平均評分
+                comments = Comment.objects.filter(spot=spot)
+                total_comments = comments.count()
+                average_rating = comments.aggregate(Avg('value'))['value__avg']
+                spot.rating = average_rating
+                spot.save()
             else:
                 messages.error(request, "請先完成評分！")
             return redirect('spots:show', pk=spot.id)
@@ -57,6 +61,14 @@ class ShowView(LoginRequired, DetailView):
             comment = get_object_or_404(Comment, id=comment_id)
             comment.delete()
             messages.success(request, "留言已刪除！")
+            
+            # 更新景點的平均評分
+            comments = Comment.objects.filter(spot=spot)
+            total_comments = comments.count()
+            average_rating = comments.aggregate(Avg('value'))['value__avg'] if total_comments > 0 else 0
+            spot.rating = average_rating
+            spot.save()
+            
             return redirect('spots:show', pk=spot.id)
 
         return redirect("spots:show", pk=spot.id)
@@ -69,17 +81,19 @@ class ShowView(LoginRequired, DetailView):
         # 確認當前用戶是否喜愛該景點
         member_spot = MemberSpot.objects.filter(spot=spot, member=user).exists()
 
-        # 將用戶和景點之間的關係添加到上下文中
-        context["member_spot"] = member_spot
-
         # 添加評論表單和評論數據到上下文
         comments = Comment.objects.filter(spot=spot)
+        total_comments = comments.count()
+        average_rating = comments.aggregate(Avg('value'))['value__avg'] if total_comments > 0 else 0
         form = CommentForm()
         alert = self.request.session.pop('alert', None)
         context.update({
             'comments': comments,
             'form': form,
             'alert': alert,
+            'average_rating': average_rating,
+            'total_comments': total_comments,
+            'member_spot': member_spot,
         })
 
         return context
@@ -184,7 +198,7 @@ def toggle_favorite(request, pk):
     if request.method == "POST":
         is_favorite = MemberSpot.objects.filter(member=member, spot=spot).exists()
 
-        if (is_favorite):
+        if is_favorite:
             MemberSpot.objects.filter(member=member, spot=spot).delete()
             return JsonResponse({"status": "removed"})
         else:

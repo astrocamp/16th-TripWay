@@ -17,7 +17,18 @@
         <div class="flex items-center">
             <img class="h-full" src="https://picsum.photos/200" alt="" />
             <div class="mx-5">
-                <p class="text-lg font-bold text-sky-700">{{ spot.name }}</p>
+                <div class="flex items-center">
+                    <p class="text-lg font-bold text-sky-700">{{ spot.name }}</p>
+                    <span class="flex items-center ml-4">
+                        <span class="text-sky-700">{{ average_rating|floatformat:1 }}</span>
+                        <div class="flex justify-center ml-2 rating" style="pointer-events: none;">
+                            {% for i in "12345" %}
+                                <input type="radio" name="average_rating" class="bg-orange-400 mask mask-star-2" value="{{ i }}" {% if i <= average_rating|floatformat:1 %}checked{% endif %} disabled />
+                            {% endfor %}
+                        </div>
+                        <span class="ml-2 text-sky-700">({{ total_comments }})</span>
+                    </span>
+                </div>
                 <p class="py-2 text-opacity-75 text-start text-sky-700">{{ spot.latitude }}</p>
                 <p class="py-2 text-opacity-75 text-start text-sky-700">{{ spot.longitude }}</p>
                 <p class="py-2 text-opacity-75 text-start text-sky-700">{{ spot.address }}</p>
@@ -27,10 +38,7 @@
             <a class='btn' href="{% url 'spots:add_schedule' spot.pk %}">加入行程+</a>
         </div>
         <div>
-            <i
-                id="favoriteIcon"
-                class="mt-4 fa-heart fa-2xl {% if member_spot %}fa-solid{% else %}fa-regular{% endif %} cursor-pointer"
-            ></i>
+            <i id="favoriteIcon" class="mt-4 fa-heart fa-2xl {% if member_spot %}fa-solid{% else %}fa-regular{% endif %} cursor-pointer"></i>
         </div>
     </section>
 
