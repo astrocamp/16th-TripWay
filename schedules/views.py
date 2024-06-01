@@ -88,7 +88,6 @@ def show(request, id):
     trip = schedules.trip
     if request.method == "POST":
         schedules.date = request.POST["date"]
-        schedules.spot_name = request.POST["spot_name"]
         schedules.start_time = request.POST["start_time"]
         schedules.end_time = request.POST["end_time"]
         schedules.note = request.POST["note"]
