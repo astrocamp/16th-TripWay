@@ -1,13 +1,24 @@
 var map;
 var markers = [];
-var polylines = [];
 var bounds;
 var scheduleData = {};
 var tripId = getTripIdFromUrl();
+var directionsService;
+var directionsRenderer;
 
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 16,
+    });
+
+    directionsService = new google.maps.DirectionsService();
+    directionsRenderer = new google.maps.DirectionsRenderer({
+        map: map,
+        suppressMarkers: true, 
+        polylineOptions: {
+            strokeColor: '#FF6D1F',
+            strokeWeight: 6
+        }
     });
 
     bounds = new google.maps.LatLngBounds();
@@ -100,34 +111,75 @@ function showScheduleForDate(date) {
         }
     }
 
+    var waypoints = [];
     dayData.forEach(function(item, index) {
         var position = { lat: parseFloat(item.spot__latitude), lng: parseFloat(item.spot__longitude) };
         var markerLabel = (index + 1).toString();
         var marker = new google.maps.Marker({
             map: map,
             position: position,
-            label: markerLabel,
+            icon: createMarkerIcon(markerLabel),
             title: item.spot__name
         });
         markers.push(marker);
         bounds.extend(position);
-    });
-    var path = markers.map(marker => marker.getPosition());
-    var polyline = new google.maps.Polyline({
-        path: path,
-        strokeColor: '#FF0000',
-        strokeWeight: 3,
-        map: map
+
+        if (index > 0 && index < dayData.length - 1) {
+            waypoints.push({
+                location: position,
+                stopover: true
+            });
+        }
     });
 
-    polylines.push(polyline);
+    if (markers.length > 1) {
+        var origin = markers[0].getPosition();
+        var destination = markers[markers.length - 1].getPosition();
+
+        directionsService.route({
+            origin: origin,
+            destination: destination,
+            waypoints: waypoints,
+            travelMode: google.maps.TravelMode.DRIVING
+        }, function(response, status) {
+            if (status === google.maps.DirectionsStatus.OK) {
+                directionsRenderer.setDirections(response);
+            } else {
+                console.error('Directions request failed due to ' + status);
+            }
+        });
+    }
+
     map.fitBounds(bounds);
+}
+
+function createMarkerIcon(label) {
+    const canvas = document.createElement('canvas');
+    const size = 30;
+    canvas.width = size;
+    canvas.height = size;
+    const context = canvas.getContext('2d');
+
+    context.beginPath();
+    context.arc(size / 2, size / 2, size / 2, 0, 2 * Math.PI);
+    context.fillStyle = '#FF6D1F';
+    context.fill();
+
+    context.fillStyle = '#FFFFFF';
+    context.font = 'bold 14px Arial';
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    context.fillText(label, size / 2, size / 2);
+
+    return {
+        url: canvas.toDataURL(),
+        scaledSize: new google.maps.Size(size, size)
+    };
 }
 
 function clearMarkers() {
     markers.forEach(marker => marker.setMap(null));
     markers = [];
-    polylines.forEach(polyline => polyline.setMap(null));
-    polylines = [];
+    directionsRenderer.set('directions', null);
     bounds = new google.maps.LatLngBounds();
 }
