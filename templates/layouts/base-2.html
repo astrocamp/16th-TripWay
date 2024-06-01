@@ -17,27 +17,31 @@
 </head>
 <body class="flex flex-col min-h-screen">
     {% block navbar %}
-        {% include 'shared/navbar-2.html' %}
+    {% include 'shared/navbar-2.html' %}
     {% endblock %}
-    
+
+    <div class="flex-grow">
         {% block content %}
         {% endblock %}
-        {% if messages %}
+    </div>
+    {% if messages %}
         {% for message in messages %}
-            <script>
+        <script>
             document.addEventListener('DOMContentLoaded', function () {
-                Toast.fire({
+            Toast.fire({
                 icon: '{{ message.tags }}',
                 title: '{{ message }}'
-                })
             })
-            </script>
+            })
+        </script>
         {% endfor %}
-        {% endif %}
-        
+    {% endif %}
+
+    <footer class="mt-auto">
         {% block footer %}
             {% include 'shared/footer.html' %}
         {% endblock %}
+    </footer>
 
     </body>
 </html>
