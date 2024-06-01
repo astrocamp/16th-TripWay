@@ -1,5 +1,5 @@
 {% load static %}
-<nav class="sticky top-0 left-0 z-50 flex items-center justify-between w-full bg-white lg:px-8 px-6 py-4 shadow-md">
+<nav class="sticky top-0 left-0 z-50 flex items-center justify-between w-full bg-yellow lg:px-8 px-6 py-4">
     <!-- icon -->
     <a href="{% url 'home' %}" class="mb-8 text-4xl font-bold hidden lg:block">
         <div class="w-20">
@@ -8,7 +8,7 @@
     </a>
     <!-- search input -->
     <div class="flex flex-1 ml-5 justify-center-0">
-        <div class="relative w-100 lg:w-80 rounded-custom-20 overflow-hidden border">
+        <div class="relative w-100 lg:w-80 rounded-custom-20 overflow-hidden text-gray">
         <input
             id="search-input"
             type="text"
@@ -28,22 +28,22 @@
         <div class="lg:flex lg:items-center lg:space-x-6 lg:mr-10 hidden">
             <ul class="flex space-x-12">
                 <li>
-                    <a href="{% url 'trips:map' %}" class="flex items-center space-x-1 text-2xl font-medium hover:text-gray">
+                    <a href="{% url 'trips:map' %}" class="flex items-center space-x-1 text-2xl font-medium hover:text-white">
                         <span>地圖探索</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#hotspots-section" class="text-2xl font-medium hover:text-gray">景點探索</a>
+                    <a href="#hotspots-section" class="text-2xl font-medium hover:text-white">景點探索</a>
                 </li>
                 <li>
-                    <a href="{% url 'trips:index' %}" class="text-2xl font-medium hover:text-gray">立即規劃</a>
+                    <a href="{% url 'trips:index' %}" class="text-2xl font-medium hover:text-white">立即規劃</a>
                 </li>
             </ul>
         </div>
 
         <!-- 手機版 漢堡包圖標 -->
         <div class="lg:hidden">
-            <button id="menu-toggle" class="flex items-center px-3 py-2 text-black hover:text-gray focus:outline-none">
+            <button id="menu-toggle" class="flex items-center px-3 py-2 text-white hover:text-black focus:outline-none">
                 <svg class="fill-current h-8 w-8" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <title>Menu</title>
                     <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>

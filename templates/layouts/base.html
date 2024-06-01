@@ -15,7 +15,10 @@
     </title>
 </head>
 <body class="flex flex-col min-h-screen">
+  {% block navbar %}
     {% include 'shared/navbar.html' %}
+  {% endblock %}
+  
     <div class="flex-grow">
       {% block content %}
       {% endblock %}
