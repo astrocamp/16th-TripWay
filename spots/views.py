@@ -116,10 +116,16 @@ class SearchView(View):
 
             if places_result["results"]:
                 top_result = places_result["results"][0]
-                name = HanziConv.toTraditional(top_result["name"]).replace("颱", "台")
-                address = HanziConv.toTraditional(
-                    top_result.get("formatted_address", "")
-                ).replace("颱", "台")
+                name = (
+                    HanziConv.toTraditional(top_result["name"])
+                    .replace("颱", "台")
+                    .replace("傢", "家")
+                )
+                address = (
+                    HanziConv.toTraditional(top_result.get("formatted_address", ""))
+                    .replace("颱", "台")
+                    .replace("傢", "家")
+                )
                 location = top_result["geometry"]["location"]
                 place_id = top_result["place_id"]
                 city = extract_city(address)
