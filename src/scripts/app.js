@@ -7,7 +7,6 @@ import "./trips/new.js"
 import toggleFavorite from "./favorite.js"
 import Swal from "sweetalert2";
 import Alpine from "alpinejs";
-import 'flowbite';
 
 window.Toast = Toast
 window.Alpine = Alpine
