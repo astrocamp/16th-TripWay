@@ -16,9 +16,9 @@ def index(request):
             if comment_content and rating_value:
                 spot = get_object_or_404(Spot, id=spot_id) if spot_id else None
                 Comment.objects.create(content=comment_content, spot=spot, user=request.user, value=int(rating_value))
-                request.session['alert'] = {'type': 'success', 'message': "已提交留言！"}
+                messages.success(request, "已提交留言！")
             else:
-                request.session['alert'] = {'type': 'error', 'message': "請先完成評分！"}
+                messages.error(request, "請先完成評分！")
             return redirect('comments:index')
 
         if 'edit_comment_id' in request.POST:

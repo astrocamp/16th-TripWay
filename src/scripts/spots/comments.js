@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const ratingStars = document.querySelectorAll(".rating-star");
   const isLoggedIn = document.querySelector('input[name="is_logged_in"]').value;
 
-  ratingStars.forEach((star) => {
+  ratingStars.forEach((star, index) => {
     star.addEventListener("click", function (event) {
       if (isLoggedIn === "False") {
         // 如果用戶未登錄
@@ -17,6 +17,18 @@ document.addEventListener("DOMContentLoaded", function () {
             window.location.href = loginUrl; // 重定向到登錄頁面
           }
         });
+      } else {
+        // 檢查是否已經選取了該星星
+        if (star.classList.contains("bg-orange-400")) {
+          // 如果是，則清除所有星星的選取
+          ratingStars.forEach((btn) => btn.classList.remove("bg-orange-400"));
+        } else {
+          // 如果否，則點亮相應數量的星星
+          ratingStars.forEach((btn) => btn.classList.remove("bg-orange-400"));
+          for (let i = 0; i <= index; i++) {
+            ratingStars[i].classList.add("bg-orange-400");
+          }
+        }
       }
     });
   });
@@ -48,36 +60,26 @@ document.addEventListener("DOMContentLoaded", function () {
   // 刪除留言功能
   const deleteCommentButtons = document.querySelectorAll(".delete-comment-btn");
   deleteCommentButtons.forEach((button) => {
-    button.addEventListener("click", function () {
-      const commentId = this.getAttribute("data-comment-id");
-      Swal.fire({
-        title: "確定要刪除嗎？",
-        text: "這個操作不能撤銷！",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "刪除",
-        cancelButtonText: "取消",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          const form = document.createElement("form");
-          form.method = "POST";
-          form.action = commentsIndexUrl;
-          const csrfInput = document.createElement("input");
-          csrfInput.type = "hidden";
-          csrfInput.name = "csrfmiddlewaretoken";
-          csrfInput.value = csrfToken;
-          form.appendChild(csrfInput);
-          const deleteInput = document.createElement("input");
-          deleteInput.type = "hidden";
-          deleteInput.name = "delete_comment_id";
-          deleteInput.value = commentId;
-          form.appendChild(deleteInput);
-          document.body.appendChild(form);
-          form.submit();
-        }
-      });
+    button.addEventListener("click", function (event) {
+      event.preventDefault();
+      confirmDelete(this);
     });
   });
 });
+
+function confirmDelete(button) {
+  Swal.fire({
+    title: "確定刪除此留言嗎?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "確認",
+    cancelButtonText: "取消",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // 提交表單進行硬刪除
+      button.closest("form").submit();
+    }
+  });
+}
