@@ -2,6 +2,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
+
+
+
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{% static 'styles/style.css' %}" />
@@ -35,10 +40,8 @@
         </script>
       {% endfor %}
     {% endif %}
-    <footer class="mt-auto">
-    {% block footer %}
-        {% include 'shared/footer.html' %}
-    {% endblock %}
-    </footer>
+    
+    {% include 'shared/footer.html' %}
+
   </body>
 </html>
