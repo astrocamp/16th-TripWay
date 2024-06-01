@@ -1,7 +1,6 @@
 {% extends 'layouts/base.html' %} 
 {% block content %}
 {% load static %}
-<link rel="stylesheet" href="{% static "styles/wait_web.css" %}">
 
 <div class="bg-blue-50" style="height:calc(100vh - 88px); overflow: hidden;">
 
@@ -17,7 +16,6 @@
     
   <div class="wrap flex h-full">
     <div class="w-2/5">
-  
       <div class="label-block overflow-scroll">
 
         <!-- 日期頁籤 -->
@@ -27,7 +25,7 @@
               {{ day|date:"Y-m-d" }}
             </button>
           {% endfor %}
-    
+          
           <!-- 新增一天的行程 -->
           <form action="{% url 'trips:schedules:add_day' trip.id %}" method="post">
             {% csrf_token %}
@@ -35,9 +33,7 @@
                 +
             </button>
           </form>
-
         </div>
-
       </div>
     
       <div class="bottom-block">
@@ -117,13 +113,12 @@
             <a class="px-2 py-2 text-white border rounded-lg bg-sky-800 hover:bg-sky-950" href="{% url 'trips:new-member' trip.id %}">新增成員</a>
             {% endif %}
           </div>
-      </div>
+        </div>
 
     </div>
 
     <div id="map" style="flex-grow: 1;">I'm map</div>
   </div>
-
 </div>
 
 <script src="{% static "scripts/route.js" %}"></script>
