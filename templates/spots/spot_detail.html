@@ -37,8 +37,6 @@
     <section class="flex flex-col items-center justify-center py-12">
         <div class="w-full max-w-md">
             <h1 class="mb-8 text-2xl font-bold text-center">評論景點</h1>
-
-            <!-- 評分和評論系統 -->
             <form id="ratingForm" method="post" action="{% url 'spots:show' spot.pk %}">
                 {% csrf_token %}
                 <div>
@@ -58,7 +56,6 @@
                 </div>
             </form>
 
-            <!-- 顯示評論 -->
             <div class="mt-8">
                 <h2 class="mb-4 text-xl font-semibold text-center">評論內容</h2>
                 {% for comment in comments %}
@@ -87,7 +84,6 @@
     </section>
   </div>
 
-  <!-- 放置脚本和隐藏输入 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
       const loginUrl = "{% url 'login' %}";
