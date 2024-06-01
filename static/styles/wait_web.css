@@ -3,17 +3,15 @@ body {
     padding: 0;
     font-family: Arial, sans-serif;
 }
-.spinner {
+#loading-spinner {
     position: absolute;
-    top: 40%;
+    top: 45%;
     left: 46%;
     width: 150px;
     height: 150px;
     z-index: 100;
-    border: 20px solid rgba(75, 116, 198, 0.1);
-    border-left-color: #6fadec;
+    border: 20px solid #00A0B0;
     border-radius: 50%;
-    animation: spin 1s linear infinite;
 }
 
 @keyframes spin {

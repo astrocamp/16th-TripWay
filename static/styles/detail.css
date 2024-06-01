@@ -1,7 +1,4 @@
-body {
-    margin: 0;
-    padding: 0;
-}
+
 #map-container {
     display: flex;
     position: relative;
@@ -18,27 +15,28 @@ body {
     position: absolute;
     align-items: center;
     top: 10px;
-    left: 40%;
+    right: -100px;
     transform: translateX(-50%);
     z-index: 1000;
 }
 
 #pac-input {
-    width: 300px;
-    height: 40px;
-    border-radius: 20px;
-    padding-left: 15px;
+    width: 400px;
+    height: 60px;
+    border-radius: 40px;
+    padding-left: 20px;
     margin-right: 10px;
 }
-
-.search-button {
-    height: 40px;
-    border-radius: 20px;
-    padding: 0 15px;
+.search-button-map {
+    height: 60px;
+    border-radius: 40px;
+    padding: 0 20px;
+    margin-left: 5px;
     background-color: #fff;
     border: 1px solid #ccc;
     cursor: pointer;
-    font-weight: 700;
+    font-weight: 500;
+    font-size: larger;
 }
 
 .info-window {

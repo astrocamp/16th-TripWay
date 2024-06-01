@@ -10,8 +10,12 @@ module.exports = {
         "yellow": "#EDC951",
         "red":" #CC333F",
         "black": "#101828",
-        "gray": "#878B93",
         "white":"#FFFFFF",
+        "blue-btn":"#00A0B0",
+        'blue-dc': '#005a64',
+        "dark-gray":"#0F1828",
+        "gray": "#878B93",
+        "light-gray":"#CFD1D4",
       },
       borderRadius: {
         "custom-20": "20px",
