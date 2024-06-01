@@ -21,7 +21,6 @@
     "alpinejs": "^3.14.0",
     "autoprefixer": "^10.4.19",
     "dotenv": "^16.4.5",
-    "flowbite": "^2.3.0",
     "postcss": "^8.4.38",
     "sweetalert2": "^11.10.8"
   }
