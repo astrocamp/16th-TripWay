@@ -18,7 +18,7 @@
       <div class="mb-6">
         <div class="w-full pic">
           <label for="pic" class="block text-sm font-bold leading-6 text-cyan-800">封面照片</label>
-          <img id="image" class="max-w-[370px] max-h-[200px]" src="{% if trips.image %}{{ trips.image.url }}{% else %}{% static 'img/tripdefault.png' %}{% endif %}"/>
+          <img id="image" class="max-w-[370px] max-h-[200px]" src="{% if trips.image %}{{ trips.image.url }}{% else %}{% static 'img/tripdefault.jpeg' %}{% endif %}"/>
         </div>
         <div style="display: flex; align-items: center">
           <input type="file" id="image-upload" style="display: none" name="image" accept="image/*"/>
