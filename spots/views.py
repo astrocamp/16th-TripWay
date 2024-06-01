@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.conf import settings
 from datetime import timedelta
 
@@ -36,9 +37,9 @@ class ShowView(LoginRequired, DetailView):
 
             if comment_content and rating_value:
                 Comment.objects.create(content=comment_content, spot=spot, user=request.user, value=int(rating_value))
-                request.session['alert'] = {'type': 'success', 'message': "已提交留言！"}
+                messages.success(request, "已提交留言！")
             else:
-                request.session['alert'] = {'type': 'error', 'message': "請先完成評分！"}
+                messages.error(request, "請先完成評分！")
             return redirect('spots:show', pk=spot.id)
 
         if 'edit_comment_id' in request.POST:
@@ -48,14 +49,14 @@ class ShowView(LoginRequired, DetailView):
             if comment_content:
                 comment.content = comment_content
                 comment.save()
-                request.session['alert'] = {'type': 'success', 'message': "留言已修改！"}
+                messages.success(request, "留言已修改！")
             return redirect('spots:show', pk=spot.id)
 
         if 'delete_comment_id' in request.POST:
             comment_id = request.POST['delete_comment_id']
             comment = get_object_or_404(Comment, id=comment_id)
             comment.delete()
-            request.session['alert'] = {'type': 'success', 'message': "留言已刪除！"}
+            messages.success(request, "留言已刪除！")
             return redirect('spots:show', pk=spot.id)
 
         return redirect("spots:show", pk=spot.id)
