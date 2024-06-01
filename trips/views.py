@@ -64,8 +64,8 @@ def map(request):
 def create(request):
     if request.method == "POST":
         name = request.POST["name"]
-        start_date = request.POST["start_date"]
-        end_date = request.POST["end_date"]
+        start_date = request.POST["start"]
+        end_date = request.POST["end"]
         transportation = request.POST["transportation"]
 
         if "image" in request.FILES:
