@@ -42,8 +42,8 @@
         </div>
 
         <!-- 手機版 漢堡包圖標 -->
-        <div class="lg:hidden">
-            <button id="menu-toggle" class="flex items-center px-3 py-2 text-white hover:text-black focus:outline-none">
+        <div>
+            <button id="menu-toggle-btn" class="flex items-center px-3 py-2 text-white hover:text-black focus:outline-none">
                 <svg class="fill-current h-8 w-8" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <title>Menu</title>
                     <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>
@@ -51,7 +51,7 @@
             </button>
     
             <!-- 探索下拉選單 -->
-            <ul id="menu" class="hidden absolute top-16 right-20 z-10 bg-white shadow-md py-2 px-4 rounded-lg">
+            <ul id="menu-nav" class="hidden absolute top-16 right-20 z-10 bg-white shadow-md py-2 px-4 rounded-lg">
                 <li>
                     <a href="{% url 'trips:map' %}" class="text-xl font-bold hover:text-gray-800">地圖探索</a>
                 </li>
@@ -63,15 +63,15 @@
                 </li>
             </ul>
         </div>
-    
+        
         <!-- JavaScript 切換下拉選單 -->
         <script>
-            document.getElementById('menu-toggle').addEventListener('click', function() {
-                var menu = document.getElementById('menu');
-                if (menu.classList.contains('hidden')) {
-                    menu.classList.remove('hidden');
+            document.getElementById('menu-toggle-btn').addEventListener('click', function() {
+                var menu = document.getElementById('menu-nav');
+                if(menu.classList.contains('hidden')) {
+                    menu.classList.remove('hidden')
                 } else {
-                    menu.classList.add('hidden');
+                    menu.classList.add('hidden')
                 }
             });
         </script>
