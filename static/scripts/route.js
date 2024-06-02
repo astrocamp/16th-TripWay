@@ -16,7 +16,7 @@ function initMap() {
         map: map,
         suppressMarkers: true, 
         polylineOptions: {
-            strokeColor: '#FF6D1F',
+            strokeColor: "#FF6D1F",
             strokeWeight: 6
         }
     });
@@ -86,6 +86,24 @@ function showTab(date, buttonId) {
     showScheduleForDate(date);
 }
 
+function centerMapToUserLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const userLocation = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        map.setCenter(userLocation);
+                        map.setZoom(16);
+                    },
+                    function(error) {
+                        console.error("Error getting user's location:", error);
+                    }
+                );
+            }
+        }
+        
 function showScheduleForDate(date) {
     var dayData = scheduleData[date];
     clearMarkers();
@@ -93,25 +111,10 @@ function showScheduleForDate(date) {
         centerMapToUserLocation();
         return;
     }
-    function centerMapToUserLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                function(position) {
-                    const userLocation = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    };
-                    map.setCenter(userLocation);
-                    map.setZoom(16);
-                },
-                function(error) {
-                    console.error("Error getting user's location:", error);
-                }
-            );
-        }
-    }
 
     var waypoints = [];
+    var tripMode = null;
+
     dayData.forEach(function(item, index) {
         var position = { lat: parseFloat(item.spot__latitude), lng: parseFloat(item.spot__longitude) };
         var markerLabel = (index + 1).toString();
@@ -130,7 +133,35 @@ function showScheduleForDate(date) {
                 stopover: true
             });
         }
+        if (index === 0) {
+            tripMode = item.trip__transportation;
+            console.log(tripMode);
+        }
     });
+    
+    var routeLabel = null;
+    var travelMode = google.maps.TravelMode.DRIVING;
+
+    if (tripMode === '汽車') {
+        routeLabel = '汽車';
+        travelMode = google.maps.TravelMode.DRIVING;
+    } else if (tripMode === '大眾運輸') {
+        routeLabel = '大眾運輸';
+        travelMode = google.maps.TravelMode.TRANSIT;
+    } else if (tripMode === '機車') {
+        routeLabel = '機車';
+        travelMode = google.maps.TravelMode.DRIVING; 
+    } else if (tripMode === '走路') {
+        routeLabel = '走路';
+        travelMode = google.maps.TravelMode.WALKING;
+    }
+
+    // 根據交通方式設置路線的繪製選項
+    var routeOptions = {
+        strokeColor: "#FF6D1F",
+        strokeWeight: 6,
+        label: routeLabel
+    };
 
     if (markers.length > 1) {
         var origin = markers[0].getPosition();
@@ -140,18 +171,41 @@ function showScheduleForDate(date) {
             origin: origin,
             destination: destination,
             waypoints: waypoints,
-            travelMode: google.maps.TravelMode.DRIVING
+            travelMode: travelMode
         }, function(response, status) {
             if (status === google.maps.DirectionsStatus.OK) {
+                directionsRenderer.setOptions({ polylineOptions: routeOptions }); // 設置路線的繪製選項
                 directionsRenderer.setDirections(response);
+                // 在 info 框顯示總長
+                var route = response.routes[0];
+                var totalDistance = 0;
+                var totalDuration = 0;
+                route.legs.forEach(leg => {
+                    totalDistance += leg.distance.value;
+                    totalDuration += leg.duration.value;
+                });
+                var totalDistanceKm = totalDistance / 1000;
+                var totalDurationMin = totalDuration / 60;
+                var infoContent ='<div class="info-window">' +
+                                '<div>總路程: ' + totalDistanceKm.toFixed(2) + ' 公里</div>' +
+                                '<div>花費時間: ' + totalDurationMin.toFixed(0) + ' 分</div>' +
+                                '<div>交通方式: ' + routeLabel + '</div>';
+                var infoWindow = new google.maps.InfoWindow({
+                    content: infoContent
+                });
+                infoWindow.open(map, markers[0]); // 在起點 marker 上顯示 info 框
             } else {
-                console.error('Directions request failed due to ' + status);
+                Toast.fire({
+                    icon: 'error',
+                    title: '此模式規劃困難。請使用其他交通方式，如開車模式。'
+                })
             }
         });
     }
 
     map.fitBounds(bounds);
 }
+
 
 function createMarkerIcon(label) {
     const canvas = document.createElement('canvas');
@@ -183,3 +237,4 @@ function clearMarkers() {
     directionsRenderer.set('directions', null);
     bounds = new google.maps.LatLngBounds();
 }
+
