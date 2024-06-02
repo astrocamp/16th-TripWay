@@ -23,6 +23,8 @@ class IndexView(LoginRequired, ListView):
 
 class ShowView(LoginRequired, DetailView):
     model = Spot
+    template_name = 'spot_detail.html'  # 指定模板文件名
+    context_object_name = 'spot'
 
     def post(self, request, pk):
         spot = self.get_object()
