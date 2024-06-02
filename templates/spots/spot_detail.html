@@ -17,15 +17,27 @@
             <div class="mx-5">
                 <div class="flex items-center">
                     <p class="text-lg font-bold text-sky-700">{{ spot.name }}</p>
-                    <span class="flex items-center ml-4">
-                        <span class="text-sky-700">{{ average_rating|floatformat:1 }}</span>
-                        <div class="flex justify-center ml-2 rating" style="pointer-events: none;">
-                            {% for i in "12345" %}
-                                <input type="radio" name="average_rating" class="bg-orange-400 mask mask-star-2" value="{{ i }}" {% if i <= average_rating|floatformat:1 %}checked{% endif %} disabled />
-                            {% endfor %}
-                        </div>
-                        <span class="ml-2 text-sky-700">({{ total_comments }})</span>
-                    </span>
+<span class="flex items-center ml-4">
+    {% if total_comments > 0 %}
+        {% with average_rating|floatformat:1 as avg_rating %}
+            {% if '.' in avg_rating %}
+                <span class="text-sky-700">{{ avg_rating }}</span>
+            {% else %}
+                <span class="text-sky-700">{{ average_rating|floatformat:0 }}</span>
+            {% endif %}
+        {% endwith %}
+        <div class="flex justify-center ml-2 rating" style="pointer-events: none;">
+            {% for i in "12345" %}
+                <input type="radio" name="average_rating" class="bg-orange-400 mask mask-star-2" value="{{ i }}" {% if i <= average_rating|floatformat:1 %}checked{% endif %} disabled />
+            {% endfor %}
+        </div>
+        <span class="ml-2 text-sky-700">({{ total_comments }})</span>
+    {% else %}
+        <span class="text-orange-400">此景點尚無人評分</span>
+    {% endif %}
+</span>
+
+
                 </div>
                 <p class="py-2 text-opacity-75 text-start text-sky-700">{{ spot.latitude }}</p>
                 <p class="py-2 text-opacity-75 text-start text-sky-700">{{ spot.longitude }}</p>
