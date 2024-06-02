@@ -133,7 +133,7 @@ def delete(request, id):
 def get_schedule(request):
     schedule_data = (
         Schedule.objects.filter(deleted_at__isnull=True)
-        .select_related("spot")
+        .select_related("spot", "trips")
         .values(
             "spot__latitude",
             "spot__longitude",
@@ -142,6 +142,7 @@ def get_schedule(request):
             "start_time",
             "date",
             "trip_id",
+            "trip__transportation",
         )
         .order_by("date", "start_time", "updated_at")
     )
