@@ -25,6 +25,15 @@
             </ul>
         </div>
 
+        <div>
+          <a href="{% url 'trips:add-member-edit' trip.id %}">編輯連結
+          </a>
+        </div>
+        <div>
+          <a href="{% url 'trips:add-member-watch' trip.id %}">閱讀連結
+          </a>
+        </div>
+
         <div class="flex justify-center">
             <button class="px-4 py-2 font-bold text-white rounded bg-sky-800 hover:bg-sky-950"><input type="submit" value="送出" /></button>
         </div>

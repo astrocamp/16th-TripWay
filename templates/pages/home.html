@@ -17,14 +17,17 @@
                     和朋友來趟難忘的旅行吧!
                 </p>
                 <div class="flex justify-start mt-6">
-                    <button class="h-16 text-2xl font-medium text-white mt-2 bg-btn-red rounded-full hover:bg-btn-red-dc w-full max-w-xs lg:max-w-md">
                         {% if user.is_authenticated %}
-                            <a href="{% url 'trips:index' %}">立即趣玩</a>
+                            <a href="{% url 'trips:index' %}" class="block w-full">
+                                <button class="h-16 text-2xl font-medium text-white mt-2 bg-btn-red rounded-full hover:bg-btn-red-dc w-full max-w-xs lg:max-w-md">立即趣玩</button>
+                            </a>
                         {% else %}
-                            <a href="{% url 'login' %}">立即趣玩</a>
+                            <a href="{% url 'login' %}" class="block w-full">
+                                <button class="h-16 text-2xl font-medium text-white mt-2 bg-btn-red rounded-full hover:bg-btn-red-dc w-full max-w-xs lg:max-w-md">立即趣玩</button>
+                            </a>
                         {% endif %}
                     </button>
-                </dir>
+                </div>
             </div>
         </section>
     </div>
