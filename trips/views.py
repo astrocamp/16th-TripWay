@@ -8,6 +8,10 @@ from django.conf import settings
 from members.models import Member
 from .models import Trip, TripMember
 from notifies.models import Notification
+import qrcode
+from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage
+from io import BytesIO
 
 
 @login_required
@@ -50,6 +54,18 @@ def new(request):
 @login_required
 def new_member(request, id):
     trip = get_object_or_404(Trip, pk=id)
+
+    # qr = qrcode.QRCode()
+    # qr.add_data("https://python-ecw.com/")
+    # qr.make(fit=True)
+    # img = qr.make_image(fill_color="black", back_color="white")
+
+    # buffer = BytesIO()
+    # img.save(buffer, format="PNG")
+    # file_name = f"trips/qr_codes/trip_{id}.png"
+    # file_path = default_storage.save(file_name, ContentFile(buffer.getvalue()))
+    # img_path = default_storage.url(file_path)
+
     return render(request, "trips/new_member.html", {"trip": trip})
 
 
@@ -126,6 +142,44 @@ def create_member(request, id):
     TripMember.objects.create(trip=trip, member=member, is_editable=is_editable)
     trip.number += 1
     trip.save()
+    return redirect(reverse("trips:schedules:index", kwargs={"id": trip.id}))
+
+def new_member_edit(request, id):
+    trip = get_object_or_404(Trip, id=id)
+    member = request.user
+
+    if (trip.owner != member.id):
+        trip_member, created = TripMember.objects.get_or_create(
+            trip=trip, member=member, defaults={"is_editable": True}
+        )
+
+        # 如果記錄已存在，更新
+        if created:
+            trip.number += 1
+            trip.save()
+        else:
+            trip_member.is_editable = True
+            trip_member.save()
+
+    return redirect(reverse("trips:schedules:index", kwargs={"id": trip.id}))
+
+def new_member_watch(request, id):
+    trip = get_object_or_404(Trip, id=id)
+    member = request.user
+
+    if (trip.owner != member.id):
+        trip_member, created = TripMember.objects.get_or_create(
+            trip=trip, member=request.user, defaults={"is_editable": False}
+        )
+
+        # 如果記錄已存在，更新
+        if created:
+            trip.number += 1
+            trip.save()
+        else:
+            trip_member.is_editable = False
+            trip_member.save()
+
     return redirect(reverse("trips:schedules:index", kwargs={"id": trip.id}))
 
 
