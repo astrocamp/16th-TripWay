@@ -5,16 +5,16 @@ document.addEventListener("DOMContentLoaded", function () {
   ratingStars.forEach((star, index) => {
     star.addEventListener("click", function (event) {
       if (isLoggedIn === "False") {
-        // 如果用戶未登錄
+        // 如果用戶未登入
         event.preventDefault(); // 阻止默認行為
         Swal.fire({
-          title: "需要登錄",
-          text: "請先登錄以使用評分功能",
+          title: "需要登入",
+          text: "請先登入以使用評分功能",
           icon: "warning",
           confirmButtonText: "確定",
         }).then((result) => {
           if (result.isConfirmed) {
-            window.location.href = loginUrl; // 重定向到登錄頁面
+            window.location.href = loginUrl; // 重定向到登入頁面
           }
         });
       } else {

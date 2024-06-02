@@ -32,7 +32,7 @@ class ShowView(LoginRequired, DetailView):
             comment_content = request.POST.get('comment')
             rating_value = request.POST.get('rating')
 
-            if comment_content and rating_value and rating_value != '0':
+            if comment_content and rating_value != '0':
                 Comment.objects.create(content=comment_content, spot=spot, user=request.user, value=int(rating_value))
                 messages.success(request, "已提交留言！")
                 
