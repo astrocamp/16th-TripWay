@@ -20,6 +20,20 @@ from schedules.models import Schedule
 
 class IndexView(LoginRequired, ListView):
     model = Spot
+    template_name = 'spots/spot_list.html'  # 指定模板文件名
+    context_object_name = 'spots'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        # 计算每个spot的平均评分
+        for spot in queryset:
+            comments = Comment.objects.filter(spot=spot)
+            average_rating = comments.aggregate(Avg('value'))['value__avg'] or 0
+            spot.average_rating = average_rating
+            spot.total_comments = comments.count()
+
+        return queryset
 
 class ShowView(LoginRequired, DetailView):
     model = Spot
