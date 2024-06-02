@@ -3,16 +3,13 @@
 {% block content %}
 {% load static %}
 
-<div class="h-screen bg-blue-50">
+<div class="h-screen">
 
-  <header class="flex justify-start bg-sky-800">
-    <a class="px-2 py-2 text-white bg-sky-800 hover:bg-sky-950" href="{% url 'home' %}">
-      <i class="fa-solid fa-house-chimney"></i>
-    </a>
-    <a class="px-2 py-2 text-white bg-sky-800 hover:bg-sky-950" href="javascript:history.go(-1)">
+  <header class="flex justify-start">
+    <a class="px-2 py-2 text-black-100 hover:text-light-blue" href="javascript:history.go(-1)">
       <i class="fa-solid fa-reply"></i>
     </a>
-    <h1 class="px-2 py-2 text-white bg-sky-800">景點列表</h1>
+    <h1 class="px-2 py-2 font-bold text-black-100">景點列表</h1>
   </header>
 
   {% for spot in spot_list %}
