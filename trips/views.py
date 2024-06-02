@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from members.models import Member
 from .models import Trip, TripMember
+from notifies.models import Notification
 
 
 @login_required
@@ -86,6 +87,9 @@ def create(request):
         )
         trip.save()
         TripMember.objects.create(trip=trip, member=member, is_editable=True)
+
+        Notification.objects.create(user=member, message=f"成功創建新行程：{trip.name}")
+
         messages.success(request, "旅程創建成功！")
         return redirect("trips:index")
 
