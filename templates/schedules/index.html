@@ -4,25 +4,23 @@
 
 
 <div class="bg-white" style="height:calc(100vh - 88px); overflow: hidden;">
-
-  <header class="flex justify-start bg-sky-800">
-    <a class="px-2 py-2 text-white bg-sky-800 hover:bg-sky-950" href="{% url 'home' %}">
-      <i class="fa-solid fa-house-chimney"></i>
-    </a>
-    <a class="px-2 py-2 text-white bg-sky-800 hover:bg-sky-950" href="{% url 'trips:index' %}">
-      <i class="fa-solid fa-reply"></i>
-    </a>
-    <h1 class="px-2 py-2 text-white bg-sky-800">{{ trip.name }}</h1>
-  </header>
-    
   <div class="wrap flex h-full">
-    <div class="w-2/5">
+    <div class="sm:w-2/5 w-full overflow-y-auto">
       <div class="label-block overflow-scroll">
 
+        <div class="flex justify-start items-center my-4 mx-8">
+          <a class="" href="{% url 'home' %}">
+          </a>
+          <a class="mr-3" href="{% url 'trips:index' %}">
+            <i class="fa-solid fa-arrow-left"></i>
+          </a>
+          <h1 class="text-2xl font-normal">{{ trip.name }}</h1>
+        </div>
+
         <!-- 日期頁籤 -->
-        <div role="tab" class="tabs flex text-start h-14">
+        <div role="tab" class="tabs flex text-start h-14 border-b border-t">
           {% for day in date_range %}
-            <button id="btn-{{ day|date:'Y-m-d' }}" class="tab h-14 border transition-all ease-in-out text-slate-700 hover:bg-gray-200" data-date="{{ day|date:'Y-m-d'}}" onclick="showTab('{{ day|date:'Y-m-d' }}', 'btn-{{ day|date:'Y-m-d' }}', '{{ trip.id }}')">
+            <button id="btn-{{ day|date:'Y-m-d' }}" class="tab h-14 border-l transition-all ease-in-out text-slate-700 hover:bg-light-gray" data-date="{{ day|date:'Y-m-d'}}" onclick="showTab('{{ day|date:'Y-m-d' }}', 'btn-{{ day|date:'Y-m-d' }}', '{{ trip.id }}')">
               {{ day|date:"Y-m-d" }}
             </button>
           {% endfor %}
@@ -30,28 +28,29 @@
           <!-- 新增一天的行程 -->
           <form action="{% url 'trips:schedules:add_day' trip.id %}" method="post">
             {% csrf_token %}
-            <button id="add-day" class="tab h-14 border transition-all ease-in-out text-slate-700 hover:bg-gray-200" >
+            <button id="add-day" class="tab h-14 border-x transition-all ease-in-out text-slate-700 hover:bg-gray-200" >
                 +
             </button>
           </form>
         </div>
+
       </div>
-    
+      
       <div class="bottom-block">
         <!-- 行程內容 -->
         {% for date, schedules in schedule_dates.items %}
-        <div id="schedule{{ schedules.0.date|date:'Y-m-d' }}" class="tab-content mt-3 bg-blueGray-100">
+        <div id="schedule{{ schedules.0.date|date:'Y-m-d' }}" class="tab-content mt-3">
           {% for schedule in schedules %}
-          <div class="flex mb-1 px-2 py-3 shadow-md hover:bg-blue-300 h-36">
+          <div class="flex mb-1 px-8 py-3 mx-8 my-6 shadow-lg rounded-custom-20 hover:bg-light-gray h-36">
             <div class="flex grow">
-              <a href="{% url 'schedules:show' schedule.id %}" class="inline-block w-full h-full flex  items-center">
-                <span class="inline-block w-6 h-6 mr-2 text-center text-white bg-orange-500 rounded-lg">{{ forloop.counter }}</span>
-                <i class="fa-sharp fa-solid fa-building-columns" style="color: #1b3f5a;"></i> {{ schedule.spot_name }}
+              <a href="{% url 'schedules:show' schedule.id %}" class="inline-block w-full h-full flex items-center">
+                <span class="inline-block w-6 h-6 mr-2 text-center text-white bg-black rounded-full">{{ forloop.counter }}</span>
+                {{ schedule.spot_name }}
                 <div class="mx-3 px-2 text-gray-500">{{ schedule.start_time|time:"H:i" }}</div>
               </a>
             </div>
             {% if trip_member.is_editable %}
-            <div class="flex grow-0" x-data="{ deleteSchedule() {
+            <div class="flex grow-0 z-1000" x-data="{ deleteSchedule() {
               Swal.fire({
                 icon: 'question',
                 title: '確定要刪除嗎?',
@@ -76,11 +75,20 @@
           {% endfor %}
         </div>
         {% endfor %}
-
+        
+        <!-- 新增景點按鈕 -->
+        <div class="flex justify-center my-10">
+          {% if trip_member.is_editable %}
+            <a class="px-52 py-4 text-white border rounded-custom-50 bg-blue-btn hover:bg-gray text-xl font-medium" href="{% url 'spots:index' %}">新增景點</a>
+          {% endif %}
+        </div>
+        <div class="border-light-gray border"></div>
         <!-- 成員列表 -->
-        <h2>成員列表</h2>
+        <div class="flex justify-start pl-8 text-2xl mt-12 mb-8">
+          <div>成員列表</div>  
+        </div>
           {% for member in members %}
-            <div class="flex items-center px-2 py-3 mx-2 my-2 bg-white border rounded-lg hover:bg-blue-300 h-100" x-data="{ deleteMember(m) {
+            <div class="flex justify-between items-center px-2 py-3 mx-8 my-4 bg-white border rounded-lg hover:bg-light-gray h-100" x-data="{ deleteMember(m) {
               Swal.fire({
                 icon: 'question',
                 title: '確定要刪除成員嗎?',
@@ -93,7 +101,11 @@
                 }
               })
             } }">
-              {{ member.email }}
+              
+              <div class="flex items-center">
+                {{ member.email }}
+              </div>
+
               {% if trip_member.member_id == member.id %}
                 <form @submit.prevent="deleteMember('self')" action="{% url 'trips:delete-self' trip.id member.id %}" method="post" x-ref="self">
                   {% csrf_token %}
@@ -110,18 +122,18 @@
   
           <div class="flex justify-center">
             {% if trip_member.is_editable %}
-            <a class="px-2 py-2 text-white border rounded-lg bg-sky-800 hover:bg-sky-950" href="{% url 'spots:index' %}">新增景點</a>
-            <a class="px-2 py-2 text-white border rounded-lg bg-sky-800 hover:bg-sky-950" href="{% url 'trips:new-member' trip.id %}">新增成員</a>
+            <a class="px-52 py-4 text-white border rounded-custom-50 bg-red hover:bg-gray text-xl font-medium my-10" href="{% url 'trips:new-member' trip.id %}">新增成員</a>
             {% endif %}
           </div>
         </div>
 
-    </div>
+      </div>
 
-    <div id="map" style="flex-grow: 1;">I'm map</div>
+    <div id="map" style="flex-grow: 1;" class="hidden lg:block">I'm map</div>
+    
   </div>
 </div>
-
+<link rel="stylesheet" href="{% static "styles/route.css" %}">
 <script src="{% static "scripts/route.js" %}"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&libraries=places&callback=initMap" async defer></script>
 {% endblock %}
