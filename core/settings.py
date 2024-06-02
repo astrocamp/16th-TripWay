@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "spots",
     "payments",
     "comments",
+    "notifies",
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -87,6 +88,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "django.template.context_processors.request",
+                "notifies.context_processors.notification_processor",
             ],
         },
     },
