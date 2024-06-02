@@ -1,0 +1,128 @@
+{% load static %}
+<nav class="sticky top-0 left-0 z-50 flex items-center justify-between w-full bg-white lg:px-8 px-6 py-4 shadow-md">
+    <!-- icon -->
+    <a href="{% url 'home' %}" class="mb-2 text-4xl font-bold lg:block">
+        <div class="w-20">
+        <img src="{% static 'img/LOGO.png' %}" alt="TripWay Logo" class="w-full object-cover" />
+        </div>
+    </a>
+    <!-- search input -->
+    <div class="flex flex-1 ml-5 justify-center-0">
+        <div class="relative w-100 lg:w-80 rounded-custom-20 overflow-hidden border border-black ml-12 lg:ml-2">
+        <input
+            id="search-input"
+            type="text"
+            placeholder="搜尋景點，例:動物園..."
+            class="w-full px-4 py-2 border-none rounded-custom-20 pr-12 text-gray-700 focus:outline-none focus:ring-0"
+        />
+        <button id="search-button" class="absolute transform -translate-y-1/2 text-black right-2 top-1/4 hover:text-gray-700">
+            <i class="fa-solid fa-magnifying-glass" style="font-size: 1.5rem;"></i>
+        </button>
+    </div>
+
+        </div>
+    </div>
+
+    <!-- 探索按鈕 + 會員 -->
+    <div class="flex items-center space-x-4">
+
+        <!-- 電腦版 探索按鈕 -->
+        <div class="lg:flex lg:items-center lg:space-x-6 lg:mr-10 hidden">
+            <ul class="flex space-x-12">
+                <li>
+                    <a href="{% url 'trips:map' %}" class="flex items-center space-x-1 text-2xl font-medium hover:text-gray">
+                        <span>地圖探索</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#hotspots-section" class="text-2xl font-medium hover:text-gray">景點探索</a>
+                </li>
+                <li>
+                    <a href="{% url 'trips:index' %}" class="text-2xl font-medium hover:text-gray">立即規劃</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 手機版 漢堡包圖標 -->
+        <div class="lg:hidden">
+            <button id="menu-toggle" class="flex items-center px-3 py-2 text-black hover:text-gray focus:outline-none">
+                <svg class="fill-current h-8 w-8" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <title>Menu</title>
+                    <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>
+                </svg>
+            </button>
+    
+            <!-- 探索下拉選單 -->
+            <ul id="menu" class="hidden absolute top-16 right-20 z-10 bg-white shadow-md py-2 px-4 rounded-lg">
+                <li>
+                    <a href="{% url 'trips:map' %}" class="text-xl font-bold hover:text-gray-800">地圖探索</a>
+                </li>
+                <li>
+                    <a href="#hotspots-section" class="text-xl font-bold hover:text-gray-800">景點探索</a>
+                </li>
+                <li>
+                    <a href="{% url 'trips:index' %}" class="text-xl font-bold hover:text-gray-800">立即規劃</a>
+                </li>
+            </ul>
+        </div>
+    
+        <!-- JavaScript 切換下拉選單 -->
+        <script>
+            document.getElementById('menu-toggle').addEventListener('click', function() {
+                var menu = document.getElementById('menu');
+                if (menu.classList.contains('hidden')) {
+                    menu.classList.remove('hidden');
+                } else {
+                    menu.classList.add('hidden');
+                }
+            });
+        </script>
+        
+        <!-- 會員 -->
+        <div class="dropdown dropdown-end">
+        {% if user.is_authenticated %}
+        <div class="relative">
+            <button
+            tabindex="0"
+            class="w-10 h-10 bg-cover rounded-full bg-light-blue"
+            {%if user.profile.avatar%}
+            style="background-image: url('{{ user.profile.avatar.url }}')"
+            {%else %}
+            style="background-image: url({% static 'img/membericon.png' %})"
+            {%endif %}
+            ></button>
+            
+            <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 absolute top-14 right-0">
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+            <li><a>Settings</a></li>
+            </ul>
+        </div>
+        {% else %}
+            <button tabindex="0" class="mr-10 text-xl text-white btn bg-light-blue">登入</button>
+            {% endif %}
+            <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 absolute top-14 right-0">
+                {% if user.is_authenticated %}
+                <li>
+                <a href="{% url 'logout' %}">Logout</a>
+                </li>
+                <li>
+                <a href="{% url 'payments:upgrade' %}">Upgrade</a>
+                </li>
+                <li>
+                <a href="{% url 'profile' %}">Profile</a>
+                </li>
+                {% else %}
+                <li>
+                <a href="{% url 'login' %}">Login</a>
+                </li>
+                <li>
+                <a href="{% url 'register' %}">SignUp</a>
+                </li>
+                {% endif %}
+
+            </ul>
+        </div>
+
+    </div>
+</nav>
+<script src="{% static "scripts/search.js" %}"></script>
