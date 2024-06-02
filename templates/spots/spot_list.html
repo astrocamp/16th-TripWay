@@ -17,11 +17,9 @@
     </header>
 </div>
 
-
-
-    <div class="w-3/4 mx-auto mt-2">
+<div class="w-3/4 mx-auto mt-2">
     <div class="flex flex-wrap justify-start gap-4">
-        {% for spot in spot_list %}
+        {% for spot in spots %}
         <div class="relative md-full lg:w-[48%] xl:w-[32%] mt-5 mb-1">
             <a href="{% url 'spots:show' spot.id %}" class="block h-full duration-300 ease-in-out bg-white border-2 cursor-pointer rounded-xl hover:bg-blue-300 hover:scale-105">
                 <div class="w-full h-[220px] overflow-hidden rounded-t-xl">
@@ -30,9 +28,21 @@
                 <div class="p-4">
                     <h2 class="w-full text-2xl font-bold truncate">{{ spot.name }}</h2>
                     <div class="flex items-center">
-                        <input type="radio" name="rating" class="bg-orange-400 mask mask-star-2" value="1" checked />
-                        <span class="ml-2 text-sky-700">{{ average_rating|floatformat:1 }}</span>
-                        <p class="w-full ml-4 text-xl truncate text-slate-700">{{ spot.city }}</p>
+                        <div class="flex items-center mr-2">
+                            {% if spot.total_comments > 0 %}
+                                <div class="flex items-center">
+                                    <input type="radio" name="average_rating" class="bg-orange-400 mask mask-star-2" value="1" checked disabled />
+                                    <span class="ml-2 text-sky-700">
+                                        {% with spot.average_rating|floatformat:1 as avg_rating %}
+                                            {{ avg_rating }}
+                                        {% endwith %}
+                                    </span>
+                                </div>
+                            {% else %}
+                                <span class="text-sky-700">尚無景點評分</span>
+                            {% endif %}
+                        </div>
+                        <p class="text-xl truncate text-slate-700">{{ spot.city }}</p>
                     </div>
                 </div>
             </a>
@@ -40,7 +50,6 @@
         {% endfor %}
     </div>
 </div>
-
 
 <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&libraries=places&callback=initMap" async defer></script>
 {% endblock %}
