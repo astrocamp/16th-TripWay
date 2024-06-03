@@ -40,15 +40,24 @@ class IndexView(LoginRequired, ListView):
         return photo_url
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        sort_option = self.request.GET.get('sort', 'rating_desc')
+        queryset = Spot.objects.all()
 
-        # 计算每个spot的平均评分
+        # 计算每个spot的平均评分和评论总数
         for spot in queryset:
             comments = Comment.objects.filter(spot=spot)
             average_rating = comments.aggregate(Avg('value'))['value__avg'] or 0
             spot.average_rating = average_rating
             spot.total_comments = comments.count()
             spot.photo_url = self.get_place_photo(spot.name)
+
+        # 排序
+        if sort_option == 'average_rating_desc':
+            queryset = sorted(queryset, key=lambda x: x.average_rating, reverse=True)
+        elif sort_option == 'comment_count_desc':
+            queryset = sorted(queryset, key=lambda x: x.total_comments, reverse=True)
+        else:
+            queryset = sorted(queryset, key=lambda x: x.rating, reverse=True)
 
         return queryset
 
