@@ -46,18 +46,20 @@ def home(request):
         trips = [{"t": trip, "tm": trip_members.get(trip=trip)} for trip in trips]
         if trips :
             for trip in trips :
-                edit_url = f"http://{os.getenv("NOW_HOST")}/trips/{trip["t"].id}/add-member/edit"
-                watch_url = f"http://{os.getenv("NOW_HOST")}/trips/{trip["t"].id}/add-member/watch"
-                
-                edit_qrimg = create_qrcode(edit_url)
+                edit_url = f"https://{os.getenv("NOW_HOST")}/trips/{trip["t"].id}/add-member/edit"
+                confirm_url = f"https://{os.getenv("NOW_HOST")}/trips/{trip["t"].id}/add-member/edit/confirm"
+                watch_url = f"https://{os.getenv("NOW_HOST")}/trips/{trip["t"].id}/add-member/watch"
+                print(watch_url)
+                confirm_qrimg = create_qrcode(confirm_url)
                 watch_qrimg = create_qrcode(watch_url)
 
             return render(request,"trips/index.html",{
                 "trips": trips,
                 "sort_option": sort_option,
                 "edit_url": edit_url,
+                "confirm_url": confirm_url,
                 "watch_url": watch_url,
-                "edit_qrimg":edit_qrimg,
+                "confirm_qrimg":confirm_qrimg,
                 "watch_qrimg":watch_qrimg,
                 }   
             )
@@ -196,7 +198,8 @@ def new_member_watch(request, id):
 @login_required
 def edit_confirm(request, id):
     trip = get_object_or_404(Trip, id=id)
-    return render(request, "trips/confirm.html")
+    inviter = get_object_or_404(Member, id=trip.owner)
+    return render(request, "trips/confirm.html", {"trip":trip, "inviter":inviter})
 
 @require_POST
 @login_required
