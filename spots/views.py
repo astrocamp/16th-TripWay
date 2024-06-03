@@ -1,7 +1,8 @@
 import re
 import googlemaps
 from hanziconv import HanziConv
-
+import requests
+from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView, ListView, CreateView, View
 from django.http import JsonResponse
@@ -23,6 +24,21 @@ class IndexView(LoginRequired, ListView):
     template_name = 'spots/spot_list.html'  # 指定模板文件名
     context_object_name = 'spots'
 
+    def get_place_photo(self, spot_name):
+        google_api_key = settings.GOOGLE_API_KEY
+        search_url = f"https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={spot_name}&inputtype=textquery&fields=photos,place_id&key={google_api_key}"
+        
+        response = requests.get(search_url)
+        search_results = response.json()
+
+        if 'candidates' in search_results and len(search_results['candidates']) > 0:
+            photo_reference = search_results['candidates'][0]['photos'][0]['photo_reference']
+            photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key={google_api_key}"
+        else:
+            photo_url = None
+
+        return photo_url
+
     def get_queryset(self):
         queryset = super().get_queryset()
 
@@ -32,6 +48,7 @@ class IndexView(LoginRequired, ListView):
             average_rating = comments.aggregate(Avg('value'))['value__avg'] or 0
             spot.average_rating = average_rating
             spot.total_comments = comments.count()
+            spot.photo_url = self.get_place_photo(spot.name)
 
         return queryset
 
@@ -122,7 +139,7 @@ class SearchView(View):
         if not query:
             return JsonResponse({"error": "沒有提供搜索關鍵詞"}, status=400)
 
-        spot = Spot.objects.filter(name__icontains=query).first()
+        spot = Spot.objects.filter(name__icontains(query)).first()
 
         if spot:
             return JsonResponse({"redirect_url": spot.get_absolute_url()})
