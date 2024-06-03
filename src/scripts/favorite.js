@@ -1,18 +1,27 @@
-const currentUrl = window.location.href
-const spotId = currentUrl.split("/").slice(-2)[0]
-const toggleFavoriteUrl = `/spots/${spotId}/favorite`
-const icon = document.getElementById("favoriteIcon")
+document.addEventListener("DOMContentLoaded", () => {
+    // 設置事件委派給父元素，這裡假設父元素是 body
+    document.body.addEventListener("click", (event) => {
+        const target = event.target
+        if (target && target.matches(".favoriteIcon")) {
+            toggleFavorite(target)
+        }
+    })
+})
 
-let isFavorite = false
+// const icon = document.getElementById("favoriteIcon")
 
-if (icon) {
-    icon.addEventListener("click", () => {
-        toggleFavorite()
-    }
-)}
+// let isFavorite = false
+
+// if (icon) {
+//     icon.addEventListener("click", () => {
+//         toggleFavorite()
+//     }
+// )}
 
 
-function toggleFavorite() {
+function toggleFavorite(element) {
+    const toggleFavoriteUrl = element.dataset.toggleFavoriteUrl
+
     fetch(toggleFavoriteUrl, {
         method: "POST",
         headers: {
