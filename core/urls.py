@@ -3,10 +3,12 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from . import views
+import os
 
+ADMIN = os.getenv("Admin_URL_NAME")
 urlpatterns = [
     path("", views.home, name="home"),
-    path("admin/", admin.site.urls),
+    path(f"{ADMIN}/", admin.site.urls),
     path("members/", include("django.contrib.auth.urls")),
     path("members/", include("members.urls")),
     path("members/upgrade/", include("payments.urls")),
@@ -15,5 +17,4 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     path("spots/", include("spots.urls")),
     path("notifications/", include("notifies.urls")),
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
