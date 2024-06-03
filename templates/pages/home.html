@@ -3,22 +3,21 @@
 {% block content %}
 <main>
     <!-- banner -->
-    <div id="banner" class="bg-yellow pb-32">
-        <section class=" relative  h-[90vh] px-20 py-10 lg:flex lg:items-center">
+    <div id="banner" class="bg-home-yellow pt-24 lg:pt-64">
+        <section class="relative h-[70vh] lg:flex lg:items-center">
             <!-- Image section -->
-            <div class="block bottom-12 right-28 lg:right-0 lg:top-0 lg:w-3/4 absolute">
+            <div class="block bottom-6 right-20 lg:right-2 lg:w-[90%] absolute">
                 <img src="../../static/img/content-pic.png" alt="Content Image" >
             </div>
             
             <!-- Connect section -->
-            <div class="lg:text-left left-24 mt-24 lg:mt-48 lg:w-1/2 pl-8 absolute">
-                <h1 class="text-5xl font-bold leading-snug text-black">TripWay</h1>
-                <p class="mt-2 text-3xl font-bold text-black dark:text-gray-300">
+            <div class="lg:text-left left-16 lg:left-32 lg:-top-40 lg:w-1/2 pl-8 absolute">
+                <p class="mt-32 text-4xl font-bold text-black pl-1 dark:text-gray-300 leading-snug">
                     即刻啟程，<br> 
                     和朋友來趟難忘的旅行吧!
                 </p>
                 <div class="flex justify-start mt-6">
-                    <button class="h-16 text-2xl font-medium text-white mt-2 bg-red rounded-full hover:bg-blue-btn w-full max-w-xs lg:max-w-lg">
+                    <button class="h-16 text-2xl font-medium text-white mt-2 bg-btn-red rounded-full w-full max-w-xs lg:max-w-sm">
                         {% if user.is_authenticated %}
                             <a href="{% url 'trips:index' %}">立即趣玩</a>
                         {% else %}
@@ -29,81 +28,17 @@
             </div>
         </section>
     </div>
-    
-
-    <!-- content -->
-    <div id="content" class="bg-white">
-        <section id="hotspots-section" class="container px-4 pt-4 pb-10 mx-auto rounded-xl">
-            <h2 class="mt-24 mb-24 text-4xl font-medium text-center text-black">推薦旅遊景點</h2>
-            <div class="flex flex-wrap justify-center gap-8 lg:gap-10 mt-8 mb-28 px-8">
-                <div class="flex-1 min-w-[calc(50%-1rem)] lg:min-w-[calc(25%-2rem)] aspect-w-1 aspect-h-1 overflow-hidden rounded-lg">
-                    <a href="#" class="relative group w-full h-full overflow-hidden rounded-lg">
-                        <img src="https://i.imgur.com/F9TKUDy.png" alt="台北木柵動物園" class="object-cover w-full h-full transition duration-300 ease-in-out transform group-hover:scale-105 rounded-lg">
-                        <div class="absolute bottom-0 left-0 right-0 p-2 transition duration-300 ease-in-out transform bg-gray-600 bg-opacity-50 rounded-lg group-hover:scale-105">
-                            <p class="text-xl font-bold text-center text-white">台北木柵動物園</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="flex-1 min-w-[calc(50%-1rem)] lg:min-w-[calc(25%-2rem)] aspect-w-1 aspect-h-1 overflow-hidden rounded-lg">
-                    <a href="#" class="relative group w-full h-full overflow-hidden rounded-lg">
-                        <img src="https://i.imgur.com/KZ77I0O.png" alt="台南奇美博物館" class="object-cover w-full h-full transition duration-300 ease-in-out transform group-hover:scale-105 rounded-lg">
-                        <div class="absolute bottom-0 left-0 right-0 p-2 transition duration-300 ease-in-out transform bg-gray-600 bg-opacity-50 rounded-lg group-hover:scale-105">
-                            <p class="text-xl font-bold text-center text-white">台南奇美博物館</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="flex-1 min-w-[calc(50%-1rem)] lg:min-w-[calc(25%-2rem)] aspect-w-1 aspect-h-1 overflow-hidden rounded-lg">
-                    <a href="#" class="relative group w-full h-full overflow-hidden rounded-lg">
-                        <img src="https://imgur.com/i0cqfvq.png" alt="宜蘭加羅湖" class="object-cover w-full h-full transition duration-300 ease-in-out transform group-hover:scale-105 rounded-lg">
-                        <div class="absolute bottom-0 left-0 right-0 p-2 transition duration-300 ease-in-out transform bg-gray-600 bg-opacity-50 rounded-lg group-hover:scale-105">
-                            <p class="text-xl font-bold text-center text-white">宜蘭加羅湖</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="flex-1 min-w-[calc(50%-1rem)] lg:min-w-[calc(25%-2rem)] aspect-w-1 aspect-h-1 overflow-hidden rounded-lg">
-                    <a href="#" class="relative group w-full h-full overflow-hidden rounded-lg">
-                        <img src="https://imgur.com/D07RS0U.png" alt="台東知本溫泉" class="object-cover w-full h-full transition duration-300 ease-in-out transform group-hover:scale-105 rounded-lg">
-                        <div class="absolute bottom-0 left-0 right-0 p-2 transition duration-300 ease-in-out transform bg-gray-600 bg-opacity-50 rounded-lg group-hover:scale-105">
-                            <p class="text-xl font-bold text-center text-white">台東知本溫泉</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="flex-1 min-w-[calc(50%-1rem)] lg:min-w-[calc(25%-2rem)] aspect-w-1 aspect-h-1 overflow-hidden rounded-lg">
-                    <a href="#" class="relative group w-full h-full overflow-hidden rounded-lg">
-                        <img src="https://imgur.com/YYuKtp0.png" alt="雪霸國家公園" class="object-cover w-full h-full transition duration-300 ease-in-out transform group-hover:scale-105 rounded-lg">
-                        <div class="absolute bottom-0 left-0 right-0 p-2 transition duration-300 ease-in-out transform bg-gray-600 bg-opacity-50 rounded-lg group-hover:scale-105">
-                            <p class="text-xl font-bold text-center text-white">雪霸國家公園</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="flex-1 min-w-[calc(50%-1rem)] lg:min-w-[calc(25%-2rem)] aspect-w-1 aspect-h-1 overflow-hidden rounded-lg">
-                    <a href="#" class="relative group w-full h-full overflow-hidden rounded-lg">
-                        <img src="https://imgur.com/rpLRDvZ.png" alt="新竹六福村" class="object-cover w-full h-full transition duration-300 ease-in-out transform group-hover:scale-105 rounded-lg">
-                        <div class="absolute bottom-0 left-0 right-0 p-2 transition duration-300 ease-in-out transform bg-gray-600 bg-opacity-50 rounded-lg group-hover:scale-105">
-                            <p class="text-xl font-bold text-center text-white">新竹六福村</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="flex-1 min-w-[calc(50%-1rem)] lg:min-w-[calc(25%-2rem)] aspect-w-1 aspect-h-1 overflow-hidden rounded-lg">
-                    <a href="#" class="relative group w-full h-full overflow-hidden rounded-lg">
-                        <img src="https://imgur.com/XH5sUPF.png" alt="花蓮翡翠谷" class="object-cover w-full h-full transition duration-300 ease-in-out transform group-hover:scale-105 rounded-lg">
-                        <div class="absolute bottom-0 left-0 right-0 p-2 transition duration-300 ease-in-out transform bg-gray-600 bg-opacity-50 rounded-lg group-hover:scale-105">
-                            <p class="text-xl font-bold text-center text-white">花蓮翡翠谷</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="flex-1 min-w-[calc(50%-1rem)] lg:min-w-[calc(25%-2rem)] aspect-w-1 aspect-h-1 overflow-hidden rounded-lg">
-                    <a href="#" class="relative group w-full h-full overflow-hidden rounded-lg">
-                        <img src="https://imgur.com/xKWCmXP.png" alt="台中逢甲夜市" class="object-cover w-full h-full transition duration-300 ease-in-out transform group-hover:scale-105 rounded-lg">
-                        <div class="absolute bottom-0 left-0 right-0 p-2 transition duration-300 ease-in-out transform bg-gray-600 bg-opacity-50 rounded-lg group-hover:scale-105">
-                            <p class="text-xl font-bold text-center text-white">台中逢甲夜市</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </section>
-    </div>
-    
-    
 </main>
+
+<footer class="bottom-0 w-full pt-8 pb-6 bg-home-yellow">
+    <div class="flex flex-wrap items-center justify-center md:justify-between">
+    <div class="w-full px-4 mx-auto text-center md:w-4/12">
+        <div class="py-1 text-sm font-medium text-white">
+        Copyright © <span id="get-current-year">2024 TripWay All rights reserved.
+        </div>
+    </div>
+    </div>
+</footer>
+{% endblock %}
+{% block footer %}
 {% endblock %}
