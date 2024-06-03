@@ -202,26 +202,56 @@ class SearchView(View):
             return JsonResponse({"redirect_url": spot.get_absolute_url()})
         else:
             gmaps = googlemaps.Client(key=settings.GOOGLE_API_KEY)
-            places_result = gmaps.places(query=query, language="zh-TW")
+
+            try:
+                places_result = gmaps.places(query=query, language="zh-TW")
+            except googlemaps.exceptions.ApiError as e:
+                return JsonResponse(
+                    {"error": f"Google Maps API error: {str(e)}"}, status=500
+                )
+            except Exception as e:
+                return JsonResponse(
+                    {"error": f"An unexpected error occurred: {str(e)}"}, status=500
+                )
 
             if places_result["results"]:
                 top_result = places_result["results"][0]
+                place_id = top_result["place_id"]
+
+                try:
+                    place_details = gmaps.place(place_id=place_id, language="zh-TW")
+                except googlemaps.exceptions.ApiError as e:
+                    return JsonResponse(
+                        {"error": f"Google Maps API error: {str(e)}"}, status=500
+                    )
+                except Exception as e:
+                    return JsonResponse(
+                        {"error": f"An unexpected error occurred: {str(e)}"}, status=500
+                    )
+
+                details = place_details.get("result", {})
+
                 name = (
-                    HanziConv.toTraditional(top_result["name"])
+                    HanziConv.toTraditional(details.get("name", ""))
                     .replace("颱", "台")
                     .replace("傢", "家")
                 )
                 address = (
-                    HanziConv.toTraditional(top_result.get("formatted_address", ""))
+                    HanziConv.toTraditional(details.get("formatted_address", ""))
                     .replace("颱", "台")
                     .replace("傢", "家")
                 )
-                location = top_result["geometry"]["location"]
-                place_id = top_result["place_id"]
+                location = details["geometry"]["location"]
                 city = extract_city(address)
-                phone = top_result.get("formatted_phone_number")
-                url = top_result.get("url")
-                rating = top_result.get("rating")
+                phone = details.get("formatted_phone_number")
+                url = details.get("url")
+                rating = details.get("rating")
+                opening_hours = details.get("opening_hours", {}).get(
+                    "weekday_text", None
+                )
+                description = details.get("editorial_summary", {}).get("overview", None)
+
+                weekday_text = details.get("weekday_text", [])
 
                 spot, created = Spot.objects.get_or_create(
                     name=name,
@@ -234,6 +264,8 @@ class SearchView(View):
                         "url": url,
                         "rating": rating,
                         "place_id": place_id,
+                        "opening_hours": opening_hours,
+                        "description": description,
                     },
                 )
 
@@ -247,6 +279,9 @@ class SearchView(View):
                     "網址": spot.url,
                     "評分": spot.rating,
                     "地點ID": spot.place_id,
+                    "營業時間": spot.opening_hours,
+                    "描述": spot.description,
+                    "營業時間文字": weekday_text,
                     "重定向鏈接": spot.get_absolute_url(),
                 }
                 return JsonResponse(result)

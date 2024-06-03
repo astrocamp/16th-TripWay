@@ -20,13 +20,11 @@ class Spot(models.Model):
         null=True, validators=[MinValueValidator(0.0), MaxValueValidator(5.0)]
     )
     place_id = models.CharField(max_length=255, null=True)
+    opening_hours = models.JSONField(null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.name
-
-    def clean(self):
-        if self.rating == "N/A":
-            self.rating = None
 
     def get_absolute_url(self):
         return reverse("spots:show", kwargs={"pk": self.pk})
