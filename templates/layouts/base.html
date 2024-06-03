@@ -20,10 +20,10 @@
         {% include 'shared/navbar.html' %}
     {% endblock %}
     
-        <div class="flex-grow">
+    <div class="flex-grow">
         {% block content %}
         {% endblock %}
-        </div>
+    </div>
 
         {% if messages %}
         {% for message in messages %}
@@ -38,11 +38,11 @@
         {% endfor %}
         {% endif %}
         
-        
-        {% block footer %}
-            {% include 'shared/footer.html' %}
-        {% endblock %}
-        
 
-    </body>
+        {% include 'shared/footer.html' %}
+
+        </footer>
+</body>
+
+{% block script %}{% endblock %}
 </html>
