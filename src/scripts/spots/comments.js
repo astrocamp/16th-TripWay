@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   const ratingStars = document.querySelectorAll(".rating-star");
-  const isLoggedIn = document.querySelector('input[name="is_logged_in"]').value;
+  // const isLoggedIn = document.querySelector('input[name="is_logged_in"]').value;
 
   ratingStars.forEach((star, index) => {
     star.addEventListener("click", function (event) {
