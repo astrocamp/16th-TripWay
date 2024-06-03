@@ -88,15 +88,19 @@
           <label for="edit" class="btn peer-checked/edit:bg-T-red bg-neutral-400 text-xl text-white btn mx-1 rounded-3xl w-1/2" @click="show = true">共編行程</label>
         </div>
         <div class="flex flex-col items-center space-y-4 mt-8 p-4 border border-gray-200 rounded h-full" x-show="activeTab === 'watch'">
-          <img src="{{ watch_qrimg }}" alt="">
+          <div class="h-2/3 w-2/3">
+            <img src="{{ watch_qrimg }}" alt="" class="object-contain w-full h-full" >
+          </div>
           <button id="copyWatchButton" class="btn w-4/5 mx-auto p-2 text-xl text-white text-center font-bold bg-blue-btn hover:bg-blue-dc border rounded-3xl">複製連結</button>
           <p id="successMessage" class="text-green-500" style="display: none">連結已成功複製!</p>
         </div>
         <div class="flex flex-col items-center space-y-4 mt-8 p-4 border border-gray-200 rounded h-full" x-show="activeTab === 'edit'">
-          <img src="{{ edit_qrimg }}" alt="">
+          <div class="h-2/3 w-2/3">
+            <img src="{{ confirm_qrimg }}" alt="" class="object-contain w-full h-full">
+          </div>
           <button id="copyEditButton" class="btn w-4/5 mx-auto p-2 text-xl text-white text-center font-bold bg-blue-btn hover:bg-blue-dc border rounded-3xl">複製連結</button>
           <p id="successMessage2" class="text-green-500" style="display: none">連結已成功複製!</p>
-        </div>
+        </>
       </div>
     </div>
   </div>
@@ -106,7 +110,7 @@
 <script src="{% static 'scripts/route.js' %}"></script>
 <script>
   document.getElementById('copyEditButton').addEventListener('click', function() {
-        var textToCopy = "{{ edit_url }}";
+        var textToCopy = "{{ confirm_url }}";
 
         // 使用 Clipboard API 來複製
         navigator.clipboard.writeText(textToCopy).then(() => {

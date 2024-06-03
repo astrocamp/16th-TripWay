@@ -1,9 +1,13 @@
 {% extends "layouts/base.html" %}
 {% block content %}
 
-<h2 class="block text-center m-3 text-3xl">邀請共編</h2>
-<div class="flex justify-center">
-		<a class="mx-auto btn m-3" href="{% url 'home' %}">返回首頁</a>
-</div>
+<section class="w-1/2 mx-auto">
+	<h2 class="block text-center m-8 text-3xl font-bold mt-12">{{ inviter.username }}  邀請您加入</h2>
+	<p class="text-center text-2xl m-4">點擊下方按鈕，接受好友的邀請，一起來編輯 {{trip.name}} </p>
+	<div class="flex justify-center w-2/3 mx-auto">
+		<a class="btn w-1/2 m-2 p-2 text-xl text-white text-center font-bold bg-gray-400 hover:bg-blue-dc border rounded-3xl" href="{% url 'home' %}">返回首頁</a>
+		<a class="btn w-1/2 m-2 p-2 text-xl text-white text-center font-bold bg-blue-btn hover:bg-blue-dc border rounded-3xl" href="{% url 'trips:add-member-edit' trip.id %}">加入行程</a>
+	</div>
+</section>
 
 {%  endblock %}
