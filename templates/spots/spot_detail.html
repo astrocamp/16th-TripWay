@@ -36,12 +36,31 @@
             <span class="text-orange-400">此景點尚無人評分</span>
         {% endif %}
     </div>
-    <p class="py-2 text-opacity-75 text-start text-sky-700">
+<p class="py-2 text-opacity-75 text-start text-sky-700">
     <span class="text-black">城市:</span> {{ spot.city }}
 </p>
-    <p class="py-2 text-opacity-75 text-start text-sky-700">
+<p class="py-2 text-opacity-75 text-start text-sky-700">
     <span class="text-black">地址:</span> {{ spot.address }}
 </p>
+<p class="py-2 text-opacity-75 text-start text-sky-700">
+    <span class="text-black">網址:</span> {{ website }}
+</p>
+<p class="py-2 text-opacity-75 text-start text-sky-700">
+    <span class="text-black">電話:</span> {{ phone_number }}
+</p>
+<p class="py-2 text-opacity-75 text-start text-sky-700">
+    <span class="text-black">營業時間:</span>
+    {% for time in opening_hours %}
+        <br>{{ time }}
+    {% endfor %}
+</p>
+<p class="py-2 text-opacity-75 text-start text-sky-700">
+    <span class="text-black">介紹:</span>
+    {% for about in about %}
+        <br>{{ about.text }}
+    {% endfor %}
+</p>
+
 
 </div>
 

@@ -26,7 +26,7 @@ class IndexView(LoginRequired, ListView):
 
     def get_place_photo(self, spot_name):
         google_api_key = settings.GOOGLE_API_KEY
-        search_url = f"https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={spot_name}&inputtype=textquery&fields=photos,place_id&key={google_api_key}"
+        search_url = f"https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={spot_name}&inputtype=textquery&fields=photos,place_id&key={google_api_key}&language=zh-TW"
         
         response = requests.get(search_url)
         search_results = response.json()
@@ -64,7 +64,7 @@ class ShowView(LoginRequired, DetailView):
     
     def get_place_photo(self, spot_name):
         google_api_key = settings.GOOGLE_API_KEY
-        search_url = f"https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={spot_name}&inputtype=textquery&fields=photos,place_id&key={google_api_key}"
+        search_url = f"https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={spot_name}&inputtype=textquery&fields=photos,place_id&key={google_api_key}&language=zh-TW"
         
         response = requests.get(search_url)
         search_results = response.json()
@@ -76,6 +76,29 @@ class ShowView(LoginRequired, DetailView):
             photo_url = None
 
         return photo_url
+
+    def get_place_details(self, place_id):
+        google_api_key = settings.GOOGLE_API_KEY
+        details_url = f"https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&fields=website,formatted_address,formatted_phone_number,opening_hours,reviews&key={google_api_key}&language=zh-TW"
+        
+        response = requests.get(details_url)
+        details = response.json()
+
+        if 'result' in details:
+            result = details['result']
+            website = result.get('website', 'N/A')
+            address = result.get('formatted_address', 'N/A')
+            phone_number = result.get('formatted_phone_number', 'N/A')
+            opening_hours = result.get('opening_hours', {}).get('weekday_text', [])
+            about = result.get('about', 'N/A')
+            return {
+                'website': website,
+                'address': address,
+                'phone_number': phone_number,
+                'opening_hours': opening_hours,
+                'about': about,
+            }
+        return {}
 
     def post(self, request, pk):
         spot = self.get_object()
@@ -133,6 +156,8 @@ class ShowView(LoginRequired, DetailView):
 
         # 获取 Google 地图图片
         photo_url = self.get_place_photo(spot.name)
+        place_id = spot.place_id  # Assuming you have the place_id stored in the Spot model
+        place_details = self.get_place_details(place_id)
 
         context.update({
             'comments': comments,
@@ -141,7 +166,11 @@ class ShowView(LoginRequired, DetailView):
             'average_rating': average_rating,
             'total_comments': total_comments,
             'member_spot': member_spot,
-            'photo_url': photo_url,  # 添加图片 URL 到上下文
+            'photo_url': photo_url,
+            'website': place_details.get('website', 'N/A'),
+            'phone_number': place_details.get('phone_number', 'N/A'),
+            'opening_hours': place_details.get('opening_hours', []),
+            'reviews': place_details.get('reviews', []),
         })
 
         return context
