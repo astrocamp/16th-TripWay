@@ -1,5 +1,5 @@
 {% load static %}
-<nav class="sticky top-0 left-0 z-50 flex items-center justify-between w-full bg-white lg:px-8 px-6 py-4 shadow-md z-[99]">
+<nav class="sticky top-0 left-0 z-50 flex items-center justify-between w-full bg-white lg:px-8 px-6 py-4 shadow-md">
     <!-- icon -->
     <a href="{% url 'home' %}" class="mb-2 text-4xl font-bold lg:block">
         <div class="w-28">
@@ -15,10 +15,12 @@
             placeholder="搜尋景點，例:動物園..."
             class="w-full px-4 py-2 border-none rounded-custom-20 pr-12 text-gray-700 focus:outline-none focus:ring-0"
         />
-        <button id="search-button" class="absolute transform -translate-y-1/2 text-black right-2 top-1/2 hover:text-gray-700">
+        <button id="search-button" class="absolute transform -translate-y-1/2 text-black right-2 top-1/4 hover:text-gray-700">
             <i class="fa-solid fa-magnifying-glass" style="font-size: 1.5rem;"></i>
         </button>
     </div>
+
+        </div>
     </div>
 
     <!-- 探索按鈕 + 會員 -->
@@ -51,7 +53,7 @@
             </button>
     
             <!-- 探索下拉選單 -->
-            <ul id="menu" class="hidden absolute top-16 right-20 bg-white shadow-md py-2 px-4 rounded-lg">
+            <ul id="menu" class="hidden absolute top-16 right-20 z-10 bg-white shadow-md py-2 px-4 rounded-lg">
                 <li>
                     <a href="{% url 'trips:map' %}" class="text-xl font-bold hover:text-gray-800">地圖探索</a>
                 </li>
@@ -76,29 +78,6 @@
             });
         </script>
         
-        <!-- 小鈴鐺通知 -->
-        <div id="notify" class="relative cursor-pointer w-8 h-8 flex items-center">
-            <a href="{% url 'notifies:notification_list' %}" class="relative cursor-pointer w-8 h-8 flex items-center hover:text-red-700">
-                <i class="fa-solid fa-bell text-2xl"></i>
-                <div id="notify-count" class="absolute top-0 right-0 bg-red-600 h-3 w-3 rounded-full hidden"></div>
-                </a>
-                <div id="notify-message" class="absolute right-0 mt-40 w-64 bg-white border border-slate-300 rounded-md shadow-lg hidden">
-                <ul id="notify-list" class="divide-y divide-slate-200">
-                    {% if notifications %}
-                        {% for notification in notifications %}
-                            <li class="pl-4 py-2 {% if not notification.is_read %}font-bold{% endif %}" data-id="{{ notification.id }}">
-                            <a href="{{ notification.link }}" class="flex-1 hover:underline">
-                                {{ notification.message }}
-                            </a>
-                            </li>
-                        {% endfor %}
-                    {% else %}
-                    <li class="p-2">目前沒有任何通知</li>
-                    {% endif %}
-                </ul>
-                </div>
-            </div>
-
         <!-- 會員 -->
         <div class="dropdown dropdown-end">
         {% if user.is_authenticated %}
@@ -147,19 +126,3 @@
     </div>
 </nav>
 <script src="{% static "scripts/search.js" %}"></script>
-
-<script>
-    var unreadCount = 0;
-
-    {% for notification in notifications %}
-        {% if not notification.is_read %}
-            unreadCount++;
-        {% endif %}
-    {% endfor %}
-
-    if (unreadCount > 0) {
-        document.getElementById('notify-count').style.display = 'block';
-    } else {
-        document.getElementById('notify-count').style.display = 'none';
-    }
-</script>
