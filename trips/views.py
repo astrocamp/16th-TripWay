@@ -9,9 +9,10 @@ from members.models import Member
 from .models import Trip, TripMember
 from notifies.models import Notification
 import qrcode
-from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from io import BytesIO
+from base64 import b64encode
+import os
 
 
 @login_required
@@ -43,20 +44,25 @@ def home(request):
             trips = trip_members.order_by('-trip__id')
 
         trips = [{"t": trip, "tm": trip_members.get(trip=trip)} for trip in trips]
-        for trip in trips :
-            edit_url = f"http://127.0.0.1:8000/trips/{trip["t"].id}/add-member/edit"
-            watch_url = f"http://127.0.0.1:8000/trips/{trip["t"].id}/add-member/watch"
+        if trips :
+            for trip in trips :
+                edit_url = f"http://{os.getenv("NOW_HOST")}/trips/{trip["t"].id}/add-member/edit"
+                watch_url = f"http://{os.getenv("NOW_HOST")}/trips/{trip["t"].id}/add-member/watch"
+                
+                edit_qrimg = create_qrcode(edit_url)
+                watch_qrimg = create_qrcode(watch_url)
 
-        return render(
-            request,
-            "trips/index.html",
-            {
+            return render(request,"trips/index.html",{
                 "trips": trips,
                 "sort_option": sort_option,
                 "edit_url": edit_url,
                 "watch_url": watch_url,
-            },
-        )
+                "edit_qrimg":edit_qrimg,
+                "watch_qrimg":watch_qrimg,
+                }   
+            )
+        else:
+            return render(request,"trips/index.html",{"trips": trips,"sort_option": sort_option,})
 
 
 @login_required
@@ -67,18 +73,6 @@ def new(request):
 @login_required
 def new_member(request, id):
     trip = get_object_or_404(Trip, pk=id)
-
-    # qr = qrcode.QRCode()
-    # qr.add_data("https://python-ecw.com/")
-    # qr.make(fit=True)
-    # img = qr.make_image(fill_color="black", back_color="white")
-
-    # buffer = BytesIO()
-    # img.save(buffer, format="PNG")
-    # file_name = f"trips/qr_codes/trip_{id}.png"
-    # file_path = default_storage.save(file_name, ContentFile(buffer.getvalue()))
-    # img_path = default_storage.url(file_path)
-
     return render(request, "trips/new_member.html", {"trip": trip})
 
 
@@ -199,6 +193,10 @@ def new_member_watch(request, id):
 
     return redirect(reverse("trips:schedules:index", kwargs={"id": trip.id}))
 
+@login_required
+def edit_confirm(request, id):
+    trip = get_object_or_404(Trip, id=id)
+    return render(request, "trips/confirm.html")
 
 @require_POST
 @login_required
@@ -232,3 +230,12 @@ def delete_member(request, trip_id, member_id):
 def delete_self(request, trip_id, member_id):
     delete_TripMember(trip_id, member_id)
     return redirect("trips:index")
+
+def create_qrcode(url):
+    qr_code_img = qrcode.make(url)
+    buffer = BytesIO()
+    qr_code_img.save(buffer)
+    buffer.seek(0)
+    encoded_img = b64encode(buffer.read()).decode()
+    qr_code_data = f'data:image/png;base64,{encoded_img}'
+    return qr_code_data
