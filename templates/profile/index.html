@@ -30,6 +30,13 @@
 
 	<div class="ml-10 shadow-xl wa card w-96 bg-baseflex">
 		<figure><img src="https://picsum.photos/400" alt="" /></figure>
+		<div>
+			<i
+			id="favoriteIcon"
+			class="mt-4 fa-heart fa-2xl {% if member_spot %}fa-solid{% else %}fa-regular{% endif %} cursor-pointer favorite-icon"
+			data-toggle-favorite-url="/member/favorite"
+		></i>
+	</div>
 		<div class="card-body">
 			<h2 class="card-title">{{ spot.spot.name }}</h2>
 			<div class="card-actions">
