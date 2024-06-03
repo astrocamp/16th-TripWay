@@ -11,71 +11,77 @@
 </header>
 
 <section class="flex justify-center flex-grow">
-    <div class="flex flex-col items-center px-3 py-3 mx-3 my-3 bg-white border rounded-lg" style="width: 960px; height: 888px;">
-        <div class="w-full h-[350px] overflow-hidden rounded-t-lg">
+    <div class="flex flex-col items-center px-3 py-3 mx-3 my-3 bg-white border rounded-lg" style="width: 800px; height: 888px;">
+        <div class="w-full h-[450px] overflow-hidden rounded-t-lg">
             <img src="{% if photo_url %}{{ photo_url }}{% else %}{% static 'img/tripdefault.png' %}{% endif %}" class="object-cover w-full h-full" alt="">
         </div>
-<div class="flex flex-col w-full pl-5 mx-5 mt-5">
-    <p class="text-lg font-bold text-sky-700">{{ spot.name }}</p>
-    <div class="flex mt-2">
-        {% if total_comments > 0 %}
-            {% with average_rating|floatformat:1 as avg_rating %}
-                {% if '.' in avg_rating %}
-                    <span class="text-sky-700">{{ avg_rating }}</span>
-                {% else %}
-                    <span class="text-sky-700">{{ average_rating|floatformat:0 }}</span>
-                {% endif %}
-            {% endwith %}
-            <div class="flex justify-center ml-2 rating" style="pointer-events: none;">
-                {% for i in "12345" %}
-                    <input type="radio" name="average_rating" class="bg-orange-400 mask mask-star-2" value="{{ i }}" {% if i <= average_rating|floatformat:1 %}checked{% endif %} disabled />
-                {% endfor %}
+        <div class="flex flex-col w-full pl-5 mx-5 mt-5">
+            <div class="flex items-center justify-between w-full">
+                <p class="text-3xl font-bold text-sky-700">{{ spot.name }}</p>
+                <i id="favoriteIcon" class="fa-heart fa-2xl mr-6 {% if member_spot %}fa-solid{% else %}fa-regular{% endif %} cursor-pointer"></i>
             </div>
-            <span class="ml-2 text-sky-700">({{ total_comments }})</span>
-        {% else %}
-            <span class="text-orange-400">此景點尚無人評分</span>
-        {% endif %}
-    </div>
-<p class="py-2 text-opacity-75 text-start text-sky-700">
-    <span class="text-black">城市:</span> {{ spot.city }}
-</p>
-<p class="py-2 text-opacity-75 text-start text-sky-700">
-    <span class="text-black">地址:</span> {{ spot.address }}
-</p>
-<p class="py-2 text-opacity-75 text-start text-sky-700">
-    <span class="text-black">網址:</span> {{ website }}
-</p>
-<p class="py-2 text-opacity-75 text-start text-sky-700">
-    <span class="text-black">電話:</span> {{ phone_number }}
-</p>
-<p class="py-2 text-opacity-75 text-start text-sky-700">
-    <span class="text-black">營業時間:</span>
-    {% for time in opening_hours %}
-        <br>{{ time }}
-    {% endfor %}
-</p>
-<p class="py-2 text-opacity-75 text-start text-sky-700">
-    <span class="text-black">介紹:</span>
-    {% for about in about %}
-        <br>{{ about.text }}
-    {% endfor %}
-</p>
-
-
-</div>
-
-
-
-        <div class="flex justify-between w-full mt-5">
-            <a class='btn' href="{% url 'spots:add_schedule' spot.pk %}">加入行程+</a>
-            <i id="favoriteIcon" class="fa-heart fa-2xl {% if member_spot %}fa-solid{% else %}fa-regular{% endif %} cursor-pointer"></i>
+            <div class="flex mt-2 text-xl">
+                {% if total_comments > 0 %}
+                    {% with average_rating|floatformat:1 as avg_rating %}
+                        {% if '.' in avg_rating %}
+                            <span class="text-sky-700">{{ avg_rating }}</span>
+                        {% else %}
+                            <span class="text-sky-700">{{ average_rating|floatformat:0 }}</span>
+                        {% endif %}
+                    {% endwith %}
+                    <div class="flex justify-center ml-2 rating" style="pointer-events: none;">
+                        {% for i in "12345" %}
+                            <input type="radio" name="average_rating" class="bg-orange-400 mask mask-star-2" value="{{ i }}" {% if i <= average_rating|floatformat:1 %}checked{% endif %} disabled />
+                        {% endfor %}
+                    </div>
+                    <span class="ml-2 text-sky-700">({{ total_comments }})</span>
+                {% else %}
+                    <span class="text-orange-400">此景點尚無人評分</span>
+                {% endif %}
+            </div>
+        </div>
+        <div class="flex flex-col w-full pl-5 mx-5 mt-5">
+            <div class="flex w-full">
+                <div class="w-1/2">
+                    <p class="py-2 text-opacity-75 text-start text-sky-700">
+                        <span class="text-black">城市:</span> {{ spot.city }}
+                    </p>
+                    <p class="py-2 text-opacity-75 text-start text-sky-700">
+                        <span class="text-black">地址:</span> {{ spot.address }}
+                    </p>
+                    <p class="py-2 text-opacity-75 text-start text-sky-700">
+                        <span class="text-black">介紹:</span>
+                        {% for about in about %}
+                            <br>{{ about.text }}
+                        {% endfor %}
+                    </p>
+                    <p class="py-2 text-opacity-75 text-start text-sky-700">
+                        <span class="text-black">網址:</span> {{ website }}
+                    </p>
+                    <p class="py-2 text-opacity-75 text-start text-sky-700">
+                        <span class="text-black">電話:</span> {{ phone_number }}
+                    </p>
+                </div>
+                <div class="w-1/2">
+                    <p class="py-2 text-opacity-75 text-start text-sky-700">
+                        <span class="text-black">營業時間:</span>
+                        {% for time in opening_hours %}
+                            <br>{{ time }}
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="flex justify-end w-full mt-5">
+            <a class="text-white rounded-full btn bg-blue-btn" href="{% url 'spots:add_schedule' spot.pk %}">加入行程</a>
         </div>
     </div>
 </section>
 
+
 <section class="flex justify-center flex-grow py-12">
-    <div class="flex flex-col items-center px-3 py-3 mx-3 my-3 bg-white border rounded-lg" style="width: 960px;">
-        <div class="w-full max-w-md">
+    <div class="flex flex-col items-center px-3 py-3 mx-3 my-3 bg-white border rounded-lg" style="width: 800px;">
+        <div class="w-full" style="max-width: 800px;">
             <h1 class="mb-8 text-2xl font-bold text-center">評論景點</h1>
             <form id="ratingForm" method="post" action="{% url 'spots:show' spot.pk %}">
                 {% csrf_token %}
@@ -99,8 +105,10 @@
     </div>
 </section>
 
+
+
 <section class="flex justify-center flex-grow mt-8">
-    <div class="flex flex-col items-center px-3 py-3 mx-3 my-3 bg-white border rounded-lg" style="width: 960px;">
+    <div class="flex flex-col items-center px-3 py-3 mx-3 my-3 bg-white border rounded-lg" style="width: 800px;">
         <div class="w-full max-w-md">
             <h2 class="mb-4 text-xl font-semibold text-center">評論內容</h2>
             {% for comment in comments %}
