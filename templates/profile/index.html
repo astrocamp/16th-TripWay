@@ -1,19 +1,17 @@
 {% extends 'layouts/base.html' %} {% block content %}
-
+{% load static %}
 <h2 class="p-2 m-4 text-3xl">會員</h2>
 <div class="container flex mt-6">
-	<div
-		tabindex="0"
-		class="w-40 h-40 mb-10 ml-10 bg-cover rounded-full bg-light-blue"
-		{%if
-		user.profile.avatar%}
-		style="background-image: url('{{ user.profile.avatar.url }}')"
-		{%else
-		%}
-		style="background-image: url('https://i.imgur.com/gd0IEZY.png')"
-		{%endif
-		%}
-	></div>
+	<div class="w-40 h-40 mb-10 ml-10 bg-cover rounded-full bg-light-blue relative group cursor-pointer">
+        {% if user.profile.avatar %}
+            <div class="w-full h-full rounded-full bg-cover bg-center" style="background-image: url('{{ user.profile.avatar.url }}')"></div>
+        {% else %}
+            <div class="w-full h-full rounded-full bg-cover bg-center" style="background-image: url('{% static "img/membericon.png" %}')"></div>
+        {% endif %}
+        <div class="absolute inset-0 rounded-full bg-gray-900 bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+            <i class="fas fa-camera text-white text-3xl"></i>
+        </div>
+    </div>
 	<div class="flex flex-col mb-10 ml-10 justify-evenly">
 		<p class="text-lg font-black">{{ member.username }}</p>
 		<p>會員等級：{{ member.level }}</p>
