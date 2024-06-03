@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-  <div class="pt-8">
+  <div class="pt-8" x-data="{ show: false, activeTab: 'watch' }">
     <header class="flex justify-between items-center w-3/4 mx-auto">
       <div class="flex items-center">
         <a class="m-1 transition-colors duration-300 hover:text-sky-700" href="{% url 'home' %}">
@@ -50,6 +50,9 @@
                       <i class="fa-solid fa-trash-can mr-2"></i>刪除
                     </button>
                   </form>
+                  <div>
+                    <button class="block w-full px-4 py-2 text-center text-lg font-bold hover:bg-slate-300 rounded-b-lg" @click="show = true"><i class="fa-regular fa-share-from-square mr-1"></i>分享</button>
+                  </div>
                 {% endif %}
               </div>
             </div>
@@ -74,6 +77,63 @@
     <div class="flex justify-center items-center mt-8 mb-10">
       <a class="w-1/3 h-14 flex items-center justify-center p-2 text-2xl text-white text-center font-bold bg-blue-btn hover:bg-blue-dc border rounded-3xl" href="{% url 'trips:new' %}">建立新行程</a>
     </div>
+
+    <div x-show="show" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div class="bg-white p-8 rounded-lg w-1/3 h-2/3 m-auto flex flex-col relative">
+        <button @click="show = false" class="absolute right-8 top-8 text-xl">X</button>
+        <div class=" w-4/5 mx-auto flex justify-center">
+          <input id="watch" class="peer/watch hidden" type="radio" name="status" @click="activeTab = 'watch'" checked/>
+          <label for="watch" class="peer-checked/watch:bg-blue-btn bg-neutral-400 text-xl text-white mx-1 rounded-3xl btn w-1/2" @click="show = true">分享行程</label>
+          <input id="edit" class="peer/edit hidden" type="radio" name="status" @click="activeTab = 'edit'"/>
+          <label for="edit" class="btn peer-checked/edit:bg-T-red bg-neutral-400 text-xl text-white btn mx-1 rounded-3xl w-1/2" @click="show = true">共編行程</label>
+        </div>
+        <div class="flex flex-col items-center space-y-4 mt-8 p-4 border border-gray-200 rounded h-full" x-show="activeTab === 'watch'">
+          <button id="copyWatchButton" class="btn w-4/5 mx-auto p-2 text-xl text-white text-center font-bold bg-blue-btn hover:bg-blue-dc border rounded-3xl">複製連結</button>
+          <p id="successMessage" class="text-green-500" style="display: none">連結已成功複製!</p>
+        </div>
+        <div class="flex flex-col items-center space-y-4 mt-8 p-4 border border-gray-200 rounded h-full" x-show="activeTab === 'edit'">
+          <button id="copyEditButton" class="btn w-4/5 mx-auto p-2 text-xl text-white text-center font-bold bg-blue-btn hover:bg-blue-dc border rounded-3xl">複製連結</button>
+          <p id="successMessage2" class="text-green-500" style="display: none">連結已成功複製!</p>
+        </div>
+      </div>
+    </div>
   </div>
-<script src="{% static "scripts/route.js" %}"></script>
+
+{% endblock %}
+{% block script %}
+<script src="{% static 'scripts/route.js' %}"></script>
+<script>
+  document.getElementById('copyEditButton').addEventListener('click', function() {
+        var textToCopy = "{{ edit_url }}";
+
+        // 使用 Clipboard API 來複製
+        navigator.clipboard.writeText(textToCopy).then(() => {
+
+            var successMessage = document.getElementById('successMessage2');
+            successMessage.style.display = 'block';
+
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 2000);
+        }).catch(err => {
+            console.error('複製失敗: ', err);
+        });
+    });
+  
+  document.getElementById('copyWatchButton').addEventListener('click', function() {
+        var textToCopy = "{{ watch_url }}";
+
+        navigator.clipboard.writeText(textToCopy).then(() => {
+
+            var successMessage = document.getElementById('successMessage');
+            successMessage.style.display = 'block';
+
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 2000);
+        }).catch(err => {
+            console.error('複製失敗: ', err);
+        });
+    });
+</script>
 {% endblock %}

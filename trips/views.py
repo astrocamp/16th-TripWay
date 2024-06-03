@@ -42,8 +42,21 @@ def home(request):
         else:
             trips = trip_members.order_by('-trip__id')
 
-        trips = [{"t": trip.trip, "tm": trip} for trip in trips]
-        return render(request, "trips/index.html", {"trips": trips, "sort_option": sort_option})
+        trips = [{"t": trip, "tm": trip_members.get(trip=trip)} for trip in trips]
+        for trip in trips :
+            edit_url = f"http://127.0.0.1:8000/trips/{trip["t"].id}/add-member/edit"
+            watch_url = f"http://127.0.0.1:8000/trips/{trip["t"].id}/add-member/watch"
+
+        return render(
+            request,
+            "trips/index.html",
+            {
+                "trips": trips,
+                "sort_option": sort_option,
+                "edit_url": edit_url,
+                "watch_url": watch_url,
+            },
+        )
 
 
 @login_required
@@ -144,6 +157,8 @@ def create_member(request, id):
     trip.save()
     return redirect(reverse("trips:schedules:index", kwargs={"id": trip.id}))
 
+
+@login_required
 def new_member_edit(request, id):
     trip = get_object_or_404(Trip, id=id)
     member = request.user
@@ -163,6 +178,8 @@ def new_member_edit(request, id):
 
     return redirect(reverse("trips:schedules:index", kwargs={"id": trip.id}))
 
+
+@login_required
 def new_member_watch(request, id):
     trip = get_object_or_404(Trip, id=id)
     member = request.user
