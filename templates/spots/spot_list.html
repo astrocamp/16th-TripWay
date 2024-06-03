@@ -30,8 +30,8 @@
                     <div class="flex items-center">
                         <div class="flex items-center mr-2">
                             {% if spot.total_comments > 0 %}
-                                <div class="flex items-center">
-                                    <input type="radio" name="rating" class="bg-orange-400 mask mask-star-2" value="1" checked disabled />
+                                <div class="flex items-center rating">
+                                    <input type="radio" class="bg-orange-400 mask mask-star-2" value="1" checked disabled />
                                     <span class="ml-2 text-sky-700">
                                         {% with spot.average_rating|floatformat:1 as avg_rating %}
                                             {{ avg_rating }}
