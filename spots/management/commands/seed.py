@@ -1,15 +1,15 @@
-from django.core.management.base import BaseCommand
-from spots.models import Spot
+import os
 from decimal import Decimal
 import requests
-import os
+from django.core.management.base import BaseCommand
+from spots.models import Spot
 from dotenv import load_dotenv
 
 load_dotenv()
 
 
 class Command(BaseCommand):
-    help = "填寫spot初始資料"
+    help = "填寫 spot 初始資料"
 
     def handle(self, *args, **options):
         print("正在執行你的腳本...")
@@ -26,19 +26,59 @@ class Command(BaseCommand):
 
         if response.status_code == 200:
             data = response.json()["results"]
+        else:
+            self.stdout.write("無法從 Google API 獲取數據")
+            return
+
+        place_details_url = "https://maps.googleapis.com/maps/api/place/details/json"
 
         for place in data:
-            Spot.objects.get_or_create(
-                name=place["name"],
-                defaults={
-                    "address": place.get("formatted_address", None),
-                    "city": str(place["formatted_address"]).split("台灣")[1][0:3],
-                    "latitude": Decimal(str(place["geometry"]["location"]["lat"])),
-                    "longitude": Decimal(str(place["geometry"]["location"]["lng"])),
-                    "phone": place.get("formatted_phone_number", None),
-                    "url": place.get("website", None),
-                    "rating": place.get("rating", None),
-                    "place_id": place.get("place_id", None),
-                },
-            )
+            place_id = place.get("place_id")
+            if place_id:
+                details_response = requests.get(
+                    place_details_url,
+                    params={"place_id": place_id, "key": api_key, "language": "zh-TW"},
+                )
+                if details_response.status_code == 200:
+                    details_data = details_response.json().get("result", {})
+                else:
+                    self.stdout.write(f"無法獲取 place_id 為 {place_id} 的詳細數據")
+                    continue
+
+                city = None
+                for component in place.get("address_components", []):
+                    if "administrative_area_level_1" in component["types"]:
+                        city = component["long_name"]
+                        break
+
+                Spot.objects.get_or_create(
+                    name=place["name"],
+                    defaults={
+                        "address": place.get("formatted_address", None),
+                        "city": (
+                            city
+                            or str(place["formatted_address"]).split("台灣")[1][0:3]
+                            if "台灣" in place["formatted_address"]
+                            else None
+                        ),
+                        "latitude": Decimal(str(place["geometry"]["location"]["lat"])),
+                        "longitude": Decimal(str(place["geometry"]["location"]["lng"])),
+                        "phone": details_data.get("formatted_phone_number", None),
+                        "url": details_data.get("url", None),
+                        "rating": place.get("rating", None),
+                        "place_id": place_id,
+                        "opening_hours": (
+                            " ".join(
+                                details_data.get("opening_hours", {}).get(
+                                    "weekday_text", []
+                                )
+                            )
+                            if details_data.get("opening_hours")
+                            else None
+                        ),
+                        "description": details_data.get("editorial_summary", {}).get(
+                            "overview", None
+                        ),
+                    },
+                )
         print("腳本執行完畢")
