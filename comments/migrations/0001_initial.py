@@ -22,10 +22,7 @@ class Migration(migrations.Migration):
                 ('value', models.IntegerField(default=None)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('spot', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='spots.spot')),
-<<<<<<< HEAD
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-=======
->>>>>>> a90ebdb (merge comments feature into spots)
             ],
         ),
     ]
