@@ -61,6 +61,21 @@ class ShowView(LoginRequired, DetailView):
     model = Spot
     template_name = 'spots/spot_detail.html'
     context_object_name = 'spot'
+    
+    def get_place_photo(self, spot_name):
+        google_api_key = settings.GOOGLE_API_KEY
+        search_url = f"https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={spot_name}&inputtype=textquery&fields=photos,place_id&key={google_api_key}"
+        
+        response = requests.get(search_url)
+        search_results = response.json()
+
+        if 'candidates' in search_results and len(search_results['candidates']) > 0:
+            photo_reference = search_results['candidates'][0]['photos'][0]['photo_reference']
+            photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key={google_api_key}"
+        else:
+            photo_url = None
+
+        return photo_url
 
     def post(self, request, pk):
         spot = self.get_object()
@@ -115,6 +130,10 @@ class ShowView(LoginRequired, DetailView):
         average_rating = comments.aggregate(Avg('value'))['value__avg'] if total_comments > 0 else 0
         form = CommentForm()
         alert = self.request.session.pop('alert', None)
+
+        # 获取 Google 地图图片
+        photo_url = self.get_place_photo(spot.name)
+
         context.update({
             'comments': comments,
             'form': form,
@@ -122,6 +141,7 @@ class ShowView(LoginRequired, DetailView):
             'average_rating': average_rating,
             'total_comments': total_comments,
             'member_spot': member_spot,
+            'photo_url': photo_url,  # 添加图片 URL 到上下文
         })
 
         return context
