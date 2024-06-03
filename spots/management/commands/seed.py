@@ -12,7 +12,7 @@ class Command(BaseCommand):
     help = "填寫spot初始資料"
 
     def handle(self, *args, **options):
-        self.stdout.write("正在執行你的腳本...")
+        print("正在執行你的腳本...")
         api_key = os.getenv("GOOGLE_API_KEY")
         url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
 
@@ -28,12 +28,6 @@ class Command(BaseCommand):
             data = response.json()["results"]
 
         for place in data:
-            city = None
-            for component in place.get("address_components", []):
-                if "administrative_area_level_1" in component["types"]:
-                    city = component["long_name"]
-                    break
-
             Spot.objects.get_or_create(
                 name=place["name"],
                 defaults={
@@ -47,4 +41,4 @@ class Command(BaseCommand):
                     "place_id": place.get("place_id", None),
                 },
             )
-        self.stdout.write("腳本執行完畢")
+        print("腳本執行完畢")
