@@ -17,6 +17,7 @@ urlpatterns = [
         "<trip_id>/<member_id>/delete-member", views.delete_member, name="delete-member"
     ),
     path("<trip_id>/<member_id>/delete-self", views.delete_self, name="delete-self"),
+    path("<id>/add-member/edit/confirm", views.edit_confirm, name="edit-confirm"),
     path("<id>/add-member/edit", views.new_member_edit, name="add-member-edit"),
     path("<id>/add-member/watch", views.new_member_watch, name="add-member-watch"),
 ]

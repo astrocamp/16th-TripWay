@@ -24,58 +24,10 @@
               </li>
             </ul>
         </div>
-    
-
-        <div>
-          <a href="{% url 'trips:add-member-edit' trip.id %}">編輯連結
-          </a>
-        </div> 
-        <div>
-          <a href="{% url 'trips:add-member-watch' trip.id %}">閱讀連結
-          </a>
-        </div>
 
         <div class="flex justify-center">
             <button class="px-4 py-2 font-bold text-white rounded bg-sky-800 hover:bg-sky-950"><input type="submit" value="送出" /></button>
         </div>
       </form>
 
-{% endblock %}
-
-
-{% block script %}
-<script>
-  document.getElementById('copyEditButton').addEventListener('click', function() {
-        var textToCopy = "{{ edit_url }}";
-
-        // 使用 Clipboard API 來複製
-        navigator.clipboard.writeText(textToCopy).then(() => {
-
-            var successMessage = document.getElementById('successMessage');
-            successMessage.style.display = 'block';
-
-            setTimeout(() => {
-                successMessage.style.display = 'none';
-            }, 2000);
-        }).catch(err => {
-            console.error('複製失敗: ', err);
-        });
-    });
-  
-  document.getElementById('copyWatchButton').addEventListener('click', function() {
-        var textToCopy = "{{ watch_url }}";
-
-        navigator.clipboard.writeText(textToCopy).then(() => {
-
-            var successMessage = document.getElementById('successMessage');
-            successMessage.style.display = 'block';
-
-            setTimeout(() => {
-                successMessage.style.display = 'none';
-            }, 2000);
-        }).catch(err => {
-            console.error('複製失敗: ', err);
-        });
-    });
-</script>
 {% endblock %}
