@@ -17,7 +17,7 @@
                     和朋友來趟難忘的旅行吧!
                 </p>
                 <div class="flex justify-start mt-6">
-                    <button class="h-16 text-2xl font-medium text-white mt-2 bg-btn-red rounded-full hover:bg-hover-gray w-full max-w-xs lg:max-w-lg">
+                    <button class="h-16 text-2xl font-medium text-white mt-2 bg-btn-red rounded-full hover:bg-gray w-full max-w-xs lg:max-w-lg">
                         {% if user.is_authenticated %}
                             <a href="{% url 'trips:index' %}">立即趣玩</a>
                         {% else %}
