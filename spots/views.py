@@ -21,7 +21,7 @@ from schedules.models import Schedule
 
 class IndexView(LoginRequired, ListView):
     model = Spot
-    template_name = 'spots/spot_list.html'  # 指定模板文件名
+    template_name = 'spots/spot_list.html'
     context_object_name = 'spots'
 
     def get_place_photo(self, spot_name):
@@ -42,16 +42,12 @@ class IndexView(LoginRequired, ListView):
     def get_queryset(self):
         sort_option = self.request.GET.get('sort', 'rating_desc')
         queryset = Spot.objects.all()
-
-        # 计算每个spot的平均评分和评论总数
         for spot in queryset:
             comments = Comment.objects.filter(spot=spot)
             average_rating = comments.aggregate(Avg('value'))['value__avg'] or 0
             spot.average_rating = average_rating
             spot.total_comments = comments.count()
             spot.photo_url = self.get_place_photo(spot.name)
-
-        # 排序
         if sort_option == 'average_rating_desc':
             queryset = sorted(queryset, key=lambda x: x.average_rating, reverse=True)
         elif sort_option == 'comment_count_desc':
@@ -63,13 +59,11 @@ class IndexView(LoginRequired, ListView):
 
 class ShowView(LoginRequired, DetailView):
     model = Spot
-    template_name = 'spots/spot_detail.html'  # 指定模板文件名
+    template_name = 'spots/spot_detail.html'
     context_object_name = 'spot'
 
     def post(self, request, pk):
         spot = self.get_object()
-
-        # 處理評論邏輯
         if 'comment' in request.POST and 'rating' in request.POST:
             comment_content = request.POST.get('comment')
             rating_value = request.POST.get('rating')
@@ -77,8 +71,6 @@ class ShowView(LoginRequired, DetailView):
             if comment_content and rating_value != '0':
                 Comment.objects.create(content=comment_content, spot=spot, user=request.user, value=int(rating_value))
                 messages.success(request, "已提交留言！")
-                
-                # 更新景點的平均評分
                 comments = Comment.objects.filter(spot=spot)
                 total_comments = comments.count()
                 average_rating = comments.aggregate(Avg('value'))['value__avg']
@@ -103,8 +95,6 @@ class ShowView(LoginRequired, DetailView):
             comment = get_object_or_404(Comment, id=comment_id)
             comment.delete()
             messages.success(request, "留言已刪除！")
-            
-            # 更新景點的平均評分
             comments = Comment.objects.filter(spot=spot)
             total_comments = comments.count()
             average_rating = comments.aggregate(Avg('value'))['value__avg'] if total_comments > 0 else 0
@@ -119,11 +109,7 @@ class ShowView(LoginRequired, DetailView):
         context = super().get_context_data(**kwargs)
         spot = self.get_object()
         user = self.request.user
-
-        # 確認當前用戶是否喜愛該景點
         member_spot = MemberSpot.objects.filter(spot=spot, member=user).exists()
-
-        # 添加評論表單和評論數據到上下文
         comments = Comment.objects.filter(spot=spot)
         total_comments = comments.count()
         average_rating = comments.aggregate(Avg('value'))['value__avg'] if total_comments > 0 else 0
