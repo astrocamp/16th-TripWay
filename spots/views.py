@@ -61,7 +61,7 @@ class ShowView(LoginRequired, DetailView):
     model = Spot
     template_name = 'spots/spot_detail.html'
     context_object_name = 'spot'
-    
+
     def get_place_photo(self, spot_name):
         google_api_key = settings.GOOGLE_API_KEY
         search_url = f"https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={spot_name}&inputtype=textquery&fields=photos,place_id&key={google_api_key}&language=zh-TW"
@@ -142,6 +142,20 @@ class ShowView(LoginRequired, DetailView):
             return redirect('spots:show', pk=spot.id)
 
         return redirect("spots:show", pk=spot.id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        spot = self.get_object()
+        comments = Comment.objects.filter(spot=spot)
+        
+        if self.request.user.is_authenticated:
+            user_comments = comments.filter(user=self.request.user)
+            other_comments = comments.exclude(user=self.request.user)
+            context['comments'] = list(user_comments) + list(other_comments)
+        else:
+            context['comments'] = comments
+        
+        return context
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
