@@ -1,95 +1,90 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
 {% block content %}
-<header class="flex items-center justify-between w-3/4 pt-8 mx-auto">
-    <div class="flex items-center">
-        <a class="m-1 transition-colors duration-300 hover:text-sky-700" href="{% url "spots:index" %}">
-            <i class="text-2xl fa-solid fa-reply"></i>
-        </a>
-        <h1 class="p-2 text-3xl font-bold">景點：{{ spot.name }}</h1>
-    </div>
-</header>
-
-<section class="flex justify-center flex-grow">
-    <div class="flex flex-col items-center px-3 py-3 mx-3 my-3 bg-white rounded-lg shadow-lg" style="width: 800px; height: 888px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1);">
-        <div class="w-full h-[450px] overflow-hidden rounded-t-lg">
-            <img src="{% if photo_url %}{{ photo_url }}{% else %}{% static 'img/tripdefault.png' %}{% endif %}" class="object-cover w-full h-full" alt="">
+    <header class="flex items-center justify-between w-3/4 pt-8 mx-auto">
+        <div class="flex items-center">
+            <a class="m-1 transition-colors duration-300 hover:text-sky-700" href="{% url "spots:index" %}">
+                <i class="text-2xl fa-solid fa-reply"></i>
+            </a>
+            <h1 class="p-2 text-3xl font-bold">景點：{{ spot.name }}</h1>
         </div>
-        <div class="flex flex-col w-full pl-5 mx-5 mt-5">
-            <div class="flex items-center justify-between w-full">
-                <p class="text-3xl font-bold text-sky-700">{{ spot.name }}</p>
-                <i id="favoriteIcon" class="fa-heart fa-2xl mr-6 {% if member_spot %}fa-solid{% else %}fa-regular{% endif %} cursor-pointer"></i>
+    </header>
+
+    <section class="flex justify-center flex-grow">
+        <div class="flex flex-col items-center px-3 py-3 mx-3 my-3 bg-white rounded-lg shadow-lg" style="width: 800px; height: 888px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1);">
+            <div class="w-full h-[450px] overflow-hidden rounded-t-lg">
+                <img src="{% if photo_url %}{{ photo_url }}{% else %}{% static 'img/tripdefault.png' %}{% endif %}" class="object-cover w-full h-full" alt="">
             </div>
-            <div class="flex mt-2 text-xl">
-                {% if total_comments > 0 %}
-                    {% with average_rating|floatformat:1 as avg_rating %}
-                        {% if '.' in avg_rating %}
-                            <span class="text-sky-700">{{ avg_rating }}</span>
-                        {% else %}
-                            <span class="text-sky-700">{{ average_rating|floatformat:0 }}</span>
-                        {% endif %}
-                    {% endwith %}
-                    <div class="flex justify-center ml-2 rating" style="pointer-events: none;">
-                        {% for i in "12345" %}
-                            <input type="radio" name="average_rating" class="bg-orange-400 mask mask-star-2" value="{{ i }}" {% if i <= average_rating|floatformat:1 %}checked{% endif %} disabled />
-                        {% endfor %}
+            <div class="flex flex-col w-full pl-5 mx-5 mt-5">
+                <div class="flex items-center justify-between w-full">
+                    <p class="text-3xl font-bold text-sky-700">{{ spot.name }}</p>
+                    <i id="favoriteIcon" class="fa-heart fa-2xl mr-6 {% if member_spot %}fa-solid{% else %}fa-regular{% endif %} cursor-pointer"></i>
+                </div>
+                <div class="flex mt-2 text-xl">
+                    {% if total_comments > 0 %}
+                        {% with average_rating|floatformat:1 as avg_rating %}
+                            {% if '.' in avg_rating %}
+                                <span class="text-sky-700">{{ avg_rating }}</span>
+                            {% else %}
+                                <span class="text-sky-700">{{ average_rating|floatformat:0 }}</span>
+                            {% endif %}
+                        {% endwith %}
+                        <div class="flex justify-center ml-2 rating" style="pointer-events: none;">
+                            {% for i in "12345" %}
+                                <input type="radio" name="average_rating" class="bg-orange-400 mask mask-star-2" value="{{ i }}" {% if i <= average_rating|floatformat:1 %}checked{% endif %} disabled />
+                            {% endfor %}
+                        </div>
+                        <span class="ml-2 text-sky-700">({{ total_comments }})</span>
+                    {% else %}
+                        <span class="text-orange-400">此景點尚無人評分</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="flex flex-col w-full pl-5 mx-5 mt-5">
+                <div class="flex w-full">
+                    <div class="w-1/2">
+                        <p class="py-2 text-opacity-75 text-start text-sky-700">
+                            <span class="text-black">城市:</span> {{ spot.city }}
+                        </p>
+                        <p class="py-2 text-opacity-75 text-start text-sky-700">
+                            <span class="text-black">地址:</span> {{ spot.address }}
+                        </p>
+                        <p class="py-2 text-opacity-75 text-start text-sky-700">
+                            <span class="text-black">介紹:</span>
+                            {% for about in about %}
+                                <br>{{ about.text }}
+                            {% endfor %}
+                        </p>
+                        <p class="py-2 text-opacity-75 text-start text-sky-700">
+                            <span class="text-black">網址:</span> {{ website }}
+                        </p>
+                        <p class="py-2 text-opacity-75 text-start text-sky-700">
+                            <span class="text-black">電話:</span> {{ phone_number }}
+                        </p>
                     </div>
-                    <span class="ml-2 text-sky-700">({{ total_comments }})</span>
-                {% else %}
-                    <span class="text-orange-400">此景點尚無人評分</span>
-                {% endif %}
-            </div>
-        </div>
-        <div class="flex flex-col w-full pl-5 mx-5 mt-5">
-            <div class="flex w-full">
-                <div class="w-1/2">
-                    <p class="py-2 text-opacity-75 text-start text-sky-700">
-                        <span class="text-black">城市:</span> {{ spot.city }}
-                    </p>
-                    <p class="py-2 text-opacity-75 text-start text-sky-700">
-                        <span class="text-black">地址:</span> {{ spot.address }}
-                    </p>
-                    <p class="py-2 text-opacity-75 text-start text-sky-700">
-                        <span class="text-black">介紹:</span>
-                        {% for about in about %}
-                            <br>{{ about.text }}
-                        {% endfor %}
-                    </p>
-                    <p class="py-2 text-opacity-75 text-start text-sky-700">
-                        <span class="text-black">網址:</span> {{ website }}
-                    </p>
-                    <p class="py-2 text-opacity-75 text-start text-sky-700">
-                        <span class="text-black">電話:</span> {{ phone_number }}
-                    </p>
-                </div>
-                <div class="w-1/2">
-                    <p class="py-2 text-opacity-75 text-start text-sky-700">
-                        <span class="text-black">營業時間:</span>
-                        {% for time in opening_hours %}
-                            <br>{{ time }}
-                        {% endfor %}
-                    </p>
+                    <div class="w-1/2">
+                        <p class="py-2 text-opacity-75 text-start text-sky-700">
+                            <span class="text-black">營業時間:</span>
+                            {% for time in opening_hours %}
+                                <br>{{ time }}
+                            {% endfor %}
+                        </p>
+                    </div>
                 </div>
             </div>
+            <div class="flex justify-end w-full mt-auto">
+                <a class="mb-5 mr-5 text-white rounded-full btn bg-blue-btn" href="{% url 'spots:add_schedule' spot.pk %}">加入行程</a>
+            </div>
         </div>
-        <div class="flex justify-end w-full mt-auto">
-            <a class="mb-5 mr-5 text-white rounded-full btn bg-blue-btn" href="{% url 'spots:add_schedule' spot.pk %}">加入行程</a>
-        </div>
-    </div>
-</section>
+    </section>
 
-<section class="flex justify-center flex-grow py-12">
-    <div class="flex flex-col items-center px-3 py-3 mx-3 my-3 bg-white rounded-lg shadow-lg" style="width: 800px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1);">
-        <div class="w-full">
-            <div><h1 class="text-3xl font-bold text-sky-700">評論景點</h1></div>
-            <form id="ratingForm" method="post" action="{% url 'spots:show' spot.pk %}">
-                {% csrf_token %}
-                <div class="mb-4">
-                    <textarea name="comment" id="comment" class="w-full px-4 py-2 mt-5 mb-4 border rounded-md" rows="4" maxlength="1000" placeholder="寫下你對該景點的評價吧!"></textarea>
-                    <span id="comment-error-message" class="error-message" style="color:red; display:none;">請填寫評論內容</span>
-                </div>
-                <div class="flex items-center justify-between">
-                    <div id="rating" class="flex rating">
+    <section class="flex justify-center flex-grow py-12">
+        <div class="flex flex-col items-center px-3 py-3 mx-3 my-3 bg-white rounded-lg shadow-lg" style="width: 800px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1);">
+            <div class="w-full">
+                <div><h1 class="text-3xl font-bold text-sky-700">評論景點</h1></div>
+                <form id="ratingForm" method="post" action="{% url 'spots:show' spot.pk %}">
+                    {% csrf_token %}
+                    <div id="rating" class="flex justify-center rating">
                         <input type="radio" name="rating" class="hidden" value="0" checked />
                         <input type="radio" name="rating" class="bg-orange-400 mask mask-star-2" value="1" />
                         <input type="radio" name="rating" class="bg-orange-400 mask mask-star-2" value="2" />
@@ -97,139 +92,140 @@
                         <input type="radio" name="rating" class="bg-orange-400 mask mask-star-2" value="4" />
                         <input type="radio" name="rating" class="bg-orange-400 mask mask-star-2" value="5" />
                     </div>
-                    <button type="submit" id="submitBtn" class="px-8 py-3 text-white rounded-full btn bg-blue-btn hover:bg-gray-500">送出</button>
-                </div>
-                <span id="rating-error-message" class="error-message" style="color:red; display:none;">請先完成推薦指數評分</span>
-            </form>
-        </div>
-    </div>
-</section>
-
-<section class="flex justify-center flex-grow mt-8">
-    <div class="flex flex-col items-center px-3 py-3 mx-3 my-3 bg-white rounded-lg" style="width: 800px">
-        <div class="w-full text-left">
-            <h2 class="text-3xl font-bold text-sky-700">看看其他人怎麼說</h2>
-        </div>
-        <div class="grid w-full grid-cols-1 gap-4 mt-4 sm:grid-cols-2 md:grid-cols-3">
-            {% for comment in comments %}
-                <div class="p-4 bg-white rounded-lg shadow-lg" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1);">
-                    <div class="flex items-center mb-2">
-                        <div 
-                            class="w-10 h-10 bg-cover rounded-full"
-                            style="background-image: url({% if comment.user.profile.avatar %}{{ comment.user.profile.avatar.url }}{% else %}https://i.imgur.com/gd0IEZY.png{% endif %});"
-                        ></div>
-                        <p class="ml-2">{{ comment.user.username }}</p>
+                    <div class="mb-4">
+                        <textarea name="comment" id="comment" class="w-full px-4 py-2 mt-5 mb-4 border rounded-md" rows="4" maxlength="1000" placeholder="寫下你對該景點的評價吧!"></textarea>
+                        <span id="comment-error-message" class="error-message" style="color:red; display:none;">請填寫評論內容</span>
                     </div>
-                    <p class="comment-content">{{ comment.content }}</p>
-                    <p>評分: {{ comment.value }}</p>
-                    <form method="post" action="{% url 'spots:show' spot.pk %}" class="hidden edit-form">
-                        {% csrf_token %}
-                        <input type="hidden" name="edit_comment_id" value="{{ comment.id }}">
-                        <textarea name="edit_comment_content" class="w-full px-4 py-2 mb-4 border rounded-md" rows="2">{{ comment.content }}</textarea>
-                        <button type="submit" class="text-blue-500 hover:underline">保存</button>
-                        <button type="button" class="text-gray-500 cancel-edit-btn hover:underline">取消</button>
-                    </form>
-                    <div class="flex items-center justify-between mt-2">
-                        <button type="button" class="text-blue-500 edit-comment-btn hover:underline">編輯留言</button>
-                        <form method="post" action="{% url 'spots:show' spot.pk %}">
-                            {% csrf_token %}
-                            <input type="hidden" name="delete_comment_id" value="{{ comment.id }}">
-                            <button type="submit" class="text-red-500 delete-comment-btn hover:underline">刪除留言</button>
-                        </form>
+                    <div class="flex justify-end"> <!-- 將這個 div 的 class 改為 "flex justify-end" -->
+                        <button type="submit" id="submitBtn" class="px-8 py-3 text-white rounded-full btn bg-blue-btn hover:bg-gray-500">送出</button>
                     </div>
-                </div>
-            {% endfor %}
+                    <span id="rating-error-message" class="error-message" style="color:red; display:none;">請先完成推薦指數評分</span>
+                </form>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<script>
-    const loginUrl = "{% url 'login' %}";
-    const csrfToken = "{{ csrf_token }}";
-</script>
-<script src="{% static 'js/comments.js' %}"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const editButtons = document.querySelectorAll('.edit-comment-btn');
-        const cancelButtons = document.querySelectorAll('.cancel-edit-btn');
+    <section class="flex justify-center flex-grow mt-8">
+        <div class="flex flex-col items-center px-3 py-3 mx-3 my-3 bg-white rounded-lg" style="width: 800px">
+            <div class="w-full text-left">
+                <h2 class="text-3xl font-bold text-sky-700">看看其他人怎麼說</h2>
+            </div>
+            <div class="grid w-full grid-cols-1 gap-4 mt-4 sm:grid-cols-2 md:grid-cols-3">
+                {% for comment in comments %}
+                    <div class="p-4 bg-white rounded-lg shadow-lg" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1);">
+                        <div class="flex items-center mb-2">
+                            <div 
+                                class="w-10 h-10 bg-cover rounded-full"
+                                style="background-image: url({% if comment.user.profile.avatar %}{{ comment.user.profile.avatar.url }}{% else %}https://i.imgur.com/gd0IEZY.png{% endif %});"
+                            ></div>
+                            <p class="ml-2">{{ comment.user.username }}</p>
+                        </div>
+                        <p class="comment-content">{{ comment.content }}</p>
+                        <p>評分: {{ comment.value }}</p>
+                        {% if comment.user == user %}
+                            <form method="post" action="{% url 'spots:show' spot.pk %}" class="hidden edit-form">
+                                {% csrf_token %}
+                                <input type="hidden" name="edit_comment_id" value="{{ comment.id }}">
+                                <textarea name="edit_comment_content" class="w-full px-4 py-2 mb-4 border rounded-md" rows="2">{{ comment.content }}</textarea>
+                                <button type="submit" class="text-blue-500 hover:underline">保存</button>
+                                <button type="button" class="text-gray-500 cancel-edit-btn hover:underline">取消</button>
+                            </form>
+                            <div class="flex items-center justify-between mt-2">
+                                <button type="button" class="text-blue-500 edit-comment-btn hover:underline">編輯留言</button>
+                                <form method="post" action="{% url 'spots:show' spot.pk %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="delete_comment_id" value="{{ comment.id }}">
+                                    <button type="submit" class="text-red-500 delete-comment-btn hover:underline">刪除留言</button>
+                                </form>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
 
-        editButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const parentDiv = this.closest('div.p-4');
-                parentDiv.querySelector('.comment-content').classList.add('hidden');
-                parentDiv.querySelector('.edit-form').classList.remove('hidden');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const editButtons = document.querySelectorAll('.edit-comment-btn');
+            const cancelButtons = document.querySelectorAll('.cancel-edit-btn');
+
+            editButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const parentDiv = this.closest('div.p-4');
+                    parentDiv.querySelector('.comment-content').classList.add('hidden');
+                    parentDiv.querySelector('.edit-form').classList.remove('hidden');
+                });
+            });
+
+            cancelButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const parentDiv = this.closest('div.p-4');
+                    parentDiv.querySelector('.comment-content').classList.remove('hidden');
+                    parentDiv.querySelector('.edit-form').classList.add('hidden');
+                });
             });
         });
 
-        cancelButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const parentDiv = this.closest('div.p-4');
-                parentDiv.querySelector('.comment-content').classList.remove('hidden');
-                parentDiv.querySelector('.edit-form').classList.add('hidden');
+        const ratingContainer = document.getElementById('rating');
+        const stars = ratingContainer.querySelectorAll('input[name="rating"]');
+        const commentTextarea = document.getElementById('comment');
+        const submitButton = document.getElementById('submitBtn');
+        const ratingErrorMessage = document.getElementById('rating-error-message');
+        const commentErrorMessage = document.getElementById('comment-error-message');
+        let lastChecked = null;
+
+        stars.forEach(star => {
+            star.addEventListener('click', function() {
+                if (this === lastChecked) {
+                    this.checked = false;
+                    lastChecked = null;
+                    ratingContainer.querySelector('input[value="0"]').checked = true;
+                } else {
+                    lastChecked = this;
+                }
             });
         });
-    });
 
-    const ratingContainer = document.getElementById('rating');
-    const stars = ratingContainer.querySelectorAll('input[name="rating"]');
-    const commentTextarea = document.getElementById('comment');
-    const submitButton = document.getElementById('submitBtn');
-    const ratingErrorMessage = document.getElementById('rating-error-message');
-    const commentErrorMessage = document.getElementById('comment-error-message');
-    let lastChecked = null;
-
-    stars.forEach(star => {
-        star.addEventListener('click', function() {
-            if (this === lastChecked) {
-                this.checked = false;
-                lastChecked = null;
-                ratingContainer.querySelector('input[value="0"]').checked = true;
+        commentTextarea.addEventListener('focus', function() {
+            const selectedRating = ratingContainer.querySelector('input[name="rating"]:checked').value;
+            if (selectedRating === '0') {
+                ratingErrorMessage.style.display = 'block';
+                commentTextarea.blur();
             } else {
-                lastChecked = this;
+                ratingErrorMessage.style.display = 'none';
             }
         });
-    });
 
-    commentTextarea.addEventListener('focus', function() {
-        const selectedRating = ratingContainer.querySelector('input[name="rating"]:checked').value;
-        if (selectedRating === '0') {
-            ratingErrorMessage.style.display = 'block';
-            commentTextarea.blur();
-        } else {
-            ratingErrorMessage.style.display = 'none';
-        }
-    });
+        document.getElementById('ratingForm').addEventListener('submit', function(event) {
+            const selectedRating = ratingContainer.querySelector('input[name="rating"]:checked').value;
+            const commentContent = commentTextarea.value.trim();
 
-    document.getElementById('ratingForm').addEventListener('submit', function(event) {
-        const selectedRating = ratingContainer.querySelector('input[name="rating"]:checked').value;
-        const commentContent = commentTextarea.value.trim();
+            let valid = true;
 
-        let valid = true;
+            if (selectedRating === '0') {
+                ratingErrorMessage.style.display = 'block';
+                valid = false;
+            } else {
+                ratingErrorMessage.style.display = 'none';
+            }
 
-        if (selectedRating === '0') {
-            ratingErrorMessage.style.display = 'block';
-            valid = false;
-        } else {
-            ratingErrorMessage.style.display = 'none';
-        }
+            if (commentContent === '') {
+                commentErrorMessage.style.display = 'block';
+                valid = false;
+            } else {
+                commentErrorMessage.style.display = 'none';
+            }
 
-        if (commentContent === '') {
-            commentErrorMessage.style.display = 'block';
-            valid = false;
-        } else {
-            commentErrorMessage.style.display = 'none';
-        }
+            if (!valid) {
+                event.preventDefault();
+            }
+        });
+    </script>
 
-        if (!valid) {
-            event.preventDefault();
-        }
-    });
-</script>
-
-{% if alert %}
-    <input type="hidden" name="alert_type" value="{{ alert.type }}">
-    <input type="hidden" name="alert_message" value="{{ alert.message }}">
-{% endif %}
-<input type="hidden" name="is_logged_in" value="{{ user.is_authenticated }}">
+    {% if alert %}
+        <input type="hidden" name="alert_type" value="{{ alert.type }}">
+        <input type="hidden" name="alert_message" value="{{ alert.message }}">
+    {% endif %}
+    <input type="hidden" name="is_logged_in" value="{{ user.is_authenticated }}">
 {% endblock %}
-
