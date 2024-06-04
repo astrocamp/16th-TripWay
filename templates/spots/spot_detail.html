@@ -3,7 +3,7 @@
 {% block content %}
     <header class="flex items-center justify-between w-3/4 pt-8 mx-auto">
         <div class="flex items-center">
-            <a class="m-1 transition-colors duration-300 hover:text-sky-700" href="{% url "spots:index" %}">
+            <a class="m-1 transition-colors duration-300 hover:text-sky-700" href="{% url 'spots:index' %}">
                 <i class="text-2xl fa-solid fa-reply"></i>
             </a>
             <h1 class="p-2 text-3xl font-bold">景點：{{ spot.name }}</h1>
@@ -43,27 +43,27 @@
             <div class="flex flex-col w-full pl-5 mx-5 mt-5">
                 <div class="flex w-full">
                     <div class="w-1/2">
-                        <p class="py-2 text-opacity-75 text-start text-sky-700">
+                        <p class="py-2 text-opacity-75 text-start text-sky-700 w-full">
                             <span class="text-black">城市:</span> {{ spot.city }}
                         </p>
-                        <p class="py-2 text-opacity-75 text-start text-sky-700">
+                        <p class="py-2 text-opacity-75 text-start text-sky-700 w-full text-wrap">
                             <span class="text-black">地址:</span> {{ spot.address }}
                         </p>
-                        <p class="py-2 text-opacity-75 text-start text-sky-700">
+                        <p class="py-2 text-opacity-75 text-start text-sky-700 w-full text-wrap">
                             <span class="text-black">介紹:</span>
                             {% for about in about %}
                                 <br>{{ about.text }}
                             {% endfor %}
                         </p>
-                        <p class="py-2 text-opacity-75 text-start text-sky-700">
+                        <p class="py-2 text-opacity-75 text-start text-sky-700 w-full text-wrap">
                             <span class="text-black">網址:</span> {{ website }}
                         </p>
-                        <p class="py-2 text-opacity-75 text-start text-sky-700">
+                        <p class="py-2 text-opacity-75 text-start text-sky-700 w-full">
                             <span class="text-black">電話:</span> {{ phone_number }}
                         </p>
                     </div>
                     <div class="w-1/2">
-                        <p class="py-2 text-opacity-75 text-start text-sky-700">
+                        <p class="pl-4 py-2 text-opacity-75 text-start text-sky-700">
                             <span class="text-black">營業時間:</span>
                             {% for time in opening_hours %}
                                 <br>{{ time }}

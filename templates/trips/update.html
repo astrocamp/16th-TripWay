@@ -45,8 +45,6 @@
               <select class="select select-bordered w-full mt-2 border-gray-400 text-lg" name="transportation" id="transportation" value="{{ trips.transportation }}">
                 <option value="走路" {% if trips.transportation == "走路" %} selected {% endif %}>走路</option>
                 <option value="汽車" {% if trips.transportation == "汽車" %} selected {% endif %}>汽車</option>
-                <option value="機車" {% if trips.transportation == "機車" %} selected {% endif %}>機車</option>
-                <option value="大眾運輸" {% if trips.transportation == "大眾運輸" %} selected {% endif %}>大眾運輸</option>
               </select>
             </div>
           </div>
