@@ -11,13 +11,13 @@
             </div>
             
             <!-- Connect section -->
-            <div class="lg:text-left left-16 lg:left-32 lg:-top-40 lg:w-1/2 pl-8 absolute">
+            <div class="lg:text-left left-16 lg:left-16 lg:-top-40 lg:w-1/2 pl-8 absolute">
                 <p class="mt-32 text-4xl font-bold text-black pl-1 dark:text-gray-300 leading-snug">
                     即刻啟程，<br> 
                     和朋友來趟難忘的旅行吧!
                 </p>
                 <div class="flex justify-start mt-6">
-                    <button class="h-16 text-2xl font-medium text-white mt-2 bg-btn-red rounded-full hover:bg-btn-red-dc w-full max-w-xs lg:max-w-lg">
+                    <button class="h-16 text-2xl font-medium text-white mt-2 bg-btn-red rounded-full hover:bg-btn-red-dc w-full max-w-xs lg:max-w-md">
                         {% if user.is_authenticated %}
                             <a href="{% url 'trips:index' %}">立即趣玩</a>
                         {% else %}
