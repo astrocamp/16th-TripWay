@@ -120,11 +120,11 @@
             </div>
           {% endfor %}
   
-          <div class="flex justify-center">
+          {% comment %} <div class="flex justify-center">
             {% if trip_member.is_editable %}
             <a class="px-52 py-4 text-white border rounded-custom-50 bg-btn-red hover:bg-hover-gray text-xl font-medium my-10" href="{% url 'trips:new-member' trip.id %}">新增成員</a>
             {% endif %}
-          </div>
+          </div> {% endcomment %}
         </div>
 
       </div>

@@ -1,33 +1,40 @@
 {% extends "layouts/base.html" %}
+{% load static %}
 {% block content %}
-<div class="h-screen w-1/2 m-auto flex z-2">
-  <div class="w-2/3 h-3/4 my-auto bg-slate-100">
-    <img src="https://picsum.photos/700/800" alt="" class="w-full h-full">
-  </div>
-  <div class="w-1/3 h-3/4 my-auto pl-8 flex flex-col pt-4">
-    <h2 class="text-2xl font-medium my-4">要加在哪?</h2>
-
+<div class="h-screen pt-8">
+  <header class="flex justify-between items-center w-3/4 mx-auto">
+      <div class="flex items-center">
+        <a class="m-1 transition-colors duration-300 hover:text-sky-700" href="javascript:history.go(-1)">
+          <i class="fa-solid fa-reply text-2xl"></i>
+        </a>
+        <h1 class="p-2 text-3xl font-bold">要加在哪？</h1>
+      </div>
+  </header>
+  <section class="w-1/3 m-auto mt-8">
+    <img src="" alt="">
     {% for item in trips_dates %}
+    <div class="mb-6 border">
     <div class="collapse collapse-arrow border-b-2 border-dashed rounded">
       <input type="radio" name="my-accordion" id="trip-{{ item.trip.id }}" class="peer" />
-      <label class="collapse-title text-xl font-medium peer-checked:bg-blue-btn" for="trip-{{ item.trip.id }}"> {{ item.trip.name }} </label>
-      <ul class="collapse-content px-2">
+      <label class="collapse-title text-xl font-medium peer-checked:bg-blue-btn bg-gray-300" for="trip-{{ item.trip.id }}"> {{ item.trip.name }} </label>
+      <ul class="collapse-content p-0 pb-0 bg-gray-100">
         {% for day in item.date_range %}
-        <li class="my-2 px-4 bg-gray-100 rounded">
+        <li class="px-6 bg-gray-100 rounded">
           <form action="{% url 'schedules:add' %}" method="post" class="w-full h-12">
             {% csrf_token %}
             <input type="hidden" name="trip_id" value="{{ item.trip.id }}" />
             <input type="hidden" name="spot_id" value="{{ spot.id }}" />
             <input type="hidden" name="spot_name" value="{{ spot.name }}" />
             <input type="hidden" name="day" value="{{ day|date:'Y-m-d' }}" />
-            <button type="submit" class=" py-1 h-full w-full text-lg text-left">{{ day|date:'m/d' }}</button>
+            <button type="submit" class=" py-2 h-full w-full text-lg text-left hover:text-hover-gray border-b-2">{{ day|date:'m/d' }}</button>
           </form>
         </li>
         {% endfor %}
       </ul>
     </div>
+    </div>
     {% endfor %}
-  </div>
+  </section>
 </div>
 
 {% endblock %}
