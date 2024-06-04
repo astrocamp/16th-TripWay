@@ -10,16 +10,16 @@
             <h1 class="text-3xl font-bold ml-4">所有通知</h1>
         </header>
         <div class="mt-4 bg-white shadow-md rounded-lg overflow-hidden">
-            <ul class="divide-y divide-gray-200 border-t border-gray-200">
+            <ul class="divide-y divide-gray-200 border-t border-slate-200">
                 {% if notifications %}
                     {% for notification in notifications %}
-                        <li class="p-4 flex justify-between items-center {% if not notification.is_read %}bg-gray-50{% endif %} transition-colors duration-300 hover:bg-gray-100">
+                        <li class="p-4 flex justify-between items-center {% if not notification.is_read %}bg-slate-200{% endif %} transition-colors duration-300">
                             <div class="flex items-center">
-                                <div class="flex-shrink-0">
+                                <div class="flex-shrink-0 mr-2">
                                     {% if not notification.is_read %}
-                                        <i class="fa-solid fa-circle text-red-500 mr-2"></i>
+                                        <i class="fa-solid fa-envelope text-red mr-2"></i>
                                     {% else %}
-                                        <i class="fa-solid text-gray-300 mr-2"></i>
+                                        <i class="fa-solid fa-envelope-circle-check"></i>
                                     {% endif %}
                                 </div>
                                 <div>
