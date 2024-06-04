@@ -10,7 +10,7 @@
         </a>
         <h1 class="p-2 text-3xl font-bold">行程列表</h1>
       </div>
-      <select id="sort-options" class="block w-52 appearance-none bg-white text-black text-xl border-0 rounded-lg m-1 px-3 py-2">
+      <select id="sort-options" class="block w-52 appearance-none bg-white text-black text-xl border-slate-300 rounded-xl mr-3 px-3 py-2">
         <option value="created_desc" {% if sort_option == 'created_desc' %}selected{% endif %} class="appearance-none bg-white hover:bg-slate-200">依建立時間</option>
         <option value="date_asc" {% if sort_option == 'date_asc' %}selected{% endif %} class="appearance-none bg-white hover:bg-slate-200">出發日(近到遠)</option>
         <option value="date_desc" {% if sort_option == 'date_desc' %}selected{% endif %} class="appearance-none bg-white hover:bg-slate-200">出發日(遠到近)</option>
@@ -21,7 +21,7 @@
       <div class="w-3/4 mx-auto mt-2">
         <div class="flex flex-wrap justify-start gap-4">
           {% for trip in trips %}
-          <div class="relative md-full lg:w-[48%] xl:w-[32%] mt-5 mb-1" x-data="{ deleteTrip() {
+          <div class="relative md-full lg:w-[48%] xl:w-[32%] mt-5 mb-1 rounded-xl shadow-md" x-data="{ deleteTrip() {
             Swal.fire({
               icon: 'question',
               title: '確定要刪除嗎?',
@@ -36,7 +36,7 @@
             })
           } }">
             <div class="absolute right-0 m-4 z-10">
-              <button id="menu-toggle-{{ trip.t.id }}" class="w-9 h-9 bg-gray-700 hover:opacity-100 border-0 rounded-full text-base opacity-75">
+              <button id="menu-toggle-{{ trip.t.id }}" class="w-9 h-9 bg-slate-600 border-0 rounded-full text-base opacity-75 hover:opacity-100">
                 <i class="fas fa-ellipsis-h text-white"></i>
               </button>
               <div id="menu-{{ trip.t.id }}" class="hidden absolute right-0 mt-3 w-24 bg-white border rounded-lg shadow-md">
@@ -53,7 +53,7 @@
                 {% endif %}
               </div>
             </div>
-            <a href="{{ trip.t.id }}/schedules/" class="block h-full bg-white border-2 rounded-xl hover:bg-blue-300 cursor-pointer duration-300 ease-in-out hover:scale-105">
+            <a href="{{ trip.t.id }}/schedules/" class="block h-full bg-white border-2 rounded-xl cursor-pointer duration-300 ease-in-out hover:scale-105">
               <div class="w-full h-[220px] overflow-hidden rounded-t-xl">
                 <img src="{% if trip.t.image %}{{ trip.t.image.url }}{% else %}{% static 'img/tripdefault.jpeg' %}{% endif %}" class="object-cover w-full h-full" alt="">
               </div>
