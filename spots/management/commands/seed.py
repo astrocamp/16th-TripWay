@@ -64,7 +64,7 @@ class Command(BaseCommand):
                         "latitude": Decimal(str(place["geometry"]["location"]["lat"])),
                         "longitude": Decimal(str(place["geometry"]["location"]["lng"])),
                         "phone": details_data.get("formatted_phone_number", None),
-                        "url": details_data.get("url", None),
+                        "url": details_data.get("website", None),
                         "rating": place.get("rating", None),
                         "place_id": place_id,
                         "opening_hours": (
