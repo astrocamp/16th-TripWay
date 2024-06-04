@@ -84,7 +84,7 @@
                 <div><h1 class="text-3xl font-bold text-sky-700">評論景點</h1></div>
                 <form id="ratingForm" method="post" action="{% url 'spots:show' spot.pk %}">
                     {% csrf_token %}
-                    <div id="rating" class="flex justify-center rating">
+                    <div id="rating" class="flex justify-center text-2xl rating">
                         <input type="radio" name="rating" class="hidden" value="0" checked />
                         <input type="radio" name="rating" class="bg-orange-400 mask mask-star-2" value="1" />
                         <input type="radio" name="rating" class="bg-orange-400 mask mask-star-2" value="2" />
