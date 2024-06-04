@@ -2,7 +2,7 @@
 website 網站：http://  
 Demo 發表影片：http://  
 
-[![TripWay-index](https://imgur.com/NUHb8dM)](website)
+[![圖片](https://imgur.com/NUHb8dM)](website)
 
 **旅遊行程規劃網站 - readme**  
 歡迎來到 TripWay！以下是您使用 TripWay 的重要資訊和步驟指南。
