@@ -62,6 +62,15 @@ def add_day(request, id):
 
 @require_POST
 @login_required
+def delete_day(request, id):
+    trip = get_object_or_404(Trip, pk=id)
+    trip.end_date = trip.end_date - timedelta(days=1)
+    trip.save()
+    return redirect(f"/trips/{trip.id}/schedules/")
+
+
+@require_POST
+@login_required
 def create(request):
     trip_id = request.POST.get("trip_id")
     trip = get_object_or_404(Trip, id=trip_id)
