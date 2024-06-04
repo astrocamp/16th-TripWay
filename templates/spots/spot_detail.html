@@ -106,13 +106,13 @@
 </section>
 
 <section class="flex justify-center flex-grow mt-8">
-    <div class="flex flex-col items-center px-3 py-3 mx-3 my-3 bg-white rounded-lg shadow-lg" style="width: 800px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1);">
+    <div class="flex flex-col items-center px-3 py-3 mx-3 my-3 bg-white rounded-lg" style="width: 800px">
         <div class="w-full text-left">
             <h2 class="text-3xl font-bold text-sky-700">看看其他人怎麼說</h2>
         </div>
         <div class="grid w-full grid-cols-1 gap-4 mt-4 sm:grid-cols-2 md:grid-cols-3">
             {% for comment in comments %}
-                <div class="p-4 bg-white border rounded-md shadow-md">
+                <div class="p-4 bg-white rounded-lg shadow-lg" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1);">
                     <div class="flex items-center mb-2">
                         <div 
                             class="w-10 h-10 bg-cover rounded-full"
@@ -130,7 +130,7 @@
                         <button type="button" class="text-gray-500 cancel-edit-btn hover:underline">取消</button>
                     </form>
                     <div class="flex items-center justify-between mt-2">
-                        <button class="text-blue-500 edit-comment-btn hover:underline">編輯留言</button>
+                        <button type="button" class="text-blue-500 edit-comment-btn hover:underline">編輯留言</button>
                         <form method="post" action="{% url 'spots:show' spot.pk %}">
                             {% csrf_token %}
                             <input type="hidden" name="delete_comment_id" value="{{ comment.id }}">
@@ -143,22 +143,33 @@
     </div>
 </section>
 
-
-
-
-
-
-
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     const loginUrl = "{% url 'login' %}";
     const csrfToken = "{{ csrf_token }}";
 </script>
 <script src="{% static 'js/comments.js' %}"></script>
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const editButtons = document.querySelectorAll('.edit-comment-btn');
+        const cancelButtons = document.querySelectorAll('.cancel-edit-btn');
+
+        editButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const parentDiv = this.closest('div.p-4');
+                parentDiv.querySelector('.comment-content').classList.add('hidden');
+                parentDiv.querySelector('.edit-form').classList.remove('hidden');
+            });
+        });
+
+        cancelButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const parentDiv = this.closest('div.p-4');
+                parentDiv.querySelector('.comment-content').classList.remove('hidden');
+                parentDiv.querySelector('.edit-form').classList.add('hidden');
+            });
+        });
+    });
+
     const ratingContainer = document.getElementById('rating');
     const stars = ratingContainer.querySelectorAll('input[name="rating"]');
     const commentTextarea = document.getElementById('comment');
@@ -221,3 +232,4 @@
 {% endif %}
 <input type="hidden" name="is_logged_in" value="{{ user.is_authenticated }}">
 {% endblock %}
+
