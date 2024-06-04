@@ -27,7 +27,7 @@ class Command(BaseCommand):
         if response.status_code == 200:
             data = response.json()["results"]
         else:
-            self.stdout.write("無法從 Google API 獲取數據")
+            print("無法從 Google API 獲取數據")
             return
 
         place_details_url = "https://maps.googleapis.com/maps/api/place/details/json"
@@ -42,7 +42,7 @@ class Command(BaseCommand):
                 if details_response.status_code == 200:
                     details_data = details_response.json().get("result", {})
                 else:
-                    self.stdout.write(f"無法獲取 place_id 為 {place_id} 的詳細數據")
+                    print(f"無法獲取 place_id 為 {place_id} 的詳細數據")
                     continue
 
                 city = None
