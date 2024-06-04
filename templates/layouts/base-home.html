@@ -24,6 +24,7 @@
         {% block content %}
         {% endblock %}
     </div>
+
     {% if messages %}
         {% for message in messages %}
         <script>
@@ -36,12 +37,5 @@
         </script>
         {% endfor %}
     {% endif %}
-
-    <footer class="mt-auto">
-        {% block footer %}
-            {% include 'shared/footer-home.html' %}
-        {% endblock %}
-    </footer>
-
     </body>
 </html>
