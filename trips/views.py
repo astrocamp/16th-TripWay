@@ -88,7 +88,13 @@ def create(request):
         trip.save()
         TripMember.objects.create(trip=trip, member=member, is_editable=True)
 
-        Notification.objects.create(user=member, message=f"成功創建新行程：{trip.name}")
+
+    if request.method == "POST":
+        Notification.objects.create(
+            user = member, 
+            message = f"成功創建新行程：{trip.name}",
+            trip_id=trip.id,
+            )
 
         messages.success(request, "旅程創建成功！")
         return redirect("trips:index")
