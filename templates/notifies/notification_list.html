@@ -26,7 +26,6 @@
                                     <span class="flex-1 text-lg font-semibold">
                                         <a class="hover:underline" href="{% url 'notifies:mark_as_read' notification.id %}">{{ notification.message }}</a>
                                     </span>
-                                    <p class="text-sm text-slate-600">{{ notification.timestamp|date:"Y-m-d H:i" }}</p>
                                 </div>
                             </div>
                             <div class="flex items-center">
@@ -35,7 +34,7 @@
                                 <form method="post" action="{% url 'notifies:delete_notification' notification.id %}" class="ml-4">
                                     {% csrf_token %}
                                     <button type="submit" class="text-sm hover:text-red">
-                                        <i class="fa-solid fa-trash"></i>
+                                        <i class="fa-solid fa-trash hover:text-red-700"></i>
                                     </button>
                                 </form>
                             </div>
@@ -49,19 +48,4 @@
     </div>
 {% endblock %}
 
-<script>
-    function updateNotificationStatus() {
-        fetch('{% url 'notifies:update_notification_status' %}', {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}',
-            },
-        })
-        .then(response => {
-            if (response.ok) {
-                document.querySelectorAll('.notification-dot').forEach(dot => dot.style.display = 'none');
-            }
-        })
-        .catch(error => console.error('Error updating notification status:', error));
-    }
-</script>
+<script src="{% static "scripts/notification.js" %}"></script>
