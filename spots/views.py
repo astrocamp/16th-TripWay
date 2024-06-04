@@ -230,7 +230,6 @@ class SearchView(View):
                     )
 
                 details = place_details.get("result", {})
-
                 name = (
                     HanziConv.toTraditional(details.get("name", ""))
                     .replace("颱", "台")
@@ -244,15 +243,14 @@ class SearchView(View):
                 location = details["geometry"]["location"]
                 city = extract_city(address)
                 phone = details.get("formatted_phone_number")
-                url = details.get("url")
+                url = details.get("website")
                 rating = details.get("rating")
-                opening_hours = details.get("opening_hours", {}).get(
-                    "weekday_text", None
-                )
+                weekday_text = details.get("opening_hours", {}).get("weekday_text", [])
                 description = details.get("editorial_summary", {}).get("overview", None)
 
-                weekday_text = details.get("weekday_text", [])
-
+                formatted_weekday_text = (
+                    " ".join(weekday_text) if weekday_text else None
+                )
                 spot, created = Spot.objects.get_or_create(
                     name=name,
                     defaults={
@@ -264,7 +262,7 @@ class SearchView(View):
                         "url": url,
                         "rating": rating,
                         "place_id": place_id,
-                        "opening_hours": opening_hours,
+                        "opening_hours": formatted_weekday_text,
                         "description": description,
                     },
                 )
