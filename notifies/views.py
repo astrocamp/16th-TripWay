@@ -21,7 +21,7 @@ def mark_as_read(request, notification_id):
 
 @login_required
 def update_notification_status(request):
-    # 更新通通知狀態，將未讀通知標示為已讀
+    # 更新通知狀態，將未讀通知標示為已讀
     Notification.objects.filter(user=request.user, is_read=False).update(is_read=True)
     return JsonResponse({'status': 'success'})
 

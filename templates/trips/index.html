@@ -10,11 +10,14 @@
         </a>
         <h1 class="p-2 text-3xl font-bold">行程列表</h1>
       </div>
-      <select id="sort-options" class="block px-3 py-2 mr-3 text-xl text-black bg-white border appearance-none w-52 border-slate-300 rounded-xl">
-        <option value="created_desc" {% if sort_option == 'created_desc' %}selected{% endif %} class="bg-white appearance-none hover:bg-slate-200">依建立時間</option>
-        <option value="date_asc" {% if sort_option == 'date_asc' %}selected{% endif %} class="bg-white appearance-none hover:bg-slate-200">出發日(近到遠)</option>
-        <option value="date_desc" {% if sort_option == 'date_desc' %}selected{% endif %} class="bg-white appearance-none hover:bg-slate-200">出發日(遠到近)</option>
-      </select>
+      <div class="relative inline-block w-48">
+        <select id="sort-options" class="block mr-3 px-3 py-2 bg-white text-black text-xl text-black bg-white appearance-none w-48 border-slate-300 rounded-2xl cursor-pointer duration-300 ease-in-out">
+          <option value="created_desc" {% if sort_option == 'created_desc' %}selected{% endif %} class="appearance-none bg-white hover:bg-slate-200">依建立時間</option>
+          <option value="date_asc" {% if sort_option == 'date_asc' %}selected{% endif %} class="appearance-none bg-white hover:bg-slate-200">出發日(近到遠)</option>
+          <option value="date_desc" {% if sort_option == 'date_desc' %}selected{% endif %} class="appearance-none bg-white hover:bg-slate-200">出發日(遠到近)</option>
+        </select>
+        <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+          <i class="fa-solid fa-chevron-down absolute inset-y-0 right-0 flex items-center px-5 py-4 pointer-events-none"></i>
     </header>
     
     {% if trips %}

@@ -18,9 +18,18 @@
         </div>
 
         <!-- 日期頁籤 -->
-        <div role="tab" class="tabs flex text-start h-14 border-b border-t border-number-black">
+        <div role="tab" class="tabs flex text-start h-14 tabs-bordered overflow-autok">
+
+          <!-- 刪除一天的行程 -->
+          <form action="{% url 'trips:schedules:delete_day' trip.id %}" method="post">
+            {% csrf_token %}
+            <button id="delete-day" class="tab ml-1 h-14 rounded-2xl transition-all ease-in-out text-slate-700 hover:bg-gray-200" >
+              <i class="fa-solid fa-minus text-2xl text-red-700"></i>
+            </button>
+          </form>
+
           {% for day in date_range %}
-            <button id="btn-{{ day|date:'Y-m-d' }}" class="tab h-14 border-l border-number-black transition-all ease-in-out text-slate-700 hover:bg-light-gray" data-date="{{ day|date:'Y-m-d'}}" onclick="showTab('{{ day|date:'Y-m-d' }}', 'btn-{{ day|date:'Y-m-d' }}', '{{ trip.id }}')">
+            <button id="btn-{{ day|date:'Y-m-d' }}" class="tab ml-1 h-14 border-b shadow-sm rounded-2xl transition-all ease-in-out font-bold bg-btn-yellow" data-date="{{ day|date:'m-d'}}" onclick="showTab('{{ day|date:'Y-m-d' }}', 'btn-{{ day|date:'Y-m-d' }}', '{{ trip.id }}')">
               {{ day|date:"Y-m-d" }}
             </button>
           {% endfor %}
@@ -28,8 +37,8 @@
           <!-- 新增一天的行程 -->
           <form action="{% url 'trips:schedules:add_day' trip.id %}" method="post">
             {% csrf_token %}
-            <button id="add-day" class="tab h-14 border-x border-number-black transition-all ease-in-out text-slate-700 hover:bg-gray-200" >
-                +
+            <button id="add-day" class="tab ml-1 h-14 rounded-2xl transition-all ease-in-out text-slate-700 hover:bg-gray-200" >
+              <i class="fa-solid fa-plus text-2xl"></i>
             </button>
           </form>
         </div>
