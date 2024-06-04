@@ -77,7 +77,28 @@
                 }
             });
         </script>
-        
+        <!-- 小鈴鐺通知 -->
+        <div id="notify" class="relative cursor-pointer w-8 h-8 flex pr-12 items-center">
+            <a href="{% url 'notifies:notification_list' %}" class="relative cursor-pointer w-8 h-8 flex items-center hover:text-red-700">
+                <i class="fa-solid fa-bell text-2xl"></i>
+                <div id="notify-count" class="absolute top-0 right-0 bg-red-600 h-3 w-3 rounded-full hidden"></div>
+                </a>
+                <div id="notify-message" class="absolute right-0 mt-40 w-64 bg-white border border-slate-300 rounded-md shadow-lg hidden">
+                <ul id="notify-list" class="divide-y divide-slate-200">
+                    {% if notifications %}
+                        {% for notification in notifications %}
+                            <li class="pl-4 py-2 {% if not notification.is_read %}font-bold{% endif %}" data-id="{{ notification.id }}">
+                            <a href="{{ notification.link }}" class="flex-1 hover:underline">
+                                {{ notification.message }}
+                            </a>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                    <li class="p-2">目前沒有任何通知</li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
         <!-- 會員 -->
         <div class="dropdown dropdown-end">
         {% if user.is_authenticated %}
