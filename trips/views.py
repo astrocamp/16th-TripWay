@@ -37,31 +37,37 @@ def home(request):
 
         sort_option = request.GET.get('sort', 'created_desc')
         if sort_option == 'date_asc':
-            trips = trip_members.order_by('trip__start_date')
+            trip_members = trip_members.order_by('trip__start_date')
         elif sort_option == 'date_desc':
-            trips = trip_members.order_by('-trip__start_date')
+            trip_members = trip_members.order_by('-trip__start_date')
         else:
-            trips = trip_members.order_by('-trip__id')
+            trip_members = trip_members.order_by('-trip__id')
 
-        trips = [{"t": trip.trip, "tm": trip} for trip in trips]
+        trips = [{"t": trip_member.trip, "tm": trip_member } for trip_member in trip_members]
+        
         if trips :
+            share_urls = []
             for trip in trips :
+                
                 edit_url = f"https://{os.getenv("NOW_HOST")}/trips/{trip["t"].id}/add-member/edit"
                 confirm_url = f"https://{os.getenv("NOW_HOST")}/trips/{trip["t"].id}/add-member/edit/confirm"
                 watch_url = f"https://{os.getenv("NOW_HOST")}/trips/{trip["t"].id}/add-member/watch"
 
-
-                confirm_qrimg = create_qrcode(confirm_url)
-                watch_qrimg = create_qrcode(watch_url)
+                content = {
+                    "id": trip["t"].id,
+                    "edit_url": edit_url,
+                    "confirm_url": confirm_url,
+                    "watch_url": watch_url,
+                    "confirm_qrimg" : create_qrcode(confirm_url),
+                    "watch_qrimg" : create_qrcode(watch_url)
+                }
+                
+                trip['content'] = content
 
             return render(request,"trips/index.html",{
                 "trips": trips,
                 "sort_option": sort_option,
-                "edit_url": edit_url,
-                "confirm_url": confirm_url,
-                "watch_url": watch_url,
-                "confirm_qrimg":confirm_qrimg,
-                "watch_qrimg":watch_qrimg,
+                "share_urls" : share_urls,
                 }   
             )
         else:
