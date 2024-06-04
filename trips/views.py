@@ -202,7 +202,7 @@ def new_member_watch(request, id):
 
     return redirect(reverse("trips:schedules:index", kwargs={"id": trip.id}))
 
-@login_required
+
 def edit_confirm(request, id):
     trip = get_object_or_404(Trip, id=id)
     inviter = get_object_or_404(Member, id=trip.owner)

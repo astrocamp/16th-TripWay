@@ -2,18 +2,18 @@
 {% load static %}
 
 {% block content %}
-  <div class="pt-8" x-data="{ show: false, activeTab: 'watch' }">
-    <header class="flex justify-between items-center w-3/4 mx-auto">
+  <div class="pt-8" x-data="{ activeTab: 'watch' }">
+    <header class="flex items-center justify-between w-3/4 mx-auto">
       <div class="flex items-center">
         <a class="m-1 transition-colors duration-300 hover:text-sky-700" href="{% url 'home' %}">
-          <i class="fa-solid fa-house-chimney text-2xl"></i>
+          <i class="text-2xl fa-solid fa-house-chimney"></i>
         </a>
         <h1 class="p-2 text-3xl font-bold">行程列表</h1>
       </div>
-      <select id="sort-options" class="block w-52 appearance-none bg-white text-black text-xl border-slate-300 border rounded-xl mr-3 px-3 py-2">
-        <option value="created_desc" {% if sort_option == 'created_desc' %}selected{% endif %} class="appearance-none bg-white hover:bg-slate-200">依建立時間</option>
-        <option value="date_asc" {% if sort_option == 'date_asc' %}selected{% endif %} class="appearance-none bg-white hover:bg-slate-200">出發日(近到遠)</option>
-        <option value="date_desc" {% if sort_option == 'date_desc' %}selected{% endif %} class="appearance-none bg-white hover:bg-slate-200">出發日(遠到近)</option>
+      <select id="sort-options" class="block px-3 py-2 mr-3 text-xl text-black bg-white border appearance-none w-52 border-slate-300 rounded-xl">
+        <option value="created_desc" {% if sort_option == 'created_desc' %}selected{% endif %} class="bg-white appearance-none hover:bg-slate-200">依建立時間</option>
+        <option value="date_asc" {% if sort_option == 'date_asc' %}selected{% endif %} class="bg-white appearance-none hover:bg-slate-200">出發日(近到遠)</option>
+        <option value="date_desc" {% if sort_option == 'date_desc' %}selected{% endif %} class="bg-white appearance-none hover:bg-slate-200">出發日(遠到近)</option>
       </select>
     </header>
     
@@ -21,101 +21,107 @@
       <div class="w-3/4 mx-auto mt-2">
         <div class="flex flex-wrap justify-start gap-4">
           {% for trip in trips %}
-          <div class="relative md-full w-full sm:w-[48%] lg:w-[48%] xl:w-[32%] mt-5 mb-1 rounded-xl shadow-md" x-data="{ deleteTrip() {
-            Swal.fire({
-              icon: 'question',
-              title: '確定要刪除嗎?',
-              text: '若選擇刪除，資料將會消失',
-              showCancelButton: true,
-              cancelButtonText: '取消',
-              confirmButtonText: '刪除',
-            }).then((result) => {
-              if(result.isConfirmed){
-                this.$refs['id{{ trip.t.id }}'].submit()
-              }
-            })
-          } }">
-            <div class="absolute right-0 m-4 z-10">
-              <button id="menu-toggle-{{ trip.t.id }}" class="w-9 h-9 bg-slate-600 border-0 rounded-full text-base opacity-75 hover:opacity-100">
-                <i class="fas fa-ellipsis-h text-white"></i>
-              </button>
-              <div id="menu-{{ trip.t.id }}" class="hidden absolute right-0 mt-3 w-24 bg-white border rounded-lg shadow-md">
-                {% if trip.tm.is_editable %}
-                  <a href="{% url 'trips:update' trip.t.id %}" class="block w-24 px-4 py-2 text-center text-lg font-bold hover:bg-slate-300 border-b rounded-t-lg ">
-                    <i class="fa-solid fa-pen-to-square mr-2"></i>編輯
-                  </a>
-                  <form @submit.prevent="deleteTrip()" action="{% url 'trips:delete' trip.t.id %}" method="post" x-ref="id{{ trip.t.id }}">
-                    {% csrf_token %}
-                    <button type="submit" class="block w-full px-4 py-2 text-center text-lg font-bold hover:bg-slate-300 rounded-b-lg">
-                      <i class="fa-solid fa-trash-can mr-2"></i>刪除
-                    </button>
-                  </form>
-                  <div>
-                    <button class="block w-full px-4 py-2 text-center text-lg font-bold hover:bg-slate-300 rounded-b-lg" @click="show = true" hx-trigger="click[{{trip.t.id}}]" hx-target="#share-id"><i class="fa-regular fa-share-from-square mr-1"></i>分享</button>
+            <div class="relative md-full w-full sm:w-[48%] lg:w-[48%] xl:w-[32%] mt-5 mb-1 rounded-xl shadow-md" x-data="{ deleteTrip() {
+              Swal.fire({
+                icon: 'question',
+                title: '確定要刪除嗎?',
+                text: '若選擇刪除，資料將會消失',
+                showCancelButton: true,
+                cancelButtonText: '取消',
+                confirmButtonText: '刪除',
+              }).then((result) => {
+                if(result.isConfirmed){
+                  this.$refs['id{{ trip.t.id }}'].submit()
+                }
+              })
+            }, share_{{ trip.t.id}}: false }">
+              <div class="absolute right-0 z-10 m-4">
+                <button id="menu-toggle-{{ trip.t.id }}" class="text-base border-0 rounded-full opacity-75 w-9 h-9 bg-slate-600 hover:opacity-100">
+                  <i class="text-white fas fa-ellipsis-h"></i>
+                </button>
+                <div id="menu-{{ trip.t.id }}" class="absolute right-0 hidden w-24 mt-3 bg-white border rounded-lg shadow-md">
+                  {% if trip.tm.is_editable %}
+                    <a href="{% url 'trips:update' trip.t.id %}" class="block w-24 px-4 py-2 text-lg font-bold text-center border-b rounded-t-lg hover:bg-slate-300 ">
+                      <i class="mr-2 fa-solid fa-pen-to-square"></i>編輯
+                    </a>
+                    <form @submit.prevent="deleteTrip()" action="{% url 'trips:delete' trip.t.id %}" method="post" x-ref="id{{ trip.t.id }}">
+                      {% csrf_token %}
+                      <button type="submit" class="block w-full px-4 py-2 text-lg font-bold text-center rounded-b-lg hover:bg-slate-300">
+                        <i class="mr-2 fa-solid fa-trash-can"></i>刪除
+                      </button>
+                    </form>
+                    <div>
+                      <button class="block w-full px-4 py-2 text-lg font-bold text-center rounded-b-lg hover:bg-slate-300" @click="share_{{ trip.t.id}} = true">
+                        <i class="mr-1 fa-regular fa-share-from-square"></i>分享
+                      </button>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+              <div x-show="share_{{ trip.t.id}}" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                <div class="relative flex flex-col w-1/3 p-8 m-auto bg-white rounded-lg h-2/3">
+                  <button @click="share_{{ trip.t.id}} = false" class="absolute text-xl right-8 top-8">X</button>
+                  <div class="flex justify-center w-4/5 mx-auto ">
+                    <input id="watch" class="hidden peer/watch" type="radio" name="status" @click="activeTab = 'watch'" checked/>
+                    <label for="watch" class="w-1/2 mx-1 text-xl text-white peer-checked/watch:bg-blue-btn bg-neutral-400 rounded-3xl btn" >分享行程</label>
+                    <input id="edit" class="hidden peer/edit" type="radio" name="status" @click="activeTab = 'edit'"/>
+                    <label for="edit" class="w-1/2 mx-1 text-xl text-white btn peer-checked/edit:bg-btn-red bg-neutral-400 rounded-3xl" >共編行程</label>
                   </div>
-                {% endif %}
+          
+                  <div class="flex flex-col items-center h-full p-4 mt-8 space-y-4 border border-gray-200 rounded" x-show="activeTab === 'watch'">
+                    <div class="w-2/3 h-2/3">
+                      <img id="share-id" src="{{ trip.content.watch_qrimg }}" alt="" class="object-contain w-full h-full" >
+                    </div>
+                    <button id="copyWatchButton" class="w-4/5 p-2 mx-auto text-xl font-bold text-center text-white border btn bg-blue-btn hover:bg-blue-dc rounded-3xl">複製連結
+                      <span class="hidden">{{ trip.content.watch_url }}</span>
+                    </button>
+                    <p id="successMessage" class="text-green-500" style="display: none">連結已成功複製!</p>
+                  </div>
+                  <div class="flex flex-col items-center h-full p-4 mt-8 space-y-4 border border-gray-200 rounded" x-show="activeTab === 'edit'">
+                    <div class="w-2/3 h-2/3">
+                      <img src="{{ trip.content.confirm_qrimg }}" alt="" class="object-contain w-full h-full">
+                    </div>
+                    <button id="copyEditButton" class="w-4/5 p-2 mx-auto text-xl font-bold text-center text-white border btn bg-blue-btn hover:bg-blue-dc rounded-3xl">
+                      複製連結
+                      <span class="hidden">{{ trip.content.confirm_url }}</span>
+                    </button>
+                    <p id="successMessage2" class="text-green-500" style="display: none">連結已成功複製!</p>
+                  </div>
+                </div>
               </div>
+              <a href="{{ trip.t.id }}/schedules/" class="block h-full duration-300 ease-in-out bg-white border-2 cursor-pointer rounded-xl hover:scale-105">
+                <div class="w-full h-[220px] overflow-hidden rounded-t-xl">
+                  <img src="{% if trip.t.image %}{{ trip.t.image.url }}{% else %}{% static 'img/tripdefault.jpeg' %}{% endif %}" class="object-cover w-full h-full" alt="">
+                </div>
+                <div class="p-4">
+                  <h2 class="text-2xl font-bold">{{ trip.t.name }}</h2>
+                  <p class="text-xl text-slate-700">{{ trip.t.start_date|date:'Y-m-d' }}~{{ trip.t.end_date|date:'Y-m-d' }}</p>
+                </div>
+              </a>
             </div>
-            <a href="{{ trip.t.id }}/schedules/" class="block h-full bg-white border-2 rounded-xl cursor-pointer duration-300 ease-in-out hover:scale-105">
-              <div class="w-full h-[220px] overflow-hidden rounded-t-xl">
-                <img src="{% if trip.t.image %}{{ trip.t.image.url }}{% else %}{% static 'img/tripdefault.jpeg' %}{% endif %}" class="object-cover w-full h-full" alt="">
-              </div>
-              <div class="p-4">
-                <h2 class="text-2xl font-bold">{{ trip.t.name }}</h2>
-                <p class="text-xl text-slate-700">{{ trip.t.start_date|date:'Y-m-d' }}~{{ trip.t.end_date|date:'Y-m-d' }}</p>
-              </div>
-            </a>
-          </div>
           {% endfor %}
         </div>
       </div>
       <br />
     {% else %}
-      <p class="text-center text-3xl font-bold mt-48 mb-24">目前還没有行程喔</p>
+      <p class="mt-48 mb-24 text-3xl font-bold text-center">目前還没有行程喔</p>
     {% endif %}
 
-    <div class="flex justify-center items-center mt-8 mb-10">
-      <a class="w-1/3 h-14 flex items-center justify-center p-2 text-2xl text-white text-center font-bold bg-blue-btn hover:bg-blue-dc border rounded-3xl" href="{% url 'trips:new' %}">建立新行程</a>
+    <div class="flex items-center justify-center mt-8 mb-10">
+      <a class="flex items-center justify-center w-1/3 p-2 text-2xl font-bold text-center text-white border h-14 bg-blue-btn hover:bg-blue-dc rounded-3xl" href="{% url 'trips:new' %}">建立新行程</a>
     </div>
 
-    
-    <div x-show="show" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div class="bg-white p-8 rounded-lg w-1/3 h-2/3 m-auto flex flex-col relative"  id="trip_qrcode_{{ trip.content.id }}">
-        <button @click="show = false" class="absolute right-8 top-8 text-xl">X</button>
-        <div class=" w-4/5 mx-auto flex justify-center">
-          <input id="watch" class="peer/watch hidden" type="radio" name="status" @click="activeTab = 'watch'" checked/>
-          <label for="watch" class="peer-checked/watch:bg-blue-btn bg-neutral-400 text-xl text-white mx-1 rounded-3xl btn w-1/2" @click="show = true">分享行程</label>
-          <input id="edit" class="peer/edit hidden" type="radio" name="status" @click="activeTab = 'edit'"/>
-          <label for="edit" class="btn peer-checked/edit:bg-T-red bg-neutral-400 text-xl text-white btn mx-1 rounded-3xl w-1/2" @click="show = true">共編行程</label>
-        </div>
-
-        <div class="flex flex-col items-center space-y-4 mt-8 p-4 border border-gray-200 rounded h-full" x-show="activeTab === 'watch'">
-          <div class="h-2/3 w-2/3">
-            <img id="share-id" src="{{ trip.content.watch_qrimg }}" alt="" class="object-contain w-full h-full" >
-          </div>
-          <button id="copyWatchButton" class="btn w-4/5 mx-auto p-2 text-xl text-white text-center font-bold bg-blue-btn hover:bg-blue-dc border rounded-3xl">複製連結</button>
-          <p id="successMessage" class="text-green-500" style="display: none">連結已成功複製!</p>
-        </div>
-        <div class="flex flex-col items-center space-y-4 mt-8 p-4 border border-gray-200 rounded h-full" x-show="activeTab === 'edit'">
-          <div class="h-2/3 w-2/3">
-            <img src="{{ trip.content.confirm_qrimg }}" alt="" class="object-contain w-full h-full">
-          </div>
-          <button id="copyEditButton" class="btn w-4/5 mx-auto p-2 text-xl text-white text-center font-bold bg-blue-btn hover:bg-blue-dc border rounded-3xl">複製連結</button>
-          <p id="successMessage2" class="text-green-500" style="display: none">連結已成功複製!</p>
-        </div>
-      </div>
-    </div>
   </div>
 
 {% endblock %}
 {% block script %}
 <script src="{% static 'scripts/route.js' %}"></script>
 <script>
-  document.getElementById('copyEditButton').addEventListener('click', function() {
-        var textToCopy = "{{ confirm_url }}";
+  document.getElementById('copyEditButton').addEventListener('click', function(e) {
+        const copyURL = e.target.querySelector("span").textContent;
 
         // 使用 Clipboard API 來複製
-        navigator.clipboard.writeText(textToCopy).then(() => {
+        navigator.clipboard.writeText(copyURL).then(() => {
 
             var successMessage = document.getElementById('successMessage2');
             successMessage.style.display = 'block';
@@ -128,10 +134,10 @@
         });
     });
   
-  document.getElementById('copyWatchButton').addEventListener('click', function() {
-        var textToCopy = "{{ watch_url }}";
+  document.getElementById('copyWatchButton').addEventListener('click', function(e) {
+        const copyURL = e.target.querySelector("span").textContent;
 
-        navigator.clipboard.writeText(textToCopy).then(() => {
+        navigator.clipboard.writeText(copyURL).then(() => {
 
             var successMessage = document.getElementById('successMessage');
             successMessage.style.display = 'block';
