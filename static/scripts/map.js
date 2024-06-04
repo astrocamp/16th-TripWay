@@ -142,6 +142,7 @@ function showPlaceDetails(place, marker) {
             `;
             infowindow.setContent(contentString);
             infowindow.open(map, marker);
+            map.setCenter(marker.getPosition());
         }
     });
 }
