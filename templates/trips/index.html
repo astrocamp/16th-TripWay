@@ -21,7 +21,7 @@
       <div class="w-3/4 mx-auto mt-2">
         <div class="flex flex-wrap justify-start gap-4">
           {% for trip in trips %}
-          <div class="relative md-full lg:w-[48%] xl:w-[32%] mt-5 mb-1 rounded-xl shadow-md" x-data="{ deleteTrip() {
+          <div class="relative md-full w-full sm:w-[48%] lg:w-[48%] xl:w-[32%] mt-5 mb-1 rounded-xl shadow-md" x-data="{ deleteTrip() {
             Swal.fire({
               icon: 'question',
               title: '確定要刪除嗎?',
