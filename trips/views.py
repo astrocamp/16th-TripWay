@@ -43,7 +43,7 @@ def home(request):
         else:
             trips = trip_members.order_by('-trip__id')
 
-        trips = [{"t": trip, "tm": trip_members.get(trip=trip)} for trip in trips]
+        trips = [{"t": trip.trip, "tm": trip} for trip in trips]
         if trips :
             for trip in trips :
                 edit_url = f"https://{os.getenv("NOW_HOST")}/trips/{trip["t"].id}/add-member/edit"
