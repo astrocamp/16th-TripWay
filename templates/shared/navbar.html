@@ -147,3 +147,18 @@
     </div>
 </nav>
 <script src="{% static "scripts/search.js" %}"></script>
+<script>
+    var unreadCount = 0;
+
+    {% for notification in notifications %}
+        {% if not notification.is_read %}
+            unreadCount++;
+        {% endif %}
+    {% endfor %}
+
+    if (unreadCount > 0) {
+        document.getElementById('notify-count').style.display = 'block';
+    } else {
+        document.getElementById('notify-count').style.display = 'none';
+    }
+</script>
