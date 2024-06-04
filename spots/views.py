@@ -154,9 +154,8 @@ class ShowView(LoginRequired, DetailView):
         form = CommentForm()
         alert = self.request.session.pop('alert', None)
 
-        # 获取 Google 地图图片
         photo_url = self.get_place_photo(spot.name)
-        place_id = spot.place_id  # Assuming you have the place_id stored in the Spot model
+        place_id = spot.place_id
         place_details = self.get_place_details(place_id)
 
         context.update({
