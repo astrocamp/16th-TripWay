@@ -56,7 +56,7 @@ class IndexView(LoginRequired, ListView):
         elif sort_option == "comment_count_desc":
             queryset = sorted(queryset, key=lambda x: x.total_comments, reverse=True)
         else:
-            queryset = sorted(queryset, key=lambda x: x.rating, reverse=True)
+            queryset = sorted(queryset, key=lambda x: x.rating or 0.0, reverse=True)
 
         return queryset
 
