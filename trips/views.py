@@ -49,7 +49,8 @@ def home(request):
                 edit_url = f"https://{os.getenv("NOW_HOST")}/trips/{trip["t"].id}/add-member/edit"
                 confirm_url = f"https://{os.getenv("NOW_HOST")}/trips/{trip["t"].id}/add-member/edit/confirm"
                 watch_url = f"https://{os.getenv("NOW_HOST")}/trips/{trip["t"].id}/add-member/watch"
-                print(watch_url)
+
+
                 confirm_qrimg = create_qrcode(confirm_url)
                 watch_qrimg = create_qrcode(watch_url)
 
