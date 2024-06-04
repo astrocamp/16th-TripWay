@@ -8,7 +8,7 @@ import os
 ADMIN = os.getenv("Admin_URL_NAME")
 urlpatterns = [
     path("", views.home, name="home"),
-    path(f"{ADMIN}/", admin.site.urls),
+    path(f"{ ADMIN }/", admin.site.urls),
     path("members/", include("django.contrib.auth.urls")),
     path("members/", include("members.urls")),
     path("members/upgrade/", include("payments.urls")),
