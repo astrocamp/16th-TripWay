@@ -9,6 +9,7 @@ readme = "README.md"
 python = "^3.12"
 django = "^5.0.4"
 psycopg = "^3.1.18"
+psycopg2 = "^2.9.9"
 django-allauth = {extras = ["socialaccount"], version = "^0.62.1"}
 python-dotenv = "^1.0.1"
 cryptography = "^42.0.7"
