@@ -14,9 +14,25 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-&u@2d$fi47oaawy#os8ak*nn7zx_g7e$!ci*w=&i(8#j^xs@%^"
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+IS_HEROKU_APP = os.getenv("HEROKU_APP")
 
+# SECURITY WARNING: don't run with debug turned on in production!
+if not IS_HEROKU_APP:
+    DEBUG = True
+else:
+    DEBUG = False
+
+HOST_NAME = os.getenv("HOST_NAME")
+CSRF_TRUSTED_ORIGINS = [f"https://{HOST_NAME}"]
+
+if IS_HEROKU_APP:
+    ALLOWED_HOSTS = ["*"]
+else:
+    ALLOWED_HOSTS = [
+        "localhost",
+        "127.0.0.1",
+        HOST_NAME,
+    ]
 
 SITE_ID = 5
 
@@ -85,9 +101,9 @@ TEMPLATES = [
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",
+                "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "django.template.context_processors.request",
                 "notifies.context_processors.notification_processor",
             ],
         },
@@ -100,16 +116,28 @@ WSGI_APPLICATION = "core.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("DB_NAME"),
-        "USER": os.getenv("DB_USER"),
-        "PASSWORD": os.getenv("DB_PASSWORD"),
-        "HOST": os.getenv("DB_HOST"),
-        "PORT": os.getenv("DB_PORT"),
+if IS_HEROKU_APP:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.getenv("DB_NAME"),
+            "USER": os.getenv("DB_USER"),
+            "PASSWORD": os.getenv("DB_PASSWORD"),
+            "HOST": os.getenv("DB_HOST"),
+            "PORT": os.getenv("DB_PORT"),
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": "TripWay",
+            "USER": os.getenv("YOUR_USER_NAME"),
+            "PASSWORD": os.getenv("YOUR_PASSWORD"),
+            "HOST": "localhost",
+            "PORT": "5432",
+        }
+    }
 
 
 # Password validation
@@ -146,7 +174,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = "/static/"
+STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
@@ -173,13 +201,6 @@ ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_LOGOUT_ON_GET = True
 SOCIALACCOUNT_LOGIN_ON_GET = True
 
-HOST_NAME = os.getenv("HOST_NAME")
-ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
-    HOST_NAME,
-]
-CSRF_TRUSTED_ORIGINS = [f"https://{HOST_NAME}"]
 
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
