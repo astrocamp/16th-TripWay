@@ -1,9 +1,20 @@
 {% extends "layouts/base.html" %}
 {% block content %}
 
-<h2 class="text-center text-3xl m-4 p-2">選擇升級方案</h2>
-<ul class="grid grid-cols-5 gap-2">
-	<li class="col-start-2">
+
+<div class="h-screen pt-8">
+    <header class="flex justify-between items-center w-3/4 mx-auto">
+      <div class="flex items-center">
+        <a class="m-1 transition-colors duration-300 hover:text-sky-700" href="javascript:history.go(-1)">
+          <i class="fa-solid fa-reply text-2xl"></i>
+        </a>
+        <h1 class="p-2 text-3xl font-bold">會員升級</h1>
+      </div>
+    </header>
+    <section class="w-1/3">
+			<h2 class="text-center text-3xl m-4 p-2">選擇升級方案</h2>
+			<ul class="grid grid-cols-5 gap-2">
+				<li class="col-start-2">
 		<div class="flex flex-col items-center text-center p-3 gap-3">
 			<img src="https://picsum.photos/200/200?random=1" alt="">
 			<p class="text-center text-xl font-bold">高級會員 </p>
@@ -52,5 +63,10 @@
 		</div>
 	</li>
 </ul>
+		</section>
+	</div>
+
+
+
 
 {% endblock  %}
