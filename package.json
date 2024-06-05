@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"tailwindcss -i ./src/tailwind.css -o ./static/styles/style.css --watch\" \"esbuild ./src/scripts/app.js --bundle --outfile=./static/scripts/output.js --watch\""
+    "dev": "concurrently \"tailwindcss -i ./src/tailwind.css -o ./static/styles/style.css --watch\" \"esbuild ./src/scripts/app.js --bundle --outfile=./static/scripts/output.js --watch\"",
+    "build": "concurrently \"tailwindcss -i ./src/tailwind.css -o ./static/styles/style.css\" \"esbuild ./src/scripts/app.js --bundle --outfile=./static/scripts/output.js\"",
+    "heroku-postbuild": "npm run build"
   },
   "keywords": [],
   "author": "",
