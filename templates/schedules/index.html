@@ -29,7 +29,7 @@
           </form>
 
           {% for day in date_range %}
-            <button id="btn-{{ day|date:'Y-m-d' }}" class="tab ml-1 h-14 border-b shadow-sm rounded-2xl transition-all ease-in-out font-bold bg-btn-yellow" data-date="{{ day|date:'m-d'}}" onclick="showTab('{{ day|date:'Y-m-d' }}', 'btn-{{ day|date:'Y-m-d' }}', '{{ trip.id }}')">
+            <button id="btn-{{ day|date:'Y-m-d' }}" class="tab ml-1 h-14 border-b shadow-sm rounded-2xl transition-all ease-in-out font-bold bg-btn-yellow" data-date="{{ day|date:'Y-m-d'}}" onclick="showTab('{{ day|date:'Y-m-d' }}', 'btn-{{ day|date:'Y-m-d' }}', '{{ trip.id }}')">
               {{ day|date:"Y-m-d" }}
             </button>
           {% endfor %}
