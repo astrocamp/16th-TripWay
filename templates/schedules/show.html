@@ -1,58 +1,65 @@
 {% extends 'layouts/base.html' %}
 
 {% block content %}
-  <div class="h-screen bg-blue-50">
-    <header class="flex justify-start bg-sky-800">
-      <a class="px-2 py-2 text-white bg-sky-800 hover:bg-sky-950" href="{% url 'home' %}">
-        <i class="fa-solid fa-house-chimney"></i>
-      </a>
-      <a class="px-2 py-2 text-white bg-sky-800 hover:bg-sky-950" href="{% url 'trips:schedules:index' trip.id %}"> 
-        <i class="fa-solid fa-reply"></i>
-      </a>
-      <h1 class="px-2 py-2 text-white bg-sky-800">景點：{{ schedules.spot_name }}</h1>
+
+<div class="h-screen pt-8">
+    <header class="flex justify-between items-center w-3/4 mx-auto">
+      <div class="flex items-center">
+        <a class="m-1 transition-colors duration-300 hover:text-sky-700" href="{% url 'trips:schedules:index' trip.id %}">
+          <i class="fa-solid fa-reply text-2xl"></i>
+        </a>
+        <h1 class="p-2 text-3xl font-bold">行程資訊</h1>
+      </div>
     </header>
-    <section class="flex justify-between px-3 py-3 mx-3 my-3 bg-white border rounded-lg h-35">
-      <div class="flex items-center">
-        <img class="h-full" src="https://picsum.photos/200" alt="" />
-        <div class="mx-5">
-          <p class="text-lg font-bold">{{ schedules.date|date:"m / d" }}</p>
-          <p class="text-lg font-bold text-sky-700">{{ schedules.spot_name }}</p>
-          <p class="py-2 text-opacity-75 text-start text-sky-700">
-            <i class="fa-solid fa-clock"></i> {{ schedules.start_time|time:"H:i" }}
-          </p>
-          <p class="flex px-10 text-opacity-75 transform text-sky-700">|</p>
-          <p class="py-2 text-opacity-75 text-start text-sky-700">
-            <i class="fa-solid fa-clock"></i> {{ schedules.end_time|time:"H:i"  }}
-          </p>
-        </div>
-      </div>
-      <div class="flex items-center">
-        <div>
-          <p class="text-gray-500">備註事項：{{ schedules.note }}</p>
-        </div>
-      </div>
-      <div class="flex" x-data="{ deleteSchedule() {
-        Swal.fire({
-          icon: 'question',
-          title: '確定要刪除嗎?',
-          text: '若選擇刪除，資料將會消失',
-          showCancelButton: true,
-          cancelButtonText: '取消',
-          confirmButtonText: '刪除',
-        }).then((result) => {
-          if(result.isConfirmed){
-            this.$refs['id{{ schedules.id }}'].submit()
-          }
-        })
-      } }">
-        {% if trip_member.is_editable %}
-          <a class="px-2 py-2 rounded-lg hover:text-gray-650 text-cyan-850" href="{% url 'schedules:update' schedules.id %}"><i class="fa-solid fa-file-pen"></i></a>
-          <form @submit.prevent="deleteSchedule()" action="{% url 'schedules:delete' schedules.id %}" method="post" x-ref="id{{ schedules.id }}">
+    <section>
+        <div class="mt-8 mx-auto w-1/2">
+          <h3 class="text-2xl">{{ schedules.spot_name }}</h3>
+          <div class="flex my-8">
+            <div class="flex flex-col w-1/3 pr-4" >
+              <div class="flex flex-col mb-6">
+                <p class="block font-bold text-lg">日期：</p>
+                <p class="w-full mt-2 border border-gray-400 text-lg rounded-lg pl-2 h-12 pt-2">{{ schedules.date|date:'Y-m-d' }}</p>
+              </div>
+              <div class="flex flex-col mb-6">
+                <p class="block font-bold text-lg">抵達時間：</p>
+                <p class=" w-full mt-2 border text-lg border-gray-400 rounded-lg pl-2 h-12 pt-2">{{ schedules.start_time|time:'H:i' }}</p>
+              </div>
+              <div  class="flex flex-col mb-6">
+                <p class="block font-bold text-lg">抵達時間：</p>
+                <p class="w-full mt-2 border text-lg border-gray-400 rounded-lg pl-2 h-12 pt-2">{{ schedules.end_time|time:'H:i' }}</p>
+              </div>
+            </div>
+            <div class="flex flex-col w-2/3 p-2 mb-6">
+              <div class="flex justify-between">
+              <p class="block font-bold text-lg">行程筆記：</p>
+              <div class="flex" x-data="{ deleteSchedule() {
+              Swal.fire({
+              icon: 'question',
+              title: '確定要刪除嗎?',
+              text: '若選擇刪除，資料將會消失',
+              showCancelButton: true,
+              cancelButtonText: '取消',
+              confirmButtonText: '刪除',
+            }).then((result) => {
+              if(result.isConfirmed){
+              this.$refs['id{{ schedules.id }}'].submit()
+            }
+            })
+            } }">
+            {% if trip_member.is_editable %}
+            <a class="px-2 py-2 rounded-lg hover:text-gray-650 text-cyan-850" href="{% url 'schedules:update' schedules.id %}"><i class="fa-solid fa-file-pen"></i></a>
+            <form @submit.prevent="deleteSchedule()" action="{% url 'schedules:delete' schedules.id %}" method="post" x-ref="id{{ schedules.id }}">
             {% csrf_token %}
             <button class="px-2 py-2 text-red-700 rounded-lg hover:text-gray-650"><i class="fa-regular fa-trash-can"></i></button>
-          </form>
-        {% endif %}
-      </div>
+            </form>
+            {% endif %}
+            </div>
+            </div>
+            <p class="textarea textarea-bordered textarea-md w-full h-full mt-2 text-lg border-gray-400">{{ schedules.note }}</p>
+            </div>
+          </div>
+        </div>
     </section>
-  </div>
+</div>
+
 {% endblock %}
