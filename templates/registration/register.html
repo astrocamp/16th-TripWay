@@ -2,8 +2,8 @@
   <div class="mx-auto my-10 flex w-[350px] flex-col border-2 bg-white text-black shadow-xl">
     <div class="mx-8 mt-7 mb-1 flex flex-row justify-start space-x-2">
       <div class="h-7 w-3 bg-[#0DE6AC]"></div>
-      <div class="w-3 text-center font-sans text-xl font-bold">
-        <h1>Register</h1>
+      <div class="w-full font-sans text-xl font-bold">
+        <h1>會員註冊</h1>
       </div>
     </div>
 
@@ -11,23 +11,23 @@
       <form action="" method="post">
         {% csrf_token %}
         <div class="flex flex-col items-center">
-          <label class="self-start text-gray-800 font-semibold block mx-8 mt-3 mb-1 text-md">Username</label>
+          <label class="self-start text-gray-800 font-semibold block mx-8 mt-3 mb-1 text-md">會員名稱</label>
           {{ form.username }}
         </div>
         <div class="flex flex-col items-center">
-          <label class="self-start text-gray-800 font-semibold block mx-8 mt-3 mb-1 text-md">Email</label>
+          <label class="self-start text-gray-800 font-semibold block mx-8 mt-3 mb-1 text-md">信箱</label>
           {{ form.email }}
         </div>
         <div class="flex flex-col items-center">
-          <label class="self-start text-gray-800 font-semibold block mx-8 mt-3 mb-1 text-md">Password</label>
+          <label class="self-start text-gray-800 font-semibold block mx-8 mt-3 mb-1 text-md">密碼</label>
           {{ form.password1 }}
         </div>
         <div class="flex flex-col items-center">
-          <label class="self-start text-gray-800 font-semibold block mx-8 mt-3 mb-1 text-md">Confirm password</label>
+          <label class="self-start text-gray-800 font-semibold block mx-8 mt-3 mb-1 text-md">確認密碼</label>
           {{ form.password2 }}
         </div>
         <div class="my-2 flex justify-center">
-          <button type="submit" class="w-72 border bg-[#0DE6AC] p-2 font-sans my-2">SignUp</button>
+          <button type="submit" class="w-72 border bg-[#0DE6AC] p-2 font-sans my-2 font-bold">註冊會員</button>
         </div>
       </form>
     </div>

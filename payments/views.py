@@ -64,13 +64,13 @@ def newpay_return(request):
                 member = payment.member
 
                 if  payment.price >= 888:
-                    member.level = "svip"  
+                    member.level = "白金會員"  
                 elif payment.price >= 666:
-                    member.level = "vvip"  
+                    member.level = "黃金會員"  
                 elif payment.price >= 300:
-                    member.level = "vip"  
+                    member.level = "高級會員"  
                 else:
-                    member.level = "basic"  
+                    member.level = "基本會員"  
 
                 member.save()
 

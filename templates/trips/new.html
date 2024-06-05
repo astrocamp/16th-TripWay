@@ -32,11 +32,11 @@
             </div>
             <div class="mb-6">
               <label for="start_date" class="block text-lg font-bold">出發日：</label>
-              <input type="date" name="start_date" id="start_date" value="" required min="{% now 'Y-m-d' %}" class="input input-bordered w-full mt-2 text-lg border-gray-400" placeholder="選擇出發日期"/>
+              <input type="date" name="start_date" id="start_date" value="" required min="{% now 'Y-m-d' %}" class="input input-bordered w-full mt-2 text-lg border-gray-400" placeholder="選擇出發日期" required="required"/>
             </div>
             <div class="mb-6">
               <label for="end_date" class="block text-lg font-bold">結束日：</label>
-              <input type="date" name="end_date" id="end_date" value="" required min="{% now 'Y-m-d' %}" class="input input-bordered w-full mt-2 text-lg border-gray-400" placeholder="選擇結束日期" />
+              <input type="date" name="end_date" id="end_date" value="" required min="{% now 'Y-m-d' %}" class="input input-bordered w-full mt-2 text-lg border-gray-400" placeholder="選擇結束日期" required="required"/>
               </div>
             <div class="mb-6">
               <label for="transportation" class="block text-lg font-bold ">交通方式：</label>
