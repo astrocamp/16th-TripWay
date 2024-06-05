@@ -371,6 +371,27 @@ files = [
 requests = ">=2.20.0,<3.0"
 
 [[package]]
+name = "gunicorn"
+version = "22.0.0"
+description = "WSGI HTTP Server for UNIX"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "gunicorn-22.0.0-py3-none-any.whl", hash = "sha256:350679f91b24062c86e386e198a15438d53a7a8207235a78ba1b53df4c4378d9"},
+    {file = "gunicorn-22.0.0.tar.gz", hash = "sha256:4a0b436239ff76fb33f11c07a16482c521a7e09c1ce3cc293c2330afe01bec63"},
+]
+
+[package.dependencies]
+packaging = "*"
+
+[package.extras]
+eventlet = ["eventlet (>=0.24.1,!=0.36.0)"]
+gevent = ["gevent (>=1.4.0)"]
+setproctitle = ["setproctitle"]
+testing = ["coverage", "eventlet", "gevent", "pytest", "pytest-cov"]
+tornado = ["tornado (>=0.2)"]
+
+[[package]]
 name = "hanziconv"
 version = "0.3.2"
 description = "Hanzi Converter for Traditional and Simplified Chinese"
@@ -417,6 +438,17 @@ files = [
 rsa = ["cryptography (>=3.0.0)"]
 signals = ["blinker (>=1.4.0)"]
 signedtoken = ["cryptography (>=3.0.0)", "pyjwt (>=2.0.0,<3)"]
+
+[[package]]
+name = "packaging"
+version = "24.0"
+description = "Core utilities for Python packages"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "packaging-24.0-py3-none-any.whl", hash = "sha256:2ddfb553fdf02fb784c234c7ba6ccc288296ceabec964ad2eae3777778130bc5"},
+    {file = "packaging-24.0.tar.gz", hash = "sha256:eb82c5e3e56209074766e6885bb04b8c38a0c015d0a30036ebe7ece34c9989e9"},
+]
 
 [[package]]
 name = "pillow"
@@ -741,7 +773,21 @@ h2 = ["h2 (>=4,<5)"]
 socks = ["pysocks (>=1.5.6,!=1.5.7,<2.0)"]
 zstd = ["zstandard (>=0.18.0)"]
 
+[[package]]
+name = "whitenoise"
+version = "6.6.0"
+description = "Radically simplified static file serving for WSGI applications"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "whitenoise-6.6.0-py3-none-any.whl", hash = "sha256:b1f9db9bf67dc183484d760b99f4080185633136a273a03f6436034a41064146"},
+    {file = "whitenoise-6.6.0.tar.gz", hash = "sha256:8998f7370973447fac1e8ef6e8ded2c5209a7b1f67c1012866dbcd09681c3251"},
+]
+
+[package.extras]
+brotli = ["Brotli"]
+
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "29ab5996d4f94a84ddd9e00efc76bf59e7a2cb791017b8917a0b59664c773dfa"
+content-hash = "40d3018e0c74ed894e66a0524e1734133cdc67a725c53c414971d286fdb9bccb"
