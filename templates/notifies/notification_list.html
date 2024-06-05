@@ -14,23 +14,22 @@
                 {% if notifications %}
                     {% for notification in notifications %}
                         <li class="p-4 flex justify-between items-center {% if not notification.is_read %}bg-slate-200{% endif %} transition-colors duration-300">
-                            <div class="flex items-center">
-                                <div class="flex-shrink-0 mr-2">
-                                    {% if not notification.is_read %}
-                                        <i class="fa-solid fa-envelope text-red-700 mr-2"></i>
-                                    {% else %}
-                                        <i class="fa-solid fa-envelope-circle-check"></i>
-                                    {% endif %}
+                            <a href="{% url 'notifies:mark_as_read' notification.id %}" class="w-full flex items-center">
+                                <div class="flex items-center my-3">
+                                    <div class="flex-shrink-0 mr-2">
+                                        {% if not notification.is_read %}
+                                            <i class="fa-solid fa-envelope text-red-700 mr-2"></i>
+                                        {% else %}
+                                            <i class="fa-solid fa-envelope-circle-check"></i>
+                                        {% endif %}
+                                    </div>
+                                    <div>
+                                        <span class="flex-1 text-lg font-semibold">{{ notification.message }}</span>
+                                    </div>
                                 </div>
-                                <div>
-                                    <span class="flex-1 text-lg font-semibold">
-                                        <a class="hover:underline" href="{% url 'notifies:mark_as_read' notification.id %}">{{ notification.message }}</a>
-                                    </span>
-                                </div>
-                            </div>
+                            </a>
                             <div class="flex items-center">
-                                <span class="ml-4 text-sm font-medium {% if notification.is_read %}text-gray-500{% else %}text-red-500{% endif %}">
-                                </span>
+                                <span class="ml-4 text-sm font-medium {% if notification.is_read %}text-gray-500{% else %}text-red-500{% endif %}"></span>
                                 <form method="post" action="{% url 'notifies:delete_notification' notification.id %}" class="ml-4">
                                     {% csrf_token %}
                                     <button type="submit" class="text-sm hover:text-red">
@@ -44,7 +43,7 @@
                     <li class="p-4 text-center text-gray-500">目前沒有任何通知</li>
                 {% endif %}
             </ul>
-        </div>
+        </div>        
     </div>
 {% endblock %}
 
