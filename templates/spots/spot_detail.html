@@ -18,7 +18,7 @@
             <div class="flex flex-col w-full pl-5 mx-5 mt-5">
                 <div class="flex items-center justify-between w-full">
                     <p class="text-3xl font-bold text-sky-700">{{ spot.name }}</p>
-                    <i id="favoriteIcon" class="fa-heart fa-2xl mr-6 {% if member_spot %}fa-solid{% else %}fa-regular{% endif %} cursor-pointer"></i>
+                    <i id="favoriteIcon" class="fa-heart fa-2xl mr-6 {% if member_spot %}fa-solid  text-btn-red{% else %}fa-regular{% endif %} cursor-pointer" data-toggle-favorite-url="/spots/{{ spot.id }}/favorite"></i>
                 </div>
                 <div class="flex mt-2 text-xl">
                     {% if total_comments > 0 %}
@@ -43,27 +43,27 @@
             <div class="flex flex-col w-full pl-5 mx-5 mt-5">
                 <div class="flex w-full">
                     <div class="w-1/2">
-                        <p class="py-2 text-opacity-75 text-start text-sky-700 w-full">
+                        <p class="w-full py-2 text-opacity-75 text-start text-sky-700">
                             <span class="text-black">城市:</span> {{ spot.city }}
                         </p>
-                        <p class="py-2 text-opacity-75 text-start text-sky-700 w-full text-wrap">
+                        <p class="w-full py-2 text-opacity-75 text-start text-sky-700 text-wrap">
                             <span class="text-black">地址:</span> {{ spot.address }}
                         </p>
-                        <p class="py-2 text-opacity-75 text-start text-sky-700 w-full text-wrap">
+                        <p class="w-full py-2 text-opacity-75 text-start text-sky-700 text-wrap">
                             <span class="text-black">介紹:</span>
                             {% for about in about %}
                                 <br>{{ about.text }}
                             {% endfor %}
                         </p>
-                        <p class="py-2 text-opacity-75 text-start text-sky-700 w-full text-wrap">
+                        <p class="w-full py-2 text-opacity-75 text-start text-sky-700 text-wrap">
                             <span class="text-black">網址:</span> {{ website }}
                         </p>
-                        <p class="py-2 text-opacity-75 text-start text-sky-700 w-full">
+                        <p class="w-full py-2 text-opacity-75 text-start text-sky-700">
                             <span class="text-black">電話:</span> {{ phone_number }}
                         </p>
                     </div>
                     <div class="w-1/2">
-                        <p class="pl-4 py-2 text-opacity-75 text-start text-sky-700">
+                        <p class="py-2 pl-4 text-opacity-75 text-start text-sky-700">
                             <span class="text-black">營業時間:</span>
                             {% for time in opening_hours %}
                                 <br>{{ time }}
