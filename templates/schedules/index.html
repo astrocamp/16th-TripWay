@@ -52,7 +52,7 @@
           {% for schedule in schedules %}
           <div class="flex mb-1 px-8 py-3 mx-8 my-6 shadow-lg rounded-custom-20 hover:bg-light-gray h-36">
             <div class="flex grow">
-              <a href="{% url 'schedules:show' schedule.id %}" class="inline-block w-full h-full flex items-center">
+              <a href="{% url 'schedules:show' schedule.id %}" class="w-full h-full flex items-center">
                 <span class="inline-block w-6 h-6 mr-2 text-center text-white bg-black rounded-full">{{ forloop.counter }}</span>
                 {{ schedule.spot_name }}
                 <div class="mx-3 px-2 text-gray-500">{{ schedule.start_time|time:"H:i" }}</div>
@@ -88,7 +88,7 @@
         <!-- 新增景點按鈕 -->
         <div class="flex justify-center my-10">
           {% if trip_member.is_editable %}
-            <a class="px-52 py-4 text-white border rounded-custom-50 bg-blue-btn hover:bg-blue-dc text-xl font-medium" href="{% url 'spots:index' %}">新增景點</a>
+            <a class="px-28 py-4 text-white border rounded-custom-50 bg-blue-btn hover:bg-blue-dc text-xl font-medium" href="{% url 'spots:index' %}">新增景點</a>
           {% endif %}
         </div>
         <div class="border-light-gray border"></div>
@@ -128,12 +128,6 @@
               {% endif %}
             </div>
           {% endfor %}
-  
-          {% comment %} <div class="flex justify-center">
-            {% if trip_member.is_editable %}
-            <a class="px-52 py-4 text-white border rounded-custom-50 bg-btn-red hover:bg-btn-red-dc text-xl font-medium my-10" href="{% url 'trips:new-member' trip.id %}">新增成員</a>
-            {% endif %}
-          </div> {% endcomment %}
         </div>
       </div>
       <div id="map" style="flex-grow: 1;" class="hidden sm:block h-[80vh] m-2 sm:h-full border border-gray-500 sm border-none sm:m-0"></div>
