@@ -45,7 +45,7 @@
         </div>
 
         <!-- 手機版 漢堡包圖標 -->
-        <div class="lg:hidden">
+        <div class="sm:hidden">
             <button id="menu-toggle-btn" class="relative flex items-center pr-4 text-white hover:text-black focus:outline-none">
                 <svg class="fill-current h-8 w-8" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <title>Menu</title>
@@ -82,20 +82,17 @@
         <!-- 會員 -->
         <div class="dropdown dropdown-end">
         {% if user.is_authenticated %}
-        <div class="relative">
-            <button
-            tabindex="0"
-            class="w-10 h-10 bg-cover rounded-full bg-light-blue"
-            {%if user.profile.avatar%}
-            style="background-image: url('{{ user.profile.avatar.url }}')"
-            {%else %}
-            style="background-image: url({% static 'img/membericon.png' %})"
-            {%endif %}
-            ></button>
-        </div>
+            <div class="relative">
+                <button
+                tabindex="0"
+                class="w-10 h-10 bg-cover rounded-full bg-light-blue"
+                style="background-image: url('{% if user.image %}{{ user.image.url }}{% else %}{% static 'img/membericon.png' %}{% endif %}')"
+                ></button>
+            </div>
         {% else %}
             <button tabindex="0" class="mr-10 text-xl btn bg-transparent border-none hover:bg-btn-red hover:text-white">登入/註冊</button>
-            {% endif %}
+        {% endif %}
+
             <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 absolute top-14 right-0">
                 {% if user.is_authenticated %}
                 <li>
@@ -125,17 +122,17 @@
 <script src="{% static 'scripts/output.js' %}" type="module"></script>
 
 <script>
-    let unreadCount = 0;
-    
-    {% for notification in notifications %}
-        {% if not notification.is_read %}
-            unreadCount++;
-        {% endif %}
-    {% endfor %}
-    
-    if (unreadCount > 0) {
-        document.getElementById('notify-dot').style.display = 'block';
-    } else {
-        document.getElementById('notify-dot').style.display = 'none';
-    }
-    </script>
+let unreadCount = 0;
+
+{% for notification in notifications %}
+    {% if not notification.is_read %}
+        unreadCount++;
+    {% endif %}
+{% endfor %}
+
+if (unreadCount > 0) {
+    document.getElementById('notify-dot').style.display = 'block';
+} else {
+    document.getElementById('notify-dot').style.display = 'none';
+}
+</script>

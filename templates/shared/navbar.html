@@ -85,16 +85,12 @@
             <button
             tabindex="0"
             class="w-10 h-10 bg-cover rounded-full bg-light-blue"
-            {%if user.profile.avatar%}
-            style="background-image: url('{{ user.profile.avatar.url }}')"
-            {%else %}
-            style="background-image: url({% static 'img/membericon.png' %})"
-            {%endif %}
+            style="background-image: url('{% if user.image %}{{ user.image.url }}{% else %}{% static 'img/membericon.png' %}{% endif %}')"
             ></button>
         </div>
         {% else %}
             <button tabindex="0" class="mr-10 text-xl btn bg-transparent border-none hover:bg-btn-red hover:text-white">登入/註冊</button>
-            {% endif %}
+        {% endif %}
             <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 absolute top-14 right-0">
                 {% if user.is_authenticated %}
                 <li>
