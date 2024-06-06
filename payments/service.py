@@ -35,6 +35,8 @@ class PaymentService:
             "Amt": str(self.price),
             "ItemDesc": "MemberUpgrade",
             "ReturnURL": ReturnUrl,
+            "Email": self.member.email,
+            "EmailModify": 0,
         }
         return data
 

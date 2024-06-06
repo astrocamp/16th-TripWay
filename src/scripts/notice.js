@@ -7,6 +7,5 @@ document.addEventListener("DOMContentLoaded", function () {
             icon: messageTags,
             title: message
         });
-        console.log("123")
     });
 });
