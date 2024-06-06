@@ -1,9 +1,10 @@
 {% extends "layouts/base.html" %}
 {% block content %}
 
-<h2 class="block text-center m-3 text-3xl font-bold">升級成功</h2>
-<div class="flex justify-center">
-		<a class="mx-auto btn m-3 h-14 items-center text-xl text-white text-center font-bold bg-blue-btn hover:bg-blue-dc" href="{% url 'home' %}">返回首頁</a>
+<h2 class="block text-center m-3 text-3xl font-bold pt-8">升級成功</h2>
+<div class="flex flex-col items-center mt-8">
+		<p class="text-xl p-3">恭喜您升級成為{{ request.user.level }}</p>
+		<a class="mx-auto btn m-3 h-14 w-1/5 items-center text-xl text-white text-center font-bold bg-blue-btn rounded-2xl hover:bg-blue-dc" href="{% url 'home' %}">返回首頁</a>
 </div>
 
 {%  endblock %}

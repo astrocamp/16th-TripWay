@@ -95,9 +95,11 @@
                 <li>
                 <a href="{% url 'logout' %}" class="text-lg">登出</a>
                 </li>
+                {% if request.user.level != "白金會員" %}
                 <li>
                 <a href="{% url 'payments:upgrade' %}" class="text-lg">會員升級</a>
                 </li>
+                {% endif %}
                 <li>
                 <a href="{% url 'profile' %}" class="text-lg">個人資料</a>
                 </li>
