@@ -8,32 +8,41 @@
 #map {
     height: calc(100vh - 88px);
     width: 100%;
+    position: relative;
+}
+
+@media (min-width: 640px) {
+    #search-container {
+    transform: none;
+    left: -500px;
+    right: auto;
+    top: 80px;
+    }
 }
 
 #search-container {
     display: flex;
     position: absolute;
     align-items: center;
-    top: 100px;
     right: 20px;
     transform: translateX(-50%);
-    z-index: 1000;
+    z-index: 10;
 }
 
 #pac-input {
-    width: 200px;
+    background-color: rgb(255, 255, 254);
+    width: 150px;
     height: 60px;
-    border-radius: 40px;
+    border-radius: 30px;
     padding-left: 20px;
-    margin-right: 10px;
+    margin-left: 10px;
 }
 .search-button-map {
     height: 60px;
     border-radius: 40px;
     padding: 0 20px;
-    margin-left: 5px;
     background-color: #fff;
-    border: 1px solid #ccc;
+    border: 2px solid #060606;
     cursor: pointer;
     font-weight: 500;
     font-size: larger;
