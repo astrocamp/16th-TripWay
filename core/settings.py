@@ -18,7 +18,7 @@ SECRET_KEY = "django-insecure-&u@2d$fi47oaawy#os8ak*nn7zx_g7e$!ci*w=&i(8#j^xs@%^
 is_heroku_app = os.getenv("HEROKU_APP")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if is_heroku_app:
+if bool(is_heroku_app):
     DEBUG = False
 else:
     DEBUG = True
@@ -26,7 +26,7 @@ else:
 HOST_NAME = os.getenv("HOST_NAME")
 CSRF_TRUSTED_ORIGINS = [f"https://{HOST_NAME}"]
 
-if is_heroku_app:
+if bool(is_heroku_app):
     ALLOWED_HOSTS = ["*"]
 else:
     ALLOWED_HOSTS = [
@@ -119,7 +119,7 @@ WSGI_APPLICATION = "core.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-if is_heroku_app:
+if bool(is_heroku_app):
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
