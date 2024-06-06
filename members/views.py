@@ -6,6 +6,7 @@ from .models import MemberSpot, Member
 from PIL import Image
 from io import BytesIO
 from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 
 
 def login_user(request):
@@ -60,11 +61,11 @@ def create(request):
     if request.method == "POST":
         if "image" in request.FILES:
             image = request.FILES["image"]
-
             compressed_image_data = compress_image(image)
 
+            image_name = "member_profile/" + image.name
             image_path = default_storage.save(
-                "member_profile/" + image.name, compressed_image_data
+                image_name, ContentFile(compressed_image_data.read())
             )
 
             member.image = image_path
