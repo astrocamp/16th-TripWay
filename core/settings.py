@@ -18,7 +18,10 @@ SECRET_KEY = "django-insecure-&u@2d$fi47oaawy#os8ak*nn7zx_g7e$!ci*w=&i(8#j^xs@%^
 IS_HEROKU_APP = os.getenv("HEROKU_APP")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+if IS_HEROKU_APP:
+    DEBUG = False
+else:
+    DEBUG = True
 
 HOST_NAME = os.getenv("HOST_NAME")
 CSRF_TRUSTED_ORIGINS = [f"https://{HOST_NAME}"]
@@ -176,7 +179,6 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
-# STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 
 MEDIA_URL = "/media/"
