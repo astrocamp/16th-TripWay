@@ -73,12 +73,17 @@
                   this.$refs['id{{ schedules.id }}'].submit()
                 }
               })
-            } }">
-              <a class="px-2 py-2 rounded-lg hover:text-gray-650 text-cyan-850" href="{% url 'schedules:update' schedule.id %}"><i class="fa-solid fa-file-pen"></i></a>
+            }, edit_{{ schedules.id }}: false }">
+              {% comment %} <a class="px-2 py-2 rounded-lg hover:text-gray-650 text-cyan-850" href="{% url 'schedules:update' schedule.id %}"><i class="fa-solid fa-file-pen"></i></a> {% endcomment %}
+              <button class="px-2 py-2 rounded-lg hover:text-gray-650 text-cyan-850" @click="edit_{{ schedules.id }} = true"><i class="fa-solid fa-file-pen"></i></button>
               <form @submit.prevent="deleteSchedule()" action="{% url 'schedules:delete' schedule.id %}" method="post" x-ref="id{{ schedules.id }}">
                 {% csrf_token %}
                 <button class="px-2 py-2 text-red-700 rounded-lg hover:text-gray-650"><i class="fa-regular fa-trash-can"></i></button>
               </form>
+              <div x-show="edit_{{ schedules.id }}" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                
+
+              </div>
             </div>
             {% endif %}
           </div>
