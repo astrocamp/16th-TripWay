@@ -27,7 +27,7 @@ HOST_NAME = os.getenv("HOST_NAME")
 CSRF_TRUSTED_ORIGINS = [f"https://{HOST_NAME}"]
 
 if IS_HEROKU_APP:
-    ALLOWED_HOSTS = [f"https://{HOST_NAME}"]
+    ALLOWED_HOSTS = [f"{HOST_NAME}"]
 else:
     ALLOWED_HOSTS = [
         "localhost",
