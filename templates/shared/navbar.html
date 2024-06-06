@@ -1,51 +1,52 @@
 {% load static %}
-<nav class="sticky top-0 left-0 z-50 flex items-center justify-between w-full bg-white lg:px-8 px-6 py-5 shadow-md">
-    <!-- icon -->
-    <a href="{% url 'home' %}" class="mb-2 mx-3 text-4xl font-bold lg:block">
-        <div class="w-28">
-            <img src="{% static 'img/logo-regular.png' %}" alt="TripWay Logo" class="w-full object-cover" />
+<nav class="sticky top-0 left-0 z-50 flex items-center justify-between w-full bg-base-white py-4 px-2 shadow-md">
+    
+    <a href="{% url 'home' %}" class="mb-6 mx-3 text-4xl font-bold">
+        <div class="w-16 h-3">
+        <img src="{% static 'img/logo-regular.png' %}" alt="TripWay Logo" class="w-full object-cover"/>
         </div>
     </a>
-    <!-- search input -->
-    <div class="flex flex-1 ml-5 justify-center-0">
-        <div class="relative w-100 lg:w-80 rounded-custom-20 overflow-hidden border border-black ml-12 lg:ml-2">
+    
+    {% if user.is_authenticated %}
+    <div class="flex flex-1 justify-center-0 mr-4">
+        <div class="relative w-50 lg:w-80 rounded-custom-20 overflow-hidden text-gray border border-black">
         <input
             id="search-input"
             type="text"
             placeholder="搜尋景點，例:動物園..."
-            class="w-full px-4 py-2 border-none rounded-custom-20 pr-12 text-gray-700 focus:outline-none focus:ring-0"
+            class="w-full px-4 py-2 border-none pr-12 text-gray focus:outline-none focus:ring-0"
         />
         <button id="search-button" class="absolute transform -translate-y-1/2 text-black right-2 top-1/2 hover:text-gray-700">
             <i class="fa-solid fa-magnifying-glass" style="font-size: 1.5rem;"></i>
         </button>
-    </div>
-
         </div>
     </div>
+    {% endif %}
+
 
     <!-- 探索按鈕 + 會員 -->
-    <div class="flex items-center space-x-4">
+    <div class="flex items-center">
 
         <!-- 電腦版 探索按鈕 -->
-        <div class="lg:flex lg:items-center lg:space-x-6 lg:mr-10 hidden">
-            <ul class="flex space-x-12">
+        <div class="lg:flex lg:items-center lg:mr-10 hidden">
+            <ul class="flex space-x-6">
                 <li>
-                    <a href="{% url 'trips:map' %}" class="flex items-center space-x-1 text-2xl font-medium hover:text-gray-500">
+                    <a href="{% url 'trips:map' %}" class="flex items-center space-x-1 text-2xl font-medium hover:text-light-gray">
                         <span>地圖探索</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'spots:index' %}" class="text-2xl font-medium hover:text-gray-500">景點探索</a>
+                    <a href="#hotspots-section" class="text-2xl font-medium hover:text-light-gray">景點探索</a>
                 </li>
                 <li>
-                    <a href="{% url 'trips:index' %}" class="text-2xl font-medium hover:text-gray-500">立即規劃</a>
+                    <a href="{% url 'trips:index' %}" class="text-2xl font-medium hover:text-light-gray">立即規劃</a>
                 </li>
             </ul>
         </div>
 
         <!-- 手機版 漢堡包圖標 -->
         <div class="lg:hidden">
-            <button id="menu-toggle-btn" class="flex items-center px-3 py-2 text-black hover:text-gray focus:outline-none">
+            <button id="menu-toggle-btn" class="relative flex items-center pr-4 text-black hover:gray focus:outline-none">
                 <svg class="fill-current h-8 w-8" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <title>Menu</title>
                     <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>
@@ -53,7 +54,7 @@
             </button>
     
             <!-- 探索下拉選單 -->
-            <ul id="menu" class="hidden absolute top-16 right-20 z-10 bg-white shadow-md py-2 px-4 rounded-lg">
+            <ul id="menu-nav" class="absolute hidden z-10 bg-white shadow-md py-2 px-4 rounded-lg">
                 <li>
                     <a href="{% url 'trips:map' %}" class="text-xl font-bold hover:text-gray-800">地圖探索</a>
                 </li>
@@ -65,27 +66,18 @@
                 </li>
             </ul>
         </div>
-    
-        <!-- JavaScript 切換下拉選單 -->
-        <script>
-            document.getElementById('menu-toggle-btn').addEventListener('click', function() {
-                var menu = document.getElementById('menu');
-                if (menu.classList.contains('hidden')) {
-                    menu.classList.remove('hidden');
-                } else {
-                    menu.classList.add('hidden');
-                }
-            });
-        </script>
-
+        
+        
         <!-- 小鈴鐺通知 -->
-        <div id="notify" class="relative cursor-pointer w-8 h-8 flex items-center">
-            <a href="{% url 'notifies:notification_list' %}" class="relative cursor-pointer w-8 h-8 flex items-center hover:text-red-700">
+        {% if user.is_authenticated %}
+        <div id="notify" class="relative cursor-pointer w-8 h-8 flex items-center mr-0 sm:mr-4">
+            <a href="{% url 'notifies:notification_list' %}" class="relative cursor-pointer w-8 h-8 flex items-center hover:text-light-gray">
                 <i class="fa-solid fa-bell text-2xl"></i>
                 <div id="notify-dot" class="absolute top-0 right-0 bg-red-600 h-3 w-3 rounded-full hidden"></div>
             </a>
         </div>
-
+        {% endif %}
+        
         <!-- 會員 -->
         <div class="dropdown dropdown-end">
         {% if user.is_authenticated %}
@@ -129,6 +121,8 @@
     </div>
 </nav>
 <script src="{% static "scripts/search.js" %}"></script>
+<script src="{% static 'scripts/output.js' %}" type="module"></script>
+
 <script>
 let unreadCount = 0;
 
