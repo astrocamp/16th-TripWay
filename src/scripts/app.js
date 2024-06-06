@@ -1,4 +1,5 @@
 import Toast from "./message.js"
+import "./notice.js"
 import showTab from "./schedules/index.js"
 import "./schedules/update.js"
 import "./spots/comments.js"
