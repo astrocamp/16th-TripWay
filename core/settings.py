@@ -18,7 +18,7 @@ SECRET_KEY = "django-insecure-&u@2d$fi47oaawy#os8ak*nn7zx_g7e$!ci*w=&i(8#j^xs@%^
 IS_HEROKU_APP = os.getenv("HEROKU_APP")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 HOST_NAME = os.getenv("HOST_NAME")
 CSRF_TRUSTED_ORIGINS = [f"https://{HOST_NAME}"]
@@ -212,4 +212,4 @@ STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
-django_heroku.settings(locals())
+django_heroku.settings(config=locals(), staticfiles=False,logging=False)
