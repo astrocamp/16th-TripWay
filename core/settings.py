@@ -21,7 +21,7 @@ is_heroku_app = os.getenv("HEROKU_APP")
 # if bool(is_heroku_app):
 #     DEBUG = False
 # else:
-DEBUG = True
+DEBUG = False
 
 HOST_NAME = os.getenv("HOST_NAME")
 CSRF_TRUSTED_ORIGINS = [f"https://{HOST_NAME}"]
