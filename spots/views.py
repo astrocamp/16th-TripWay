@@ -158,19 +158,19 @@ class ShowView(LoginRequired, DetailView):
 
         return redirect("spots:show", pk=spot.id)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        spot = self.get_object()
+    def get_comments_for_spot(self, spot, user):
         comments = Comment.objects.filter(spot=spot)
+        user_comments = list()
+        other_comments = list()
 
-        if self.request.user.is_authenticated:
-            user_comments = comments.filter(user=self.request.user)
-            other_comments = comments.exclude(user=self.request.user)
-            context["comments"] = list(user_comments) + list(other_comments)
+        if user.is_authenticated:
+            user_comments = list(comments.filter(user=user).order_by("-created_at"))
+            other_comments = list(comments.exclude(user=user))
         else:
-            context["comments"] = comments
-
-        return context
+            other_comments = list(comments)
+        
+        context_comments = user_comments + other_comments
+        return context_comments
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -206,6 +206,7 @@ class ShowView(LoginRequired, DetailView):
         )
 
         return context
+
 
 
 class SearchView(View):
