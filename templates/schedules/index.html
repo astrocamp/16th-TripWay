@@ -4,7 +4,7 @@
 
 
 <div class="bg-base-white" style="height:calc(100vh - 88px); overflow: hidden;">
-  <div class="wrap flex h-full">
+  <div class="wrap flex flex-col lg:flex-row h-full overflow-scroll">
     <div class="sm:w-2/5 w-full overflow-y-auto">
       <div class="label-block overflow-scroll">
 
@@ -45,7 +45,7 @@
 
       </div>
       
-      <div class="bottom-block">
+      <div class="bottom-block overflow-scroll">
         <!-- 行程內容 -->
         {% for date, schedules in schedule_dates.items %}
         <div id="schedule{{ schedules.0.date|date:'Y-m-d' }}" class="tab-content mt-3">
@@ -135,10 +135,8 @@
             {% endif %}
           </div> {% endcomment %}
         </div>
-
       </div>
-
-    <div id="map" style="flex-grow: 1;" class="hidden lg:block">I'm map</div>
+      <div id="map" style="flex-grow: 1;" class="hidden sm:block h-[80vh] m-2 sm:h-full border border-gray-500 sm border-none sm:m-0"></div>
     
   </div>
 </div>
