@@ -1,10 +1,10 @@
-var map;
-var markers = [];
-var bounds;
-var scheduleData = {};
-var tripId = getTripIdFromUrl();
-var directionsService;
-var directionsRenderer;
+let map;
+let markers = [];
+let bounds;
+let scheduleData = {};
+let tripId = getTripIdFromUrl();
+let directionsService;
+let directionsRenderer;
 
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
@@ -25,7 +25,7 @@ function initMap() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             function(position) {
-                var pos = {
+                let pos = {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 };
@@ -42,9 +42,9 @@ function initMap() {
 }
 
 function getTripIdFromUrl() {
-    var currentUrl = window.location.href;
-    var urlParts = currentUrl.split('/');
-    var idIndex = urlParts.indexOf('trips') + 1;
+    let currentUrl = window.location.href;
+    let urlParts = currentUrl.split('/');
+    let idIndex = urlParts.indexOf('trips') + 1;
     return idIndex !== -1 ? urlParts[idIndex] : null; 
 }
 
@@ -52,7 +52,7 @@ function loadSchedule() {
     fetch('/schedules/get_schedule/')
         .then(response => response.json())
         .then(data => {
-            var filteredData = data.filter(item => item.trip_id == tripId);
+            let filteredData = data.filter(item => item.trip_id == tripId);
             scheduleData = groupByDate(filteredData);
         });
 
@@ -104,21 +104,21 @@ function centerMapToUserLocation() {
             }
         }
         
-function showScheduleForDate(date) {
-    var dayData = scheduleData[date];
+function showScheduleForDate(date){
+    let dayData = scheduleData[date];
     clearMarkers();
     if (!dayData) {
         centerMapToUserLocation();
         return;
     }
 
-    var waypoints = [];
-    var tripMode = null;
+    let waypoints = [];
+    let tripMode = null;
 
     dayData.forEach(function(item, index) {
-        var position = { lat: parseFloat(item.spot__latitude), lng: parseFloat(item.spot__longitude) };
-        var markerLabel = (index + 1).toString();
-        var marker = new google.maps.Marker({
+        let position = { lat: parseFloat(item.spot__latitude), lng: parseFloat(item.spot__longitude) };
+        let markerLabel = (index + 1).toString();
+        let marker = new google.maps.Marker({
             map: map,
             position: position,
             icon: createMarkerIcon(markerLabel),
@@ -139,8 +139,8 @@ function showScheduleForDate(date) {
         }
     });
     
-    var routeLabel = null;
-    var travelMode = google.maps.TravelMode.DRIVING;
+    let routeLabel = null;
+    let travelMode = google.maps.TravelMode.DRIVING;
 
     if (tripMode === '汽車') {
         routeLabel = '汽車';
@@ -156,16 +156,15 @@ function showScheduleForDate(date) {
         travelMode = google.maps.TravelMode.WALKING;
     }
 
-    // 根據交通方式設置路線的繪製選項
-    var routeOptions = {
+    let routeOptions = {
         strokeColor: "#FF6D1F",
         strokeWeight: 6,
         label: routeLabel
     };
 
     if (markers.length > 1) {
-        var origin = markers[0].getPosition();
-        var destination = markers[markers.length - 1].getPosition();
+        let origin = markers[0].getPosition();
+        let destination = markers[markers.length - 1].getPosition();
 
         directionsService.route({
             origin: origin,
@@ -174,26 +173,26 @@ function showScheduleForDate(date) {
             travelMode: travelMode
         }, function(response, status) {
             if (status === google.maps.DirectionsStatus.OK) {
-                directionsRenderer.setOptions({ polylineOptions: routeOptions }); // 設置路線的繪製選項
+                directionsRenderer.setOptions({ polylineOptions: routeOptions });
                 directionsRenderer.setDirections(response);
-                // 在 info 框顯示總長
-                var route = response.routes[0];
-                var totalDistance = 0;
-                var totalDuration = 0;
+
+                let route = response.routes[0];
+                let totalDistance = 0;
+                let totalDuration = 0;
                 route.legs.forEach(leg => {
                     totalDistance += leg.distance.value;
                     totalDuration += leg.duration.value;
                 });
-                var totalDistanceKm = totalDistance / 1000;
-                var totalDurationMin = totalDuration / 60;
-                var infoContent ='<div class="info-window">' +
+                let totalDistanceKm = totalDistance / 1000;
+                let totalDurationMin = totalDuration / 60;
+                let infoContent ='<div class="info-window">' +
                                 '<div>總路程: ' + totalDistanceKm.toFixed(2) + ' 公里</div>' +
                                 '<div>花費時間: ' + totalDurationMin.toFixed(0) + ' 分</div>' +
                                 '<div>交通方式: ' + routeLabel + '</div>';
-                var infoWindow = new google.maps.InfoWindow({
+                let infoWindow = new google.maps.InfoWindow({
                     content: infoContent
                 });
-                infoWindow.open(map, markers[0]); // 在起點 marker 上顯示 info 框
+                infoWindow.open(map, markers[0]);
             } else {
                 Toast.fire({
                     icon: 'error',
@@ -205,7 +204,6 @@ function showScheduleForDate(date) {
 
     map.fitBounds(bounds);
 }
-
 
 function createMarkerIcon(label) {
     const canvas = document.createElement('canvas');

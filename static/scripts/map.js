@@ -5,8 +5,8 @@ let infowindow;
 const markers = [];
 
 document.addEventListener("DOMContentLoaded", function() {
-    var spinner = document.getElementById("loading-spinner");
-    var content = document.getElementById("map");
+    let spinner = document.getElementById("loading-spinner");
+    let content = document.getElementById("map");
 
     initMap();
 
@@ -15,12 +15,12 @@ document.addEventListener("DOMContentLoaded", function() {
         content.style.display = "block";
     });
 
-    var input = document.getElementById('pac-input');
-    var autocomplete = new google.maps.places.Autocomplete(input);
+    let input = document.getElementById('pac-input');
+    let autocomplete = new google.maps.places.Autocomplete(input);
     autocomplete.bindTo('bounds', map);
 
     autocomplete.addListener('place_changed', function() {
-        var place = autocomplete.getPlace();
+        let place = autocomplete.getPlace();
         if (!place.geometry) {
             console.log("No details available for input: '" + place.name + "'");
             return;
