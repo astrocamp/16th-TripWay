@@ -28,7 +28,11 @@
 						<form action="{% url 'payments:create' %}" class="flex justify-center w-full" method="post">
 							{% csrf_token %}
 							<input type="hidden" name="price" value="300">
+							{% if member.level == "基本會員" %}
 							<button type="submit" class="w-full h-14 items-center text-xl text-white text-center font-bold bg-blue-btn hover:bg-blue-dc">立即升級</button>
+							{% else %}
+							<div class="w-full h-14 items-center text-xl text-white text-center font-bold bg-gray-400 py-4">您已是{{ member.level }}</div>
+							{% endif %}
 						</form>
 					</div>
 				</li>
@@ -46,7 +50,11 @@
 						<form action="{% url 'payments:create' %}" class="flex justify-center w-full" method="post">
 							{% csrf_token %}
 							<input type="hidden" name="price" value="666">
+							{% if member.level == "高級會員" or member.level == "基本會員" %}
 							<button type="submit" class="w-full h-14 items-center text-xl text-white text-center font-bold bg-blue-btn hover:bg-blue-dc ">立即升級</button>
+							{% else %}
+							<div class="w-full h-14 items-center text-xl text-white text-center font-bold bg-gray-400 py-4">您已是{{ member.level }}</div>
+							{% endif %}
 						</form>
 					</div>
 				</li>
@@ -65,7 +73,11 @@
 						<form action="{% url 'payments:create' %}" class="flex justify-center w-full" method="post">
 							{% csrf_token %}
 							<input type="hidden" name="price" value="888">
+							{% if member.level == "白金會員" %}
+							<div class="w-full h-14 items-center text-xl text-white text-center font-bold bg-gray-400 py-4">您已是{{ member.level }}</div>
+							{% else %}
 							<button type="submit" class="w-full h-14 items-center text-xl text-white text-center font-bold bg-blue-btn hover:bg-blue-dc">立即升級</button>
+							{% endif %}
 						</form>
 					</div>
 				</li>

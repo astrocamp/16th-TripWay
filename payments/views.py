@@ -15,7 +15,7 @@ from .models import Payment
 
 @login_required
 def upgrade(request):
-    return render(request, "payments/upgrade.html")
+    return render(request, "payments/upgrade.html", {"member":request.user})
 
 
 @require_POST
