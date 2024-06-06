@@ -2,14 +2,14 @@
 {% load static %}
 <h2 class="p-2 m-4 text-3xl">會員</h2>
 <div class="container flex mt-6">
-	<div class="w-40 h-40 mb-10 ml-10 bg-cover rounded-full bg-light-blue relative group cursor-pointer">
+	<div class="relative w-40 h-40 mb-10 ml-10 bg-cover rounded-full cursor-pointer bg-light-blue group">
         {% if user.profile.avatar %}
-            <div class="w-full h-full rounded-full bg-cover bg-center" style="background-image: url('{{ user.profile.avatar.url }}')"></div>
+            <div class="w-full h-full bg-center bg-cover rounded-full" style="background-image: url('{{ user.profile.avatar.url }}')"></div>
         {% else %}
-            <div class="w-full h-full rounded-full bg-cover bg-center" style="background-image: url('{% static "img/membericon.png" %}')"></div>
+            <div class="w-full h-full bg-center bg-cover rounded-full" style="background-image: url('{% static "img/membericon.png" %}')"></div>
         {% endif %}
-        <div class="absolute inset-0 rounded-full bg-gray-900 bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-            <i class="fas fa-camera text-white text-3xl"></i>
+        <div class="absolute inset-0 flex items-center justify-center transition-opacity duration-500 bg-gray-900 bg-opacity-50 rounded-full opacity-0 group-hover:opacity-100">
+            <i class="text-3xl text-white fas fa-camera"></i>
         </div>
     </div>
 	<div class="flex flex-col mb-10 ml-10 justify-evenly">
@@ -28,14 +28,10 @@
 
 	<div class="ml-10 shadow-xl wa card w-96 bg-baseflex">
 		<figure><img src="https://picsum.photos/400" alt="" /></figure>
-		<div>
-			<i
-			id="favoriteIcon"
-			class="mt-4 fa-heart fa-2xl {% if member_spot %}fa-solid{% else %}fa-regular{% endif %} cursor-pointer favorite-icon"
-			data-toggle-favorite-url="/member/favorite"
-		></i>
-	</div>
 		<div class="card-body">
+			<div>
+				<i id="favoriteIcon" class="fa-heart fa-2xl mr-6 {% if member_spot %}fa-regular{% else %} fa-solid  text-btn-red{% endif %} cursor-pointer" data-toggle-favorite-url="/spots/{{ spot.spot.id }}/favorite"></i>
+			</div>
 			<h2 class="card-title">{{ spot.spot.name }}</h2>
 			<div class="card-actions">
 				<div class="badge badge-outline">{{ spot.spot.rating }}</div>

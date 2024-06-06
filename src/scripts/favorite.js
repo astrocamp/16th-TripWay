@@ -11,6 +11,7 @@ let isFavorite = false
 
 function toggleFavorite(element) {
     const toggleFavoriteUrl = element.dataset.toggleFavoriteUrl
+    console.log('Toggle Favorite URL:', toggleFavoriteUrl)
 
     fetch(toggleFavoriteUrl, {
         method: "POST",
