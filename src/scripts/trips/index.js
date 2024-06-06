@@ -42,7 +42,7 @@ function copyEdit(){
         // 使用 Clipboard API 來複製
         navigator.clipboard.writeText(copyURL).then(() => {
 
-            var successMessage = document.getElementById('successMessage2');
+            const successMessage = document.getElementById('successMessage2');
             successMessage.style.display = 'block';
 
             setTimeout(() => {
@@ -60,7 +60,7 @@ function copyWatch(){
 
         navigator.clipboard.writeText(copyURL).then(() => {
 
-            var successMessage = document.getElementById('successMessage');
+            const successMessage = document.getElementById('successMessage');
             successMessage.style.display = 'block';
 
             setTimeout(() => {
