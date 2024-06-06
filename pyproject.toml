@@ -22,6 +22,7 @@ hanziconv = "^0.3.2"
 qrcode = "^7.4.2"
 gunicorn = "^22.0.0"
 whitenoise = "^6.6.0"
+django-heroku = "^0.3.1"
 
 
 [build-system]
