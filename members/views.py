@@ -2,7 +2,11 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import SignUp
-from .models import MemberSpot
+from .models import MemberSpot, Member
+from PIL import Image
+from io import BytesIO
+from django.core.files.storage import default_storage
+
 
 def login_user(request):
     if request.method == "POST":
@@ -45,5 +49,34 @@ def register_user(request):
 
 def profile(request):
     member = request.user
+
     spots = MemberSpot.objects.filter(member=member).select_related("spot")
-    return render(request, "profile/index.html", {"spots": spots, "member": member })
+    return render(request, "profile/index.html", {"spots": spots, "member": member})
+
+
+def create(request):
+    member = request.user
+
+    if request.method == "POST":
+        if "image" in request.FILES:
+            image = request.FILES["image"]
+
+            compressed_image_data = compress_image(image)
+
+            image_path = default_storage.save(
+                "member_profile/" + image.name, compressed_image_data
+            )
+
+            member.image = image_path
+            member.save()
+
+    return redirect("profile")
+
+
+def compress_image(image):
+    img = Image.open(image)
+    img.thumbnail((200, 200))
+    output = BytesIO()
+    img.save(output, format="PNG", quality=70)
+    output.seek(0)
+    return output
