@@ -18,10 +18,10 @@ SECRET_KEY = "django-insecure-&u@2d$fi47oaawy#os8ak*nn7zx_g7e$!ci*w=&i(8#j^xs@%^
 IS_HEROKU_APP = os.getenv("HEROKU_APP")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if not IS_HEROKU_APP:
-    DEBUG = True
-else:
-    DEBUG = False
+# if not IS_HEROKU_APP:
+DEBUG = True
+# else:
+#     DEBUG = False
 
 HOST_NAME = os.getenv("HOST_NAME")
 CSRF_TRUSTED_ORIGINS = [f"https://{HOST_NAME}"]
