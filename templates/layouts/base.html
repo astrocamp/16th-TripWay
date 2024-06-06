@@ -28,8 +28,7 @@
 
         {% if messages %}
         {% for message in messages %}
-            <div class="notice-message" data-message="{{ message|escapejs }}" data-tags="{{ message.tags }}">
-            </div>
+            <div class="notice-message" data-message="{{ message|escapejs }}" data-tags="{{ message.tags }}"></div>
         {% endfor %}
         {% endif %}
         
