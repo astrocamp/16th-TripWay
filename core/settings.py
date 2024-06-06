@@ -15,10 +15,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-&u@2d$fi47oaawy#os8ak*nn7zx_g7e$!ci*w=&i(8#j^xs@%^"
 
-IS_HEROKU_APP = os.getenv("HEROKU_APP")
+is_heroku_app = os.getenv("HEROKU_APP")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if IS_HEROKU_APP:
+if is_heroku_app:
     DEBUG = False
 else:
     DEBUG = True
@@ -26,7 +26,7 @@ else:
 HOST_NAME = os.getenv("HOST_NAME")
 CSRF_TRUSTED_ORIGINS = [f"https://{HOST_NAME}"]
 
-if IS_HEROKU_APP:
+if is_heroku_app:
     ALLOWED_HOSTS = ["*"]
 else:
     ALLOWED_HOSTS = [
@@ -119,7 +119,7 @@ WSGI_APPLICATION = "core.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-if IS_HEROKU_APP:
+if is_heroku_app:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
