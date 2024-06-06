@@ -1,13 +1,11 @@
+document.getElementById('menu-toggle-btn').addEventListener('click', toggleMenu);
 function toggleMenu() {
-    const menuToggleBtn = document.getElementById('menu-toggle-btn');
-    const menuNav = document.getElementById('menu-nav');
-
-    if (menuToggleBtn && menuNav) {
-        menuToggleBtn.addEventListener('click', () => {
-            menuNav.classList.toggle('hidden');
-        });
+    var menu = document.getElementById('menu-nav');
+    if (menu.classList.contains('hidden')) {
+        menu.classList.remove('hidden');
     } else {
-        console.error('Menu toggle button or navigation menu not found.');
+        menu.classList.add('hidden');
     }
 }
+
 export default toggleMenu
