@@ -1,49 +1,60 @@
 {% extends 'layouts/base.html' %} {% block content %}
 {% load static %}
-<h2 class="p-2 m-4 text-3xl">會員</h2>
-<div class="container flex mt-6">
-	<div class="w-40 h-40 mb-10 ml-10 bg-cover rounded-full bg-light-blue relative group cursor-pointer">
-		<img id="image" class="absolute w-full h-full rounded-full bg-cover bg-center" src="{% if member.image and member.image.url %}{{ member.image.url }}{% else %}{% static 'img/membericon.png' %}{% endif %}"/>
+<div class="flex justify-center pt-8 mb-24">
+	<div class="container text-center">
+		<div class="relative w-40 h-40 mb-10 ml-10 bg-cover rounded-full cursor-pointer bg-light-blue group">
+			<img id="image" class="absolute w-full h-full bg-center bg-cover rounded-full" src="{% if member.image and member.image.url %}{{ member.image.url }}{% else %}{% static 'img/membericon.png' %}{% endif %}"/>
 
-		<form action="{% url 'create' %}" method="post" class="mt-8 mx-auto w-1/2 relative", enctype="multipart/form-data">
+			<form action="{% url 'create' %}" method="post" class="relative w-1/2 mx-auto mt-8", enctype="multipart/form-data">
 			{% csrf_token %}
 				<input type="file" id="image-profile" style="display: none" name="image" accept="image/*"/>
-					<button type="button" class="absolute top-12 inset-0 rounded-full bg-gray-900 bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500" onclick="document.getElementById('image-profile').click();">
-						<i class="fas fa-camera text-white text-3xl"></i>
+					<button type="button" class="absolute inset-0 flex items-center justify-center transition-opacity duration-500 bg-gray-900 bg-opacity-50 rounded-full opacity-0 top-12 group-hover:opacity-100" onclick="document.getElementById('image-profile').click();">
+						<i class="text-3xl text-white fas fa-camera"></i>
 					</button>
-					<button type="submit" class="absolute top-20 left-20 w-12 h-12 text-center p-2 text-2xl text-white font-bold bg-light-gray rounded-full">
+					<button type="submit" class="absolute w-12 h-12 p-2 text-2xl font-bold text-center text-white rounded-full top-20 left-20 bg-light-gray">
 						<i class="fa-solid fa-arrow-up-from-bracket"></i>
 					</button>
-		</form>
+			</form>
     </div>
-	<div class="flex flex-col mb-10 ml-10 justify-evenly">
+		<div class="flex flex-col">
 		<p class="text-lg font-black">{{ member.username }}</p>
 		<p>會員等級：{{ member.level }}</p>
 		<a class="text-cyan-700" href="{% url 'payments:upgrade' %}">馬上升級！</a>
+		</div>
 	</div>
 </div>
 
-<p class="after:content-[''] after:w-1 h-0.5 bg-slate-400"></p>
 
-<h2 class="p-2 m-4 text-3xl">收藏列表</h2>
-
-<div class="container flex flex-wrap mt-6">
-	{% for spot in spots %}
-
-	<div class="ml-10 shadow-xl wa card w-96 bg-baseflex">
-		<figure><img src="https://picsum.photos/400" alt="" /></figure>
-		<div class="card-body">
-			<div>
-				<i id="favoriteIcon" class="fa-heart fa-2xl mr-6 {% if member_spot %}fa-regular{% else %} fa-solid  text-btn-red{% endif %} cursor-pointer" data-toggle-favorite-url="/spots/{{ spot.spot.id }}/favorite"></i>
+<div class="flex justify-center">
+	<div class="w-[960px]">
+			<div class="flex justify-around mb-4 border-b-2 border-light-gray">
+					<input type="radio" name="my_tabs_1" id="tab-1" class="hidden" checked/>
+					<label for="tab-1" class="w-1/2 px-4 py-2 text-center cursor-pointer" data-tab="tab-content-1">我的行程</label>
+									
+					<input type="radio" name="my_tabs_1" id="tab-2" class="hidden"/>
+					<label for="tab-2" class="w-1/2 px-4 py-2 text-center cursor-pointer" data-tab="tab-content-2">收藏列表</label>
 			</div>
-			<h2 class="card-title">{{ spot.spot.name }}</h2>
-			<div class="card-actions">
-				<div class="badge badge-outline">{{ spot.spot.rating }}</div>
-				<div class="badge badge-outline">{{ spot.spot.city }}</div>
+			
+			<div id="tab-content-1" class="p-4 tab-content">123</div>
+			<div id="tab-content-2" class="p-4 tab-content">
+					<div class="flex flex-wrap mt-6">
+							{% for spot in spots %}
+									<div class="ml-10 shadow-xl wa card w-96 bg-baseflex">
+											<figure><img src="https://picsum.photos/400" alt="" /></figure>
+											<div class="card-body">
+													<div>
+															<i id="favoriteIcon" class="fa-heart fa-2xl mr-6 {% if member_spot %}fa-regular{% else %} fa-solid  text-btn-red{% endif %} cursor-pointer" data-toggle-favorite-url="/spots/{{ spot.spot.id }}/favorite"></i>
+													</div>
+													<h2 class="card-title">{{ spot.spot.name }}</h2>
+													<div class="card-actions">
+															<div class="badge badge-outline">{{ spot.spot.rating }}</div>
+															<div class="badge badge-outline">{{ spot.spot.city }}</div>
+													</div>
+											</div>
+									</div>
+							{% endfor %}
+					</div>
 			</div>
-		</div>
 	</div>
-
-	{% endfor %}
 </div>
 {% endblock %}
