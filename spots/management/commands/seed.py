@@ -21,6 +21,8 @@ class Command(BaseCommand):
             "query": query,
             "language": "zh-TW",
             "key": api_key,
+            "location": "23.6978,120.9605",
+            "radius": "100000",
         }
         response = requests.get(url, params=parameters)
 
