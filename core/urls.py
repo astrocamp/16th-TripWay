@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 from . import views
 import os
 
-ADMIN = os.getenv("Admin_URL_NAME")
+ADMIN = os.getenv("ADMIN_URL")
 urlpatterns = [
     path("", views.home, name="home"),
     path(f"{ ADMIN }/", admin.site.urls),
