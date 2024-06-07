@@ -2,7 +2,6 @@
 {% block content %}
 {% load static %}
 
-
 <div class="bg-base-white" style="height:calc(100vh - 88px); overflow: hidden;">
   <div class="wrap flex flex-col lg:flex-row h-full overflow-scroll">
     <div class="sm:w-2/5 w-full overflow-y-auto">
@@ -27,10 +26,11 @@
               <i class="fa-solid fa-minus text-2xl text-red-700"></i>
             </button>
           </form>
-
           {% for day in date_range %}
-            <button id="btn-{{ day|date:'Y-m-d' }}" class="tab ml-1 h-14 border-b shadow-sm rounded-2xl transition-all ease-in-out font-bold bg-btn-yellow" data-date="{{ day|date:'Y-m-d'}}" onclick="showTab('{{ day|date:'Y-m-d' }}', 'btn-{{ day|date:'Y-m-d' }}', '{{ trip.id }}')">
-              {{ day|date:"Y-m-d" }}
+            <button id="btn-{{ day|date:'Y-m-d' }}" class="tab ml-1 mb-2 h-14 shadow-sm rounded-2xl transition-all ease-in-out font-bold bg-btn-yellow text-center flex items-center justify-center overflow-hidden text-ellipsis max-w-full px-4"
+                    data-date="{{ day|date:'Y-m-d'}}"
+                    onclick="showTab('{{ day|date:'Y-m-d' }}', 'btn-{{ day|date:'Y-m-d' }}', '{{ trip.id }}')">
+                {{ day|date:"Y-m-d" }}
             </button>
           {% endfor %}
           
