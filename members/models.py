@@ -6,7 +6,7 @@ from spots.models import Spot
 class Member(AbstractUser):
     email = models.EmailField(max_length=255, unique=True)
     level = models.CharField(max_length=10, default="基本會員")
-    image = models.ImageField(null=True, default=None, upload_to="trips_coverPhoto/")
+    image = models.ImageField(null=True, default=None)
 
 
 class MemberSpot(models.Model):
