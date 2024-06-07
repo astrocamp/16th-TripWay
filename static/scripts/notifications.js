@@ -1,5 +1,5 @@
-function updateNotificationStatus() {
-    fetch("{% url 'notifies:update_notification_status' %}", {
+function markNotificationsAsRead() {
+    fetch("{% url 'notifies:mark_as_read' %}", {
         method: 'POST',
         headers: {
             "X-CSRFToken": "{{ csrf_token }}",

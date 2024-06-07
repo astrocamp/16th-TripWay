@@ -1,6 +1,5 @@
 from django.shortcuts import render,redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
 from .models import Notification
 
 
@@ -17,13 +16,6 @@ def mark_as_read(request, notification_id):
         notification.is_read = True
         notification.save()
     return redirect("notifies:notification_list")
-
-
-@login_required
-def update_notification_status(request):
-    # 更新通知狀態，將未讀通知標示為已讀
-    Notification.objects.filter(user=request.user, is_read=False).update(is_read=True)
-    return JsonResponse({'status': 'success'})
 
     
 @login_required
