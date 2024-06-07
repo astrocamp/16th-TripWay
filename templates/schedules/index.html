@@ -74,14 +74,50 @@
               })
             }, edit_{{ schedules.id }}: false }">
               {% comment %} <a class="px-2 py-2 rounded-lg hover:text-gray-650 text-cyan-850" href="{% url 'schedules:update' schedule.id %}"><i class="fa-solid fa-file-pen"></i></a> {% endcomment %}
-              <button class="px-2 py-2 rounded-lg hover:text-gray-650 text-cyan-850" @click="edit_{{ schedules.id }} = true"><i class="fa-solid fa-file-pen"></i></button>
+              <div><button class="px-2 py-2 rounded-lg hover:text-gray-650 text-cyan-850" @click="edit_{{ schedules.id }} = true"><i class="fa-solid fa-file-pen"></i></button></div>
               <form @submit.prevent="deleteSchedule()" action="{% url 'schedules:delete' schedule.id %}" method="post" x-ref="id{{ schedules.id }}">
                 {% csrf_token %}
                 <button class="px-2 py-2 text-red-700 rounded-lg hover:text-gray-650"><i class="fa-regular fa-trash-can"></i></button>
               </form>
-              <div x-show="edit_{{ schedules.id }}" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                
+              <div x-show="edit_{{ schedules.id }}" class="fixed inset-0 z-50 flex items-center justify-center bg-black" x-data="{ update_schedule() {
 
+              } }">
+                <div class="flex items-center space-y-5 space-x-4 relative w-2/3">
+                  <button class="mt-8 mx-auto text-2xl absolute top-0 right-0" @click="edit_{{ schedules.id }} = false">X</button>
+                  <form action="{% url 'schedules:show' schedule.id %}" method="post" class="mt-8 mx-auto w-full">
+                  {% csrf_token %}
+                    <div>
+                      <h3 class="text-2xl">{{ schedule.spot_name }}</h3>
+                      <div class="flex my-8">
+                        <div class="flex flex-col w-1/3 pr-4" >
+                          <div class="flex flex-col mb-6">
+                            <label for="date" class="block font-bold text-lg">日期：</label>
+                            <select name="date" id="date" required="required" class="select select-bordered w-full mt-2 border-gray-400 text-lg">
+                              {% for date in date_range %}
+                              <option value="{{ date|date:'Y-m-d' }}" {% if date|date:'Y-m-d' == schedule.date|date:'Y-m-d' %}selected{% endif %}>{{ date|date:'Y-m-d' }}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                          <div class="flex flex-col mb-6">
+                            <label for="start_time" class="block font-bold text-lg">抵達時間：</label>
+                            <input type="time" name="start_time" id="start_time" required="required" class="input input-bordered w-full mt-2 text-lg border-gray-400" value="{{ schedule.start_time|time:'H:i' }}" />
+                          </div>
+                          <div  class="flex flex-col mb-6">
+                            <label for="start_time" class="block font-bold text-lg">離開時間：</label>
+                            <input type="time" name="end_time" id="end_time" required="required" class="input input-bordered w-full mt-2 text-lg border-gray-400" value="{{ schedule.end_time|time:'H:i' }}" />
+                          </div>
+                        </div>
+                        <div class="flex flex-col w-2/3 p-2 mb-6">
+                          <label for="note" class="block font-bold text-lg">行程筆記：</label>
+                          <textarea name="note" id="note" type="text" class="textarea textarea-bordered textarea-md w-full h-full mt-2 text-lg border-gray-400">{{ schedule.note }}</textarea>
+                        </div>
+                      </div>
+                      <div class="flex justify-center items-center mb-20 mt-10">
+                      <button type="submit" class="w-full h-14 items-center p-2 text-2xl text-white text-center font-bold bg-blue-btn hover:bg-blue-dc border rounded-3xl">更新行程資訊</button>
+                    </div>
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
             {% endif %}
