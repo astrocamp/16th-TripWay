@@ -15,7 +15,8 @@ function toggleFavorite(element) {
     fetch(toggleFavoriteUrl, {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            'X-CSRFToken': csrfToken,
         },
     })
     .then(response => response.json())

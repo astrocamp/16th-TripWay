@@ -145,12 +145,6 @@ function showScheduleForDate(date){
     if (tripMode === '汽車') {
         routeLabel = '汽車';
         travelMode = google.maps.TravelMode.DRIVING;
-    } else if (tripMode === '大眾運輸') {
-        routeLabel = '大眾運輸';
-        travelMode = google.maps.TravelMode.TRANSIT;
-    } else if (tripMode === '機車') {
-        routeLabel = '機車';
-        travelMode = google.maps.TravelMode.DRIVING; 
     } else if (tripMode === '走路') {
         routeLabel = '走路';
         travelMode = google.maps.TravelMode.WALKING;
