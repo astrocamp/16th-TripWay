@@ -4,8 +4,23 @@
 @tailwind screens;
 
 
-
 .active-tab {
 background-color:#dfae0c;
 color: black;
+}
+
+input[type="radio"]:checked + label {
+  border-bottom-width: 2px;
+  border-bottom-color: #00A0B0;
+  color: #00A0B0;
+  position: relative;
+  top: 2px;
+}
+
+.tab-content {
+  display: none;
+}
+
+input[type="radio"]:checked + label + .tab-content {
+  display: block;
 }
