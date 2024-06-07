@@ -2,7 +2,7 @@
 website 網站：http://  
 Demo 發表影片：http://  
 
-[![圖片](https://imgur.com/NUHb8dM)](website)
+![TripWay](https://imgur.com/NUHb8dM)
 
 **旅遊行程規劃網站 - readme**  
 歡迎來到 TripWay！以下是您使用 TripWay 的重要資訊和步驟指南。
@@ -19,15 +19,20 @@ TripWay 是一個規劃旅遊行程的網站，您可以建立專屬行程，在
 **5. 探索地圖：** 當您還未決定要去哪個景點時，就可以先逛逛地圖，我們把您附近和指定的景點都搜集起來，您可以將喜愛的景點收藏起來，當您決定要開始規劃行程時，就可以在個人頁面裡的收藏景點直接加入行程。  
 
 ## 進階功能
+**1.會員升級：**高級、黃金、白金會員
+**2.收藏個人喜愛景點！**
 
 ## 聯絡我們
 
 ## 開發團隊  
 林明毅
+ -GitHub: https://github.com/mingyi1223
 
 林愉庭
+ -GitHub: https://github.com/yuting3344
 
 李韻如
+ -GitHub: https://github.com/syunjulee
 
 陳嘉芳
 
@@ -36,7 +41,7 @@ TripWay 是一個規劃旅遊行程的網站，您可以建立專屬行程，在
 陳建安
 
 ## 使用技術
- - **前端：** HTML5 / JavaScript / Tailwindcss / dasiyUI / font awesome
+ - **前端：** HTML5 / JavaScript / Tailwindcss / dasiyUI / font awesome / alpine.js
  - **後端：** Python / Django
  - **部署：** Heroku
  - **第三方登入：** Google / Line
@@ -46,4 +51,4 @@ TripWay 是一個規劃旅遊行程的網站，您可以建立專屬行程，在
  - **雲端系統：** Amazon AWS S3
  - **前期規劃：** Figma / Trello
 
-*最後更新：2024/6/4*
+*最後更新：2024/6/7*
