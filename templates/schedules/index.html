@@ -131,10 +131,13 @@
         </div>
       </div>
       <div id="map" style="flex-grow: 1;" class="hidden sm:block h-[80vh] m-2 sm:h-full border border-gray-500 sm border-none sm:m-0"></div>
-    
+      <span id="loading-spinner" class="absolute loading loading-ball loading-lg top-1/2 translate-y-[-50%] left-1/2 translate-x-[-50%] "></span>
+
   </div>
 </div>
 <link rel="stylesheet" href="{% static "styles/route.css" %}">
+<link rel="stylesheet" href="{% static "styles/wait_web.css" %}">
+
 <script src="{% static "scripts/route.js" %}"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&libraries=places&callback=initMap" async defer></script>
 {% endblock %}

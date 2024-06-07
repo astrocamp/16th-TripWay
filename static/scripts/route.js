@@ -6,7 +6,9 @@ let tripId = getTripIdFromUrl();
 let directionsService;
 let directionsRenderer;
 
+
 function initMap() {
+    let spinner = document.getElementById("loading-spinner"); 
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 16,
     });
@@ -38,6 +40,11 @@ function initMap() {
     } else {
         handleLocationError(false, map.getCenter());
     }
+
+    google.maps.event.addListenerOnce(map, 'tilesloaded', function() {
+        spinner.style.display = "none";
+    });
+
     loadSchedule();
 }
 
