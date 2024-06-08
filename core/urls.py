@@ -17,5 +17,6 @@ urlpatterns = [
     path("schedules/", include("schedules.urls")),
     path("accounts/", include("allauth.urls")),
     path("spots/", include("spots.urls")),
+    path("blogs/", include("blogs.urls")),
     path("notifications/", include("notifies.urls")),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
