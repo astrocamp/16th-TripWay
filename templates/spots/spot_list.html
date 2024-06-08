@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <div class="pt-8">
-    
+
     <header class="flex justify-between items-center w-full md:w-3/4 mx-auto p-4">
         <div class="flex items-center w-full md:w-auto mb-2 md:mb-0">
             <a class="m-1 transition-colors duration-300 hover:text-sky-700" href="{% url 'trips:index' %}">
@@ -28,7 +28,7 @@
         <div class="flex flex-wrap justify-center gap-4">
             {% for spot in spots %}
             <div class="relative w-full sm:w-[48%] lg:w-[48%] xl:w-[32%] max-w-xs mt-5 mb-1">
-                <a href="{% url 'spots:show' spot.id %}" class="block h-full duration-300 ease-in-out bg-white border-2 shadow-md cursor-pointer rounded-xl hover:bg-blue-300 hover:scale-105">
+                <a href="{% url 'spots:show' spot.id %}" class="block h-full duration-300 ease-in-out bg-white border-2 shadow-md cursor-pointer rounded-xl hover:scale-105">
                     <div class="w-full h-[220px] overflow-hidden rounded-t-xl">
                         <img src="{% if spot.photo_url %}{{ spot.photo_url }}{% else %}{% static 'img/tripdefault.png' %}{% endif %}" class="object-cover w-full h-full" alt="">
                     </div>
