@@ -3,6 +3,7 @@ from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 from .service import PaymentService
@@ -11,7 +12,6 @@ import os
 import json
 from .models import Payment
 
-# Create your views here.
 
 @login_required
 def upgrade(request):
@@ -23,6 +23,12 @@ def upgrade(request):
 def create_order(request):
     member = request.user
     price = request.POST["price"]
+
+    valid_prices = [300, 666, 888] 
+    if price not in valid_prices:
+        messages.error(request, "無效的金額！")
+        return redirect("payments:upgrade")
+        
     order = PaymentService(member, price).call(request)
     return render(request, "payments/check.html", order)
 

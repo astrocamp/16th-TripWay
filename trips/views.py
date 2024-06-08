@@ -4,12 +4,10 @@ from django.urls import reverse
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.conf import settings
 from members.models import Member
 from .models import Trip, TripMember
 from notifies.models import Notification
 import qrcode
-from django.core.files.storage import default_storage
 from io import BytesIO
 from base64 import b64encode
 import os
@@ -24,7 +22,7 @@ def home(request):
         trip.name = request.POST["name"]
         trip.start_date = request.POST["start_date"]
         trip.end_date = request.POST["end_date"]
-        trip.transportation = request.POST["transportation"]
+    
         if "image" in request.FILES:
             trip.image = request.FILES["image"]
 
@@ -98,15 +96,20 @@ def create(request):
         start_date = request.POST["start_date"]
         end_date = request.POST["end_date"]
         transportation = request.POST["transportation"]
+        image = request.FILES.get("image")
 
-        if "image" in request.FILES:
-            image = request.FILES["image"]
-        else:
-            image = None
+        checks = [
+            (not name, "行程名稱不可為空"),
+            (not start_date, "請選出發日期"),
+            (not end_date, "請選結束日期"),
+            (end_date < start_date, "結束日期不能早於開始日期"),
+            (not transportation, "請選交通方式"),
+        ]
 
-        if end_date < start_date:
-            messages.error(request, "結束日期不能早於開始日期")
-            return redirect("trips:new")
+        for condition, error_message in checks:
+            if condition:
+                messages.error(request, error_message)
+                return render(request, "trips/new.html")
 
         member = request.user
         trip = Trip(
@@ -121,7 +124,6 @@ def create(request):
         TripMember.objects.create(trip=trip, member=member, is_editable=True)
 
 
-    if request.method == "POST":
         Notification.objects.create(
             user = member, 
             message = f"成功創建新行程：{trip.name}",
@@ -130,12 +132,47 @@ def create(request):
 
         messages.success(request, "旅程創建成功！")
         return redirect("trips:index")
+    
+    return render(request, "trips/new.html")
 
 
 @login_required
 def update(request, id):
-    trips = get_object_or_404(Trip, pk=id)
-    return render(request, "trips/update.html", {"trips": trips})
+    trip = get_object_or_404(Trip, pk=id)
+
+    if request.method == "POST":
+        name = request.POST["name"]
+        start_date = request.POST["start_date"]
+        end_date = request.POST["end_date"]
+        transportation = request.POST["transportation"]
+
+        checks = [
+            (not name, "行程名稱不可為空"),
+            (not start_date, "請選擇出發日期"),
+            (not end_date, "請選擇結束日期"),
+            (end_date < start_date, "結束日期不能早於開始日期"),
+            (not transportation, "請選交通方式"),
+        ]
+
+        for condition, error_message in checks:
+            if condition:
+                messages.error(request, error_message)
+                return render(request, "trips/update.html", {"trip": trip})
+
+        # 更新行程的資料
+        trip.name = name
+        trip.start_date = start_date
+        trip.end_date = end_date
+        trip.transportation = transportation
+        if "image" in request.FILES:
+            trip.image = request.FILES["image"]
+        trip.save()
+
+        messages.success(request, "行程已更新！")
+        return redirect("trips:index")
+
+    return render(request, "trips/update.html", {"trip": trip})
+
 
 
 @require_POST

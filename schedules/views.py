@@ -95,32 +95,53 @@ def create(request):
 def show(request, id):
     schedules = get_object_or_404(Schedule, pk=id)
     trip = schedules.trip
-    if request.method == "POST":
-        schedules.date = request.POST["date"]
-        schedules.start_time = request.POST["start_time"]
-        schedules.end_time = request.POST["end_time"]
-        schedules.note = request.POST["note"]
-
-        if schedules.end_time > schedules.start_time:
-            schedules.save()
-            messages.success(request, "更新成功！")
-            return redirect("schedules:show", id=id)
-        else:
-            messages.error(request, "離開時間不可早於抵達時間！")
-            return redirect("schedules:update", id=id)
-    else:
-        trip_member = get_object_or_404(TripMember, trip=trip, member=request.user)
-        return render(
-            request,
-            "schedules/show.html",
-            {"schedules": schedules, "trip": trip, "trip_member": trip_member},
-        )
+    trip_member = get_object_or_404(TripMember, trip=trip, member=request.user)
+        
+    return render(
+        request,
+        "schedules/show.html",
+        {"schedules": schedules, "trip": trip, "trip_member": trip_member},
+    )
 
 
 @login_required
 def update(request, id):
     schedule = get_object_or_404(Schedule, pk=id)
+    
     date_range = schedule.trip.get_date_range()
+    trip_member = get_object_or_404(TripMember, trip=schedule.trip, member=request.user)
+    if not trip_member.is_editable:
+        messages.error(request, "您沒有權限編輯此行程！")
+        return redirect("home")
+
+    if request.method == 'POST':
+        date = request.POST["date"]
+        start_time = request.POST["start_time"]
+        end_time = request.POST["end_time"]
+        note = request.POST["note"]
+
+        checks = [
+            (not date, "請選擇行程日期"),
+            (not start_time, "請選擇抵達時間"),
+            (not end_time, "請選擇離開時間"),
+            (end_time < start_time, "離開時間不可早於抵達時間！"),
+        ]
+
+        for condition, error_message in checks:
+            if condition:
+                messages.error(request, error_message)
+                return redirect("schedules:update", id=id)
+            
+        # 更新行程資訊
+        schedule.date = date
+        schedule.start_time = start_time
+        schedule.end_time = end_time
+        schedule.note = note
+        schedule.save()
+
+        messages.success(request, "更新成功！")
+        return redirect("schedules:show", id=id)
+
     return render(
         request,
         "schedules/update.html",
