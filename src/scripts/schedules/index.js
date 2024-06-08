@@ -24,7 +24,7 @@ function showTab(selectedDate, selectedButtonId) {
     btn.classList.add("active-tab");
   }
 
-Alpine.data("deleteSchedule", (id) => {
+Alpine.data("deleteSchedule", (schedule) => {
   Swal.fire({
     icon: "question",
     title: "確定要刪除嗎?",
@@ -34,7 +34,7 @@ Alpine.data("deleteSchedule", (id) => {
     confirmButtonText: "刪除",
   }).then((result) => {
     if(result.isConfirmed){
-      id.submit()
+      schedule.submit()
     }
   })
 })
