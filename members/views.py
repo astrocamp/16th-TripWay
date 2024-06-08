@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import SignUp
 from .models import MemberSpot, Member
@@ -47,7 +48,7 @@ def register_user(request):
 
     return render(request, "registration/register.html", {"form": form})
 
-
+@login_required
 def profile(request):
     member = request.user
 
