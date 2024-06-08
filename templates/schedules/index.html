@@ -50,7 +50,7 @@
         {% for date, schedules in schedule_dates.items %}
         <div id="schedule{{ schedules.0.date|date:'Y-m-d' }}" class="tab-content mt-3">
           {% for schedule in schedules %}
-          <div class="flex mb-1 px-8 py-3 mx-8 my-6 shadow-lg rounded-custom-20 hover:bg-light-gray h-36 schedule" data-schedule-id="{{ schedule.id }}">
+          <div class="flex mb-1 px-8 py-3 mx-8 my-6 shadow-lg rounded-custom-20 hover:bg-light-gray h-36">
             <div class="flex grow">
               <a href="{% url 'schedules:show' schedule.id %}" class="w-full h-full flex items-center">
                 <span class="inline-block w-6 h-6 mr-2 text-center text-white bg-black rounded-full">{{ forloop.counter }}</span>
@@ -59,37 +59,16 @@
               </a>
             </div>
             {% if trip_member.is_editable %}
-            <div class="flex grow-0 z-1000" x-data="{ deleteSchedule(id) {
-              Swal.fire({
-                icon: 'question',
-                title: '確定要刪除嗎?',
-                text: '若選擇刪除，資料將會消失',
-                showCancelButton: true,
-                cancelButtonText: '取消',
-                confirmButtonText: '刪除',
-              }).then((result) => {
-                if(result.isConfirmed){
-                    this.$refs[id].submit()
-                }
-              })
-            }, open: false, submitScheduleChange(id) {
-              startTime = this.$refs[`start_time${ id }`].value
-              endTime = this.$refs[`end_time${ id }`].value
-              if (startTime <= endTime) {
-                this.$refs[`change${ id }`].submit()
-              } else {
-                alert('離開時間不能早於抵達時間')
-              }
-            } }">
+            <div class="flex grow-0 z-1000" x-data="{ deleteSchedule, open: false, submitScheduleChange }">
               <div><button class="px-2 py-2 rounded-lg hover:text-gray-650 text-cyan-850" @click="open = true"><i class="fa-solid fa-file-pen"></i></button></div>
-              <form @submit.prevent="deleteSchedule('id{{ schedule.id }}')" action="{% url 'schedules:delete' schedule.id %}" method="post" x-ref="id{{ schedule.id }}">
+              <form @submit.prevent="deleteSchedule($refs.id)" action="{% url 'schedules:delete' schedule.id %}" method="post" x-ref="id">
                 {% csrf_token %}
                 <button class="px-2 py-2 text-red-700 rounded-lg hover:text-gray-650"><i class="fa-regular fa-trash-can"></i></button>
               </form>
-              <div x-show="open" class="fixed mx-auto w-1/2 h-1/2 z-50 flex items-center justify-center bg-white border-blue-800 bottom-1/4 top-1/4 border-2">
+              <div x-show="open" class="fixed inset-0 mx-auto w-1/2 h-2/3 z-50 flex items-center justify-center bg-white border-blue-800 bottom-1/4 top-1/4 border-2">
                 <div class="flex items-center space-y-4 space-x-4 relative w-2/3">
                   <button class="mt-8 mx-auto text-2xl absolute top-0 right-0" @click="open = false">X</button>
-                  <form @submit.prevent="submitScheduleChange({{ schedule.id }})" action="{% url 'schedules:show' schedule.id %}" method="post" class="mt-8 mx-auto w-full" x-ref="change{{ schedule.id }}">
+                  <form @submit.prevent="submitScheduleChange($refs.startTime, $refs.endTime, $refs.change)" action="{% url 'schedules:show' schedule.id %}" method="post" class="mt-8 mx-auto w-full" x-ref="change">
                   {% csrf_token %}
                     <div>
                       <h3 class="text-2xl">{{ schedule.spot_name }}</h3>
@@ -105,11 +84,11 @@
                           </div>
                           <div class="flex flex-col mb-6">
                             <label for="start_time" class="block font-bold text-lg">抵達時間：</label>
-                            <input type="time" name="start_time" x-ref="start_time{{ schedule.id }}" required="required" class="input input-bordered w-full mt-2 text-lg border-gray-400" value="{{ schedule.start_time|time:'H:i' }}" />
+                            <input type="time" name="start_time" x-ref="startTime" required="required" class="input input-bordered w-full mt-2 text-lg border-gray-400" value="{{ schedule.start_time|time:'H:i' }}" />
                           </div>
                           <div  class="flex flex-col mb-6">
                             <label for="start_time" class="block font-bold text-lg">離開時間：</label>
-                            <input type="time" name="end_time" x-ref="end_time{{ schedule.id }}" required="required" class="input input-bordered w-full mt-2 text-lg border-gray-400" value="{{ schedule.end_time|time:'H:i' }}" />
+                            <input type="time" name="end_time" x-ref="endTime" required="required" class="input input-bordered w-full mt-2 text-lg border-gray-400" value="{{ schedule.end_time|time:'H:i' }}" />
                           </div>
                         </div>
                         <div class="flex flex-col w-2/3 p-2 mb-6 my-2">
@@ -141,31 +120,19 @@
           <div>成員列表</div>  
         </div>
           {% for member in members %}
-            <div class="flex justify-between items-center px-2 py-3 mx-8 my-4 bg-white border rounded-lg hover:bg-light-gray h-100" x-data="{ deleteMember(m) {
-              Swal.fire({
-                icon: 'question',
-                title: '確定要刪除成員嗎?',
-                showCancelButton: true,
-                cancelButtonText: '取消',
-                confirmButtonText: '刪除',
-              }).then((result) => {
-                if(result.isConfirmed){
-                  this.$refs[`${m}`].submit()
-                }
-              })
-            } }">
+            <div class="flex justify-between items-center px-2 py-3 mx-8 my-4 bg-white border rounded-lg hover:bg-light-gray h-100" x-data="{ deleteMember }">
               
               <div class="flex items-center">
                 {{ member.email }}
               </div>
 
               {% if trip_member.member_id == member.id %}
-                <form @submit.prevent="deleteMember('self')" action="{% url 'trips:delete-self' trip.id member.id %}" method="post" x-ref="self">
+                <form @submit.prevent="deleteMember($refs.self)" action="{% url 'trips:delete-self' trip.id member.id %}" method="post" x-ref="self">
                   {% csrf_token %}
                   <input type="submit" value="X">
                 </form>
               {% elif trip_member.is_editable and member.id != trip.owner %}
-                <form @submit.prevent="deleteMember('id{{ member.id }}')" action="{% url 'trips:delete-member' trip.id member.id %}" method="post" x-ref="id{{ member.id }}">
+                <form @submit.prevent="deleteMember($refs.member)" action="{% url 'trips:delete-member' trip.id member.id %}" method="post" x-ref="member">
                   {% csrf_token %}
                   <input type="submit" value="X">
                 </form>
@@ -184,11 +151,4 @@
 
 <script src="{% static "scripts/route.js" %}"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&libraries=places&callback=initMap" async defer></script>
-<script>
-  const sc = document.querySelectorAll('.schedule')
-  for (let i = 0; i < sc.length; i++) {
-    console.log(sc[i].dataset['scheduleId']) 
-  }
-</script>
-
 {% endblock %}
