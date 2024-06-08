@@ -8,15 +8,15 @@
     </a>
     <!-- search input -->
     {% if user.is_authenticated %}
-    <div class="flex flex-1 justify-center-0 mr-4">
-        <div class="relative w-50 lg:w-80 rounded-custom-20 overflow-hidden text-gray border border-black">
+    <div class="flex flex-1 mr-4 justify-center-0">
+        <div class="relative overflow-hidden border border-black w-50 lg:w-80 rounded-custom-20 text-gray">
         <input
             id="search-input"
             type="text"
             placeholder="搜尋景點，例:動物園..."
-            class="w-full px-4 py-2 border-none pr-12 text-gray focus:outline-none focus:ring-0"
+            class="w-full px-4 py-2 pr-12 border-none text-gray focus:outline-none focus:ring-0"
         />
-        <button id="search-button" class="absolute transform -translate-y-1/2 text-black right-2 top-1/2 hover:text-gray-700">
+        <button id="search-button" class="absolute text-black transform -translate-y-1/2 right-2 top-1/2 hover:text-gray-700">
             <i class="fa-solid fa-magnifying-glass" style="font-size: 1.5rem;"></i>
         </button>
         </div>
@@ -41,6 +41,9 @@
                 </li>
                 <li>
                     <a href="{% url 'about' %}" class="flex items-center space-x-1 text-2xl font-medium hover:text-light-gray">關於我們</a>
+                </li>
+                <li>
+                    <a href="{% url 'blogs:index' %}" class="text-2xl font-medium hover:text-light-gray">部落客推薦</a>
                 </li>
             </ul>
         </div>
@@ -73,10 +76,10 @@
         
         <!-- 小鈴鐺通知 -->
         {% if user.is_authenticated %}
-        <div id="notify" class="relative cursor-pointer w-8 h-8 flex items-center mr-0 sm:mr-4">
-            <a href="{% url 'notifies:notification_list' %}" class="relative cursor-pointer w-8 h-8 flex items-center hover:text-light-gray">
-                <i class="fa-solid fa-bell text-2xl"></i>
-                <div id="notify-dot" class="absolute top-0 right-0 bg-red-600 h-3 w-3 rounded-full hidden"></div>
+        <div id="notify" class="relative flex items-center w-8 h-8 mr-0 cursor-pointer sm:mr-4">
+            <a href="{% url 'notifies:notification_list' %}" class="relative flex items-center w-8 h-8 cursor-pointer hover:text-light-gray">
+                <i class="text-2xl fa-solid fa-bell"></i>
+                <div id="notify-dot" class="absolute top-0 right-0 hidden w-3 h-3 bg-red-600 rounded-full"></div>
             </a>
         </div>
         {% endif %}
@@ -92,7 +95,7 @@
             ></button>
         </div>
         {% else %}
-            <button tabindex="0" class="text-xl btn bg-transparent border-none hover:bg-btn-red hover:text-white">登入/註冊</button>
+            <button tabindex="0" class="text-xl bg-transparent border-none btn hover:bg-btn-red hover:text-white">登入/註冊</button>
         {% endif %}
             <ul tabindex="0" class="mt-3 p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 absolute z-50 top-14 right-0">
                 {% if user.is_authenticated %}
