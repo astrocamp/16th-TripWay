@@ -59,6 +59,9 @@ INSTALLED_APPS = [
     "payments",
     "comments",
     "notifies",
+    "blogs",
+    "ckeditor",
+    "ckeditor_uploader",
     "whitenoise.runserver_nostatic",
 ]
 
@@ -216,5 +219,6 @@ DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+CKEDITOR_UPLOAD_PATH = "uploads/"
 
 django_heroku.settings(config=locals(), staticfiles=False,logging=False)

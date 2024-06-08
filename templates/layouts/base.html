@@ -5,16 +5,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{% static 'styles/style.css' %}" />
-    <link rel="shortcut icon" href="{% static "img/fav.ico" %}" />
+    <link rel="shortcut icon" href="{% static 'img/fav.ico' %}" />
     <script src="https://kit.fontawesome.com/18da6810a5.js" crossorigin="anonymous"></script>
-    <!-- SweetAlert -->
-    <script src="{% static 'scripts/output.js' %}" type="module"></script>
     <title>
         {% block title %}
             TripWay
         {% endblock %}
     </title>
-
+    {% block head_script %}
+    {% endblock %}
 </head>
 <body class="flex flex-col min-h-screen">
     {% block navbar %}
@@ -26,16 +25,16 @@
         {% endblock %}
     </div>
 
-        {% if messages %}
+    {% if messages %}
         {% for message in messages %}
             <div class="notice-message" data-message="{{ message|escapejs }}" data-tags="{{ message.tags }}"></div>
         {% endfor %}
-        {% endif %}
-        
+    {% endif %}
 
-        {% include 'shared/footer.html' %}
+    {% include 'shared/footer.html' %}
 
+    <script src="{% static 'scripts/output.js' %}" type="module"></script>
+    {% block script %}
+    {% endblock %}
 </body>
-
-{% block script %}{% endblock %}
 </html>
