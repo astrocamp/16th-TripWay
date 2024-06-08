@@ -7,5 +7,3 @@ function toggleMenu() {
         menu.classList.add('hidden');
     }
 }
-
-export default toggleMenu
