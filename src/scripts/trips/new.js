@@ -26,6 +26,5 @@ function imageUpload(){
 }
 
 if (upload) {
-    console.log("aaa")
     imageUpload()
 }
