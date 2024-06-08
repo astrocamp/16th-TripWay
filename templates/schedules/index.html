@@ -50,7 +50,7 @@
         {% for date, schedules in schedule_dates.items %}
         <div id="schedule{{ schedules.0.date|date:'Y-m-d' }}" class="tab-content mt-3">
           {% for schedule in schedules %}
-          <div class="flex mb-1 px-8 py-3 mx-8 my-6 shadow-lg rounded-custom-20 hover:bg-light-gray h-36">
+          <div class="flex mb-1 px-8 py-3 mx-8 my-6 shadow-lg rounded-custom-20 hover:bg-light-gray h-36 schedule" data-schedule-id="{{ schedule.id }}">
             <div class="flex grow">
               <a href="{% url 'schedules:show' schedule.id %}" class="w-full h-full flex items-center">
                 <span class="inline-block w-6 h-6 mr-2 text-center text-white bg-black rounded-full">{{ forloop.counter }}</span>
@@ -59,7 +59,7 @@
               </a>
             </div>
             {% if trip_member.is_editable %}
-            <div class="flex grow-0 z-1000" x-data="{ deleteSchedule() {
+            <div class="flex grow-0 z-1000" x-data="{ deleteSchedule(id) {
               Swal.fire({
                 icon: 'question',
                 title: '確定要刪除嗎?',
@@ -69,36 +69,31 @@
                 confirmButtonText: '刪除',
               }).then((result) => {
                 if(result.isConfirmed){
-                  this.$refs['id{{ schedule.id }}'].submit()
+                    this.$refs[id].submit()
                 }
               })
-            }, edit_{{ schedule.id }}: false, submitScheduleChange() {
-              startTime = this.$refs['start_time{{ schedule.id }}'].value
-              endTime = this.$refs['end_time{{ schedule.id }}'].value
+            }, open: false, submitScheduleChange(id) {
+              startTime = this.$refs[`start_time${ id }`].value
+              endTime = this.$refs[`end_time${ id }`].value
               if (startTime <= endTime) {
-                this.$refs['change{{ schedule.id }}'].submit()
+                this.$refs[`change${ id }`].submit()
               } else {
-                Swal.fire({
-                icon: 'error',
-                title: '離開時間不能早於抵達時間',
-                showCancelButton: false,
-                confirmButtonText: '關閉'
-                })
+                alert('離開時間不能早於抵達時間')
               }
             } }">
-              <div><button class="px-2 py-2 rounded-lg hover:text-gray-650 text-cyan-850" @click="edit_{{ schedule.id }} = true"><i class="fa-solid fa-file-pen"></i></button></div>
-              <form @submit.prevent="deleteSchedule()" action="{% url 'schedules:delete' schedule.id %}" method="post" x-ref="id{{ schedule.id }}">
+              <div><button class="px-2 py-2 rounded-lg hover:text-gray-650 text-cyan-850" @click="open = true"><i class="fa-solid fa-file-pen"></i></button></div>
+              <form @submit.prevent="deleteSchedule('id{{ schedule.id }}')" action="{% url 'schedules:delete' schedule.id %}" method="post" x-ref="id{{ schedule.id }}">
                 {% csrf_token %}
                 <button class="px-2 py-2 text-red-700 rounded-lg hover:text-gray-650"><i class="fa-regular fa-trash-can"></i></button>
               </form>
-              <div x-show="edit_{{ schedule.id }}" class="fixed inset-0 z-50 flex items-center justify-center bg-black">
-                <div class="flex items-center space-y-5 space-x-4 relative w-2/3">
-                  <button class="mt-8 mx-auto text-2xl absolute top-0 right-0" @click="edit_{{ schedule.id }} = false">X</button>
-                  <form @submit.prevent="submitScheduleChange()" action="{% url 'schedules:show' schedule.id %}" method="post" class="mt-8 mx-auto w-full" x-ref="change{{ schedule.id }}">
+              <div x-show="open" class="fixed mx-auto w-1/2 h-1/2 z-50 flex items-center justify-center bg-white border-blue-800 bottom-1/4 top-1/4 border-2">
+                <div class="flex items-center space-y-4 space-x-4 relative w-2/3">
+                  <button class="mt-8 mx-auto text-2xl absolute top-0 right-0" @click="open = false">X</button>
+                  <form @submit.prevent="submitScheduleChange({{ schedule.id }})" action="{% url 'schedules:show' schedule.id %}" method="post" class="mt-8 mx-auto w-full" x-ref="change{{ schedule.id }}">
                   {% csrf_token %}
                     <div>
                       <h3 class="text-2xl">{{ schedule.spot_name }}</h3>
-                      <div class="flex my-8">
+                      <div class="flex my-2">
                         <div class="flex flex-col w-1/3 pr-4" >
                           <div class="flex flex-col mb-6">
                             <label for="date" class="block font-bold text-lg">日期：</label>
@@ -117,14 +112,12 @@
                             <input type="time" name="end_time" x-ref="end_time{{ schedule.id }}" required="required" class="input input-bordered w-full mt-2 text-lg border-gray-400" value="{{ schedule.end_time|time:'H:i' }}" />
                           </div>
                         </div>
-                        <div class="flex flex-col w-2/3 p-2 mb-6">
+                        <div class="flex flex-col w-2/3 p-2 mb-6 my-2">
                           <label for="note" class="block font-bold text-lg">行程筆記：</label>
                           <textarea name="note" id="note" type="text" class="textarea textarea-bordered textarea-md w-full h-full mt-2 text-lg border-gray-400">{{ schedule.note }}</textarea>
                         </div>
                       </div>
-                      <div class="flex justify-center items-center mb-20 mt-10">
-                      <button type="submit" class="w-full h-14 items-center p-2 text-2xl text-white text-center font-bold bg-blue-btn hover:bg-blue-dc border rounded-3xl">更新行程資訊</button>
-                    </div>
+                      <div class="flex mt-2 mb-4 justify-center items-center"><button type="submit" class="w-full h-14 items-center p-2 text-2xl text-white text-center font-bold bg-blue-btn hover:bg-blue-dc border rounded-3xl">更新行程資訊</button></div>
                     </div>
                   </form>
                 </div>
@@ -191,4 +184,11 @@
 
 <script src="{% static "scripts/route.js" %}"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&libraries=places&callback=initMap" async defer></script>
+<script>
+  const sc = document.querySelectorAll('.schedule')
+  for (let i = 0; i < sc.length; i++) {
+    console.log(sc[i].dataset['scheduleId']) 
+  }
+</script>
+
 {% endblock %}
