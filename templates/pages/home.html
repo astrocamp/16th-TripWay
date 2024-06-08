@@ -11,13 +11,11 @@
                         和朋友來趟難忘的旅行吧!
                     </p>
                     <div class="flex mt-7 justify-center">
-                        <button class="h-14 text-2xl font-medium text-white bg-btn-red rounded-full hover:bg-btn-red-dc w-full max-w-xs sm:max-w-md">
                             {% if user.is_authenticated %}
-                            <a href="{% url 'trips:index' %}">立即趣玩</a>
+                            <a href="{% url 'trips:index' %}" class="btn h-14 text-2xl font-medium text-white bg-btn-red rounded-full hover:bg-btn-red-dc w-full max-w-xs sm:max-w-md border-btn-red">立即趣玩</a>
                             {% else %}
-                            <a href="{% url 'login' %}">立即趣玩</a>
+                            <a href="{% url 'login' %}" class="btn h-14 text-2xl font-medium text-white bg-btn-red rounded-full hover:bg-btn-red-dc w-full max-w-xs sm:max-w-md border-none">立即趣玩</a>
                             {% endif %}
-                        </button>
                     </div>
                 </div>
             </div>
