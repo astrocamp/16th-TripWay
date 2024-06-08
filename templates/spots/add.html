@@ -1,27 +1,27 @@
 {% extends "layouts/base.html" %}
 {% load static %}
 {% block content %}
-<div class="h-screen pt-8">
-  <header class="flex justify-between items-center w-3/4 mx-auto">
+<div class="pt-8">
+  <header class="flex justify-between items-center mx-auto w-11/12 md:w-3/4">
       <div class="flex items-center">
         <a class="m-1 transition-colors duration-300 hover:text-sky-700" href="javascript:history.go(-1)">
           <i class="fa-solid fa-reply text-2xl"></i>
         </a>
-        <h1 class="p-2 text-3xl font-bold">要加在哪？</h1>
+        <h1 class="p-2 text-2xl md:text-3xl font-bold">要加在哪？</h1>
       </div>
   </header>
   <section>
     {% for item in trips_dates %}
-    <div  class="w-3/4 h-[260px] mx-auto my-4 flex rounded-xl p-6 border-2 justify-between">
-      <div class="flex">  
-        <div class="w-1/2 h-[220px] overflow-hidden rounded-xl p-2">
-          <img src="{% if item.trip.image %}{{ item.trip.image.url }}{% else %}{% static 'img/tripdefault.jpeg' %}{% endif %}" alt="" class="object-cover w-full h-full" >
+    <div  class="w-11/12 md:w-3/4 md:h-[240px] mx-auto my-4 flex flex-col md:flex-row rounded-xl p-6 border-2 justify-between">
+      <div class="flex flex-col md:flex-row w-full md:w-1/2 mb-4 md:mb-0">  
+        <div class="w-full md:w-1/2 h-[200px] overflow-hidden rounded-xl border border-gray-300">
+          <img src="{% if item.trip.image %}{{ item.trip.image.url }}{% else %}{% static 'img/tripdefault.jpeg' %}{% endif %}" alt="" class="object-cover w-full h-full rounded-xl" >
         </div>
-        <div class="w-1/2 self-center">{{ item.trip.name }}</div>
+        <div class="w-1/2 self-center text-2xl font-bold pl-4 my-2 md:m-0">{{ item.trip.name }}</div>
       </div>
-      <div class="dropdown  w-1/4 flex">
-        <div tabindex="0" role="button" class="btn text-xl font-medium bg-gray-300 self-center w-full">加在這天</div>
-        <ul tabindex="0" class="dropdown-content p-0 pb-0 bg-gray-100 seld-end"> 
+      <div class="dropdown w-2/3 mx-auto md:w-1/4">
+        <div tabindex="0" role="button" class="btn text-xl text-white font-medium bg-blue-btn w-full hover:bg-blue-dc active:bg-blue-dc">加在哪天<i class="fa-solid fa-chevron-down"></i></div>
+        <ul tabindex="0" class="dropdown-content bg-gray-100 border-none z-10"> 
           {% for day in item.date_range %}
           <li class="py-1 w-full btn"> 
             <form action="{% url 'schedules:add' %}" method="post" class="w-full h-12 flex flex-col">
@@ -42,28 +42,5 @@
 </div>
 
 {% endblock %}
-    
-
-    {% comment %} <div class="mb-6 border">
-    <div class="collapse collapse-arrow border-b-2 border-dashed rounded">
-      <input type="radio" name="my-accordion" id="trip-{{ item.trip.id }}" class="peer" />
-      <label class="collapse-title text-xl font-medium peer-checked:bg-blue-btn bg-gray-300" for="trip-{{ item.trip.id }}"> {{ item.trip.name }} </label>
-      <ul class="collapse-content p-0 pb-0 bg-gray-100">
-        {% for day in item.date_range %}
-        <li class="px-6 bg-gray-100 rounded">
-          <form action="{% url 'schedules:add' %}" method="post" class="w-full h-12">
-            {% csrf_token %}
-            <input type="hidden" name="trip_id" value="{{ item.trip.id }}" />
-            <input type="hidden" name="spot_id" value="{{ spot.id }}" />
-            <input type="hidden" name="spot_name" value="{{ spot.name }}" />
-            <input type="hidden" name="day" value="{{ day|date:'Y-m-d' }}" />
-            <button type="submit" class=" py-2 h-full w-full text-lg text-left hover:text-hover-gray border-b-2">{{ day|date:'m/d' }}</button>
-          </form>
-        </li>
-        {% endfor %}
-      </ul>
-    </div>
-    </div>
-    {% endfor %} {% endcomment %}
   
 
