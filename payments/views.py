@@ -24,7 +24,7 @@ def create_order(request):
     member = request.user
     price = request.POST["price"]
 
-    valid_prices = [300, 666, 888] 
+    valid_prices = ["300", "666", "888"] 
     if price not in valid_prices:
         messages.error(request, "無效的金額！")
         return redirect("payments:upgrade")
