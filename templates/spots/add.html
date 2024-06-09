@@ -21,7 +21,7 @@
       </div>
       <div class="dropdown w-2/3 mx-auto md:w-1/4">
         <div tabindex="0" role="button" class="btn text-xl text-white font-medium bg-blue-btn w-full hover:bg-blue-dc active:bg-blue-dc">加在哪天<i class="fa-solid fa-chevron-down"></i></div>
-        <ul tabindex="0" class="dropdown-content bg-gray-100 border-none z-10"> 
+        <ul tabindex="0" class="dropdown-content bg-gray-100 border-none z-10 w-full"> 
           {% for day in item.date_range %}
           <li class="py-1 w-full btn"> 
             <form action="{% url 'schedules:add' %}" method="post" class="w-full h-12 flex flex-col">

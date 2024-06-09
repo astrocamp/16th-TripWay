@@ -303,7 +303,7 @@ class CreateView(LoginRequired, CreateView):
 @login_required
 def add_schedule(request, pk):
     member = request.user
-    trips_member = TripMember.objects.filter(member=member)
+    trips_member = TripMember.objects.filter(member=member, is_editable=True)
     trips = [trip_member.trip for trip_member in trips_member]
     spot = get_object_or_404(Spot, pk=pk)
 
