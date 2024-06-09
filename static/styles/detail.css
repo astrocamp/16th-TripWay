@@ -31,16 +31,24 @@
 
 #pac-input {
     background-color: rgb(255, 255, 254);
-    width: 150px;
-    height: 60px;
+    width: 200px;
+    height: 50px;
     border-radius: 30px;
     padding-left: 20px;
     margin-left: 10px;
 }
-.search-button-map {
-    height: 60px;
+
+@media (min-width: 640px) {
+    .search-button-map {
+    height: 80px;
     border-radius: 40px;
     padding: 0 20px;
+    }
+}
+.search-button-map {
+    height: 50px;
+    border-radius: 50px;
+    padding: 0 15px;
     background-color: #fff;
     border: 2px solid #060606;
     cursor: pointer;

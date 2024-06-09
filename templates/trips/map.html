@@ -2,18 +2,18 @@
 {% load static %}
 {% block content %}
 <head>
+    <script src="https://unpkg.com/htmx.org@1.5.0"></script>
     <script src="https://kit.fontawesome.com/18da6810a5.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{% static 'styles/style.css' %}" />
     <link rel="stylesheet" href="{% static 'styles/detail.css' %}">
     <link rel="stylesheet" href="{% static "styles/wait_web.css" %}">
-    
     <script src="{% static "scripts/map.js" %}"></script>
 </head>
 <body>
     <div id="map-container relative">
         <div id="search-container">
-            <input id="pac-input" class="absolute top-14 right-24 border-2 border-gray-500 text-md" type="text" placeholder="開始搜索!GO!"/>
-            <div class="flex flex-col sm:flex-row absolute top-14 right-64 sm:-right-44"/>
+            <input id="pac-input" class="absolute top-14 right-20 sm:right-40 border-2 border-gray-500 text-md hidden sm:block" type="text" placeholder="開始搜索!GO!"/>
+            <div class="flex flex-col sm:flex-row absolute top-14 right-1/4 sm:-right-32"/>
                 <button class="search-button-map mb-2 lg:block" onclick="searchNearby('restaurant')">
                     <i class="fa-solid fa-utensils"></i>
                 </button>
@@ -26,9 +26,22 @@
                 <button class="search-button-map mb-2 lg:block" onclick="searchNearby('lodging')">
                     <i class="fa-solid fa-bed"></i>
                 </button>
+                <button class="search-button-map mb-2 lg:block" onclick="searchNearby('shopping_mall')">
+                    <i class="fa-solid fa-shirt"></i>
+                </button>
             </div>
         </div>
-
+        <div class="absolute top-36 right-28 sm:right-16 inline-block" x-data="{ selectedLayer: '' }" style="z-index: 100; ">
+            <div class="custom-select-container">
+                <i class="fa-solid fa-layer-group absolute top-4 right-4"></i>
+                <select x-model="selectedLayer" @change="toggleLayer(selectedLayer)" class="custom-select block appearance-none w-40 h-12 border-2 border-black rounded-3xl text-black text-center text-lg font-bold py-2 pr-4  focus:outline-none  focus:border-gray-500">
+                    <option value="">選擇圖層</option>
+                    <option value="trafficLayer">交通情況</option>
+                    <option value="transitLayer">大眾情況</option>
+                    <option value="bicycleLayer">單車情況</option>
+                </select>
+            </div>
+        </div>
         <span id="loading-spinner" class="absolute loading loading-ball loading-lg top-1/2 translate-y-[-50%] left-1/2 translate-x-[-50%] "></span>
         <div id="map"></div>
 
