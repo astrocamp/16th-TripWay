@@ -31,7 +31,7 @@
                 </button>
             </div>
         </div>
-        <div class="absolute z-40 top-36 right-28 sm:right-16 inline-block" x-data="{ selectedLayer: '' }">
+        <div class="absolute z-20 sm:top-36 right-28 sm:right-40 bottom-4 inline-block" x-data="{ selectedLayer: '' }">
             <div class="custom-select-container">
                 <i class="fa-solid fa-layer-group absolute top-4 right-4"></i>
                 <select x-model="selectedLayer" @change="toggleLayer(selectedLayer)" class="custom-select block bg-white appearance-none w-40 h-12 border-2 border-black rounded-3xl text-black text-center text-lg font-bold py-2 pr-4 pl-3  focus:outline-none  focus:border-gray-500">
@@ -42,13 +42,15 @@
                 </select>
             </div>
         </div>
-        {% if user.is_authenticated %}
         <div x-data="{ showModal: false }">
-            <button @click="showModal = true; $nextTick(() => generateURL())" class="absolute z-10 top-[21%] left-4 sm:top-[16%] sm:left-[2%] text-4xl"><i class="fa-solid fa-share-nodes" style="color: #000000;"></i></button>
-            
-            <div x-show="showModal" class="absolute inset-0 flex items-center justify-center">
+
+            <button @click="showModal = true; $nextTick(() => generateURL())" class="absolute z-10 top-[21%] left-4 sm:top-[16%] sm:left-[2%] text-4xl">
+                <i class="fa-solid fa-share-nodes" style="color: #000000;"></i>
+            </button>
+
+            <div x-show="showModal" class="absolute inset-0 flex items-center justify-center z-20">
                 <div class="bg-opacity-50 absolute inset-0"></div>
-                <div class="bg-white p-6 rounded-2xl z-10 shadow-xl">
+                <div class="bg-white p-6 rounded-2xl z-30 shadow-xl">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-2xl font-semibold sm:pl-[30%]">
                             <i class="fa-regular fa-face-smile-wink" style="color: #000000;"></i>
@@ -57,12 +59,13 @@
                         <button @click="showModal = false" class="text-gray-700">&times;</button>
                     </div>
                     <div>
-                        <span id="url-container" class="text-blue-500 underline hover:text-blue-700" x-text="window.location.href"></span>
-                        <button @click="copyLink" class="bg-home-yellow text-white px-2 py-2 rounded-md mt-4">複製連結</button>
+                        <span id="url-container" class="text-blue-500 underline hover:text-blue-700"></span>
+                        <button @click="copyLink" class="bg-home-yellow text-white px-2 py-2 rounded-md mt-4 hover:bg-yellow-600">複製連結</button>
+                    </div>
                 </div>
             </div>
         </div>
-        {% endif %}
+        
         
         <span id="loading-spinner" class="absolute loading loading-ball loading-lg top-1/2 translate-y-[-50%] left-1/2 translate-x-[-50%] "></span>
         <div id="map"></div>
