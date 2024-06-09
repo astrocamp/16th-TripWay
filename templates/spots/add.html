@@ -4,7 +4,7 @@
 <div class="pt-8">
   <header class="flex justify-between items-center mx-auto w-11/12 md:w-3/4">
       <div class="flex items-center">
-        <a class="m-1 transition-colors duration-300 hover:text-sky-700" href="javascript:history.go(-1)">
+        <a class="m-1 transition-colors duration-300 hover:text-sky-700" href="{% url 'spots:show' pk=spot.id %}">
           <i class="fa-solid fa-reply text-2xl"></i>
         </a>
         <h1 class="p-2 text-2xl md:text-3xl font-bold">要加在哪？</h1>
