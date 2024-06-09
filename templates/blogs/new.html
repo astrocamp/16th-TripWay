@@ -37,37 +37,37 @@
 <script src="https://cdn.ckeditor.com/4.16.0/standard/lang/zh.js"></script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        if (CKEDITOR.instances["id_content"]) {
-            CKEDITOR.instances["id_content"].destroy(true);
+    document.addEventListener('DOMContentLoaded', function() {
+        if (CKEDITOR.instances['id_content']) {
+            CKEDITOR.instances['id_content'].destroy(true);
         }
-        CKEDITOR.replace("id_content", {
-            skin: "moono-lisa",
+        CKEDITOR.replace('id_content', {
+            skin: 'moono-lisa',
             toolbar: [
-                { name: "clipboard", items: ["Cut", "Copy", "Paste", "Undo", "Redo"] },
-                { name: "editing", items: ["Scayt"] },
-                { name: "styles", items: ["Styles", "Format"] },
-                { name: "basicstyles", items: ["Bold", "Italic", "Strike", "Underline"] },
-                { name: "paragraph", items: ["NumberedList", "BulletedList", "Blockquote"] },
-                { name: "links", items: ["Link", "Unlink", "Anchor"] },
-                { name: "insert", items: ["Image", "Table", "HorizontalRule", "SpecialChar"] },
-                { name: "tools", items: ["Maximize"] },
-                { name: "document", items: ["Source"] }
+                { name: 'clipboard', items: ['Cut', 'Copy', 'Paste', 'Undo', 'Redo'] },
+                { name: 'editing', items: ['Scayt'] },
+                { name: 'styles', items: ['Styles', 'Format'] },
+                { name: 'basicstyles', items: ['Bold', 'Italic', 'Strike', 'Underline'] },
+                { name: 'paragraph', items: ['NumberedList', 'BulletedList', 'Blockquote'] },
+                { name: 'links', items: ['Link', 'Unlink', 'Anchor'] },
+                { name: 'insert', items: ['Image', 'Table', 'HorizontalRule', 'SpecialChar'] },
+                { name: 'tools', items: ['Maximize'] },
+                { name: 'document', items: ['Source'] }
             ],
             height: 291,
-            width: "100%",
+            width: '100%',
             filebrowserWindowWidth: 940,
             filebrowserWindowHeight: 725,
-            language: "zh",
+            language: 'zh',
             versionCheck: false
         });
     });
 
-    document.querySelectorAll("form").forEach(form => {
-        form.addEventListener("submit", event => {
-            let contentTextarea = document.querySelector("textarea[name="content"]");
-            if (contentTextarea && contentTextarea.style.display === "none") {
-                contentTextarea.style.display = "block";
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', event => {
+            let contentTextarea = document.querySelector('textarea[name="content"]');
+            if (contentTextarea && contentTextarea.style.display === 'none') {
+                contentTextarea.style.display = 'block';
             }
         });
     });
