@@ -70,7 +70,7 @@ def new_member(request, id):
     trip = get_object_or_404(Trip, pk=id)
     return render(request, "trips/new_member.html", {"trip": trip})
 
-
+@login_required
 def map(request):
     google_api_key = settings.GOOGLE_API_KEY
     return render(request, "trips/map.html", {"google_api_key": google_api_key})
