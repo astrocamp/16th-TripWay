@@ -187,3 +187,20 @@ function clearMarkers() {
     }
     markers.length = 0;
 }
+
+function generateQRCode() {
+    if (!currentPosition) {
+        alert("無法獲取目前位置！");
+        return;
+    }
+
+    const locationUrl = `${window.location.origin}?lat=${currentPosition.lat}&lng=${currentPosition.lng}`;
+    console.log(locationUrl);
+    const qrcodeContainer = document.getElementById("qrcode");
+    qrcodeContainer.innerHTML = "";
+    new QRCode(qrcodeContainer, {
+        text: locationUrl,
+        width: 128,
+        height: 128,
+    });
+}
