@@ -188,19 +188,25 @@ function clearMarkers() {
     markers.length = 0;
 }
 
-function generateQRCode() {
-    if (!currentPosition) {
-        alert("無法獲取目前位置！");
-        return;
-    }
+function generateURL() {
+    const currentUrl = window.location.href;
+    console.log(currentUrl);
+    
+    const urlContainer = document.getElementById("url-container");
+    urlContainer.innerText = currentUrl;
+}
 
-    const locationUrl = `${window.location.origin}?lat=${currentPosition.lat}&lng=${currentPosition.lng}`;
-    console.log(locationUrl);
-    const qrcodeContainer = document.getElementById("qrcode");
-    qrcodeContainer.innerHTML = "";
-    new QRCode(qrcodeContainer, {
-        text: locationUrl,
-        width: 128,
-        height: 128,
-    });
+function copyLink() {
+    const url = window.location.href;
+    navigator.clipboard.writeText(url)
+        .then(() => {
+            Alpine.store('copied', true);
+
+            setTimeout(() => {
+                Alpine.store('copied', false);
+            }, 2000);
+        })
+        .catch(err => {
+            console.error('Failed to copy: ', err);
+        });
 }
