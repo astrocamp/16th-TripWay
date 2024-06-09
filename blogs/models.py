@@ -8,21 +8,21 @@ class BlogsMediaStorage(S3Boto3Storage):
     file_overwrite = False
 
 class Blog(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
-    content = CKEditor5Field("Text", config_name="extends")
+    content = CKEditor5Field('Text', config_name='extends')
     image = models.ImageField(upload_to="blogs/", storage=BlogsMediaStorage())
 
     def __str__(self):
         return self.title
 
 class BlogComment(models.Model):
-    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name="comments")
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='comments')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     content = models.TextField()
     rating = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Comment by {self.user.username} on {self.blog.title}"
+        return f'Comment by {self.user.username} on {self.blog.title}'
