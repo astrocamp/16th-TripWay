@@ -34,9 +34,9 @@ def home(request):
         share_urls = []
         for trip in trips :
             
-            edit_url = f"https://{os.getenv("NOW_HOST")}/trips/{trip["t"].id}/add-member/edit"
-            confirm_url = f"https://{os.getenv("NOW_HOST")}/trips/{trip["t"].id}/add-member/edit/confirm"
-            watch_url = f"https://{os.getenv("NOW_HOST")}/trips/{trip["t"].id}/add-member/watch"
+            edit_url = f"https://{os.getenv("HOST_NAME")}/trips/{trip["t"].id}/add-member/edit"
+            confirm_url = f"https://{os.getenv("HOST_NAME")}/trips/{trip["t"].id}/add-member/edit/confirm"
+            watch_url = f"https://{os.getenv("HOST_NAME")}/trips/{trip["t"].id}/add-member/watch"
 
             content = {
                 "id": trip["t"].id,
