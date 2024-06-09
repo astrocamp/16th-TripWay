@@ -142,7 +142,6 @@ function showScheduleForDate(date){
         }
         if (index === 0) {
             tripMode = item.trip__transportation;
-            console.log(tripMode);
         }
     });
     

@@ -1,4 +1,7 @@
 let map;
+let trafficLayer;
+let transitLayer;
+let bicycleLayer;
 let currentPosition;
 let directionsRenderer;
 let infowindow;
@@ -63,6 +66,27 @@ function initMap() {
     }, function() {
         alert("Error: The Geolocation service failed.");
     });
+    trafficLayer = new google.maps.TrafficLayer();
+    transitLayer = new google.maps.TransitLayer();
+    bicycleLayer = new google.maps.BicyclingLayer();
+    
+}
+function toggleLayer(layerName) {
+    const layers = {
+        'trafficLayer': trafficLayer,
+        'transitLayer': transitLayer,
+        'bicycleLayer': bicycleLayer
+    };
+
+    for (let key in layers) {
+        if (layers[key].getMap()) {
+            layers[key].setMap(null);
+        }
+    }
+
+    if (layerName && layers[layerName]) {
+        layers[layerName].setMap(map);
+    }
 }
 
 function showCurrentPosition() {
@@ -132,12 +156,22 @@ function showPlaceDetails(place, marker) {
     service.getDetails({ placeId: place.place_id }, (details, status) => {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
             const contentString = `
-                <div class="info-window">
-                    <h3>${details.name}</h3>
-                    <img src="${details.photos ? details.photos[0].getUrl({ maxWidth: 200, maxHeight: 200 }) : ''}" alt="${details.name}">
-                    <p><strong>地址:</strong> ${details.formatted_address}</p>
-                    <p><strong>電話:</strong> ${details.formatted_phone_number || 'N/A'}</p>
-                    <p><strong>營業時間:</strong> ${details.opening_hours ? details.opening_hours.weekday_text.join('<br>') : 'N/A'}</p>
+                <div class="info-window rounded-5xl card bg-base-100x p-2 flex items-center flex-col overflow-scroll">
+                    <div class=" flex card-actions justify-between w-full">
+                        <p class="text-lg sm:text-xl font-bold overflow-scroll">${details.name}</p> 
+                        <div>
+                            <i class="hidden fa-solid fa-star" style="color: #FFD43B;"></i>
+                            <div class="badge badge-outline">${place.rating}</div> 
+                        </div>
+                    </div>
+                    <div class="flex w-full justify-center">
+                        <img src="${details.photos ? details.photos[0].getUrl({ maxWidth: 200, maxHeight: 200 }) : ''}" alt="${details.name}">
+                    </div>
+                    <div class="w-full justify-center overflow-scroll break-words">
+                        <p class="text-sm sm:text-lg font-medium">${details.formatted_address}</p>
+                        <p class=" text-sm sm:text-sm font-medium">${details.formatted_phone_number || 'N/A'}</p>
+                        <p class="text-sm sm:text-sm font-medium">${details.opening_hours ? details.opening_hours.weekday_text.join('<br>') : 'N/A'}</p>
+                    </div>
                 </div>
             `;
             infowindow.setContent(contentString);
