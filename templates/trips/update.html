@@ -20,7 +20,7 @@
         <div class="flex">
           <div class="w-1/3 py-8">
             <div>
-              <img id="image" class="w-full h-1/3 border border-gray-400" src="{% if trips.image %}{{ trips.image.url }}{% else %}{% static 'img/tripdefault.jpeg' %}{% endif %}"/>
+              <img id="image" class="w-full h-1/3 border border-gray-400" src="{% if trip.image %}{{ trip.image.url }}{% else %}{% static 'img/tripdefault.jpeg' %}{% endif %}"/>
             </div>
             <div >
               <input type="file" id="image-upload" style="display: none" name="image" accept="image/*"/>
