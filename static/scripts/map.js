@@ -190,8 +190,6 @@ function clearMarkers() {
 
 function generateURL() {
     const currentUrl = window.location.href;
-    console.log(currentUrl);
-    
     const urlContainer = document.getElementById("url-container");
     urlContainer.innerText = currentUrl;
 }
