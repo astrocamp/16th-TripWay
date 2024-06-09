@@ -60,10 +60,37 @@ INSTALLED_APPS = [
     "comments",
     "notifies",
     "blogs",
-    "ckeditor",
-    "ckeditor_uploader",
     "whitenoise.runserver_nostatic",
+    "django_ckeditor_5",
 ]
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_5_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 291,
+        'width': '100%',
+    },
+    'extends': {
+        'language': 'zh-cn',
+        'toolbar': [
+            {'name': 'document', 'items': ['Source', '-', 'NewPage', 'Preview', '-', 'Templates']},
+            {'name': 'clipboard', 'items': ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']},
+            {'name': 'editing', 'items': ['Find', 'Replace', '-', 'SelectAll']},
+            {'name': 'forms', 'items': ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField']},
+            '/',
+            {'name': 'basicstyles', 'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
+            {'name': 'paragraph', 'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl']},
+            {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
+            {'name': 'insert', 'items': ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']},
+            '/',
+            {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
+            {'name': 'colors', 'items': ['TextColor', 'BGColor']},
+            {'name': 'tools', 'items': ['Maximize', 'ShowBlocks']},
+            {'name': 'about', 'items': ['About']}
+        ],
+    }
+}
 
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
@@ -219,6 +246,5 @@ DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-CKEDITOR_UPLOAD_PATH = "uploads/"
 
-django_heroku.settings(config=locals(), staticfiles=False,logging=False)
+django_heroku.settings(config=locals(), staticfiles=False, logging=False)
