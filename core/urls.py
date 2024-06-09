@@ -11,7 +11,7 @@ urlpatterns = [
     path(f"{ ADMIN }/", admin.site.urls),
     path("members/", include("django.contrib.auth.urls")),
     path("members/", include("members.urls")),
-    path("members/upgrade/", include("payments.urls")),
+    path("upgrade/", include("payments.urls")),
     path("trips/", include("trips.urls")),
     path("schedules/", include("schedules.urls")),
     path("accounts/", include("allauth.urls")),

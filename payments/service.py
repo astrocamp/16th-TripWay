@@ -14,7 +14,7 @@ MerchantID = os.getenv("MerchantID")
 HASHKEY = os.getenv("HASHKEY")
 HASHIV = os.getenv("HASHIV")
 Version = os.getenv("Version")
-ReturnUrl = f"https://{HOST_NAME}/members/upgrade/return"
+ReturnUrl = f"https://{HOST_NAME}/upgrade/return"
 PayGateWay = os.getenv("PayGateWay")
 RespondType = os.getenv("RespondType")
 
