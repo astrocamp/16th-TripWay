@@ -7,8 +7,8 @@
         <div class="w-full h-[400px] overflow-hidden rounded-lg">
             <img src="{{ blog.image.url }}" class="object-cover w-full h-full" alt="">
         </div>
-        <div class="p-4">
-            <p class="text-lg">{{ blog.content }}</p>
+        <div class="p-4 ck-content">
+            {{ blog.content|safe }}
         </div>
     </div>
 </div>
@@ -84,3 +84,4 @@
     </div>
 </section>
 {% endblock %}
+
