@@ -17,7 +17,7 @@
         </div>
 
         <!-- 日期頁籤 -->
-        <div role="tab" class="tabs flex text-start h-14 tabs-bordered overflow-autok">
+        <div role="tab" class="tabs flex text-start h-14 tabs-bordered">
 
           <!-- 刪除一天的行程 -->
           <form action="{% url 'trips:schedules:delete_day' trip.id %}" method="post">
@@ -30,7 +30,8 @@
             <button id="btn-{{ day|date:'Y-m-d' }}" class="tab ml-1 mb-2 h-14 shadow-sm rounded-2xl transition-all ease-in-out font-bold bg-btn-yellow text-center flex items-center justify-center overflow-hidden text-ellipsis max-w-full px-4"
                     data-date="{{ day|date:'Y-m-d'}}"
                     onclick="showTab('{{ day|date:'Y-m-d' }}', 'btn-{{ day|date:'Y-m-d' }}', '{{ trip.id }}')">
-                {{ day|date:"Y-m-d" }}
+                    <span class="block sm:hidden">{{ day|date:"m d" }}</span>
+                    <span class="hidden sm:block">{{ day|date:"m/d" }}</span>
             </button>
           {% endfor %}
           
