@@ -4,6 +4,8 @@ from django.urls import reverse
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 from members.models import Member
 from .models import Trip, TripMember
 from notifies.models import Notification
@@ -11,65 +13,50 @@ import qrcode
 from io import BytesIO
 from base64 import b64encode
 import os
-
+from PIL import Image
 
 @login_required
 def home(request):
-    if request.method == "POST":
-        trip_id = request.POST.get("trip_id")
-        trip = get_object_or_404(Trip, id=trip_id)
+    member = request.user
+    trip_members = TripMember.objects.filter(member=member).select_related("trip")
 
-        trip.name = request.POST["name"]
-        trip.start_date = request.POST["start_date"]
-        trip.end_date = request.POST["end_date"]
-    
-        if "image" in request.FILES:
-            trip.image = request.FILES["image"]
-
-        trip.save()
-        return redirect("trips:index")
-
+    sort_option = request.GET.get('sort', 'created_desc')
+    if sort_option == 'date_asc':
+        trip_members = trip_members.order_by('trip__start_date')
+    elif sort_option == 'date_desc':
+        trip_members = trip_members.order_by('-trip__start_date')
     else:
-        member = request.user
-        trip_members = TripMember.objects.filter(member=member).select_related("trip")
+        trip_members = trip_members.order_by('-trip__id')
 
-        sort_option = request.GET.get('sort', 'created_desc')
-        if sort_option == 'date_asc':
-            trip_members = trip_members.order_by('trip__start_date')
-        elif sort_option == 'date_desc':
-            trip_members = trip_members.order_by('-trip__start_date')
-        else:
-            trip_members = trip_members.order_by('-trip__id')
+    trips = [{"t": trip_member.trip, "tm": trip_member } for trip_member in trip_members]
+    
+    if trips :
+        share_urls = []
+        for trip in trips :
+            
+            edit_url = f"https://{os.getenv("NOW_HOST")}/trips/{trip["t"].id}/add-member/edit"
+            confirm_url = f"https://{os.getenv("NOW_HOST")}/trips/{trip["t"].id}/add-member/edit/confirm"
+            watch_url = f"https://{os.getenv("NOW_HOST")}/trips/{trip["t"].id}/add-member/watch"
 
-        trips = [{"t": trip_member.trip, "tm": trip_member } for trip_member in trip_members]
-        
-        if trips :
-            share_urls = []
-            for trip in trips :
-                
-                edit_url = f"https://{os.getenv("NOW_HOST")}/trips/{trip["t"].id}/add-member/edit"
-                confirm_url = f"https://{os.getenv("NOW_HOST")}/trips/{trip["t"].id}/add-member/edit/confirm"
-                watch_url = f"https://{os.getenv("NOW_HOST")}/trips/{trip["t"].id}/add-member/watch"
+            content = {
+                "id": trip["t"].id,
+                "edit_url": edit_url,
+                "confirm_url": confirm_url,
+                "watch_url": watch_url,
+                "confirm_qrimg" : create_qrcode(confirm_url),
+                "watch_qrimg" : create_qrcode(watch_url)
+            }
+            
+            trip['content'] = content
 
-                content = {
-                    "id": trip["t"].id,
-                    "edit_url": edit_url,
-                    "confirm_url": confirm_url,
-                    "watch_url": watch_url,
-                    "confirm_qrimg" : create_qrcode(confirm_url),
-                    "watch_qrimg" : create_qrcode(watch_url)
-                }
-                
-                trip['content'] = content
-
-            return render(request,"trips/index.html",{
-                "trips": trips,
-                "sort_option": sort_option,
-                "share_urls" : share_urls,
-                }   
-            )
-        else:
-            return render(request,"trips/index.html",{"trips": trips,"sort_option": sort_option,})
+        return render(request,"trips/index.html",{
+            "trips": trips,
+            "sort_option": sort_option,
+            "share_urls" : share_urls,
+            }   
+        )
+    else:
+        return render(request,"trips/index.html",{"trips": trips,"sort_option": sort_option,})
 
 
 @login_required
@@ -97,7 +84,14 @@ def create(request):
         end_date = request.POST["end_date"]
         transportation = request.POST["transportation"]
         image = request.FILES.get("image")
-
+        
+        if image :
+            compressed_image_data = compress_image(image)
+            image_name = "trips_coverPhoto/" + image.name
+            image_path = default_storage.save(
+                image_name, ContentFile(compressed_image_data.read())
+            )
+        
         checks = [
             (not name, "行程名稱不可為空"),
             (not start_date, "請選出發日期"),
@@ -118,8 +112,9 @@ def create(request):
             end_date=end_date,
             transportation=transportation,
             owner=member.id,
-            image=image,
+            image=image_path,
         )
+
         trip.save()
         TripMember.objects.create(trip=trip, member=member, is_editable=True)
 
@@ -145,7 +140,15 @@ def update(request, id):
         start_date = request.POST["start_date"]
         end_date = request.POST["end_date"]
         transportation = request.POST["transportation"]
-
+        image = request.FILES.get("image")
+        
+        if image :
+            compressed_image_data = compress_image(image)
+            image_name = "trips_coverPhoto/" + image.name
+            image_path = default_storage.save(
+                image_name, ContentFile(compressed_image_data.read())
+            )
+            
         checks = [
             (not name, "行程名稱不可為空"),
             (not start_date, "請選擇出發日期"),
@@ -164,8 +167,13 @@ def update(request, id):
         trip.start_date = start_date
         trip.end_date = end_date
         trip.transportation = transportation
+        image=image_path,
+
         if "image" in request.FILES:
-            trip.image = request.FILES["image"]
+            image = request.FILES["image"]
+            compressed_image = compress_image(image)
+            trip.image.save(image.name, compressed_image, save=False)
+
         trip.save()
 
         messages.success(request, "行程已更新！")
@@ -278,6 +286,7 @@ def delete_self(request, trip_id, member_id):
     delete_TripMember(trip_id, member_id)
     return redirect("trips:index")
 
+
 def create_qrcode(url):
     qr_code_img = qrcode.make(url)
     buffer = BytesIO()
@@ -286,3 +295,12 @@ def create_qrcode(url):
     encoded_img = b64encode(buffer.read()).decode()
     qr_code_data = f'data:image/png;base64,{encoded_img}'
     return qr_code_data
+
+
+def compress_image(image):
+    img = Image.open(image)
+    img.thumbnail((500, 500))
+    output = BytesIO()
+    img.save(output, format="PNG", quality=70)
+    output.seek(0)
+    return output
