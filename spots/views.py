@@ -161,20 +161,6 @@ class ShowView(LoginRequired, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         spot = self.get_object()
-        comments = Comment.objects.filter(spot=spot)
-
-        if self.request.user.is_authenticated:
-            user_comments = comments.filter(user=self.request.user)
-            other_comments = comments.exclude(user=self.request.user)
-            context["comments"] = list(user_comments) + list(other_comments)
-        else:
-            context["comments"] = comments
-
-        return context
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        spot = self.get_object()
         user = self.request.user
         member_spot = MemberSpot.objects.filter(spot=spot, member=user).exists()
         comments = Comment.objects.filter(spot=spot)
@@ -189,6 +175,8 @@ class ShowView(LoginRequired, DetailView):
         place_id = spot.place_id
         place_details = self.get_place_details(place_id)
 
+        user_comment_exists = Comment.objects.filter(spot=spot, user=user).exists()
+
         context.update(
             {
                 "comments": comments,
@@ -202,6 +190,7 @@ class ShowView(LoginRequired, DetailView):
                 "phone_number": place_details.get("phone_number", "N/A"),
                 "opening_hours": place_details.get("opening_hours", []),
                 "reviews": place_details.get("reviews", []),
+                "user_comment_exists": user_comment_exists,
             }
         )
 
