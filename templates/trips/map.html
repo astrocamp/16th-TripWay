@@ -44,7 +44,7 @@
         </div>
         {% if user.is_authenticated %}
         <div x-data="{ showModal: false }">
-            <button @click="showModal = true; $nextTick(() => generateURL())" class="absolute z-10 top-[21%] left-4 sm:top-[18%] sm:left-[2%] text-4xl"><i class="fa-solid fa-share-nodes" style="color: #000000;"></i></button>
+            <button @click="showModal = true; $nextTick(() => generateURL())" class="absolute z-10 top-[21%] left-4 sm:top-[16%] sm:left-[2%] text-4xl"><i class="fa-solid fa-share-nodes" style="color: #000000;"></i></button>
             
             <div x-show="showModal" class="absolute inset-0 flex items-center justify-center">
                 <div class="bg-opacity-50 absolute inset-0"></div>
