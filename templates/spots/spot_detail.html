@@ -99,7 +99,11 @@
                         <span id="comment-error-message" class="error-message" style="color:red; display:none;">請填寫評論內容</span>
                     </div>
                     <div class="flex justify-end">
+                        {% if user.is_authenticated %}
                         <button type="submit" id="submitBtn" class="px-8 py-3 text-white rounded-full btn bg-blue-btn hover:bg-gray-500">送出</button>
+                        {% else %}
+                        <div class="px-8 py-3 text-white bg-gray-300 rounded-full btn">請先登入會員</div>
+                        {% endif %}
                     </div>
                     <span id="rating-error-message" class="error-message" style="color:red; display:none;">請先完成推薦指數評分</span>
                 </form>
