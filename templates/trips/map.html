@@ -42,12 +42,11 @@
                 </select>
             </div>
         </div>
+        {% if user.is_authenticated %}
         <div x-data="{ showModal: false }">
-
-            <button @click="showModal = true; $nextTick(() => generateURL())" class="absolute z-10 top-[21%] left-4 sm:top-[16%] sm:left-[2%] text-4xl">
+            <button @click="showModal = true; $nextTick(() => generateURL())" class="absolute z-10 top-[21%] left-4 sm:top-[17%] sm:left-[2%] text-4xl">
                 <i class="fa-solid fa-share-nodes" style="color: #000000;"></i>
             </button>
-
             <div x-show="showModal" class="absolute inset-0 flex items-center justify-center z-20">
                 <div class="bg-opacity-50 absolute inset-0"></div>
                 <div class="bg-white p-6 rounded-2xl z-30 shadow-xl">
@@ -65,6 +64,7 @@
                 </div>
             </div>
         </div>
+        {% endif %}
         
         
         <span id="loading-spinner" class="absolute loading loading-ball loading-lg top-1/2 translate-y-[-50%] left-1/2 translate-x-[-50%] "></span>
