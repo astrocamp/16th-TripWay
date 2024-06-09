@@ -19,4 +19,5 @@ urlpatterns = [
     path("spots/", include("spots.urls")),
     path("blogs/", include("blogs.urls")),
     path("notifications/", include("notifies.urls")),
+    path("ckeditor5/", include("django_ckeditor_5.urls")), 
 ]
