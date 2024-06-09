@@ -22,6 +22,7 @@ class Spot(models.Model):
     place_id = models.CharField(max_length=255, null=True)
     opening_hours = models.JSONField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
+    photo_url = models.URLField(max_length=500, null=True, blank=True)
 
     def __str__(self):
         return self.name
