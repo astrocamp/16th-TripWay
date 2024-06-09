@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import BlogForm
-from .models import Blog
+from .forms import BlogForm, BlogCommentForm
+from .models import Blog, BlogComment
 
 @login_required
 def index(request):
@@ -12,7 +12,19 @@ def index(request):
 @login_required
 def article(request, blog_id):
     blog = get_object_or_404(Blog, pk=blog_id)
-    return render(request, 'blogs/article.html', {'blog': blog})
+    comments = BlogComment.objects.filter(blog=blog)
+    if request.method == 'POST':
+        form = BlogCommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.blog = blog
+            comment.user = request.user
+            comment.save()
+            messages.success(request, "評論已成功提交！")
+            return redirect('blogs:article', blog_id=blog_id)
+    else:
+        form = BlogCommentForm()
+    return render(request, 'blogs/article.html', {'blog': blog, 'comments': comments, 'form': form})
 
 @login_required
 def new(request):

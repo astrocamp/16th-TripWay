@@ -1,17 +1,9 @@
 {% extends "layouts/base.html" %}
 {% load static %}
 {% block content %}
-<div class="pt-8">
-    <header class="flex items-center justify-between w-3/4 mx-auto">
-        <div class="flex items-center">
-             <a class="m-1 transition-colors duration-300 hover:text-sky-700" href="{% url "blogs:index" %}">
-                <i class="text-2xl fa-solid fa-reply"></i>
-            </a>
-            <h1 class="p-2 text-3xl font-bold">{{ blog.title }}</h1>
-        </div>
-    </header>
-
-    <div class="w-3/4 mx-auto mt-2">
+<div class="flex items-center justify-center min-h-screen p-4">
+    <div class="w-full max-w-4xl p-8 bg-white rounded-lg shadow-lg">
+        <h1 class="mb-4 text-3xl font-bold text-center">{{ blog.title }}</h1>
         <div class="w-full h-[400px] overflow-hidden rounded-lg">
             <img src="{{ blog.image.url }}" class="object-cover w-full h-full" alt="">
         </div>
@@ -20,4 +12,75 @@
         </div>
     </div>
 </div>
+
+<section class="flex justify-center flex-grow py-12">
+    <div class="flex flex-col items-center w-full px-3 py-3 mx-3 my-3 bg-white rounded-lg shadow-lg md:w-3/4 lg:w-1/2" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1);">
+        <div class="w-full">
+            <div><h1 class="text-3xl font-bold text-sky-700">評論文章</h1></div>
+            <form id="ratingForm" method="post" action="{% url 'blogs:article' blog.pk %}">
+                {% csrf_token %}
+                <div id="rating" class="flex justify-center text-2xl rating">
+                    <input type="radio" name="rating" class="hidden" value="0" checked />
+                    <input type="radio" name="rating" class="bg-orange-400 mask mask-star-2" value="1" />
+                    <input type="radio" name="rating" class="bg-orange-400 mask mask-star-2" value="2" />
+                    <input type="radio" name="rating" class="bg-orange-400 mask mask-star-2" value="3" />
+                    <input type="radio" name="rating" class="bg-orange-400 mask mask-star-2" value="4" />
+                    <input type="radio" name="rating" class="bg-orange-400 mask mask-star-2" value="5" />
+                </div>
+                <div class="mb-4">
+                    <textarea name="comment" id="comment" class="w-full px-4 py-2 mt-5 mb-4 border rounded-md" rows="4" maxlength="1000" placeholder="寫下你對該文章的評價吧!"></textarea>
+                    <span id="comment-error-message" class="error-message" style="color:red; display:none;">請填寫評論內容</span>
+                </div>
+                <div class="flex justify-end">
+                    {% if user.is_authenticated %}
+                    <button type="submit" id="submitBtn" class="px-8 py-3 text-white rounded-full btn bg-blue-btn hover:bg-gray-500">送出</button>
+                    {% else %}
+                    <div class="px-8 py-3 text-white bg-gray-300 rounded-full btn">請先登入會員</div>
+                    {% endif %}
+                </div>
+                <span id="rating-error-message" class="error-message" style="color:red; display:none;">請先完成推薦指數評分</span>
+            </form>
+        </div>
+    </div>
+</section>
+
+<section class="flex justify-center flex-grow mt-8">
+    <div class="flex flex-col items-center w-full px-3 py-3 mx-3 my-3 bg-white rounded-lg md:w-3/4 lg:w-1/2">
+        <div class="w-full text-left">
+            <h2 class="text-3xl font-bold text-sky-700">看看其他人怎麼說</h2>
+        </div>
+        <div class="grid w-full grid-cols-1 gap-4 mt-4">
+            {% for comment in comments %}
+                <div class="p-4 bg-white rounded-lg shadow-lg" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1);">
+                    <div class="flex items-center mb-2">
+                        <div 
+                            class="w-10 h-10 bg-cover rounded-full"
+                            style="background-image: url({% if comment.user.profile.avatar %}{{ comment.user.profile.avatar.url }}{% else %}https://i.imgur.com/gd0IEZY.png{% endif %});"
+                        ></div>
+                        <p class="ml-2">{{ comment.user.username }}</p>
+                    </div>
+                    <p class="comment-content">{{ comment.content }}</p>
+                    <p>評分: {{ comment.rating }}</p>
+                    {% if comment.user == user %}
+                        <form method="post" action="{% url 'blogs:article' blog.pk %}" class="hidden edit-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="edit_comment_id" value="{{ comment.id }}">
+                            <textarea name="edit_comment_content" class="w-full px-4 py-2 mb-4 border rounded-md" rows="2">{{ comment.content }}</textarea>
+                            <button type="submit" class="text-blue-500 hover:underline">保存</button>
+                            <button type="button" class="text-gray-500 cancel-edit-btn hover:underline">取消</button>
+                        </form>
+                        <div class="flex items-center justify-between mt-2">
+                            <button type="button" class="text-blue-500 edit-comment-btn hover:underline">編輯留言</button>
+                            <form method="post" action="{% url 'blogs:article' blog.pk %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="delete_comment_id" value="{{ comment.id }}">
+                                <button type="submit" class="text-red-500 delete-comment-btn hover:underline">刪除留言</button>
+                            </form>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
 {% endblock %}
