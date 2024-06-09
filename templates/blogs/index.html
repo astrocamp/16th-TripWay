@@ -2,10 +2,31 @@
 {% load static %}
 {% block content %}
 <div class="pt-8">
-    <header class="flex items-center justify-between w-3/4 mx-auto">
-        <h1 class="p-2 text-3xl font-bold">旅遊心得</h1>
-        <a class="flex items-center justify-center p-2 ml-4 text-lg font-bold text-center text-white border bg-blue-btn hover:bg-blue-dc rounded-3xl" href="{% url 'blogs:new' %}">新增文章</a>
+    <header class="flex items-center justify-between w-full p-4 mx-auto md:w-3/4">
+        <div class="flex items-center w-full mb-2 md:w-auto md:mb-0">
+            <a class="m-1 transition-colors duration-300 hover:text-sky-700" href="{% url 'trips:index' %}">
+                <i class="text-2xl fa-solid fa-reply"></i>
+            </a>
+            <h1 class="p-2 text-2xl font-bold md:text-3xl">景點清單</h1>
+        </div>
+        <form method="get" action="" class="flex justify-center w-2/3 md:w-auto md:justify-end">
+            <div class="relative inline-block w-full border md:w-52 border-slate-300 rounded-2xl">
+                <select id="sort-options" name="sort" class="block w-full px-3 py-2 text-base text-black duration-300 ease-in-out bg-white appearance-none cursor-pointer md:text-xl border-slate-300 rounded-2xl">
+                    <option value="rating_desc" {% if sort_option == 'rating_desc' %}selected{% endif %} class="bg-white appearance-none hover:bg-slate-200">依推薦指數</option>
+                    <option value="average_rating_desc" {% if sort_option == 'average_rating_desc' %}selected{% endif %} class="bg-white appearance-none hover:bg-slate-200">依文章收藏數</option>
+                    <option value="comment_count_desc" {% if sort_option == 'comment_count_desc' %}selected{% endif %} class="bg-white appearance-none hover:bg-slate-200">依評論人數</option>
+                </select>
+                <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                    <i class="absolute inset-y-0 right-0 flex items-center px-5 py-4 pointer-events-none fa-solid fa-chevron-down"></i>
+                </div>
+            </div>
+        </form>
     </header>
+    <div class="flex justify-center my-4">
+        <a href="{% url 'blogs:new' %}" class="inline-block px-8 py-3 text-lg font-bold text-center text-white bg-blue-500 rounded-3xl hover:bg-blue-600">
+            撰寫你的旅遊心得吧!
+        </a>
+    </div>
 
     <div class="w-3/4 mx-auto mt-2">
         <div class="flex flex-wrap justify-start gap-4">
