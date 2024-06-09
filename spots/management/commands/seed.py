@@ -81,6 +81,12 @@ class Command(BaseCommand):
                         "description": details_data.get("editorial_summary", {}).get(
                             "overview", None
                         ),
+                        "photo_url": (
+                            f"https://maps.googleapis.com/maps/api/place/photo?maxwidth={details_data['photos'][0]['width']}&photoreference={details_data['photos'][0]['photo_reference']}&key={api_key}"
+                            if "photos" in details_data
+                            and len(details_data["photos"]) > 0
+                            else None
+                        ),
                     },
                 )
         print("腳本執行完畢")

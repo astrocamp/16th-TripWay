@@ -241,6 +241,11 @@ class SearchView(View):
                 formatted_weekday_text = (
                     " ".join(weekday_text) if weekday_text else None
                 )
+                photo_url = (
+                    f"https://maps.googleapis.com/maps/api/place/photo?maxwidth={details['photos'][0]['width']}&photoreference={details['photos'][0]['photo_reference']}&key={settings.GOOGLE_API_KEY}"
+                    if "photos" in details and len(details["photos"]) > 0
+                    else None
+                )
                 spot, created = Spot.objects.get_or_create(
                     name=name,
                     defaults={
@@ -254,6 +259,7 @@ class SearchView(View):
                         "place_id": place_id,
                         "opening_hours": formatted_weekday_text,
                         "description": description,
+                        "photo_url": photo_url,
                     },
                 )
 
@@ -270,6 +276,7 @@ class SearchView(View):
                     "營業時間": spot.opening_hours,
                     "描述": spot.description,
                     "營業時間文字": weekday_text,
+                    "圖片URL": photo_url,
                     "重定向鏈接": spot.get_absolute_url(),
                 }
                 return JsonResponse(result)
