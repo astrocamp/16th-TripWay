@@ -211,31 +211,13 @@ class SearchView(View):
         else:
             gmaps = googlemaps.Client(key=settings.GOOGLE_API_KEY)
 
-            try:
-                places_result = gmaps.places(query=query, language="zh-TW")
-            except googlemaps.exceptions.ApiError as e:
-                return JsonResponse(
-                    {"error": f"Google Maps API error: {str(e)}"}, status=500
-                )
-            except Exception as e:
-                return JsonResponse(
-                    {"error": f"An unexpected error occurred: {str(e)}"}, status=500
-                )
+            places_result = gmaps.places(query=query, language="zh-TW")
 
             if places_result["results"]:
                 top_result = places_result["results"][0]
                 place_id = top_result["place_id"]
 
-                try:
-                    place_details = gmaps.place(place_id=place_id, language="zh-TW")
-                except googlemaps.exceptions.ApiError as e:
-                    return JsonResponse(
-                        {"error": f"Google Maps API error: {str(e)}"}, status=500
-                    )
-                except Exception as e:
-                    return JsonResponse(
-                        {"error": f"An unexpected error occurred: {str(e)}"}, status=500
-                    )
+                place_details = gmaps.place(place_id=place_id, language="zh-TW")
 
                 details = place_details.get("result", {})
                 name = (

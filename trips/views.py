@@ -6,12 +6,13 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
+from django.conf import settings
 from members.models import Member
 from .models import Trip, TripMember
 from notifies.models import Notification
-import qrcode
 from io import BytesIO
 from base64 import b64encode
+import qrcode
 import os
 from PIL import Image
 
@@ -70,7 +71,6 @@ def new_member(request, id):
     return render(request, "trips/new_member.html", {"trip": trip})
 
 
-@login_required
 def map(request):
     google_api_key = settings.GOOGLE_API_KEY
     return render(request, "trips/map.html", {"google_api_key": google_api_key})
