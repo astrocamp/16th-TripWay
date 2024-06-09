@@ -34,20 +34,33 @@
 
 {% block script %}
 <script src="https://cdn.ckeditor.com/ckeditor5/35.0.1/classic/ckeditor.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        ClassicEditor
-            .create(document.querySelector('#id_content'), {
-                toolbar: {
-                    items: [
-                        'heading', '|',
-                        'bold', 'italic', 'link', 'bulletedList', 'numberedList', '|',
-                        'outdent', 'indent', '|',
-                        'blockQuote', 'insertTable', 'mediaEmbed', 'undo', 'redo'
-                    ]
-                },
-                height: 500 // 设置 CKEditor 的初始高度
-            })
-    });
-</script>
+
+    <script>
+        // CKEditor 初始化代碼
+        document.addEventListener('DOMContentLoaded', function() {
+            if (CKEDITOR.instances['id_content']) {
+                CKEDITOR.instances['id_content'].destroy(true);
+            }
+            CKEDITOR.replace('id_content', {
+                skin: 'moono-lisa',
+                toolbar: 'Full',
+                height: 291,
+                width: '100%',
+                filebrowserWindowWidth: 940,
+                filebrowserWindowHeight: 725,
+                language: 'en-us',
+                versionCheck: false
+            });
+        });
+
+        // 表單提交時顯示隱藏的 textarea
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', event => {
+                let contentTextarea = document.querySelector('textarea[name="content"]');
+                if (contentTextarea && contentTextarea.style.display === 'none') {
+                    contentTextarea.style.display = 'block';
+                }
+            });
+        });
+    </script>
 {% endblock %}
