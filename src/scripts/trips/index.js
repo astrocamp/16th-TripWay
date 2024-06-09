@@ -52,47 +52,39 @@ document.addEventListener("DOMContentLoaded", toggleMenuVisibility);
 const copyEditButton = document.querySelector("#copyEditButton")
 const copyWatchButton = document.querySelector("#copyWatchButton")
 
-function copyEdit(){
-    document.getElementById('copyEditButton').addEventListener('click', function(e) {
+if (copyEditButton){
+    copyEditButton.addEventListener('click', function(e) {
         const copyURL = e.target.querySelector("span").textContent;
 
         // 使用 Clipboard API 來複製
         navigator.clipboard.writeText(copyURL).then(() => {
 
             const successMessage = document.getElementById('successMessage2');
-            successMessage.style.display = 'block';
+            successMessage.classList.remove("hidden");
 
             setTimeout(() => {
-                successMessage.style.display = 'none';
+                successMessage.classList.add("hidden");
             }, 2000);
         }).catch(err => {
             console.error('複製失敗: ', err);
         })
     })
 }
- 
-function copyWatch(){
-    document.getElementById('copyWatchButton').addEventListener('click', function(e) {
+
+if (copyWatchButton){
+    copyWatchButton.addEventListener('click', function(e) {
         const copyURL = e.target.querySelector("span").textContent;
 
         navigator.clipboard.writeText(copyURL).then(() => {
 
             const successMessage = document.getElementById('successMessage');
-            successMessage.style.display = 'block';
+            successMessage.classList.remove("hidden");
 
             setTimeout(() => {
-                successMessage.style.display = 'none';
+                successMessage.classList.add("hidden");
             }, 2000);
         }).catch(err => {
             console.error('複製失敗: ', err);
         });
     });
-}
-
-if (copyEditButton){
-    copyEdit();
-}
-
-if (copyWatchButton){
-    copyWatch();
 }
