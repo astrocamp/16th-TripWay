@@ -8,10 +8,10 @@
 			<form action="{% url 'create' %}" method="post" class="relative w-1/2 mx-auto mt-8", enctype="multipart/form-data">
 			{% csrf_token %}
 				<input type="file" id="image-profile" style="display: none" name="image" accept="image/*"/>
-					<button type="button" class="absolute inset-0 flex items-center justify-center transition-opacity duration-500 bg-gray-900 bg-opacity-50 rounded-full opacity-0 top-12 group-hover:opacity-100" onclick="document.getElementById('image-profile').click();">
-						<i class="text-3xl text-white fas fa-camera"></i>
+					<button type="button" id="image-btn" class="absolute top-12 inset-0 rounded-full bg-gray-900 bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500" onclick="document.getElementById('image-profile').click();">
+						<i class="fas fa-camera text-white text-3xl"></i>
 					</button>
-					<button type="submit" class="absolute w-12 h-12 p-2 text-2xl font-bold text-center text-white rounded-full top-20 left-20 bg-light-gray">
+					<button type="submit" id="submit-btn" class="absolute top-20 left-20 w-12 h-12 text-center p-2 text-2xl text-white font-bold bg-light-gray rounded-full hidden">
 						<i class="fa-solid fa-arrow-up-from-bracket"></i>
 					</button>
 			</form>
