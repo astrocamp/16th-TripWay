@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 from spots.views import toggle_favorite
 
@@ -9,4 +9,5 @@ urlpatterns = [
     path("spots/<spot_id>/favorite/", toggle_favorite, name="favorite"),
     path("profile", views.profile, name="profile"),
     path("create", views.create, name="create"),
+    path("<id>/schedules/", include("schedules.urls")),
 ]

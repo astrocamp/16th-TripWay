@@ -26,35 +26,145 @@
 
 
 <div class="flex justify-center">
-	<div class="w-[960px]">
-			<div class="flex justify-around mb-4 border-b-2 border-light-gray">
-					<input type="radio" name="my_tabs_1" id="tab-1" class="hidden" checked/>
-					<label for="tab-1" class="w-1/2 px-4 py-2 text-center cursor-pointer" data-tab="tab-content-1">我的行程</label>
+	<div class="	w-[960px]">
+		{% comment %} 切換標籤 {% endcomment %}
+		<div class="flex justify-around mb-4 border-b-2 border-light-gray">
+			<input type="radio" name="my_tabs_1" id="tab-1" class="hidden"/>
+			<label for="tab-1" class="w-1/2 px-4 py-2 text-center cursor-pointer" data-tab="tab-content-1">我的行程</label>
 									
-					<input type="radio" name="my_tabs_1" id="tab-2" class="hidden"/>
-					<label for="tab-2" class="w-1/2 px-4 py-2 text-center cursor-pointer" data-tab="tab-content-2">收藏列表</label>
+			<input type="radio" name="my_tabs_1" id="tab-2" class="hidden" checked/>
+			<label for="tab-2" class="w-1/2 px-4 py-2 text-center cursor-pointer" data-tab="tab-content-2">收藏列表</label>
+		</div>
+		{% comment %} 我的行程內容 {% endcomment %}
+		<div id="tab-content-1" class="p-4 tab-content">
+		{% comment %} 排序 {% endcomment %}
+      <div class="flex">
+				<select id="sort-options" class="block w-48 px-3 py-2 mr-3 text-xl text-black duration-300 ease-in-out bg-white appearance-none cursor-pointer border-slate-300 rounded-2xl">
+					<option value="created_desc" {% if sort_option == 'created_desc' %}selected{% endif %} class="bg-white appearance-none hover:bg-slate-200">依建立時間排序</option>
+					<option value="date_asc" {% if sort_option == 'date_asc' %}selected{% endif %} class="bg-white appearance-none hover:bg-slate-200">依出發日(近到遠)排序</option>
+					<option value="date_desc" {% if sort_option == 'date_desc' %}selected{% endif %} class="bg-white appearance-none hover:bg-slate-200">依出發日(遠到近)排序</option>
+				</select>
 			</div>
-			
-			<div id="tab-content-1" class="p-4 tab-content">123</div>
-			<div id="tab-content-2" class="p-4 tab-content">
-					<div class="flex flex-wrap mt-6">
-							{% for spot in spots %}
-									<div class="ml-10 shadow-xl wa card w-96 bg-baseflex">
-											<figure><img src="https://picsum.photos/400" alt="" /></figure>
-											<div class="card-body">
-													<div>
-															<i id="favoriteIcon" class="fa-heart fa-2xl mr-6 {% if member_spot %}fa-regular{% else %} fa-solid  text-btn-red{% endif %} cursor-pointer" data-toggle-favorite-url="/spots/{{ spot.spot.id }}/favorite"></i>
-													</div>
-													<h2 class="card-title">{{ spot.spot.name }}</h2>
-													<div class="card-actions">
-															<div class="badge badge-outline">{{ spot.spot.rating }}</div>
-															<div class="badge badge-outline">{{ spot.spot.city }}</div>
-													</div>
-											</div>
+		{% comment %} 行程卡片 {% endcomment %}
+			{% if trips %}
+      <div class="mx-auto mt-2">
+        <div class="flex flex-wrap justify-start gap-4">
+          {% for trip in trips %}
+            <div class="relative md-full w-full sm:w-[48%] lg:w-[48%] xl:w-[32%] mt-5 mb-1 rounded-xl shadow-md" x-data="{ deleteTrip() {
+              Swal.fire({
+                icon: 'question',
+                title: '確定要刪除嗎?',
+                text: '若選擇刪除，資料將會消失',
+                showCancelButton: true,
+                cancelButtonText: '取消',
+                confirmButtonText: '刪除',
+              }).then((result) => {
+                if(result.isConfirmed){
+                  this.$refs['id{{ trips.t.id }}'].submit()
+                }
+              })
+            }, share_{{ trip.t.id}}: false }">
+              <div class="absolute right-0 z-10 m-4">
+                <button id="menu-toggle-{{ trip.t.id }}" class="text-base border-0 rounded-full opacity-75 w-9 h-9 bg-slate-600 hover:opacity-100">
+                  <i class="text-white fas fa-ellipsis-h"></i>
+                </button>
+                <div id="menu-{{ trip.t.id }}" class="absolute right-0 hidden w-24 mt-3 bg-white border rounded-lg shadow-md">
+                  {% if trip.tm.is_editable %}
+                    <a href="{% url 'trips:update' trip.t.id %}" class="block w-24 px-4 py-2 text-lg font-bold text-center border-b rounded-t-lg hover:bg-slate-300 ">
+                      <i class="mr-2 fa-solid fa-pen-to-square"></i>編輯
+                    </a>
+                    <form @submit.prevent="deleteTrip()" action="{% url 'trips:delete' trip.t.id %}" method="post" x-ref="id{{ trip.t.id }}">
+                      {% csrf_token %}
+                      <button type="submit" class="block w-full px-4 py-2 text-lg font-bold text-center rounded-b-lg hover:bg-slate-300">
+                        <i class="mr-2 fa-solid fa-trash-can"></i>刪除
+                      </button>
+                    </form>
+                    <div>
+                      <button class="block w-full px-4 py-2 text-lg font-bold text-center rounded-b-lg hover:bg-slate-300" @click="share_{{ trip.t.id}} = true">
+                        <i class="mr-1 fa-regular fa-share-from-square"></i>分享
+                      </button>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+              <div :class="{ 'hidden': !share_{{ trip.t.id}} }" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50">
+                <div class="relative flex flex-col w-1/3 p-8 m-auto bg-white rounded-lg h-2/3">
+                  <button @click="share_{{ trip.t.id}} = false" class="absolute text-xl right-8 top-8">X</button>
+                  <div class="flex justify-center w-4/5 mx-auto ">
+                    <input id="watch" class="hidden peer/watch" type="radio" name="status" @click="activeTab = 'watch'" checked/>
+                    <label for="watch" class="w-1/2 mx-1 text-xl text-white peer-checked/watch:bg-blue-btn bg-neutral-400 rounded-3xl btn" >分享行程</label>
+                    <input id="edit" class="hidden peer/edit" type="radio" name="status" @click="activeTab = 'edit'"/>
+                    <label for="edit" class="w-1/2 mx-1 text-xl text-white btn peer-checked/edit:bg-btn-red bg-neutral-400 rounded-3xl" >共編行程</label>
+                  </div>
+          
+                  <div class="flex flex-col items-center h-full p-4 mt-8 space-y-4 border border-gray-200 rounded" x-show="activeTab === 'watch'">
+                    <div class="w-2/3 h-2/3">
+                      <img id="share-id" src="{{ trip.content.watch_qrimg }}" alt="" class="object-contain w-full h-full" >
+                    </div>
+                    <button id="copyWatchButton" class="w-4/5 p-2 mx-auto text-xl font-bold text-center text-white border btn bg-blue-btn hover:bg-blue-dc rounded-3xl">複製連結
+                      <span class="hidden">{{ trip.content.watch_url }}</span>
+                    </button>
+                    <p id="successMessage" class="text-green-500" style="display: none">連結已成功複製!</p>
+                  </div>
+                  <div class="flex flex-col items-center h-full p-4 mt-8 space-y-4 border border-gray-200 rounded" x-show="activeTab === 'edit'">
+                    <div class="w-2/3 h-2/3">
+                      <img src="{{ trip.content.confirm_qrimg }}" alt="" class="object-contain w-full h-full">
+                    </div>
+                    <button id="copyEditButton" class="w-4/5 p-2 mx-auto text-xl font-bold text-center text-white border btn bg-blue-btn hover:bg-blue-dc rounded-3xl">
+                      複製連結
+                      <span class="hidden">{{ trip.content.confirm_url }}</span>
+                    </button>
+                    <p id="successMessage2" class="text-green-500" style="display: none">連結已成功複製!</p>
+                  </div>
+                </div>
+              </div>
+              <a href="{{ trip.t.id }}/schedules/" class="block h-full duration-300 ease-in-out bg-white border-2 cursor-pointer rounded-xl hover:scale-105">
+                <div class="w-full h-[220px] overflow-hidden rounded-t-xl">
+                  <img src="{% if trip.t.image %}{{ trip.t.image.url }}{% else %}{% static 'img/tripdefault.jpeg' %}{% endif %}" class="object-cover w-full h-full" alt="">
+                </div>
+                <div class="p-4">
+                  <h2 class="text-2xl font-bold">{{ trip.t.name }}</h2>
+                  <p class="text-xl text-slate-700">{{ trip.t.start_date|date:'Y-m-d' }}~{{ trip.t.end_date|date:'Y-m-d' }}</p>
+                </div>
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      <br />
+    {% else %}
+      <p class="mt-48 mb-24 text-3xl font-bold text-center">目前還没有行程喔</p>
+    {% endif %}
+		</div>
+		{% comment %} 收藏列表內容 {% endcomment %}
+		<div id="tab-content-2" class="p-4 tab-content">
+		{% comment %} 收藏卡片 {% endcomment %}
+			<div class="mx-auto mt-2">
+				<div class="flex flex-wrap justify-start gap-4">
+					{% for spot in spots %}
+						<div class="relative w-full sm:w-[48%] lg:w-[48%] xl:w-[32%] max-w-xs mt-5 mb-1">
+							<div class="absolute right-0 z-10 m-4">
+								<i id="favoriteIcon" class="fa-heart fa-2xl{% if member_spot %}fa-regular{% else %} fa-solid  text-btn-red{% endif %} cursor-pointer" data-toggle-favorite-url="/spots/{{ spot.spot.id }}/favorite"></i>
+							</div>
+							<a href="{% url 'spots:show' spot.spot.id %}" class="block h-full duration-300 ease-in-out bg-white border-2 shadow-md cursor-pointer rounded-xl hover:bg-blue-300 hover:scale-105">
+								<div class="w-full h-[220px] overflow-hidden rounded-t-xl">
+									<img src="{% if spot.photo_url %}{{ spot.photo_url }}{% else %}{% static 'img/tripdefault.png' %}{% endif %}" class="object-cover w-full h-full" alt="">
+								</div>
+								<div class="p-4">
+									<h2 class="w-full text-xl font-bold truncate">{{ spot.spot.name }}</h2>
+									<div class="flex items-center">
+										<div class="badge badge-outline">{{ spot.spot.rating }}</div>
+										<p class="text-lg truncate text-blue-btn">{{ spot.spot.city }}</p>
 									</div>
-							{% endfor %}
-					</div>
+								</div>
+							</a>
+						</div>
+					{% endfor %}
+				</div>
 			</div>
+		</div>
 	</div>
 </div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&libraries=places&callback=initMap" async defer></script>
 {% endblock %}
