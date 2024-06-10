@@ -122,6 +122,7 @@ def create(request):
             user = member, 
             message = f"成功創建新行程：{trip.name}",
             trip_id=trip.id,
+            type="trip_creation",
             )
 
         messages.success(request, "旅程創建成功！")
