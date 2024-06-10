@@ -30,7 +30,7 @@
             <div class="relative w-full sm:w-[48%] lg:w-[48%] xl:w-[32%] max-w-xs mt-5 mb-1">
                 <a href="{% url 'spots:show' spot.id %}" class="block h-full duration-300 ease-in-out bg-white border-2 shadow-md cursor-pointer rounded-xl hover:scale-105">
                     <div class="w-full h-[220px] overflow-hidden rounded-t-xl">
-                        <img src="{% if spot.photo_url %}{{ spot.photo_url }}{% else %}{% static 'img/tripdefault.png' %}{% endif %}" class="object-cover w-full h-full" alt="">
+                        <img src="{% if spot.photo_url %}{{ spot.photo_url }}{% else %}{% static 'img/tripdefault.jpeg' %}{% endif %}" class="object-cover w-full h-full" alt="">
                     </div>
                     <div class="p-4">
                         <h2 class="w-full text-xl font-bold truncate">{{ spot.name }}</h2>

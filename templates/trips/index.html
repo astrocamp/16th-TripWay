@@ -55,9 +55,9 @@
                 <div class="relative flex flex-col w-full sm:w-2/3 md:w-1/2 lg:w-1/3 p-4 sm:p-8 m-auto bg-white rounded-lg h-3/4">
                   <button @click="share_{{ trip.t.id}} = false" class="absolute text-xl right-4 top-4 sm:right-8 sm:top-8">X</button>
                   <div class="flex justify-center w-4/5 mx-auto ">
-                    <input id="watch_{{ trip.t.id }}" class="hidden peer/watch" type="radio" name="status" @click="activeTab = 'watch_{{ trip.t.id }}'" checked />
+                    <input id="watch_{{ trip.t.id }}" class="hidden peer/watch" type="radio" name="status_{{ trip.t.id }}" checked @click="activeTab = 'watch_{{ trip.t.id }}'" />
                     <label for="watch_{{ trip.t.id }}" class="w-1/2 mx-1 text-sm sm:text-xl text-white peer-checked/watch:bg-blue-btn bg-neutral-400 rounded-3xl btn">分享行程</label>
-                    <input id="edit_{{ trip.t.id }}" class="hidden peer/edit" type="radio" name="status" @click="activeTab = 'edit_{{ trip.t.id }}'" />
+                    <input id="edit_{{ trip.t.id }}" class="hidden peer/edit" type="radio" name="status_{{ trip.t.id }}" @click="activeTab = 'edit_{{ trip.t.id }}'" />
                     <label for="edit_{{ trip.t.id }}" class="w-1/2 mx-1 text-sm sm:text-xl text-white peer-checked/edit:bg-btn-red bg-neutral-400 rounded-3xl btn">共編行程</label>
                   </div>
           

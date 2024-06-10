@@ -52,8 +52,6 @@ document.addEventListener("DOMContentLoaded", toggleMenuVisibility);
 const copyEditButton = document.querySelectorAll("#copyEditButton")
 const copyWatchButton = document.querySelectorAll("#copyWatchButton")
 
-console.log(copyEditButton)
-
 if (copyEditButton){
     copyEditButton.forEach((element) => {
         element.addEventListener('click', function(e) {
