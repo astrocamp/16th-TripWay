@@ -18,7 +18,9 @@
         <div class="flex flex-col w-full pl-5 mx-5 mt-5">
             <div class="flex items-center justify-between w-full">
                 <p class="text-3xl font-bold text-sky-700">{{ spot.name }}</p>
+                {% if user.is_authenticated %}
                 <i id="favoriteIcon" class="fa-heart fa-2xl mr-6 {% if member_spot %}fa-solid text-btn-red{% else %}fa-regular{% endif %} cursor-pointer" data-toggle-favorite-url="/spots/{{ spot.id }}/favorite"></i>
+                {% endif %}
             </div>
             <div class="flex flex-col mt-2 text-xl md:flex-row">
                 {% if total_comments > 0 %}
