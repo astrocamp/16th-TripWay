@@ -5,6 +5,7 @@ from members.models import Member
 
 
 class Payment(models.Model):
+    member = models.ForeignKey(Member, on_delete=models.CASCADE)
     order = models.CharField(max_length=255)
     price = models.FloatField()
     trade_no = models.CharField(max_length=255, null=True, default=None)
