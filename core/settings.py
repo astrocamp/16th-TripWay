@@ -60,11 +60,15 @@ INSTALLED_APPS = [
     "comments",
     "notifies",
     "blogs",
+    "corsheaders",
     "whitenoise.runserver_nostatic",
+    'ckeditor',
+    'ckeditor_uploader',
     "django_ckeditor_5",
 ]
-
 CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_RESTRICT_BY_USER = True
+
 CKEDITOR_5_CONFIGS = {
     'default': {
         'toolbar': 'full',
@@ -89,8 +93,18 @@ CKEDITOR_5_CONFIGS = {
             {'name': 'tools', 'items': ['Maximize', 'ShowBlocks']},
             {'name': 'about', 'items': ['About']}
         ],
+        'image': {
+            'toolbar': [
+                'imageTextAlternative', '|',
+                'imageStyle:alignLeft', 'imageStyle:full', 'imageStyle:alignRight'
+            ],
+            'upload': {
+                'types': ['jpeg', 'jpg', 'png', 'gif']
+            }
+        }
     }
 }
+
 
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
@@ -122,8 +136,9 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
 ]
-
+CORS_ALLOW_ALL_ORIGINS = True
 ROOT_URLCONF = "core.urls"
 
 TEMPLATES = [
