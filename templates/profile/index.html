@@ -27,7 +27,6 @@
 
 <div class="flex justify-center">
 	<div class="	w-[960px]">
-		{% comment %} 切換標籤 {% endcomment %}
 		<div class="flex justify-around mb-4 border-light-gray">
 			<input type="radio" name="my_tabs_1" id="tab-1" class="hidden peer/tab-1"/>
 			<label for="tab-1" class="relative w-1/2 px-4 py-2 text-center border-b-2 cursor-pointer peer-checked/tab-1:border-b-blue-btn peer-checked/tab-1:text-blue-btn" data-tab="tab-content-1">我的行程</label>
@@ -35,9 +34,7 @@
 			<input type="radio" name="my_tabs_1" id="tab-2" class="hidden peer/tab-2" checked/>
 			<label for="tab-2" class="relative w-1/2 px-4 py-2 text-center border-b-2 cursor-pointer peer-checked/tab-2:border-b-blue-btn peer-checked/tab-2:text-blue-btn" data-tab="tab-content-2">收藏列表</label>
 		</div>
-		{% comment %} 我的行程內容 {% endcomment %}
 		<div id="tab-content-1" class="p-4 tab-content">
-		{% comment %} 排序 {% endcomment %}
       <div class="flex">
 				<select id="sort-options" class="block w-48 px-3 py-2 mr-3 text-xl text-black duration-300 ease-in-out bg-white appearance-none cursor-pointer border-slate-300 rounded-2xl">
 					<option value="created_desc" {% if sort_option == 'created_desc' %}selected{% endif %} class="bg-white appearance-none hover:bg-slate-200">依建立時間排序</option>
@@ -45,7 +42,6 @@
 					<option value="date_desc" {% if sort_option == 'date_desc' %}selected{% endif %} class="bg-white appearance-none hover:bg-slate-200">依出發日(遠到近)排序</option>
 				</select>
 			</div>
-		{% comment %} 行程卡片 {% endcomment %}
 			{% if trips %}
       <div class="mx-auto mt-2">
         <div class="flex flex-wrap justify-start gap-4">
@@ -136,9 +132,8 @@
       <p class="mt-48 mb-24 text-3xl font-bold text-center">目前還没有行程喔</p>
     {% endif %}
 		</div>
-		{% comment %} 收藏列表內容 {% endcomment %}
 		<div id="tab-content-2" class="p-4 tab-content">
-		{% comment %} 收藏卡片 {% endcomment %}
+      {% if spots %}
 			<div class="mx-auto mt-2">
 				<div class="flex flex-wrap justify-start gap-4">
 					{% for spot in spots %}
@@ -161,6 +156,9 @@
 						</div>
 					{% endfor %}
 				</div>
+      {% else %}
+        <p class="mt-48 mb-24 text-3xl font-bold text-center">趕快去收藏喔～</p>
+      {% endif %}
 			</div>
 		</div>
 	</div>
