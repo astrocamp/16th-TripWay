@@ -15,7 +15,13 @@ def mark_as_read(request, notification_id):
     if not notification.is_read:
         notification.is_read = True
         notification.save()
-    return redirect("notifies:notification_list")
+
+    if notification.type == "trip_creation":
+        return redirect("trips:schedules:index", id=notification.trip_id)
+    elif notification.type == "upgrade":
+        return redirect("profile")
+    else:
+        return redirect("home")
 
     
 @login_required
