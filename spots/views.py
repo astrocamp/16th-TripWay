@@ -25,23 +25,6 @@ class IndexView(LoginRequired, ListView):
     template_name = "spots/spot_list.html"
     context_object_name = "spots"
 
-    def get_place_photo(self, spot_name):
-        google_api_key = settings.GOOGLE_API_KEY
-        search_url = f"https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={spot_name}&inputtype=textquery&fields=photos,place_id&key={google_api_key}&language=zh-TW"
-
-        response = requests.get(search_url)
-        search_results = response.json()
-
-        if "candidates" in search_results and len(search_results["candidates"]) > 0:
-            photo_reference = search_results["candidates"][0]["photos"][0][
-                "photo_reference"
-            ]
-            photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key={google_api_key}"
-        else:
-            photo_url = None
-
-        return photo_url
-
     def get_queryset(self):
         sort_option = self.request.GET.get("sort", "rating_desc")
         queryset = Spot.objects.all()
@@ -50,7 +33,6 @@ class IndexView(LoginRequired, ListView):
             average_rating = comments.aggregate(Avg("value"))["value__avg"] or 0
             spot.average_rating = average_rating
             spot.total_comments = comments.count()
-            spot.photo_url = self.get_place_photo(spot.name)
         if sort_option == "average_rating_desc":
             queryset = sorted(queryset, key=lambda x: x.average_rating, reverse=True)
         elif sort_option == "comment_count_desc":
@@ -65,23 +47,6 @@ class ShowView(LoginRequired, DetailView):
     model = Spot
     template_name = "spots/spot_detail.html"
     context_object_name = "spot"
-
-    def get_place_photo(self, spot_name):
-        google_api_key = settings.GOOGLE_API_KEY
-        search_url = f"https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={spot_name}&inputtype=textquery&fields=photos,place_id&key={google_api_key}&language=zh-TW"
-
-        response = requests.get(search_url)
-        search_results = response.json()
-
-        if "candidates" in search_results and len(search_results["candidates"]) > 0:
-            photo_reference = search_results["candidates"][0]["photos"][0][
-                "photo_reference"
-            ]
-            photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key={google_api_key}"
-        else:
-            photo_url = None
-
-        return photo_url
 
     def get_place_details(self, place_id):
         google_api_key = settings.GOOGLE_API_KEY
@@ -170,8 +135,6 @@ class ShowView(LoginRequired, DetailView):
         )
         form = CommentForm()
         alert = self.request.session.pop("alert", None)
-
-        photo_url = self.get_place_photo(spot.name)
         place_id = spot.place_id
         place_details = self.get_place_details(place_id)
 
@@ -185,7 +148,6 @@ class ShowView(LoginRequired, DetailView):
                 "average_rating": average_rating,
                 "total_comments": total_comments,
                 "member_spot": member_spot,
-                "photo_url": photo_url,
                 "website": place_details.get("website", "N/A"),
                 "phone_number": place_details.get("phone_number", "N/A"),
                 "opening_hours": place_details.get("opening_hours", []),
