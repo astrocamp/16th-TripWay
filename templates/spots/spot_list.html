@@ -25,7 +25,7 @@
     </header>
     
     <div class="w-3/4 mx-auto mt-2">
-        <div class="flex flex-wrap justify-center gap-4">
+        <div class="flex flex-wrap justify-center gap-8">
             {% for spot in spots %}
             <div class="relative w-full sm:w-[48%] lg:w-[48%] xl:w-[32%] max-w-xs mt-5 mb-1">
                 <a href="{% url 'spots:show' spot.id %}" class="block h-full duration-300 ease-in-out bg-white border-2 shadow-md cursor-pointer rounded-xl hover:scale-105">
