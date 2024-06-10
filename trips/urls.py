@@ -8,6 +8,7 @@ urlpatterns = [
     path("new", views.new, name="new"),
     path("map", views.map, name="map"),
     path("add", views.create, name="add"),
+    path("about", views.about, name="about"),
     path("<id>/update/", views.update, name="update"),
     path("<id>/delete/", views.delete, name="delete"),
     path("<id>/schedules/", include("schedules.urls")),
