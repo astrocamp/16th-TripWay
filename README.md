@@ -38,14 +38,14 @@ TripWay 是一個規劃旅遊行程的網站，您可以建立專屬行程，在
 [陳嘉芳](https://github.com/FangFangss "GitHub")  
 **Email:** cjiyvonne@gmail.com  
   - 行程編輯  
-  - 行程頁籤  
+  - 通知功能  
 
-[房 錚](https://github.com/FangFangss "GitHub")  
+[房 錚](https://github.com/alanfarng "GitHub")  
 **Email:** chenfarng@gmail.com  
   - 資料庫基礎  
   - 會員共編  
 
-[陳建安](https://github.com/FangFangss "GitHub")  
+[陳建安](https://github.com/seanchen1073 "GitHub")  
 **Email:** seanchen1073@gmail.com  
   - 圖片上傳  
   - 評分留言  
