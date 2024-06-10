@@ -16,19 +16,19 @@ TripWay 是一個規劃旅遊行程的網站，您可以建立專屬行程，在
 **5. 探索地圖：** 當您還未決定要去哪個景點時，就可以先逛逛地圖，我們把您附近和指定的景點都搜集起來，您可以將喜愛的景點收藏起來，當您決定要開始規劃行程時，就可以在個人頁面裡的收藏景點直接加入行程。  
 
 ## 進階功能
-**1.會員升級：** 高級、黃金、白金會員  
-**2.收藏個人喜愛景點！**
+**1. 會員升級：** 高級、黃金、白金會員  
+**2. 收藏個人喜愛景點！**
 
 ## 開發團隊
 [林明毅](https://github.com/mingyi1223 "GitHub")
+**Email:** josh@gmail.com  
   - 會員系統  
   - 金流系統  
-**Email:** josh@gmail.com  
 
 [林愉庭](https://github.com/yuting3344 "GitHub")  
+**Email:** yuting3344@gmail.com  
   - Google Map  
   - 熱門景點  
-**Email:** yuting3344@gmail.com  
 
 [李韻如](https://github.com/syunjulee "GitHub")  
 **Email:** syunjulee@gmail.com  
@@ -36,9 +36,9 @@ TripWay 是一個規劃旅遊行程的網站，您可以建立專屬行程，在
   - 會員頁面  
 
 [陳嘉芳](https://github.com/FangFangss "GitHub")  
+**Email:** cjiyvonne@gmail.com  
   - 行程編輯  
   - 行程頁籤  
-**Email:** cjiyvonne@gmail.com  
 
 [房 錚](https://github.com/FangFangss "GitHub")  
 **Email:** chenfarng@gmail.com  
