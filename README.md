@@ -20,7 +20,7 @@ TripWay 是一個規劃旅遊行程的網站，您可以建立專屬行程，在
 **2. 收藏個人喜愛景點！**
 
 ## 開發團隊
-[林明毅](https://github.com/mingyi1223 "GitHub")
+[林明毅](https://github.com/mingyi1223 "GitHub")  
 **Email:** josh@gmail.com  
   - 會員系統  
   - 金流系統  
