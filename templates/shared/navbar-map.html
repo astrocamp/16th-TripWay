@@ -2,7 +2,7 @@
 <nav class="sticky top-0 left-0 z-50 flex items-center justify-between w-full bg-base-white py-4 px-2 shadow-md">
     <!-- icon -->
     <a href="{% url 'home' %}" class="mb-6 mx-3 text-4xl font-bold">
-        <div class="w-16 h-3">
+        <div class="w-24 h-4">
         <img src="{% static 'img/logo-regular.png' %}" alt="TripWay Logo" class="w-full object-cover" />
         </div>
     </a>
@@ -28,25 +28,26 @@
     <div class="flex items-center">
 
         <!-- 電腦版 探索按鈕 -->
-        <div class="lg:flex lg:items-center lg:mr-10 hidden">
-            <ul class="flex space-x-6">
+        <div class="lg:flex lg:items-center hidden">
+            <ul class="flex space-x-6 pr-8">
                 <li>
-                    <a href="{% url 'trips:map' %}" class="flex items-center space-x-1 text-2xl font-medium hover:text-light-gray">
-                        <span>地圖探索</span>
-                    </a>
+                    <a href="{% url 'trips:map' %}" class="flex items-center space-x-1 text-2xl font-medium hover:text-light-gray">地圖探索</a>
                 </li>
                 <li>
-                    <a href="{% url 'spots:index' %}" class="text-2xl font-medium hover:text-gray">景點探索</a>
+                    <a href="{% url 'spots:index' %}" class="text-2xl font-medium hover:text-light-gray">景點探索</a>
                 </li>
                 <li>
                     <a href="{% url 'trips:index' %}" class="text-2xl font-medium hover:text-light-gray">立即規劃</a>
+                </li>
+                <li>
+                    <a href="{% url 'trips:about' %}" class="flex items-center space-x-1 text-2xl font-medium hover:text-light-gray">關於我們</a>
                 </li>
             </ul>
         </div>
 
         <!-- 手機版 漢堡包圖標 -->
-        <div class="lg:hidden">
-            <button id="menu-toggle-btn" class="relative flex items-center pr-4 text-black hover:gray focus:outline-none">
+        <div class="sm:hidden">
+            <button id="menu-toggle-btn" class="relative flex items-center pr-4 text-white hover:text-black focus:outline-none">
                 <svg class="fill-current h-8 w-8" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <title>Menu</title>
                     <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>
@@ -54,15 +55,18 @@
             </button>
     
             <!-- 探索下拉選單 -->
-            <ul id="menu-nav" class="absolute hidden z-99 bg-white shadow-md py-2 px-4 rounded-lg">
+            <ul id="menu-nav" class="absolute hidden z-10 bg-white shadow-md py-2 px-4 rounded-lg">
                 <li>
                     <a href="{% url 'trips:map' %}" class="text-xl font-bold hover:text-light-gray">地圖探索</a>
                 </li>
                 <li>
-                    <a href="{% url 'spots:index' %}" class="text-xl font-bold hover:text-gray-800">景點探索</a>
+                    <a href="{% url 'spots:index' %}" class="text-xl font-bold hover:text-light-gray">景點探索</a>
                 </li>
                 <li>
                     <a href="{% url 'trips:index' %}" class="text-xl font-bold hover:text-light-gray">立即規劃</a>
+                </li>
+                <li>
+                    <a href="{% url 'trips:about' %}" class="text-xl font-bold hover:text-light-gray">關於我們</a>
                 </li>
             </ul>
         </div>
