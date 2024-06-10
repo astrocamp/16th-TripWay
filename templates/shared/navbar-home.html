@@ -2,7 +2,7 @@
 <nav class="fixed top-0 left-0 z-50 flex items-center justify-between w-full bg-home-yellow py-4 px-2">
     
     <a href="{% url 'home' %}" class="mb-6 mx-3 text-4xl font-bold">
-        <div class="w-16 h-3">
+        <div class="w-24 h-4">
         <img src="{% static 'img/logo-regular.png' %}" alt="TripWay Logo" class="w-full object-cover" />
         </div>
     </a>
@@ -31,15 +31,16 @@
         <div class="lg:flex lg:items-center hidden">
             <ul class="flex space-x-6 pr-8">
                 <li>
-                    <a href="{% url 'trips:map' %}" class="flex items-center space-x-1 text-2xl font-medium hover:text-white">
-                        <span>地圖探索</span>
-                    </a>
+                    <a href="{% url 'trips:map' %}" class="flex items-center space-x-1 text-2xl font-medium hover:text-white">地圖探索</a>
                 </li>
                 <li>
                     <a href="{% url 'spots:index' %}" class="text-2xl font-medium hover:text-white">景點探索</a>
                 </li>
                 <li>
                     <a href="{% url 'trips:index' %}" class="text-2xl font-medium hover:text-white">立即規劃</a>
+                </li>
+                <li>
+                    <a href="{% url 'trips:about' %}" class="flex items-center space-x-1 text-2xl font-medium hover:text-white">關於我們</a>
                 </li>
             </ul>
         </div>
@@ -63,6 +64,9 @@
                 </li>
                 <li>
                     <a href="{% url 'trips:index' %}" class="text-xl font-bold hover:text-gray-800">立即規劃</a>
+                </li>
+                <li>
+                    <a href="{% url 'trips:about' %}" class="text-xl font-bold hover:text-gray-800">關於我們</a>
                 </li>
             </ul>
         </div>
