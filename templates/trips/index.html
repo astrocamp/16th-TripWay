@@ -37,7 +37,7 @@
                   <a href="{% url 'trips:update' trip.t.id %}" class="block w-24 px-4 py-2 text-lg font-bold text-center border-b rounded-t-lg hover:bg-slate-300 ">
                     <i class="mr-2 fa-solid fa-pen-to-square"></i>編輯
                   </a>
-                  <form @submit.prevent="deleteTrip()" action="{% url 'trips:delete' trip.t.id %}" method="post" x-ref="id{{ trip.t.id }}">
+                  <form @submit.prevent="deleteTrip($refs.trip)" action="{% url 'trips:delete' trip.t.id %}" method="post" x-ref="trip">
                   {% csrf_token %}
                     <button type="submit" class="block w-full px-4 py-2 text-lg font-bold text-center rounded-b-lg hover:bg-slate-300">
                       <i class="mr-2 fa-solid fa-trash-can"></i>刪除
