@@ -49,42 +49,48 @@ function toggleMenuVisibility() {
 
 document.addEventListener("DOMContentLoaded", toggleMenuVisibility);
 
-const copyEditButton = document.querySelector("#copyEditButton")
-const copyWatchButton = document.querySelector("#copyWatchButton")
+const copyEditButton = document.querySelectorAll("#copyEditButton")
+const copyWatchButton = document.querySelectorAll("#copyWatchButton")
+
+console.log(copyEditButton)
 
 if (copyEditButton){
-    copyEditButton.addEventListener('click', function(e) {
-        const copyURL = e.target.querySelector("span").textContent;
+    copyEditButton.forEach((element) => {
+        element.addEventListener('click', function(e) {
+            const copyURL = e.target.querySelector("span").textContent;
+        
+            // 使用 Clipboard API 來複製
+            navigator.clipboard.writeText(copyURL).then(() => {
 
-        // 使用 Clipboard API 來複製
-        navigator.clipboard.writeText(copyURL).then(() => {
+                const successMessage = e.target.nextElementSibling.querySelector('#successMessage2');
+                successMessage.classList.remove("hidden");
 
-            const successMessage = document.getElementById('successMessage2');
-            successMessage.classList.remove("hidden");
-
-            setTimeout(() => {
-                successMessage.classList.add("hidden");
-            }, 2000);
-        }).catch(err => {
-            console.error('複製失敗: ', err);
+                setTimeout(() => {
+                    successMessage.classList.add("hidden");
+                }, 2000);
+            }).catch(err => {
+                console.error('複製失敗: ', err);
+            })
         })
     })
 }
 
 if (copyWatchButton){
-    copyWatchButton.addEventListener('click', function(e) {
-        const copyURL = e.target.querySelector("span").textContent;
+    copyWatchButton.forEach((element) => {
+        element.addEventListener('click', function(e) {
+            const copyURL = e.target.querySelector("span").textContent;
 
-        navigator.clipboard.writeText(copyURL).then(() => {
+            navigator.clipboard.writeText(copyURL).then(() => {
 
-            const successMessage = document.getElementById('successMessage');
-            successMessage.classList.remove("hidden");
+                const successMessage = e.target.nextElementSibling.querySelector('#successMessage');
+                successMessage.classList.remove("hidden");
 
-            setTimeout(() => {
-                successMessage.classList.add("hidden");
-            }, 2000);
-        }).catch(err => {
-            console.error('複製失敗: ', err);
-        });
+                setTimeout(() => {
+                    successMessage.classList.add("hidden");
+                }, 2000);
+            }).catch(err => {
+                console.error('複製失敗: ', err);
+            });
+        })
     });
 }
