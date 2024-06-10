@@ -33,43 +33,42 @@
 {% endblock %}
 
 {% block script %}
-<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
-<script src="https://cdn.ckeditor.com/4.16.0/standard/lang/zh.js"></script>
-
+<script src="https://cdn.ckeditor.com/ckeditor5/35.3.1/classic/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/35.3.1/classic/translations/zh.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        if (CKEDITOR.instances['id_content']) {
-            CKEDITOR.instances['id_content'].destroy(true);
-        }
-        CKEDITOR.replace('id_content', {
-            skin: 'moono-lisa',
-            toolbar: [
-                { name: 'clipboard', items: ['Cut', 'Copy', 'Paste', 'Undo', 'Redo'] },
-                { name: 'editing', items: ['Scayt'] },
-                { name: 'styles', items: ['Styles', 'Format'] },
-                { name: 'basicstyles', items: ['Bold', 'Italic', 'Strike', 'Underline'] },
-                { name: 'paragraph', items: ['NumberedList', 'BulletedList', 'Blockquote'] },
-                { name: 'links', items: ['Link', 'Unlink', 'Anchor'] },
-                { name: 'insert', items: ['Image', 'Table', 'HorizontalRule', 'SpecialChar'] },
-                { name: 'tools', items: ['Maximize'] },
-                { name: 'document', items: ['Source'] }
-            ],
-            height: 291,
-            width: '100%',
-            filebrowserWindowWidth: 940,
-            filebrowserWindowHeight: 725,
+document.addEventListener('DOMContentLoaded', function() {
+    ClassicEditor
+        .create(document.querySelector('#id_content'), {
+            toolbar: {
+                items: [
+                    'undo', 'redo', '|',
+                    'bold', 'italic', 'strikethrough', 'underline', '|',
+                    'numberedList', 'bulletedList', 'blockQuote', '|',
+                    'link', 'imageUpload', 'insertTable', 'horizontalLine', 'specialCharacters', '|',
+                    'heading', 'alignment', 'sourceEditing', '|',
+                    'maximize', 'scayt'
+                ]
+            },
             language: 'zh',
-            versionCheck: false
+            ckfinder: {
+                uploadUrl: '/path/to/your/upload/script'
+            },
+            height: '291px',
+            width: '100%'
+        })
+        .catch(error => {
+            console.error(error);
         });
-    });
+});
 
-    document.querySelectorAll('form').forEach(form => {
-        form.addEventListener('submit', event => {
-            let contentTextarea = document.querySelector('textarea[name="content"]');
-            if (contentTextarea && contentTextarea.style.display === 'none') {
-                contentTextarea.style.display = 'block';
-            }
-        });
+document.querySelectorAll('form').forEach(form => {
+    form.addEventListener('submit', event => {
+        let contentTextarea = document.querySelector('textarea[name="content"]');
+        if (contentTextarea && contentTextarea.style.display === 'none') {
+            contentTextarea.style.display = 'block';
+        }
     });
+});
 </script>
+
 {% endblock %}
