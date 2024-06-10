@@ -37,6 +37,7 @@
                 </div>
                 <div class="p-4">
                     <h2 class="w-full text-xl font-bold truncate">{{ blog.title }}</h2>
+                     <h3 class="w-full text-lg text-gray-500 truncate">{{ blog.spot_name }}</h3> 
                     <p class="line-clamp-4">{{ blog.content|striptags }}</p>
                     <div class="flex justify-between">
                         <button type="button" class="text-green-500 edit-btn hover:underline" onclick="location.href='{% url 'blogs:edit' blog.id %}'">編輯文章</button>

@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from .forms import BlogForm, BlogCommentForm
 from .models import Blog, BlogComment
+from django.core.files.storage import default_storage
 
 @login_required
 def index(request):
@@ -29,6 +32,9 @@ def article(request, blog_id):
 @login_required
 def new(request):
     if request.method == 'POST':
+        if request.FILES.get('upload'):
+            return image_upload(request)
+
         form = BlogForm(request.POST, request.FILES)
         if form.is_valid():
             blog = form.save(commit=False)
@@ -70,3 +76,11 @@ def delete_blog(request, blog_id):
         blog.delete()
         messages.success(request, "文章已刪除！")
     return redirect('blogs:index')
+
+@csrf_exempt
+@login_required
+def image_upload(request):
+    upload = request.FILES['upload']
+    filename = default_storage.save(upload.name, upload)
+    url = default_storage.url(filename)
+    return JsonResponse({'url': url})
