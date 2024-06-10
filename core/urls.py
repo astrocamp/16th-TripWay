@@ -8,6 +8,7 @@ import os
 ADMIN = os.getenv("ADMIN_URL")
 urlpatterns = [
     path("", views.home, name="home"),
+    path("about", views.about, name="about"),
     path(f"{ ADMIN }/", admin.site.urls),
     path("members/", include("django.contrib.auth.urls")),
     path("members/", include("members.urls")),
