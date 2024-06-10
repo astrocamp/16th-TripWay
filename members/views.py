@@ -11,6 +11,9 @@ from io import BytesIO
 from .forms import SignUp
 from .models import MemberSpot
 from trips.models import TripMember
+import os
+import qrcode
+from base64 import b64encode
 
 
 def login_user(request):
@@ -74,6 +77,25 @@ def profile(request):
     spots = MemberSpot.objects.filter(member=member).select_related("spot")
     trips = get_trip_data(member)
 
+
+    if trips :
+        for trip in trips :
+            
+            edit_url = f"https://{os.getenv("HOST_NAME")}/trips/{trip["t"].id}/add-member/edit"
+            confirm_url = f"https://{os.getenv("HOST_NAME")}/trips/{trip["t"].id}/add-member/edit/confirm"
+            watch_url = f"https://{os.getenv("HOST_NAME")}/trips/{trip["t"].id}/add-member/watch"
+
+            content = {
+                "id": trip["t"].id,
+                "edit_url": edit_url,
+                "confirm_url": confirm_url,
+                "watch_url": watch_url,
+                "confirm_qrimg" : create_qrcode(confirm_url),
+                "watch_qrimg" : create_qrcode(watch_url)
+            }
+            
+            trip['content'] = content
+
     context = {
         "spots": spots,
         "member": member,
@@ -109,3 +131,12 @@ def compress_image(image):
     img.save(output, format="PNG", quality=70)
     output.seek(0)
     return output
+
+def create_qrcode(url):
+    qr_code_img = qrcode.make(url)
+    buffer = BytesIO()
+    qr_code_img.save(buffer)
+    buffer.seek(0)
+    encoded_img = b64encode(buffer.read()).decode()
+    qr_code_data = f'data:image/png;base64,{encoded_img}'
+    return qr_code_data
