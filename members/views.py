@@ -9,7 +9,6 @@ from PIL import Image
 from io import BytesIO
 
 from .forms import SignUp
-from .models import MemberSpot, Member
 from .models import MemberSpot
 from trips.models import TripMember
 
