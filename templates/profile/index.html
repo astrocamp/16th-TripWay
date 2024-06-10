@@ -16,10 +16,10 @@
 					</button>
 			</form>
     </div>
-		<div class="flex flex-col">
-		<p class="text-lg font-black">{{ member.username }}</p>
-		<p>會員等級：{{ member.level }}</p>
-		<a class="text-cyan-700" href="{% url 'payments:upgrade' %}">馬上升級！</a>
+		<div class="flex flex-col items-center">
+		<p class="text-xl font-black ">{{ member.username }}</p>
+		<p class="text-lg">會員等級：{{ member.level }}</p>
+		<a class="text-cyan-700 text-lg" href="{% url 'payments:upgrade' %}">馬上升級！</a>
 		</div>
 	</div>
 </div>
@@ -29,10 +29,10 @@
 	<div class="	w-[960px]">
 		<div class="flex justify-around mb-4 border-light-gray">
 			<input type="radio" name="my_tabs_1" id="tab-1" class="hidden peer/tab-1"/>
-			<label for="tab-1" class="relative w-1/2 px-4 py-2 text-center border-b-2 cursor-pointer peer-checked/tab-1:border-b-blue-btn peer-checked/tab-1:text-blue-btn" data-tab="tab-content-1">我的行程</label>
+			<label for="tab-1" class="relative w-1/2 text-2xl px-4 py-2 text-center border-b-2 cursor-pointer peer-checked/tab-1:border-b-blue-btn peer-checked/tab-1:text-blue-btn" data-tab="tab-content-1">我的行程</label>
 									
 			<input type="radio" name="my_tabs_1" id="tab-2" class="hidden peer/tab-2" checked/>
-			<label for="tab-2" class="relative w-1/2 px-4 py-2 text-center border-b-2 cursor-pointer peer-checked/tab-2:border-b-blue-btn peer-checked/tab-2:text-blue-btn" data-tab="tab-content-2">收藏列表</label>
+			<label for="tab-2" class="relative w-1/2 text-2xl px-4 py-2 text-center border-b-2 cursor-pointer peer-checked/tab-2:border-b-blue-btn peer-checked/tab-2:text-blue-btn" data-tab="tab-content-2">收藏列表</label>
 		</div>
 		<div id="tab-content-1" class="p-4 tab-content">
       <div class="flex">
