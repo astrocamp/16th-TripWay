@@ -8,7 +8,14 @@ class BlogsMediaStorage(S3Boto3Storage):
     file_overwrite = False
 
 class Blog(models.Model):
+    spot = models.ForeignKey(
+        'spots.Spot',
+        on_delete=models.CASCADE,
+        null=True,
+        default=None,
+    )
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    spot_name = models.CharField(max_length=200, null=False, blank=False)
     title = models.CharField(max_length=200)
     content = CKEditor5Field('Text', config_name='extends')
     image = models.ImageField(upload_to="blogs/", storage=BlogsMediaStorage())

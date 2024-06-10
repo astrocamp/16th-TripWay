@@ -9,7 +9,11 @@
             <div>
                 <label for="id_title" class="block text-lg font-medium text-gray-700">文章名稱</label>
                 {{ form.title }}
-            </div>
+                </div>
+                <div>
+                <label for="id_spot_name" class="block text-lg font-medium text-gray-700">景點名稱</label>
+                {{ form.spot_name }}
+                </div>
             <div>
                 <label for="id_content" class="block text-lg font-medium text-gray-700">文章內容</label>
                 <div class="flex justify-center">
@@ -50,9 +54,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 ]
             },
             language: 'zh',
-            ckfinder: {
-                uploadUrl: '/path/to/your/upload/script'
-            },
+        ckfinder: {
+            uploadUrl: '/blogs/new/',
+        },
             height: '291px',
             width: '100%'
         })

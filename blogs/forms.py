@@ -7,9 +7,10 @@ class BlogForm(forms.ModelForm):
 
     class Meta:
         model = Blog
-        fields = ["title", "content", "image"]
+        fields = ["title", "spot_name", "content", "image"]
         widgets = {
             "title": forms.TextInput(attrs={"class": "border border-gray-300 rounded-lg p-2 w-full"}),
+            "spot_name": forms.TextInput(attrs={"class": "border border-gray-300 rounded-lg p-2 w-full"}),
             "image": forms.ClearableFileInput(attrs={"class": "border border-gray-300 rounded-lg p-2 w-full"}),
         }
 
