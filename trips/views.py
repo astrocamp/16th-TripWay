@@ -87,7 +87,7 @@ def create(request):
         if image :
             compressed_image_data = compress_image(image)
             image_name = "trips_coverPhoto/" + image.name
-            image_path = default_storage.save(
+            image = default_storage.save(
                 image_name, ContentFile(compressed_image_data.read())
             )
         
@@ -111,7 +111,7 @@ def create(request):
             end_date=end_date,
             transportation=transportation,
             owner=member.id,
-            image=image_path,
+            image=image,
         )
 
         trip.save()
@@ -144,9 +144,10 @@ def update(request, id):
         if image :
             compressed_image_data = compress_image(image)
             image_name = "trips_coverPhoto/" + image.name
-            image_path = default_storage.save(
+            image = default_storage.save(
                 image_name, ContentFile(compressed_image_data.read())
             )
+            trip.image = image
             
         checks = [
             (not name, "行程名稱不可為空"),
@@ -166,12 +167,6 @@ def update(request, id):
         trip.start_date = start_date
         trip.end_date = end_date
         trip.transportation = transportation
-        image=image_path,
-
-        if "image" in request.FILES:
-            image = request.FILES["image"]
-            compressed_image = compress_image(image)
-            trip.image.save(image.name, compressed_image, save=False)
 
         trip.save()
 
