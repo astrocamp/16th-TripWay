@@ -2,8 +2,12 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from notifies.models import Notification
+
+
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
+
 
 from PIL import Image
 from io import BytesIO
@@ -25,6 +29,9 @@ def login_user(request):
 
         if user is not None and user.is_active:
             login(request, user)
+
+            create_welcome_notification(user)
+
             messages.success(request, "登入成功！")
             return redirect("home")
         else:
@@ -44,10 +51,11 @@ def register_user(request):
     if request.method == "POST":
         form = SignUp(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
+            create_welcome_notification(user)
             messages.success(request, "註冊成功！")
             return redirect("login")
-        else:
+        else:    
             messages.error(request, "註冊失敗！")
     else:
         form = SignUp()
@@ -140,3 +148,14 @@ def create_qrcode(url):
     encoded_img = b64encode(buffer.read()).decode()
     qr_code_data = f'data:image/png;base64,{encoded_img}'
     return qr_code_data
+
+
+def create_welcome_notification(user):
+    welcome_message = "歡迎加入TripWay，讓您一手掌握所有行程規劃需求，開始盡情享受獨一無二的冒險吧！"
+    # 檢查使用者是否已經收到了歡迎通知
+    if not Notification.objects.filter(user=user, message=welcome_message).exists():
+        Notification.objects.create(
+            user=user,
+            message=welcome_message,
+            type="welcome",
+        )
