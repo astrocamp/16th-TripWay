@@ -65,9 +65,6 @@ def new(request):
     return render(request, "trips/new.html")
 
 
-def about(request):
-    return render(request, "trips/about.html")
-
 
 @login_required
 def new_member(request, id):
