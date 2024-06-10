@@ -16,7 +16,6 @@ function toggleFavorite(element) {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            'X-CSRFToken': csrfToken,
         },
     })
     .then(response => response.json())
