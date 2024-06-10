@@ -20,7 +20,7 @@ from trips.models import Trip, TripMember
 from schedules.models import Schedule
 
 
-class IndexView(LoginRequired, ListView):
+class IndexView(ListView):
     model = Spot
     template_name = "spots/spot_list.html"
     context_object_name = "spots"
@@ -43,7 +43,7 @@ class IndexView(LoginRequired, ListView):
         return queryset
 
 
-class ShowView(LoginRequired, DetailView):
+class ShowView(DetailView):
     model = Spot
     template_name = "spots/spot_detail.html"
     context_object_name = "spot"
@@ -73,61 +73,60 @@ class ShowView(LoginRequired, DetailView):
 
     def post(self, request, pk):
         spot = self.get_object()
-        if "comment" in request.POST and "rating" in request.POST:
-            comment_content = request.POST.get("comment")
-            rating_value = request.POST.get("rating")
+        if self.request.user.is_authenticated:
+            if "comment" in request.POST and "rating" in request.POST:
+                comment_content = request.POST.get("comment")
+                rating_value = request.POST.get("rating")
 
-            if comment_content and rating_value != "0":
-                Comment.objects.create(
-                    content=comment_content,
-                    spot=spot,
-                    user=request.user,
-                    value=int(rating_value),
-                )
-                messages.success(request, "已提交留言！")
+                if comment_content and rating_value != "0":
+                    Comment.objects.create(
+                        content=comment_content,
+                        spot=spot,
+                        user=request.user,
+                        value=int(rating_value),
+                    )
+                    messages.success(request, "已提交留言！")
+                    comments = Comment.objects.filter(spot=spot)
+                    total_comments = comments.count()
+                    average_rating = comments.aggregate(Avg("value"))["value__avg"]
+                    spot.rating = average_rating
+                    spot.save()
+                else:
+                    messages.error(request, "請先完成評分！")
+                return redirect("spots:show", pk=spot.id)
+
+            if "edit_comment_id" in request.POST:
+                comment_id = request.POST["edit_comment_id"]
+                comment = get_object_or_404(Comment, id=comment_id)
+                comment_content = request.POST.get("edit_comment_content")
+                if comment_content:
+                    comment.content = comment_content
+                    comment.save()
+                    messages.success(request, "留言已修改！")
+                return redirect("spots:show", pk=spot.id)
+
+            if "delete_comment_id" in request.POST:
+                comment_id = request.POST["delete_comment_id"]
+                comment = get_object_or_404(Comment, id=comment_id)
+                comment.delete()
+                messages.success(request, "留言已刪除！")
                 comments = Comment.objects.filter(spot=spot)
                 total_comments = comments.count()
-                average_rating = comments.aggregate(Avg("value"))["value__avg"]
+                average_rating = (
+                    comments.aggregate(Avg("value"))["value__avg"]
+                    if total_comments > 0
+                    else 0
+                )
                 spot.rating = average_rating
                 spot.save()
-            else:
-                messages.error(request, "請先完成評分！")
-            return redirect("spots:show", pk=spot.id)
 
-        if "edit_comment_id" in request.POST:
-            comment_id = request.POST["edit_comment_id"]
-            comment = get_object_or_404(Comment, id=comment_id)
-            comment_content = request.POST.get("edit_comment_content")
-            if comment_content:
-                comment.content = comment_content
-                comment.save()
-                messages.success(request, "留言已修改！")
-            return redirect("spots:show", pk=spot.id)
-
-        if "delete_comment_id" in request.POST:
-            comment_id = request.POST["delete_comment_id"]
-            comment = get_object_or_404(Comment, id=comment_id)
-            comment.delete()
-            messages.success(request, "留言已刪除！")
-            comments = Comment.objects.filter(spot=spot)
-            total_comments = comments.count()
-            average_rating = (
-                comments.aggregate(Avg("value"))["value__avg"]
-                if total_comments > 0
-                else 0
-            )
-            spot.rating = average_rating
-            spot.save()
-
-            return redirect("spots:show", pk=spot.id)
+                return redirect("spots:show", pk=spot.id)
 
         return redirect("spots:show", pk=spot.id)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         spot = self.get_object()
-        user = self.request.user
-        member_spot = MemberSpot.objects.filter(spot=spot, member=user).exists()
         comments = Comment.objects.filter(spot=spot)
         total_comments = comments.count()
         average_rating = (
@@ -138,7 +137,16 @@ class ShowView(LoginRequired, DetailView):
         place_id = spot.place_id
         place_details = self.get_place_details(place_id)
 
-        user_comment_exists = Comment.objects.filter(spot=spot, user=user).exists()
+        if self.request.user.is_authenticated:
+            user = self.request.user
+            member_spot = MemberSpot.objects.filter(spot=spot, member=user).exists()
+            user_comment_exists = Comment.objects.filter(spot=spot, user=user).exists()
+            context.update(
+                {
+                    "member_spot": member_spot,
+                    "user_comment_exists": user_comment_exists,
+                }
+            )
 
         context.update(
             {
@@ -147,12 +155,10 @@ class ShowView(LoginRequired, DetailView):
                 "alert": alert,
                 "average_rating": average_rating,
                 "total_comments": total_comments,
-                "member_spot": member_spot,
                 "website": place_details.get("website", "N/A"),
                 "phone_number": place_details.get("phone_number", "N/A"),
                 "opening_hours": place_details.get("opening_hours", []),
                 "reviews": place_details.get("reviews", []),
-                "user_comment_exists": user_comment_exists,
             }
         )
 
