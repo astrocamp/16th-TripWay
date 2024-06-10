@@ -114,7 +114,7 @@
                   </div>
                 </div>
               </div>
-              <a href="{{ trip.t.id }}/schedules/" class="block h-full duration-300 ease-in-out bg-white border-2 cursor-pointer rounded-xl hover:scale-105">
+              <a href="{% url 'trips:schedules:index' trip.t.id %}" class="block h-full duration-300 ease-in-out bg-white border-2 cursor-pointer rounded-xl hover:scale-105">
                 <div class="w-full h-[220px] overflow-hidden rounded-t-xl">
                   <img src="{% if trip.t.image %}{{ trip.t.image.url }}{% else %}{% static 'img/tripdefault.jpeg' %}{% endif %}" class="object-cover w-full h-full" alt="">
                 </div>
