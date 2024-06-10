@@ -1,0 +1,147 @@
+{% extends 'layouts/base.html' %} 
+{% load static %}
+{% block content %}
+<body>
+    <!-- 背景插畫 -->
+    
+    <div class="container mx-auto p-6">
+        <!-- 關於我們部分 -->
+        <div class="text-center mb-20 mt-4">
+            <h1 class="text-6xl font-bold text-blue-btn mb-8" style="letter-spacing: 1.5px;">About Us</h1>
+            <p class="text-xl text-gray-600 leading-relaxed mb-8" style="letter-spacing: 1.5px;"> 帶著你的趣味 TripWay 出發去！<br>
+                我們是由一群充滿熱情且經驗豐富的工程師組成<br>致力於根據客戶的需求，量身打造獨一無二的旅遊行程</p>
+            <img src="{% static "img/about/photo-3.png" %}" alt="關於我們圖片" class="mx-auto rounded transition duration-300 transform hover:scale-105">
+        </div>
+    
+        <!-- 開發團隊部分 -->
+        <div class="text-center mb-6">
+            <h2 class="text-4xl font-semibold my-24 text-gray-600" style="letter-spacing: 4px;">
+                <i class="fa-solid fa-person-walking-luggage mr-2"></i>
+                開發團隊
+            </h2>
+            <div class="flex flex-wrap -m-4">
+                <!-- 團隊成員 1 -->
+                <div class="p-4 md:w-1/3 my-4 text-gray-700">
+                    <div class="p-6 text-center">
+                        <div class="w-60 h-60 mx-auto mb-8 rounded-full bg-gray-200 flex items-center justify-center shadow-2xl transition duration-300 transform hover:scale-105">
+                            <img class="w-60 h-60 object-cover rounded-full" src="../../static/img/about/明毅.png" alt="Alexander Wang">
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-4">林明毅</h3>
+                        <span class="text-xl font-semibold">
+                            <p>會員系統 x 金流系統</p>
+                        </span>
+                        <p class="text-gray-700 text-lg mt-2" style="letter-spacing: 1px;">
+                            <i class="fa-regular fa-envelope"></i>
+                            mingyi1223@gmail.com
+                        </p>
+                        <p class="text-gray-700 text-lg" style="letter-spacing: 1px;">
+                            <i class="fa-brands fa-github"></i>
+                            <a href="https://github.com/mingyi1223">https://github.com/mingyi1223</a>
+                        </p>
+                    </div>
+                </div>
+                <!-- 團隊成員 2 -->
+                <div class="p-4 md:w-1/3 my-4 text-gray-700">
+                    <div class="p-6 text-center">
+                        <div class="w-60 h-60 mx-auto mb-8 rounded-full bg-gray-200 flex items-center justify-center shadow-2xl transition duration-300 transform hover:scale-105">
+                            <img class="w-60 h-60 object-cover rounded-full" src="{% static "img/about/李韻如.jpg" %}" alt="Isabella Lee">
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-4">李韻如</h3>
+                        <span class="text-xl font-semibold">
+                            <p>收藏功能 x 會員頁面</p>
+                        </span>
+                        <p class="text-gray-700 text-lg mt-2" style="letter-spacing: 1px;">
+                            <i class="fa-regular fa-envelope"></i>
+                            syunjulee@gmail.com
+                        </p>
+                        <p class="text-gray-700 text-lg" style="letter-spacing: 1px;">
+                            <i class="fa-brands fa-github"></i>
+                            <a href="https://github.com/syunjulee">https://github.com/syunjulee</a>
+                        </p>
+                    </div>
+                </div>
+                <!-- 團隊成員 3 -->
+                <div class="p-4 md:w-1/3 my-4 text-gray-700">
+                    <div class="p-6 text-center">
+                        <div class="w-60 h-60 mx-auto mb-8 rounded-full bg-gray-200 flex items-center justify-center shadow-2xl transition duration-300 transform hover:scale-105">
+                            <img class="w-60 h-60 object-cover rounded-full" src="{% static 'img/about/愉庭.png' %}" alt="Lisa Chen">
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-4">林愉庭</h3>
+                        <span class="text-xl font-semibold">
+                            <p>Google Map API x 熱門景點</p>
+                        </span>
+                        <p class="text-gray-700 text-lg mt-2" style="letter-spacing: 1px;">
+                            <i class="fa-regular fa-envelope"></i>
+                            ylin8266@gmail.com
+                        </p>
+                        <p class="text-gray-700 text-lg" style="letter-spacing: 1px;">
+                            <i class="fa-brands fa-github"></i>
+                            <a href="https://github.com/yuting3344">https://github.com/yuting3344</a>
+                        </p>
+                    </div>
+                </div>
+                <!-- 團隊成員 4 -->
+                <div class="p-4 md:w-1/3 my-4 text-gray-700">
+                    <div class="p-6 text-center">
+                        <div class="w-60 h-60 mx-auto mb-8 rounded-full bg-gray-200 flex items-center justify-center shadow-2xl transition duration-300 transform hover:scale-105">
+                            <img class="w-60 h-60 object-cover rounded-full" src="{% static 'img/about/嘉芳.png' %}" alt="Carlos Rodriguez">
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-4">陳嘉芳</h3>
+                        <span class="text-xl font-semibold">
+                            <p>行程編輯 x 通知功能</p>
+                        </span>
+                        <p class="text-gray-700 text-lg mt-2" style="letter-spacing: 1px;">
+                            <i class="fa-regular fa-envelope"></i>
+                            cjiyvonne@gmail.com
+                        </p>
+                        <p class="text-gray-700 text-lg" style="letter-spacing: 1px;">
+                            <i class="fa-brands fa-github"></i>
+                            <a href="https://github.com/FangFangss">https://github.com/FangFangss</a>
+                        </p>
+                    </div>
+                </div>
+                <!-- 團隊成員 5 -->
+                <div class="p-4 md:w-1/3 my-4 text-gray-700">
+                    <div class="p-6 text-center">
+                        <div class="w-60 h-60 mx-auto mb-8 rounded-full bg-gray-200 flex items-center justify-center shadow-2xl transition duration-300 transform hover:scale-105">
+                            <img class="w-60 h-60 object-cover rounded-full" src="{% static 'img/about/建安.png' %}" alt="Sophie Martin">
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-4">陳建安</h3>
+                        <span class="text-xl font-semibold">
+                            <p>圖片上傳 x 評分留言</p>
+                        </span>
+                        <p class="text-gray-700 text-lg mt-2" style="letter-spacing: 1px;">
+                            <i class="fa-regular fa-envelope"></i>
+                            seanchen1073@gmail.com
+                        </p>
+                        <p class="text-gray-700 text-lg" style="letter-spacing: 1px;">
+                            <i class="fa-brands fa-github"></i>
+                            <a href="https://github.com/seanchen1073">https://github.com/seanchen1073</a>
+                        </p>
+                    </div>
+                </div>
+                <!-- 團隊成員 6 -->
+                <div class="p-4 md:w-1/3 my-4 text-gray-700">
+                    <div class="p-6 text-center">
+                        <div class="w-60 h-60 mx-auto mb-8 rounded-full bg-gray-200 flex items-center justify-center shadow-2xl  transition duration-300 transform hover:scale-105">
+                            <img class="w-60 h-60 object-cover rounded-full" src="{% static 'img/about/房錚.png' %}" alt="Adam Smith">
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-4">房錚</h3>
+                        <span class="text-xl font-semibold">
+                            <p>資料庫基礎 x 會員共編</p>
+                        </span>
+                        <p class="text-gray-700 text-lg mt-2" style="letter-spacing: 1px;">
+                            <i class="fa-regular fa-envelope"></i>
+                            chenfarng@gmail.com
+                        </p>
+                        <p class="text-gray-700 text-lg"style="letter-spacing: 1px;">
+                            <i class="fa-brands fa-github"></i>
+                            <a href="https://github.com/alanfarng">https://github.com/alanfarng</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock  %}
