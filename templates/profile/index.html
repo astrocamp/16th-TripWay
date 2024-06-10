@@ -1,8 +1,8 @@
 {% extends 'layouts/base.html' %} {% block content %}
 {% load static %}
 <div class="flex justify-center pt-8 mb-24">
-	<div class="container text-center">
-		<div class="relative w-40 h-40 mb-10 ml-10 bg-cover rounded-full cursor-pointer bg-light-blue group">
+	<div class="container flex flex-col items-center text-center">
+		<div class="relative w-40 h-40 mb-10 bg-cover rounded-full cursor-pointer bg-light-blue group">
 			<img id="image" class="absolute w-full h-full bg-center bg-cover rounded-full" src="{% if member.image and member.image.url %}{{ member.image.url }}{% else %}{% static 'img/membericon.png' %}{% endif %}"/>
 
 			<form action="{% url 'create' %}" method="post" class="relative w-1/2 mx-auto mt-8", enctype="multipart/form-data">
@@ -28,12 +28,12 @@
 <div class="flex justify-center">
 	<div class="	w-[960px]">
 		{% comment %} 切換標籤 {% endcomment %}
-		<div class="flex justify-around mb-4 border-b-2 border-light-gray">
-			<input type="radio" name="my_tabs_1" id="tab-1" class="hidden"/>
-			<label for="tab-1" class="w-1/2 px-4 py-2 text-center cursor-pointer" data-tab="tab-content-1">我的行程</label>
+		<div class="flex justify-around mb-4 border-light-gray">
+			<input type="radio" name="my_tabs_1" id="tab-1" class="hidden peer/tab-1"/>
+			<label for="tab-1" class="relative w-1/2 px-4 py-2 text-center border-b-2 cursor-pointer peer-checked/tab-1:border-b-blue-btn peer-checked/tab-1:text-blue-btn" data-tab="tab-content-1">我的行程</label>
 									
-			<input type="radio" name="my_tabs_1" id="tab-2" class="hidden" checked/>
-			<label for="tab-2" class="w-1/2 px-4 py-2 text-center cursor-pointer" data-tab="tab-content-2">收藏列表</label>
+			<input type="radio" name="my_tabs_1" id="tab-2" class="hidden peer/tab-2" checked/>
+			<label for="tab-2" class="relative w-1/2 px-4 py-2 text-center border-b-2 cursor-pointer peer-checked/tab-2:border-b-blue-btn peer-checked/tab-2:text-blue-btn" data-tab="tab-content-2">收藏列表</label>
 		</div>
 		{% comment %} 我的行程內容 {% endcomment %}
 		<div id="tab-content-1" class="p-4 tab-content">
