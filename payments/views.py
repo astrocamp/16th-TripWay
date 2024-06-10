@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
+from notifies.models import Notification
 from .service import PaymentService
 import binascii
 import os
@@ -79,6 +80,13 @@ def newpay_return(request):
                     member.level = "基本會員"  
 
                 member.save()
+
+                message = f"恭喜！您已成功升級為{member.level}"
+                Notification.objects.create(
+                    user=member, 
+                    message=message,
+                    type="upgrade",
+                )
 
                 return redirect("payments:transition")
             except Exception as e:
