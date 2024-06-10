@@ -107,7 +107,7 @@ def show(request, id):
 @login_required
 def update(request, id):
     schedule = get_object_or_404(Schedule, pk=id)
-    
+
     date_range = schedule.trip.get_date_range()
     trip_member = get_object_or_404(TripMember, trip=schedule.trip, member=request.user)
     if not trip_member.is_editable:
@@ -131,7 +131,7 @@ def update(request, id):
             if condition:
                 messages.error(request, error_message)
                 return redirect("schedules:update", id=id)
-            
+
         # 更新行程資訊
         schedule.date = date
         schedule.start_time = start_time
@@ -140,7 +140,7 @@ def update(request, id):
         schedule.save()
 
         messages.success(request, "更新成功！")
-        return redirect("schedules:show", id=id)
+        return redirect("trips:schedules:index", id=schedule.trip_id)
 
     return render(
         request,
