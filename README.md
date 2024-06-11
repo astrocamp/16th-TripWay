@@ -23,12 +23,12 @@ TripWay 是一個規劃旅遊行程的網站，您可以建立專屬行程，在
 
 ## 開發團隊
 [林明毅](https://github.com/mingyi1223 "GitHub")  
-**Email:** josh@gmail.com  
+**Email:** mingyi1223@gmail.com  
   - 會員系統  
   - 金流系統  
 
 [林愉庭](https://github.com/yuting3344 "GitHub")  
-**Email:** yuting3344@gmail.com  
+**Email:** ylin8266@gmail.com  
   - Google Map  
   - 熱門景點  
 
