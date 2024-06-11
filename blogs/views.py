@@ -32,9 +32,6 @@ def article(request, blog_id):
 @login_required
 def new(request):
     if request.method == 'POST':
-        if request.FILES.get('upload'):
-            return image_upload(request)
-
         form = BlogForm(request.POST, request.FILES)
         if form.is_valid():
             blog = form.save(commit=False)
@@ -60,7 +57,7 @@ def edit(request, blog_id):
         if form.is_valid():
             form.save()
             messages.success(request, "文章已成功更新！")
-            return redirect('blogs:article', blog_id=blog_id)
+            return redirect('blogs:index', blog_id=blog_id)
         else:
             messages.error(request, "表單有誤，請檢查輸入內容。")
     else:
