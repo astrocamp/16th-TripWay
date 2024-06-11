@@ -127,7 +127,13 @@ class ShowView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         spot = self.get_object()
-        comments = Comment.objects.filter(spot=spot)
+        comments = Comment.objects.filter(spot=spot).order_by('-created_at')
+
+        user_comment = None
+        if self.request.user.is_authenticated:
+            user = self.request.user
+            user_comment = comments.filter(user=user).first()
+
         total_comments = comments.count()
         average_rating = (
             comments.aggregate(Avg("value"))["value__avg"] if total_comments > 0 else 0
@@ -138,13 +144,13 @@ class ShowView(DetailView):
         place_details = self.get_place_details(place_id)
 
         if self.request.user.is_authenticated:
-            user = self.request.user
-            member_spot = MemberSpot.objects.filter(spot=spot, member=user).exists()
-            user_comment_exists = Comment.objects.filter(spot=spot, user=user).exists()
+            member_spot = MemberSpot.objects.filter(spot=spot, member=self.request.user).exists()
+            user_comment_exists = user_comment is not None
             context.update(
                 {
                     "member_spot": member_spot,
                     "user_comment_exists": user_comment_exists,
+                    "user_comment": user_comment,  # 将 user_comment 添加到上下文中
                 }
             )
 
@@ -163,6 +169,7 @@ class ShowView(DetailView):
         )
 
         return context
+
 
 
 class SearchView(View):
