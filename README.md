@@ -1,6 +1,8 @@
 # TripWay
 website 網站：http://  
 
+![image](https://github.com/astrocamp/16th-TripWay/blob/ee9bae8a83d11ba6e8f7038ebc0c52aa6d084e8d/static/img/TripWay-index.png)  
+
 **旅遊行程規劃網站 - readme**  
 歡迎來到 TripWay！以下是您使用 TripWay 的重要資訊和步驟指南。
 
@@ -33,7 +35,7 @@ TripWay 是一個規劃旅遊行程的網站，您可以建立專屬行程，在
 [李韻如](https://github.com/syunjulee "GitHub")  
 **Email:** syunjulee@gmail.com  
   - 收藏功能  
-  - 會員頁面  
+  - UI/UX 設計  
 
 [陳嘉芳](https://github.com/FangFangss "GitHub")  
 **Email:** cjiyvonne@gmail.com  
@@ -51,7 +53,7 @@ TripWay 是一個規劃旅遊行程的網站，您可以建立專屬行程，在
   - 評分留言  
 
 ## 使用技術
- - **前端：** HTML5 / JavaScript / Tailwindcss / dasiyUI / font awesome / alpine.js
+ - **前端：** HTML5 / JavaScript / Tailwind CSS / daisyUI / Font Awesome / Alpine.js
  - **後端：** Python / Django
  - **部署：** Heroku
  - **第三方登入：** Google / Line
@@ -62,4 +64,4 @@ TripWay 是一個規劃旅遊行程的網站，您可以建立專屬行程，在
  - **前期規劃：** Figma / Trello
 
 
-*最後更新：2024/6/10*
+*最後更新：2024/6/11*
