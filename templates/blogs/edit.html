@@ -19,4 +19,43 @@
     </div>
 </div>
 {% endblock %}
-s
+{% block script %}
+<script src="https://cdn.ckeditor.com/ckeditor5/35.3.1/classic/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/35.3.1/classic/translations/zh.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    ClassicEditor
+        .create(document.querySelector('#id_content'), {
+            toolbar: {
+                items: [
+                    'undo', 'redo', '|',
+                    'bold', 'italic', 'strikethrough', 'underline', '|',
+                    'numberedList', 'bulletedList', 'blockQuote', '|',
+                    'link', 'imageUpload', 'insertTable', 'horizontalLine', 'specialCharacters', '|',
+                    'heading', 'alignment', 'sourceEditing', '|',
+                    'maximize', 'scayt'
+                ]
+            },
+            language: 'zh',
+        ckfinder: {
+            uploadUrl: '/blogs/new/',
+        },
+            height: '291px',
+            width: '100%'
+        })
+        .catch(error => {
+            console.error(error);
+        });
+});
+
+document.querySelectorAll('form').forEach(form => {
+    form.addEventListener('submit', event => {
+        let contentTextarea = document.querySelector('textarea[name="content"]');
+        if (contentTextarea && contentTextarea.style.display === 'none') {
+            contentTextarea.style.display = 'block';
+        }
+    });
+});
+</script>
+
+{% endblock %}
