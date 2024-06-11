@@ -24,7 +24,7 @@ else:
     DEBUG = True
 
 HOST_NAME = os.getenv("HOST_NAME")
-CSRF_TRUSTED_ORIGINS = [f"https://{HOST_NAME}"]
+CSRF_TRUSTED_ORIGINS = [f"https://{HOST_NAME}", "http://tripway.cc"]
 
 if IS_HEROKU_APP:
     ALLOWED_HOSTS = [f"{HOST_NAME}"]
