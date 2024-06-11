@@ -1,5 +1,5 @@
 # TripWay
-[網站連結](https:// "TripWay")   
+[網站連結](https://tripway.cc/ "TripWay")   
 
 ![image](https://github.com/astrocamp/16th-TripWay/blob/ee9bae8a83d11ba6e8f7038ebc0c52aa6d084e8d/static/img/TripWay-index.png)  
 
