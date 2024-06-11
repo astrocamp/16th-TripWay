@@ -22,25 +22,26 @@
                 <i id="favoriteIcon" class="fa-heart fa-2xl mr-6 {% if member_spot %}fa-solid text-btn-red{% else %}fa-regular{% endif %} cursor-pointer" data-toggle-favorite-url="/spots/{{ spot.id }}/favorite"></i>
                 {% endif %}
             </div>
-            <div class="flex flex-col mt-2 text-xl md:flex-row">
-                {% if total_comments > 0 %}
-                    {% with average_rating|floatformat:1 as avg_rating %}
-                        {% if "." in avg_rating %}
-                            <span class="text-sky-700">{{ avg_rating }}</span>
-                        {% else %}
-                            <span class="text-sky-700">{{ average_rating|floatformat:0 }}</span>
-                        {% endif %}
-                    {% endwith %}
-                    <div class="flex justify-center ml-2 rating" style="pointer-events: none;">
-                        {% for i in "12345" %}
-                            <input type="radio" name="average_rating" class="bg-orange-400 mask mask-star-2" value="{{ i }}" {% if i <= average_rating|floatformat:1 %}checked{% endif %} disabled />
-                        {% endfor %}
-                    </div>
-                    <span class="ml-2 text-sky-700">({{ total_comments }})</span>
-                {% else %}
-                    <span class="text-orange-400">此景點尚無人評分</span>
-                {% endif %}
-            </div>
+<div class="flex flex-row flex-wrap items-center mt-2 text-xl">
+    {% if total_comments > 0 %}
+        {% with average_rating|floatformat:1 as avg_rating %}
+            {% if "." in avg_rating %}
+                <span class="text-sky-700">{{ avg_rating }}</span>
+            {% else %}
+                <span class="text-sky-700">{{ average_rating|floatformat:0 }}</span>
+            {% endif %}
+        {% endwith %}
+        <div class="flex justify-center ml-2 rating" style="pointer-events: none;">
+            {% for i in "12345" %}
+                <input type="radio" name="average_rating" class="bg-orange-400 mask mask-star-2" value="{{ i }}" {% if i <= average_rating|floatformat:1 %}checked{% endif %} disabled />
+            {% endfor %}
+        </div>
+        <span class="ml-2 text-sky-700">({{ total_comments }})</span>
+    {% else %}
+        <span class="text-orange-400">此景點尚無人評分</span>
+    {% endif %}
+</div>
+
         </div>
         <div class="flex flex-col w-full pl-5 mx-5 mt-5">
             <div class="flex flex-col w-full gap-7 md:flex-row">
@@ -121,41 +122,47 @@
         <div class="w-full text-left">
             <h2 class="text-3xl font-bold text-sky-700">看看其他人怎麼說</h2>
         </div>
-        <div class="grid w-full grid-cols-1 gap-4 mt-4 sm:grid-cols-2 md:grid-cols-3">
-            {% for comment in comments %}
-                <div class="p-4 bg-white rounded-lg shadow-lg" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1);">
-                    <div class="flex items-center mb-2">
-                        <div 
-                            class="w-10 h-10 bg-cover rounded-full"
-                            style="background-image: url({% if comment.user.image %}{{ comment.user.image.url }}{% else %}{% static 'img/membericon.png' %}{% endif %});"
-                        ></div>
-                        <p class="ml-2">{{ comment.user.username }}</p>
-                    </div>
-                    <p class="comment-content">{{ comment.content }}</p>
-                    <div id="rating" class="flex justify-start text-2xl rating" style="pointer-events: none;">
-                        {% for i in "12345" %}
-                            <input type="radio" name="rating" class="bg-orange-400 mask mask-star-2" value="{{ forloop.counter }}" {% if forloop.counter <= comment.value %}checked{% endif %} disabled />
-                        {% endfor %}
-                    </div>
-                    {% if comment.user == user %}
-                        <form method="post" action="{% url "spots:show" spot.pk %}" class="hidden edit-form">
-                            {% csrf_token %}
-                            <input type="hidden" name="edit_comment_id" value="{{ comment.id }}">
-                            <textarea name="edit_comment_content" class="w-full px-4 py-2 mb-4 border rounded-md" rows="2">{{ comment.content }}</textarea>
-                            <button type="submit" class="text-blue-500 hover:underline">保存</button>
-                            <button type="button" class="text-gray-500 cancel-edit-btn hover:underline">取消</button>
-                        </form>
-                        <div class="flex items-center justify-between mt-2">
-                            <button type="button" class="text-blue-500 edit-comment-btn hover:underline">編輯留言</button>
-                            <form method="post" action="{% url "spots:show" spot.pk %}">
-                                {% csrf_token %}
-                                <input type="hidden" name="delete_comment_id" value="{{ comment.id }}">
-                                <button type="submit" class="text-red-500 delete-comment-btn hover:underline">刪除留言</button>
-                            </form>
+        <div class="grid w-full grid-cols-1 gap-4 mt-4">
+            {% if comments %}
+                {% for comment in comments %}
+                    <div class="w-full p-4 bg-white rounded-lg shadow-lg" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1);">
+                        <div class="flex items-center mb-2">
+                            <div 
+                                class="w-10 h-10 bg-cover rounded-full"
+                                style="background-image: url({% if comment.user.image %}{{ comment.user.image.url }}{% else %}{% static 'img/membericon.png' %}{% endif %});"
+                            ></div>
+                            <p class="ml-2">{{ comment.user.username }}</p>
                         </div>
-                    {% endif %}
+                        <p class="mt-4 mb-4 comment-content">{{ comment.content }}</p>
+                        <div id="rating" class="flex justify-start text-2xl rating" style="pointer-events: none;">
+                            {% for i in "12345" %}
+                                <input type="radio" name="rating" class="bg-orange-400 mask mask-star-2" value="{{ forloop.counter }}" {% if forloop.counter <= comment.value %}checked{% endif %} disabled />
+                            {% endfor %}
+                        </div>
+                        {% if comment.user == user %}
+                            <form method="post" action="{% url "spots:show" spot.pk %}" class="hidden edit-form">
+                                {% csrf_token %}
+                                <input type="hidden" name="edit_comment_id" value="{{ comment.id }}">
+                                <textarea name="edit_comment_content" class="w-full px-4 py-2 mb-4 border rounded-md" rows="2">{{ comment.content }}</textarea>
+                                <button type="submit" class="text-blue-500 hover:underline">保存</button>
+                                <button type="button" class="text-gray-500 cancel-edit-btn hover:underline">取消</button>
+                            </form>
+                            <div class="flex items-center justify-between mt-2">
+                                <button type="button" class="text-blue-500 edit-comment-btn hover:underline">編輯留言</button>
+                                <form method="post" action="{% url "spots:show" spot.pk %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="delete_comment_id" value="{{ comment.id }}">
+                                    <button type="submit" class="text-red-500 delete-comment-btn hover:underline">刪除留言</button>
+                                </form>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="w-full p-4 text-center bg-white rounded-lg shadow-lg" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1);">
+                    <p class="text-xl font-bold text-gray-500">此景點尚無留言。</p>
                 </div>
-            {% endfor %}
+            {% endif %}
         </div>
     </div>
 </section>
