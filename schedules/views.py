@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.conf import settings
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import cache_control
 from datetime import timedelta
 from itertools import groupby
 from operator import attrgetter
@@ -15,6 +16,7 @@ from members.models import Member
 from trips.models import Trip, TripMember
 
 
+@cache_control(public=True, max_age=3600)
 @login_required
 def index(request, id):
     google_api_key = settings.GOOGLE_API_KEY

@@ -15,6 +15,7 @@ from base64 import b64encode
 import qrcode
 import os
 from PIL import Image
+from django.views.decorators.cache import cache_control
 
 @login_required
 def home(request):
@@ -71,6 +72,7 @@ def new_member(request, id):
     trip = get_object_or_404(Trip, pk=id)
     return render(request, "trips/new_member.html", {"trip": trip})
 
+@cache_control(public=True, max_age=3600)
 def map(request):
     google_api_key = settings.GOOGLE_API_KEY
     return render(request, "trips/map.html", {"google_api_key": google_api_key})
