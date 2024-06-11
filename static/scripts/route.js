@@ -11,6 +11,7 @@ function initMap() {
     let spinner = document.getElementById("loading-spinner"); 
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 16,
+        center: { lat: 25.033964, lng: 121.564468 }
     });
 
     directionsService = new google.maps.DirectionsService();
