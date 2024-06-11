@@ -189,33 +189,3 @@ function clearMarkers() {
     markers.length = 0;
 }
 
-function generateURL() {
-    if (currentPosition && currentPosition.lat !== 0 && currentPosition.lng !== 0) {
-        const currentUrl = `${window.location.origin}${window.location.pathname}?lat=${currentPosition.lat}&lng=${currentPosition.lng}`;
-        const urlContainer = document.getElementById("url-container");
-        console.log(currentUrl);
-        urlContainer.innerText = currentUrl;
-    } else {
-        alert('無法獲取目前位置');
-    }
-}
-
-function copyLink() {
-    const urlContainer = document.getElementById("url-container");
-    const url = urlContainer.innerText;
-    navigator.clipboard.writeText(url)
-        .then(() => {
-            Alpine.store('copied', true);
-
-            setTimeout(() => {
-                Alpine.store('copied', false);
-            }, 2000);
-        })
-        .catch(err => {
-            console.error('Failed to copy: ', err);
-        });
-}
-
-document.addEventListener('alpine:init', () => {
-    Alpine.store('copied', false);
-});
