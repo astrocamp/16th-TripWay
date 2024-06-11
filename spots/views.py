@@ -86,7 +86,7 @@ class ShowView(DetailView):
                         value=int(rating_value),
                     )
                     messages.success(request, "已提交留言！")
-                    comments = Comment.objects.filter(spot=spot)
+                    comments = Comment.objects.filter(spot=spot).select_related('user')
                     total_comments = comments.count()
                     average_rating = comments.aggregate(Avg("value"))["value__avg"]
                     spot.rating = average_rating

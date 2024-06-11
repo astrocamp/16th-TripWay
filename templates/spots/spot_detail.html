@@ -161,7 +161,7 @@
                     <div class="flex items-center mb-2">
                         <div 
                             class="w-10 h-10 bg-cover rounded-full"
-                            style="background-image: url({% if comment.user.profile.avatar %}{{ comment.user.profile.avatar.url }}{% else %}https://i.imgur.com/gd0IEZY.png{% endif %});"
+                            style="background-image: url({% if comment.user.member.image %}{{ comment.user.member.image.url }}{% else %}{% static 'img/membericon.png' %}{% endif %});"
                         ></div>
                         <p class="ml-2">{{ comment.user.username }}</p>
                     </div>
