@@ -150,7 +150,7 @@ class ShowView(DetailView):
                 {
                     "member_spot": member_spot,
                     "user_comment_exists": user_comment_exists,
-                    "user_comment": user_comment,  # 将 user_comment 添加到上下文中
+                    "user_comment": user_comment, 
                 }
             )
 
