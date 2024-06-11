@@ -132,7 +132,11 @@
                         <p class="ml-2">{{ comment.user.username }}</p>
                     </div>
                     <p class="comment-content">{{ comment.content }}</p>
-                    <p>評分: {{ comment.value }}</p>
+                    <div id="rating" class="flex justify-start text-2xl rating" style="pointer-events: none;">
+                        {% for i in "12345" %}
+                            <input type="radio" name="rating" class="bg-orange-400 mask mask-star-2" value="{{ forloop.counter }}" {% if forloop.counter <= comment.value %}checked{% endif %} disabled />
+                        {% endfor %}
+                    </div>
                     {% if comment.user == user %}
                         <form method="post" action="{% url "spots:show" spot.pk %}" class="hidden edit-form">
                             {% csrf_token %}
