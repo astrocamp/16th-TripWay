@@ -33,6 +33,10 @@ def login_user(request):
             create_welcome_notification(user)
 
             messages.success(request, "登入成功！")
+            
+            if 'next' in request.POST:
+                return redirect(request.POST.get('next'))
+
             return redirect("home")
         else:
             messages.error(request, "登入失敗！")
