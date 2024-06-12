@@ -40,6 +40,10 @@ def login_user(request):
             return redirect("home")
         else:
             messages.error(request, "登入失敗！")
+            
+            if 'next' in request.POST:
+                return redirect(request.POST.get('next'))
+            
             return redirect("login")
     else:
         return render(request, "registration/login.html")
