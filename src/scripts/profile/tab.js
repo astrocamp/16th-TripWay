@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (contents) {
-            showContent("tab-content-2")
+            showContent("tab-content-1")
         }
 
         if (labels) {

@@ -73,10 +73,9 @@ def register_user(request):
     return render(request, "registration/register.html", {"form": form})
 
 
-def get_trip_data(member):
+def get_trip_data(member, sort_option):
     trip_members = TripMember.objects.filter(member=member).select_related("trip")
 
-    sort_option = 'created_desc'
     if sort_option == 'date_asc':
         trip_members = trip_members.order_by('trip__start_date')
     elif sort_option == 'date_desc':
@@ -93,8 +92,15 @@ def get_trip_data(member):
 def profile(request):
     member = request.user
     spots = MemberSpot.objects.filter(member=member).select_related("spot")
-    trips = get_trip_data(member)
-
+    sort_option = "created_desc"
+    trips = get_trip_data(member, sort_option)
+    if request.method == "GET":
+        if request.GET.get("sort") == "date_asc":
+            sort_option = "date_asc"
+            trips = get_trip_data(member, sort_option)
+        elif request.GET.get("sort") == "date_desc":
+            sort_option = "date_desc"
+            trips = get_trip_data(member, sort_option)
 
     if trips :
         for trip in trips :
@@ -118,6 +124,7 @@ def profile(request):
         "spots": spots,
         "member": member,
         "trips": trips,
+        "sort_option": sort_option,
     }
 
     return render(request, "profile/index.html", context)

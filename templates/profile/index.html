@@ -28,22 +28,24 @@
 <div class="flex justify-center">
 	<div class="w-3/4">
 		<div class="flex mb-4 border-light-gray">
-			<input type="radio" name="my_tabs_1" id="tab-1" class="hidden peer/tab-1" />
+			<input type="radio" name="my_tabs_1" id="tab-1" class="hidden peer/tab-1" checked/>
 			<label for="tab-1" class="relative w-1/2 px-4 py-2 text-2xl text-center border-b-2 cursor-pointer peer-checked/tab-1:border-b-blue-btn peer-checked/tab-1:text-blue-btn" data-tab="tab-content-1">我的行程</label>
 									
-			<input type="radio" name="my_tabs_1" id="tab-2" class="hidden peer/tab-2" checked/>
+			<input type="radio" name="my_tabs_1" id="tab-2" class="hidden peer/tab-2" />
 			<label for="tab-2" class="relative w-1/2 px-4 py-2 text-2xl text-center border-b-2 cursor-pointer peer-checked/tab-2:border-b-blue-btn peer-checked/tab-2:text-blue-btn" data-tab="tab-content-2">收藏列表</label>
 		</div>
 		<div id="tab-content-1" class="p-4 tab-content">
       <div class="relative inline-block w-2/3 border md:w-48 border-slate-300 rounded-2xl">
-          <select id="sort-options" class="block w-full px-3 py-2 text-base text-black duration-300 ease-in-out bg-white appearance-none cursor-pointer md:text-xl border-slate-300 rounded-2xl">
-              <option value="created_desc" {% if sort_option == 'created_desc' %}selected{% endif %} class="bg-white appearance-none hover:bg-slate-200">依建立時間</option>
-              <option value="date_asc" {% if sort_option == 'date_asc' %}selected{% endif %} class="bg-white appearance-none hover:bg-slate-200">出發日(近到遠)</option>
-              <option value="date_desc" {% if sort_option == 'date_desc' %}selected{% endif %} class="bg-white appearance-none hover:bg-slate-200">出發日(遠到近)</option>
+        <form method="get" action="{% url 'profile' %}">
+          <select id="sort-options" name="sort" class="block w-full px-3 py-2 text-base text-black duration-300 ease-in-out bg-white appearance-none cursor-pointer md:text-xl border-slate-300 rounded-2xl">
+            <option value="created_desc" {% if sort_option == 'created_desc' %}selected{% endif %} class="bg-white appearance-none hover:bg-slate-200">依建立時間</option>
+            <option value="date_asc" {% if sort_option == 'date_asc' %}selected{% endif %} class="bg-white appearance-none hover:bg-slate-200">出發日(近到遠)</option>
+            <option value="date_desc" {% if sort_option == 'date_desc' %}selected{% endif %} class="bg-white appearance-none hover:bg-slate-200">出發日(遠到近)</option>
           </select>
           <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
               <i class="absolute inset-y-0 right-0 flex items-center px-5 py-4 pointer-events-none fa-solid fa-chevron-down"></i>
           </div>
+        </form>
       </div>
 			{% if trips %}
       <div class="mx-auto mt-2">
