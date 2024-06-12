@@ -4,17 +4,17 @@
 
 
 <div class="pt-8">
-    <header class="flex justify-between items-center w-3/4 mx-auto">
-      <div class="flex items-center">
+    <header class="flex flex-col sm:flex-row justify-between sm:items-center w-full sm:w-3/4 mx-auto">
+      <div class="flex items-center w-3/4 sm:w-full mx-auto">
         <a class="m-1 transition-colors duration-300 hover:text-sky-700" href="javascript:history.go(-1)">
           <i class="fa-solid fa-reply text-2xl"></i>
         </a>
-        <h1 class="p-2 text-3xl font-bold">會員升級</h1>
+        <h1 class="p-2 text-2xl sm:text-3xl font-bold">會員升級</h1>
       </div>
     </header>
     <section class="w-full mx-auto">
-			<h2 class="text-center text-3xl m-4 p-2">選擇升級方案</h2>
-			<ul class="grid grid-cols-5 gap-6 h-full">
+			<h2 class="text-center text-2xl sm:text-3xl m-4 p-2">選擇升級方案</h2>
+			<ul class="flex flex-col sm:grid sm:grid-cols-5 gap-6 h-full w-3/4 mx-auto sm:w-full">
 				<li class="col-start-2 border-2 border-blue-btn rounded-lg">
 					<div class="flex flex-col items-center text-center pt-3 gap-6 ">
 						<p class="text-center text-xl font-bold self-start pl-6">高級會員 </p>
@@ -22,7 +22,7 @@
 							<img src="{% static 'img/vip.jpeg' %}" alt="" class="object-cover w-full h-full">
 						</div>
 						<div class="h-32 text-start self-start p-8">
-							<p class="text-lg">能邀請3人以上共同編輯行程</p>
+							<p>能邀請3人以上共同編輯行程</p>
 						</div>
 						<p class="text-center text-xl font-semibold">$ 300</p>
 						<form action="{% url 'payments:create' %}" class="flex justify-center w-full" method="post">
@@ -43,8 +43,8 @@
 							<img src="{% static 'img/VVIP.jpeg' %}" alt="" class="object-cover w-full h-full">
 						</div>
 						<div class="h-32 text-start self-start p-8">
-							<p class="text-lg">收藏清單無限制</p>
-							<p class="text-lg">能邀請5人以上共同編輯行程</p>
+							<p>收藏清單無限制</p>
+							<p>能邀請5人以上共同編輯行程</p>
 						</div>
 						<p class="text-center text-xl font-semibold">$ 666</p>
 						<form action="{% url 'payments:create' %}" class="flex justify-center w-full" method="post">
@@ -65,9 +65,9 @@
 							<img src="{% static 'img/SVIP.jpeg' %}" alt="" class="object-cover w-full h-full">
 						</div>
 						<div class="h-32 text-start self-start p-8">
-							<p class="text-lg">收藏清單無限制</p>
-							<p class="text-lg">每年4次機場接送服務</p>
-							<p class="text-lg">專人安排客製化行程服務</p>
+							<p>收藏清單無限制</p>
+							<p>每年4次機場接送服務</p>
+							<p>專人安排客製化行程服務</p>
 						</div>
 						<p class="text-center text-xl font-semibold">$ 888</p>
 						<form action="{% url 'payments:create' %}" class="flex justify-center w-full" method="post">
