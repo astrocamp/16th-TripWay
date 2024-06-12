@@ -7,6 +7,6 @@ urlpatterns = [
     path("logout", views.logout_user, name="logout"),
     path("register", views.register_user, name="register"),
     path("spots/<spot_id>/favorite/", toggle_favorite, name="favorite"),
-    path("profile", views.profile, name="profile"),
+    path("profile/", views.profile, name="profile"),
     path("create", views.create, name="create"),
 ]
