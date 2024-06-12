@@ -6,11 +6,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         function showContent(tabId) {
             contents.forEach(content => {
-            content.style.display = content.id === tabId ? "block" : "none"
+                content.style.display = content.id === tabId ? "block" : "none"
             })
         }
 
         if (contents) {
+            contents.forEach(content => {
+                content.style.display = "none"
+            })
             showContent("tab-content-1")
         }
 
