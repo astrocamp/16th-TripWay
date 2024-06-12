@@ -26,7 +26,9 @@
         </div>
         <div class="flex flex-col items-center">
           <input class="w-72 px-2 py-2 border-2 rounded-lg focus:outline-none" type="email" placeholder="Email" name="email" />
-          <input type="hidden" name="next" value="{{ next }}">
+          {% if request.GET.next  %}
+            <input type="hidden" name="next" value="{{ request.GET.next }}">
+          {% endif %}
           <input class="w-72 px-2 py-2 my-2 border-2 rounded-lg focus:outline-none" type="password" placeholder="Password" name="password" />
         </div>
         <div class="my-2 flex justify-center">
