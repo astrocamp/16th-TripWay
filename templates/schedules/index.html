@@ -1,6 +1,7 @@
 {% extends 'layouts/base-map.html' %} 
 {% block content %}
 {% load static %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
 <div class="bg-base-white" style="height:calc(100vh - 88px); overflow: hidden;">
   <div class="wrap flex flex-col lg:flex-row h-full overflow-scroll">
@@ -89,11 +90,11 @@
                           </div>
                           <div class="flex flex-col mb-6">
                             <label for="start_time" class="block font-bold text-lg">抵達時間：</label>
-                            <input type="time" name="start_time" x-ref="startTime" required="required" class="input input-bordered w-full mt-2 text-lg border-gray-400" value="{{ schedule.start_time|time:'H:i' }}" />
+                            <input type="time" name="start_time" x-ref="startTime" required="required" class="input input-bordered w-full mt-2 text-lg border-gray-400" value="{{ schedule.start_time|time:'H:i' }}" placeholder="選擇時間"/>
                           </div>
                           <div  class="flex flex-col mb-6">
                             <label for="start_time" class="block font-bold text-lg">離開時間：</label>
-                            <input type="time" name="end_time" x-ref="endTime" required="required" class="input input-bordered w-full mt-2 text-lg border-gray-400" value="{{ schedule.end_time|time:'H:i' }}" />
+                            <input type="time" name="end_time" x-ref="endTime" required="required" class="input input-bordered w-full mt-2 text-lg border-gray-400" value="{{ schedule.end_time|time:'H:i' }}" placeholder="選擇時間"/>
                           </div>
                         </div>
                         <div class="flex flex-col w-2/3 p-2 mb-6 my-2 mr-4">
@@ -153,7 +154,17 @@
 </div>
 <link rel="stylesheet" href="{% static "styles/route.css" %}">
 <link rel="stylesheet" href="{% static "styles/wait_web.css" %}">
-
+{% endblock %}
+{% block script %}
 <script src="{% static "scripts/route.js" %}"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&libraries=places&callback=initMap" async defer></script>
-{% endblock %}
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+    flatpickr("input[type=time]", {
+    enableTime: true,
+    noCalendar: true,
+    dateFormat: "H:i",
+    time_24hr: true,
+});
+  </script>
+ {% endblock %}
