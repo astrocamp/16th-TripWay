@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function() {
 function initMap() {
     map = new google.maps.Map(document.getElementById("map"), {
         zoom: 15,
-        center: { lat: 25.033964, lng: 121.564468 }
+        center: { lat: 25.0383401, lng: 121.5060706 }
     });
 
     directionsRenderer = new google.maps.DirectionsRenderer();
