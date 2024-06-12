@@ -142,6 +142,7 @@ def compress_image(image):
     output.seek(0)
     return output
 
+
 def create_qrcode(url):
     qr_code_img = qrcode.make(url)
     buffer = BytesIO()
@@ -159,8 +160,8 @@ def create_welcome_notification(user):
         Notification.objects.create(
             user=user,
             message=welcome_message,
+            type="welcome",
         )
-
 
 
 @receiver(user_logged_in)
