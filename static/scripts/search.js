@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+
     function performSearch() {
         var query = document.getElementById('search-input').value;
         if (query) {
@@ -32,16 +33,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    document.getElementById('search-button').addEventListener('click', function() {
-        performSearch();
-    });
+    const searchButton = document.getElementById('search-button');
+    const searchInput = document.getElementById('search-input');
 
-    document.getElementById('search-input').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
+    if (searchButton && searchInput) {
+        
+        searchButton.addEventListener('click', function() {
             performSearch();
-        }
-    });
-});
+        });
 
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                performSearch();
+            }
+        });
+    }
+});
 

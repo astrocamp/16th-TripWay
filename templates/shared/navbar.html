@@ -134,9 +134,12 @@ let unreadCount = 0;
     {% endif %}
 {% endfor %}
 
-if (unreadCount > 0) {
-    document.getElementById('notify-dot').style.display = 'block';
-} else {
-    document.getElementById('notify-dot').style.display = 'none';
+let notifyDot = document.getElementById('notify-dot');
+if (notifyDot) {
+    if (unreadCount > 0) {
+        notifyDot.style.display = 'block';
+    } else {
+        notifyDot.style.display = 'none';
+    }
 }
 </script>
