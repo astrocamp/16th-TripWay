@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.dispatch import receiver
+from allauth.account.signals import user_logged_in
 from notifies.models import Notification
 
 
@@ -157,5 +159,11 @@ def create_welcome_notification(user):
         Notification.objects.create(
             user=user,
             message=welcome_message,
-            type="welcome",
         )
+
+
+
+@receiver(user_logged_in)
+def handle_login(sender, request, user, **kwargs):
+    if user.socialaccount_set.filter(provider="google").exists() or user.socialaccount_set.filter(provider="line").exists():
+        create_welcome_notification(user)
