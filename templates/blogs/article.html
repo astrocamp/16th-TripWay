@@ -20,7 +20,7 @@
             <form id="commentForm" method="post" action="{% url 'blogs:article' blog.id %}">
                 {% csrf_token %}
                 <div class="mb-4">
-                    <textarea name="comment" id="comment" class="w-full px-4 py-2 mt-5 mb-4 border rounded-md" rows="4" maxlength="1000" placeholder="寫下你對該文章的想法吧!"></textarea>
+                    <textarea name="content" id="content" class="w-full px-4 py-2 mt-5 mb-4 border rounded-md" rows="4" maxlength="1000" placeholder="寫下你對該文章的想法吧!"></textarea>
                     <span id="comment-error-message" class="error-message" style="color:red; display:none;">請填寫評論內容</span>
                 </div>
                 <div class="flex justify-end">
