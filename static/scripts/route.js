@@ -62,15 +62,15 @@ function loadSchedule() {
         .then(data => {
             let filteredData = data.filter(item => item.trip_id == tripId);
             scheduleData = groupByDate(filteredData);
+            const tabButtons = document.querySelectorAll('.tab');
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const selectedDate = this.getAttribute('data-date');
+                    showScheduleForDate(selectedDate);
+                });
+            });
+            showScheduleForDate(Object.keys(scheduleData)[0]);
         });
-
-    const tabButtons = document.querySelectorAll('.tab');
-    tabButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const selectedDate = this.getAttribute('data-date');
-            showScheduleForDate(selectedDate);
-        });
-    });
 }
 
 function groupByDate(data) {
@@ -84,13 +84,31 @@ function groupByDate(data) {
     }, {});
 }
 
-function showTab(date, buttonId) {
+function updateMapMarkers() {
+    // 獲取目前選擇的日期：
+    const selectedDateButton = document.querySelector(".active-tab");
+    const selectedDate = selectedDateButton.getAttribute("data-date");
+
+    // 顯示所選日期的行程
+    showScheduleForDate(selectedDate);
+
+    // 重新載入地圖
+    const mapElement = document.getElementById("map");
+    if (mapElement) {
+        // 將其內容清空
+        mapElement.innerHTML = "";
+        initMap();
+    }
+}
+
+function showTab(date, buttonId) { 
     markers = [];
     scheduleData = {};
-    document.querySelectorAll('.tab').forEach(tab => {
-        tab.classList.remove('active-tab');
+    document.querySelectorAll(".tab").forEach(tab => {
+        tab.classList.remove("active-tab");
     });
-    document.getElementById(buttonId).classList.add('active-tab');
+    document.getElementById(buttonId).classList.add("active-tab");
+    updateMapMarkers(); // 更新地圖標記
     showScheduleForDate(date);
 }
 
@@ -236,4 +254,3 @@ function clearMarkers() {
     directionsRenderer.set('directions', null);
     bounds = new google.maps.LatLngBounds();
 }
-
