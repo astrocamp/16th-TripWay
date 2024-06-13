@@ -124,10 +124,15 @@ class ShowView(DetailView):
 
         return redirect("spots:show", pk=spot.id)
 
-def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         spot = self.get_object()
         comments = Comment.objects.filter(spot=spot).order_by('-created_at')
+
+        user_comment = None
+        if self.request.user.is_authenticated:
+            user = self.request.user
+            user_comment = comments.filter(user=user).first()
 
         total_comments = comments.count()
         average_rating = (
@@ -139,12 +144,12 @@ def get_context_data(self, **kwargs):
         place_details = self.get_place_details(place_id)
 
         if self.request.user.is_authenticated:
-            user = self.request.user
-            user_comment = comments.filter(user=user).first()
             member_spot = MemberSpot.objects.filter(spot=spot, member=self.request.user).exists()
+            user_comment_exists = user_comment is not None
             context.update(
                 {
                     "member_spot": member_spot,
+                    "user_comment_exists": user_comment_exists,
                     "user_comment": user_comment, 
                 }
             )
