@@ -19,7 +19,9 @@ def index(request):
 def article(request, blog_id):
     blog = get_object_or_404(Blog, pk=blog_id)
     comments = BlogComment.objects.filter(blog=blog)
-
+    blog.views += 1
+    blog.save()
+    
     if request.method == 'POST':
         if 'content' in request.POST:
             form = BlogCommentForm(request.POST)
