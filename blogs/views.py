@@ -9,8 +9,6 @@ from django.core.files.storage import default_storage
 from django.db import IntegrityError
 import base64
 from django.core.files.base import ContentFile
-from .models import ImageModel
-from .forms import ImageForm
 
 @login_required
 def index(request):
