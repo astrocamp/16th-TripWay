@@ -3,7 +3,10 @@ from .models import Blog, BlogComment
 from django_ckeditor_5.widgets import CKEditor5Widget
 
 class BlogForm(forms.ModelForm):
-    content = forms.CharField(widget=CKEditor5Widget(config_name='extends'))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["content"].required = False
 
     class Meta:
         model = Blog
@@ -12,6 +15,9 @@ class BlogForm(forms.ModelForm):
             "title": forms.TextInput(attrs={"class": "border border-gray-300 rounded-lg p-2 w-full"}),
             "spot_name": forms.TextInput(attrs={"class": "border border-gray-300 rounded-lg p-2 w-full"}),
             "image": forms.ClearableFileInput(attrs={"class": "border border-gray-300 rounded-lg p-2 w-full"}),
+            "content": CKEditor5Widget(
+                attrs={"class": "django_ckeditor_5"}, config_name='blog'
+            )
         }
 
 class BlogCommentForm(forms.ModelForm):
