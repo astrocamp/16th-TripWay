@@ -70,13 +70,17 @@ CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_RESTRICT_BY_USER = True
 
 CKEDITOR_5_CONFIGS = {
-    'default': {
-        'toolbar': ['heading', '|', 'bold', 'italic', 'link',
-                    'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', ],
-        'language': 'zh'
-
+    'blog': {
+        'toolbar': [
+            'heading', '|', 'fontSize', 'fontColor', 'fontBackgroundColor', '|',
+            'bold', 'italic', 'underline', 'link', 'bulletedList', 
+            'numberedList', 'blockQuote', '|',
+            'alignment', 'indent', 'outdent', '|', 'undo', 'redo'
+        ],
+        'language': 'de'
     }
 }
+
 
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
