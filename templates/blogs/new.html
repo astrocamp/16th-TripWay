@@ -9,8 +9,8 @@
             <div>
                 <label for="id_title" class="block text-lg font-medium text-gray-700">文章名稱</label>
                 {{ form.title }}
-                </div>
-                <div>
+            </div>
+            <div>
                 <label for="id_spot_name" class="block text-lg font-medium text-gray-700">景點名稱</label>
                 {{ form.spot_name }}
                 </div>
@@ -27,52 +27,11 @@
                 {{ form.image }}
             </div>
             <div class="flex justify-center">
-                <button type="submit" class="w-full px-4 py-2 text-lg font-bold text-white bg-blue-500 rounded hover:bg-blue-600">
-                    建立文章
-                </button>
+                <input type="submit" class="w-full px-4 py-2 text-lg font-bold text-white bg-blue-500 rounded hover:bg-blue-600">
+                </input>
             </div>
         </form>
     </div>
 </div>
 {% endblock %}
 
-{% block script %}
-<script src="https://cdn.ckeditor.com/ckeditor5/35.3.1/classic/ckeditor.js"></script>
-<script src="https://cdn.ckeditor.com/ckeditor5/35.3.1/classic/translations/zh.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    ClassicEditor
-        .create(document.querySelector('#id_content'), {
-            toolbar: {
-                items: [
-                    'undo', 'redo', '|',
-                    'bold', 'italic', 'strikethrough', 'underline', '|',
-                    'numberedList', 'bulletedList', 'blockQuote', '|',
-                    'link', 'imageUpload', 'insertTable', 'horizontalLine', 'specialCharacters', '|',
-                    'heading', 'alignment', 'sourceEditing', '|',
-                    'maximize', 'scayt'
-                ]
-            },
-            language: 'zh',
-        ckfinder: {
-            uploadUrl: '/blogs/new/',
-        },
-            height: '291px',
-            width: '100%'
-        })
-        .catch(error => {
-            console.error(error);
-        });
-});
-
-document.querySelectorAll('form').forEach(form => {
-    form.addEventListener('submit', event => {
-        let contentTextarea = document.querySelector('textarea[name="content"]');
-        if (contentTextarea && contentTextarea.style.display === 'none') {
-            contentTextarea.style.display = 'block';
-        }
-    });
-});
-</script>
-
-{% endblock %}

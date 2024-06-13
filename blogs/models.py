@@ -17,7 +17,7 @@ class Blog(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     spot_name = models.CharField(max_length=200, null=False, blank=False)
     title = models.CharField(max_length=200)
-    content = CKEditor5Field('Text', config_name='extends')
+    content = CKEditor5Field('Text', config_name='extends', null=True, blank=True)
     image = models.ImageField(upload_to="blogs/", storage=BlogsMediaStorage())
 
     def __str__(self):
