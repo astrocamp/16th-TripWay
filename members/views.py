@@ -76,12 +76,12 @@ def register_user(request):
 def get_trip_data(member, sort_option):
     trip_members = TripMember.objects.filter(member=member).select_related("trip")
 
-    if sort_option == 'date_asc':
-        trip_members = trip_members.order_by('trip__start_date')
-    elif sort_option == 'date_desc':
-        trip_members = trip_members.order_by('-trip__start_date')
+    if sort_option == "date_asc":
+        trip_members = trip_members.order_by("trip__start_date")
+    elif sort_option == "date_desc":
+        trip_members = trip_members.order_by("-trip__start_date")
     else:
-        trip_members = trip_members.order_by('-trip__id')
+        trip_members = trip_members.order_by("-trip__id")
 
     trips = [{"t": trip_member.trip, "tm": trip_member } for trip_member in trip_members]
 
@@ -92,15 +92,8 @@ def get_trip_data(member, sort_option):
 def profile(request):
     member = request.user
     spots = MemberSpot.objects.filter(member=member).select_related("spot")
-    sort_option = "created_desc"
+    sort_option = request.GET.get("sort", "created_desc")
     trips = get_trip_data(member, sort_option)
-    if request.method == "GET":
-        if request.GET.get("sort") == "date_asc":
-            sort_option = "date_asc"
-            trips = get_trip_data(member, sort_option)
-        elif request.GET.get("sort") == "date_desc":
-            sort_option = "date_desc"
-            trips = get_trip_data(member, sort_option)
 
     if trips :
         for trip in trips :
