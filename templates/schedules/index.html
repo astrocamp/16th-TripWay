@@ -56,10 +56,11 @@
         {% for date, schedules in schedule_dates.items %}
         <div id="schedule{{ schedules.0.date|date:'Y-m-d' }}" class="tab-content mt-3">
           {% for schedule in schedules %}
-          <div class="flex mb-1 px-4 py-3 mx-8 my-6 shadow-lg rounded-custom-20 hover:bg-light-gray h-32">
+          <div class="schedule-item flex mb-1 px-4 py-3 mx-8 my-6 shadow-lg rounded-custom-20 hover:bg-light-gray h-32" data-schedule-id="{{ schedule.id }}" data-order="{{ schedule.order }}" data-lat="{{ schedule.lat }}" data-lng="{{ schedule.lng }}">
             <div class="flex grow w-5/6">
+              <span class="drag-handle mr-4 cursor-move text-3xl">&#9776;</span>
               <a href="{% url 'schedules:show' schedule.id %}" class="w-full h-full flex items-center overflow-hidden">
-                <span class="inline-block w-6 h-6 mr-2 text-center text-white bg-black rounded-full">{{ forloop.counter }}</span>
+                <span class="schedule-index inline-block w-6 h-6 mr-2 text-center text-white bg-black rounded-full">{{ forloop.counter }}</span>
                 <div class="flex-1 truncate">{{ schedule.spot_name }}</div>
                 <div class="w-10 mx-1 text-gray-500">{{ schedule.start_time|time:"H:i" }}</div>
               </a>
@@ -159,6 +160,8 @@
 <script src="{% static "scripts/route.js" %}"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&libraries=places&callback=initMap" async defer></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+
 <script>
     flatpickr("input[type=time]", {
     enableTime: true,
@@ -166,5 +169,57 @@
     dateFormat: "H:i",
     time_24hr: true,
 });
-  </script>
- {% endblock %}
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const scheduleContainers = document.querySelectorAll(".tab-content");
+    scheduleContainers.forEach(container => {
+        new Sortable(container, {
+            animation: 150,
+            handle: ".drag-handle",
+            onEnd: function(event) {
+                const schedules = container.querySelectorAll(".schedule-item");
+
+                // 更新前端的序號和 data-order 屬性
+                schedules.forEach((item, index) => {
+                    item.querySelector(".schedule-index").textContent = index + 1;
+                    item.dataset.order = index + 1;
+                });
+
+                // 收集更新後的 scheduleIds 和對應的 order
+                const updatedOrders = Array.from(schedules).map(item => ({
+                    id: item.dataset.scheduleId,
+                    order: parseInt(item.dataset.order)
+                }));
+
+                // 發送 AJAX 請求更新後端的排序
+                fetch("/schedules/update_schedule_order", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": "{{ csrf_token }}",
+                    },
+                    body: JSON.stringify({ updatedOrders: updatedOrders })
+                }).then(response => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                }).then(data => {
+                    if (data.success) {
+                        console.log("排序更新成功")
+                        // 更新地圖標記
+                        updateMapMarkers();
+                    } else {
+                        console.error("排序更新失敗", data.message);
+                    }
+                }).catch(error => {
+                    console.error("AJAX 請求錯誤:", error);
+                });
+            }
+        });
+    });
+  });
+</script>
+{% endblock %}

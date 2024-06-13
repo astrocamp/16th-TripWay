@@ -12,4 +12,5 @@ urlpatterns = [
     path("<id>/update", views.update, name="update"),
     path("<id>/delete", views.delete, name="delete"),
     path("<id>/show", views.show, name="show"),
+    path("update_schedule_order", views.update_schedule_order, name="update_schedule_order"),
 ]

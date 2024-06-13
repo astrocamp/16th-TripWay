@@ -6,6 +6,7 @@ from django.conf import settings
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_control
+import json
 from datetime import timedelta
 from itertools import groupby
 from operator import attrgetter
@@ -22,7 +23,7 @@ def index(request, id):
     google_api_key = settings.GOOGLE_API_KEY
     trip = get_object_or_404(Trip, pk=id)
     schedules = Schedule.objects.filter(trip=trip.id, deleted_at=None).order_by(
-        "date", "start_time"
+        "order", "date", "start_time"
     )
 
     grouped_schedules = {}
@@ -51,6 +52,29 @@ def index(request, id):
             "google_api_key": google_api_key,
         },
     )
+
+
+@require_POST
+@login_required
+def update_schedule_order(request):
+    data = json.loads(request.body)
+    updated_orders = data.get("updatedOrders", [])
+
+    if not updated_orders:
+        return JsonResponse({"success": False, "message": "無有效行程更新數據"})
+
+    try:
+        for update_data in updated_orders:
+            schedule_id = update_data.get("id")
+            order = update_data.get("order")
+            schedule = Schedule.objects.get(id=schedule_id)
+            schedule.order = order
+            schedule.save()
+        return JsonResponse({"success": True})
+    except Schedule.DoesNotExist:
+        return JsonResponse({"success": False, "message": "行程不存在"})
+    except Exception as e:
+        return JsonResponse({"success": False, "message": str(e)})
 
 
 @require_POST
@@ -175,7 +199,8 @@ def get_schedule(request):
             "date",
             "trip_id",
             "trip__transportation",
+            "order",
         )
-        .order_by("date", "start_time", "updated_at")
+        .order_by("order", "date", "start_time", "updated_at")
     )
     return JsonResponse(list(schedule_data), safe=False)
