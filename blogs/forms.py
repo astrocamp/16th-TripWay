@@ -1,4 +1,5 @@
 from django import forms
+from .models import ImageModel
 from .models import Blog, BlogComment
 from django_ckeditor_5.widgets import CKEditor5Widget
 
@@ -25,11 +26,11 @@ class BlogCommentForm(forms.ModelForm):
         model = BlogComment
         fields = ['content']
 
-class UploadFileForm(forms.Form):
-    upload = forms.FileField()
+class ImageForm(forms.ModelForm):
+    class Meta:
+        model = ImageModel
+        fields = ['title', 'spot_name', 'content', 'image']
 
-class NoImageException(Exception):
-    pass
 
 def image_verify(file):
     if not file.name.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')):

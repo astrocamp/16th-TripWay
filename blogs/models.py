@@ -32,3 +32,9 @@ class BlogComment(models.Model):
 
     def __str__(self):
         return f'Comment by {self.user.username} on {self.blog.title}'
+    
+class ImageModel(models.Model):
+    title = models.CharField(max_length=100)
+    spot_name = models.CharField(max_length=100)
+    content = models.TextField()
+    image = models.ImageField(upload_to='images/')

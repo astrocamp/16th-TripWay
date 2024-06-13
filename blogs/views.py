@@ -7,6 +7,10 @@ from .forms import BlogForm, BlogCommentForm
 from .models import Blog, BlogComment
 from django.core.files.storage import default_storage
 from django.db import IntegrityError
+import base64
+from django.core.files.base import ContentFile
+from .models import ImageModel
+from .forms import ImageForm
 
 @login_required
 def index(request):
@@ -105,7 +109,13 @@ def delete_blog(request, blog_id):
 @csrf_exempt
 @login_required
 def image_upload(request):
-    upload = request.FILES['upload']
-    filename = default_storage.save(upload.name, upload)
-    url = default_storage.url(filename)
-    return JsonResponse({'url': url})
+    if request.method == 'POST':
+        cropped_image_data = request.POST.get('croppedImage')
+        if cropped_image_data:
+            format, imgstr = cropped_image_data.split(';base64,')
+            ext = format.split('/')[-1]
+            cropped_image = ContentFile(base64.b64decode(imgstr), name='cropped_image.' + ext)
+            filename = default_storage.save(cropped_image.name, cropped_image)
+            url = default_storage.url(filename)
+            return JsonResponse({'url': url})
+    return JsonResponse({'error': 'Invalid request'}, status=400)

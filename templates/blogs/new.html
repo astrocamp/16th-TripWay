@@ -4,33 +4,106 @@
 <div class="flex items-center justify-center min-h-screen p-4">
     <div class="w-full max-w-4xl p-8 bg-white rounded-lg shadow-lg">
         <h1 class="mb-4 text-3xl font-bold text-center">新增文章</h1>
-        <form id="blog-form" method="post" enctype="multipart/form-data" class="space-y-4">
-            {% csrf_token %}
-            <div>
-                <label for="id_title" class="block text-lg font-medium text-gray-700">文章名稱</label>
-                {{ form.title }}
+<form id="blog-form" method="post" enctype="multipart/form-data" class="space-y-4">
+    {% csrf_token %}
+    <div>
+        <label for="id_title" class="block text-lg font-medium text-gray-700">文章名稱</label>
+        {{ form.title }}
+    </div>
+    <div>
+        <label for="id_spot_name" class="block text-lg font-medium text-gray-700">景點名稱</label>
+        {{ form.spot_name }}
+    </div>
+    <div>
+        <label for="id_content" class="block text-lg font-medium text-gray-700">文章內容</label>
+        <div class="flex justify-center">
+            <div class="w-full">
+                {{ form.content }}
             </div>
-            <div>
-                <label for="id_spot_name" class="block text-lg font-medium text-gray-700">景點名稱</label>
-                {{ form.spot_name }}
-                </div>
-            <div>
-                <label for="id_content" class="block text-lg font-medium text-gray-700">文章內容</label>
-                <div class="flex justify-center">
-                    <div class="w-full">
-                        {{ form.content }}
-                    </div>
-                </div>
-            </div>
-            <div>
-                <label for="id_image" class="block text-lg font-medium text-gray-700">封面圖片</label>
-                {{ form.image }}
-            </div>
-            <div class="flex justify-center">
-                <input type="submit" class="w-full px-4 py-2 text-lg font-bold text-white bg-blue-500 rounded hover:bg-blue-600">
-                </input>
-            </div>
-        </form>
+        </div>
+    </div>
+    <div>
+        <label for="id_image" class="block text-lg font-medium text-gray-700">封面圖片</label>
+        {{ form.image }}
+    </div>
+    <div>
+        <img id="image" style="max-width: 100%;" />
+    </div>
+    <button id="cropButton" type="button" class="px-4 py-2 mt-2 text-white bg-blue-500 rounded">裁切圖片</button>
+    <input type="hidden" id="croppedImage" name="croppedImage">
+    <button type="submit">上傳</button>
+</form>
     </div>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var image = document.getElementById('image');
+        var input = document.getElementById('id_image');
+        var cropButton = document.getElementById('cropButton');
+        var croppedImageInput = document.getElementById('croppedImage');
+        var cropper;
+
+        input.addEventListener('change', function(e) {
+            var files = e.target.files;
+            var done = function (url) {
+                image.src = url;
+                if (cropper) {
+                    cropper.destroy();
+                }
+                cropper = new Cropper(image, {
+                    aspectRatio: 1,
+                    viewMode: 1,
+                });
+            };
+            var reader;
+            var file;
+
+            if (files && files.length > 0) {
+                file = files[0];
+                if (URL) {
+                    done(URL.createObjectURL(file));
+                } else if (FileReader) {
+                    reader = new FileReader();
+                    reader.onload = function (e) {
+                        done(reader.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
+
+        cropButton.addEventListener('click', function() {
+            if (cropper) {
+                var canvas = cropper.getCroppedCanvas();
+                canvas.toBlob(function(blob) {
+                    var reader = new FileReader();
+                    reader.onloadend = function() {
+                        croppedImageInput.value = reader.result;
+                        var form = document.getElementById('image-upload-form');
+                        var data = new FormData(form);
+                        data.append('croppedImage', reader.result);
+
+                        fetch(form.action, {
+                            method: 'POST',
+                            body: data,
+                            headers: {
+                                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                            },
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.url) {
+                                alert('圖片上傳成功！圖片URL: ' + data.url);
+                            } else {
+                                alert('圖片上傳失敗！');
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                    };
+                    reader.readAsDataURL(blob);
+                }, 'image/png');
+            }
+        });
+    });
+</script>
 {% endblock %}
