@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
+from django.db.models import Count
 from django.views.decorators.csrf import csrf_exempt
 from .forms import BlogForm, BlogCommentForm
 from .models import Blog, BlogComment
@@ -10,10 +11,16 @@ from django.db import IntegrityError
 import base64
 from django.core.files.base import ContentFile
 
-@login_required
 def index(request):
-    blogs = Blog.objects.all().order_by('-created_at')
-    return render(request, 'blogs/index.html', {'blogs': blogs, 'user': request.user})
+    sort_option = request.GET.get('sort', 'created_at_desc')
+    if sort_option == 'views_desc':
+        blogs = Blog.objects.all().order_by('-views')
+    elif sort_option == 'comment_count_desc':
+        blogs = Blog.objects.annotate(comment_count=Count('comments')).order_by('-comment_count')
+    else:
+        blogs = Blog.objects.all().order_by('-created_at')
+
+    return render(request, 'blogs/index.html', {'blogs': blogs, 'sort_option': sort_option})
 
 @login_required
 def article(request, blog_id):

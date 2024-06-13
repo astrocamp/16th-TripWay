@@ -4,79 +4,79 @@
 
 
 <div class="pt-8">
-    <header class="flex flex-col sm:flex-row justify-between sm:items-center w-full sm:w-3/4 mx-auto">
-      <div class="flex items-center w-3/4 sm:w-full mx-auto">
+    <header class="flex flex-col justify-between w-full mx-auto sm:flex-row sm:items-center sm:w-3/4">
+      <div class="flex items-center w-3/4 mx-auto sm:w-full">
         <a class="m-1 transition-colors duration-300 hover:text-sky-700" href="javascript:history.go(-1)">
-          <i class="fa-solid fa-reply text-2xl"></i>
+          <i class="text-2xl fa-solid fa-reply"></i>
         </a>
-        <h1 class="p-2 text-2xl sm:text-3xl font-bold">會員升級</h1>
+        <h1 class="p-2 text-2xl font-bold sm:text-3xl">會員升級</h1>
       </div>
     </header>
     <section class="w-full mx-auto">
-			<h2 class="text-center text-2xl sm:text-3xl m-4 p-2">選擇升級方案</h2>
-			<ul class="flex flex-col sm:grid sm:grid-cols-5 gap-6 h-full w-3/4 mx-auto sm:w-full">
-				<li class="col-start-2 border-2 border-blue-btn rounded-lg">
-					<div class="flex flex-col items-center text-center pt-3 gap-6 ">
-						<p class="text-center text-xl font-bold self-start pl-6">高級會員 </p>
+			<h2 class="p-2 m-4 text-2xl text-center sm:text-3xl">選擇升級方案</h2>
+			<ul class="flex flex-col w-3/4 h-full gap-6 mx-auto sm:grid sm:grid-cols-5 sm:w-full">
+				<li class="col-start-2 border-2 rounded-lg border-blue-btn">
+					<div class="flex flex-col items-center gap-6 pt-3 text-center ">
+						<p class="self-start pl-6 text-xl font-bold text-center">高級會員 </p>
 						<div class="w-full h-[300px] overflow-hidden">
 							<img src="{% static 'img/vip.jpeg' %}" alt="" class="object-cover w-full h-full">
 						</div>
-						<div class="h-32 text-start self-start p-8">
+						<div class="self-start h-32 p-8 text-start">
 							<p>能邀請3人以上共同編輯行程</p>
 						</div>
-						<p class="text-center text-xl font-semibold">$ 300</p>
+						<p class="text-xl font-semibold text-center">$ 300</p>
 						<form action="{% url 'payments:create' %}" class="flex justify-center w-full" method="post">
 							{% csrf_token %}
 							<input type="hidden" name="price" value="300">
 							{% if member.level == "基本會員" %}
-							<button type="submit" class="w-full h-14 items-center text-xl text-white text-center font-bold bg-blue-btn hover:bg-blue-dc">立即升級</button>
+							<button type="submit" class="items-center w-full text-xl font-bold text-center text-white h-14 bg-blue-btn hover:bg-blue-dc">立即升級</button>
 							{% else %}
-							<div class="w-full h-14 items-center text-xl text-white text-center font-bold bg-gray-400 py-4">您已是{{ member.level }}</div>
+							<div class="items-center w-full py-4 text-xl font-bold text-center text-white bg-gray-400 h-14">您已是{{ member.level }}</div>
 							{% endif %}
 						</form>
 					</div>
 				</li>
-				<li class="border-2 border-blue-btn rounded-lg">
-					<div class="flex flex-col items-center text-center pt-3 gap-6">
-						<p class="text-start text-xl font-bold self-start pl-6">黃金會員</p>
+				<li class="border-2 rounded-lg border-blue-btn">
+					<div class="flex flex-col items-center gap-6 pt-3 text-center">
+						<p class="self-start pl-6 text-xl font-bold text-start">黃金會員</p>
 						<div class="w-full h-[300px] overflow-hidden">
 							<img src="{% static 'img/VVIP.jpeg' %}" alt="" class="object-cover w-full h-full">
 						</div>
-						<div class="h-32 text-start self-start p-8">
+						<div class="self-start h-32 p-8 text-start">
 							<p>收藏清單無限制</p>
 							<p>能邀請5人以上共同編輯行程</p>
 						</div>
-						<p class="text-center text-xl font-semibold">$ 666</p>
+						<p class="text-xl font-semibold text-center">$ 666</p>
 						<form action="{% url 'payments:create' %}" class="flex justify-center w-full" method="post">
 							{% csrf_token %}
 							<input type="hidden" name="price" value="666">
 							{% if member.level == "高級會員" or member.level == "基本會員" %}
-							<button type="submit" class="w-full h-14 items-center text-xl text-white text-center font-bold bg-blue-btn hover:bg-blue-dc ">立即升級</button>
+							<button type="submit" class="items-center w-full text-xl font-bold text-center text-white h-14 bg-blue-btn hover:bg-blue-dc ">立即升級</button>
 							{% else %}
-							<div class="w-full h-14 items-center text-xl text-white text-center font-bold bg-gray-400 py-4">您已是{{ member.level }}</div>
+							<div class="items-center w-full py-4 text-xl font-bold text-center text-white bg-gray-400 h-14">您已是{{ member.level }}</div>
 							{% endif %}
 						</form>
 					</div>
 				</li>
-				<li class="border-2 border-blue-btn rounded-lg">
-					<div class="flex flex-col items-center text-center pt-3 gap-6">
-						<p class="text-center text-xl font-bold self-start pl-6">白金會員 </p>
+				<li class="border-2 rounded-lg border-blue-btn">
+					<div class="flex flex-col items-center gap-6 pt-3 text-center">
+						<p class="self-start pl-6 text-xl font-bold text-center">白金會員 </p>
 						<div class="w-full h-[300px] overflow-hidden">
 							<img src="{% static 'img/SVIP.jpeg' %}" alt="" class="object-cover w-full h-full">
 						</div>
-						<div class="h-32 text-start self-start p-8">
+						<div class="self-start h-32 p-8 text-start">
 							<p>收藏清單無限制</p>
-							<p>每年4次機場接送服務</p>
+							<p>能邀請10人以上共同編輯行程</p>
 							<p>專人安排客製化行程服務</p>
 						</div>
-						<p class="text-center text-xl font-semibold">$ 888</p>
+						<p class="text-xl font-semibold text-center">$ 888</p>
 						<form action="{% url 'payments:create' %}" class="flex justify-center w-full" method="post">
 							{% csrf_token %}
 							<input type="hidden" name="price" value="888">
 							{% if member.level == "白金會員" %}
-							<div class="w-full h-14 items-center text-xl text-white text-center font-bold bg-gray-400 py-4">您已是{{ member.level }}</div>
+							<div class="items-center w-full py-4 text-xl font-bold text-center text-white bg-gray-400 h-14">您已是{{ member.level }}</div>
 							{% else %}
-							<button type="submit" class="w-full h-14 items-center text-xl text-white text-center font-bold bg-blue-btn hover:bg-blue-dc">立即升級</button>
+							<button type="submit" class="items-center w-full text-xl font-bold text-center text-white h-14 bg-blue-btn hover:bg-blue-dc">立即升級</button>
 							{% endif %}
 						</form>
 					</div>
