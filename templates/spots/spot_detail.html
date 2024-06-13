@@ -86,7 +86,7 @@
     <div class="flex flex-col items-center w-full px-3 py-3 mx-3 my-3 bg-white rounded-lg shadow-lg md:w-3/4 lg:w-1/2" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1);">
         <div class="w-full">
             <div><h1 class="text-3xl font-bold text-sky-700">評論景點</h1></div>
-            {% if not user_comment_exists %}
+            {%.if not  user_comment % &}
                 <form id="ratingForm" method="post" action="{% url "spots:show" spot.pk %}">
                     {% csrf_token %}
                     <div id="rating" class="flex justify-center text-2xl rating">
