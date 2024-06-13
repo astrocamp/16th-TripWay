@@ -45,6 +45,7 @@ def new(request):
         form = BlogForm()
     return render(request, 'blogs/new.html', {'form': form})
 
+
 @login_required
 def edit(request, blog_id):
     blog = get_object_or_404(Blog, pk=blog_id)
