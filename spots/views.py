@@ -170,8 +170,6 @@ class ShowView(DetailView):
 
         return context
 
-
-
 class SearchView(View):
     def get(self, request):
         query = request.GET.get("q")
