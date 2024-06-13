@@ -23,7 +23,7 @@ class BlogForm(forms.ModelForm):
 class BlogCommentForm(forms.ModelForm):
     class Meta:
         model = BlogComment
-        fields = ['content', 'rating']
+        fields = ['content']
 
 class UploadFileForm(forms.Form):
     upload = forms.FileField()
