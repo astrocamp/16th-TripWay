@@ -24,3 +24,14 @@ class BlogCommentForm(forms.ModelForm):
     class Meta:
         model = BlogComment
         fields = ['content', 'rating']
+
+class UploadFileForm(forms.Form):
+    upload = forms.FileField()
+
+class NoImageException(Exception):
+    pass
+
+def image_verify(file):
+    if not file.name.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')):
+        raise NoImageException("The uploaded file is not an image.")
+
