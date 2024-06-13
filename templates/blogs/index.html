@@ -11,11 +11,13 @@
         </div>
         <form method="get" action="" class="flex justify-center w-2/3 md:w-auto md:justify-end">
             <div class="relative inline-block w-full border md:w-52 border-slate-300 rounded-2xl">
-                <select id="sort-options" name="sort" class="block w-full px-3 py-2 text-base text-black duration-300 ease-in-out bg白 appearance-none cursor-pointer md:text-xl border-slate-300 rounded-2xl">
-                    <option value="comment_count_desc" {% if sort_option == 'comment_count_desc' %}selected{% endif %} class="bg白 appearance-none hover:bg-slate-200">依評論人數</option>
+                <select id="sort-options" name="sort" class="block w-full px-3 py-2 text-base text-black duration-300 ease-in-out bg-white appearance-none cursor-pointer md:text-xl border-slate-300 rounded-2xl" onchange="this.form.submit()">
+                    <option value="" disabled {% if not sort_option %}selected{% endif %}>瀏覽文章</option>
+                    <option value="created_at_desc" {% if sort_option == 'created_at_desc' %}selected{% endif %}>依發文時間</option>
+                    <option value="views_desc" {% if sort_option == 'views_desc' %}selected{% endif %}>依瀏覽次數</option>
                 </select>
                 <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                    <i class="absolute inset-y-0 right-0 flex items中心 px-5 py-4 pointer-events-none fa-solid fa-chevron-down"></i>
+                    <i class="absolute inset-y-0 right-0 flex items-center px-5 py-4 pointer-events-none fa-solid fa-chevron-down"></i>
                 </div>
             </div>
         </form>
