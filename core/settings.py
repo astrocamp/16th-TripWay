@@ -62,7 +62,6 @@ INSTALLED_APPS = [
     "blogs",
     "corsheaders",
     "whitenoise.runserver_nostatic",
-    'ckeditor',
     'ckeditor_uploader',
     "django_ckeditor_5",
 ]

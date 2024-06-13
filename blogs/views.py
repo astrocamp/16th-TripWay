@@ -50,29 +50,30 @@ def edit(request, blog_id):
     blog = get_object_or_404(Blog, pk=blog_id)
     if blog.user != request.user:
         messages.error(request, "您沒有權限編輯此文章。")
-        return redirect('blogs:index')
+        return redirect("blogs:index")
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = BlogForm(request.POST, request.FILES, instance=blog)
         if form.is_valid():
             form.save()
             messages.success(request, "文章已成功更新！")
-            return redirect('blogs:index', blog_id=blog_id)
+            return redirect("blogs:index")
         else:
             messages.error(request, "表單有誤，請檢查輸入內容。")
     else:
         form = BlogForm(instance=blog)
-    return render(request, 'blogs/edit.html', {'form': form, 'blog': blog})
+    return render(request, "blogs/edit.html", {"form": form, "blog": blog})
 
 @login_required
 def delete_blog(request, blog_id):
     blog = get_object_or_404(Blog, pk=blog_id)
     if blog.user != request.user:
         messages.error(request, "您沒有權限刪除此文章。")
-    else:
+    
+    if request.method == "POST":
         blog.delete()
         messages.success(request, "文章已刪除！")
-    return redirect('blogs:index')
+    return redirect("blogs:index")
 
 @csrf_exempt
 @login_required
