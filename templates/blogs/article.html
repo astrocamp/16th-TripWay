@@ -17,18 +17,10 @@
     <div class="flex flex-col items-center w-full px-3 py-3 mx-3 my-3 bg-white rounded-lg shadow-lg md:w-3/4 lg:w-1/2" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.1);">
         <div class="w-full">
             <div><h1 class="text-3xl font-bold text-sky-700">回應文章</h1></div>
-            <form id="ratingForm" method="post" action="{% url 'blogs:article' blog.id %}">
+            <form id="commentForm" method="post" action="{% url 'blogs:article' blog.id %}">
                 {% csrf_token %}
-                <div id="rating" class="flex justify-center text-2xl rating">
-                    <input type="radio" name="rating" class="hidden" value="0" checked />
-                    <input type="radio" name="rating" class="bg-orange-400 mask mask-star-2" value="1" />
-                    <input type="radio" name="rating" class="bg-orange-400 mask mask-star-2" value="2" />
-                    <input type="radio" name="rating" class="bg-orange-400 mask mask-star-2" value="3" />
-                    <input type="radio" name="rating" class="bg-orange-400 mask mask-star-2" value="4" />
-                    <input type="radio" name="rating" class="bg-orange-400 mask mask-star-2" value="5" />
-                </div>
                 <div class="mb-4">
-                    <textarea name="comment" id="comment" class="w-full px-4 py-2 mt-5 mb-4 border rounded-md" rows="4" maxlength="1000" placeholder="寫下你對該文章的評價吧!"></textarea>
+                    <textarea name="comment" id="comment" class="w-full px-4 py-2 mt-5 mb-4 border rounded-md" rows="4" maxlength="1000" placeholder="寫下你對該文章的想法吧!"></textarea>
                     <span id="comment-error-message" class="error-message" style="color:red; display:none;">請填寫評論內容</span>
                 </div>
                 <div class="flex justify-end">
@@ -38,7 +30,6 @@
                     <div class="px-8 py-3 text-white bg-gray-300 rounded-full btn">請先登入會員</div>
                     {% endif %}
                 </div>
-                <span id="rating-error-message" class="error-message" style="color:red; display:none;">請先完成推薦指數評分</span>
             </form>
         </div>
     </div>
@@ -47,7 +38,7 @@
 <section class="flex justify-center flex-grow mt-8">
     <div class="flex flex-col items-center w-full px-3 py-3 mx-3 my-3 bg-white rounded-lg md:w-3/4 lg:w-1/2">
         <div class="w-full text-left">
-            <h2 class="text-3xl font-bold text-sky-700">一起討論景點吧!</h2>
+            <h2 class="text-3xl font-bold text-sky-700">一起參與討論吧!</h2>
         </div>
         <div class="grid w-full grid-cols-1 gap-4 mt-4">
             {% if comments %}
@@ -61,13 +52,8 @@
                             <p class="ml-2">{{ comment.user.username }}</p>
                         </div>
                         <p class="mt-4 mb-4 comment-content">{{ comment.content }}</p>
-                        <div id="rating" class="flex justify-start text-2xl rating" style="pointer-events: none;">
-                            {% for i in "12345" %}
-                                <input type="radio" name="rating" class="bg-orange-400 mask mask-star-2" value="{{ forloop.counter }}" {% if forloop.counter <= comment.value %}checked{% endif %} disabled />
-                            {% endfor %}
-                        </div>
                         {% if comment.user == user %}
-                            <form method="post" action="{% url "blogs:article" blog.id %}" class="hidden edit-form">
+                            <form method="post" action="{% url 'blogs:article' blog.id %}" class="hidden edit-form">
                                 {% csrf_token %}
                                 <input type="hidden" name="edit_comment_id" value="{{ comment.id }}">
                                 <textarea name="edit_comment_content" class="w-full px-4 py-2 mb-4 border rounded-md" rows="2">{{ comment.content }}</textarea>
@@ -116,60 +102,17 @@
         });
     });
 
-    const ratingContainer = document.getElementById("rating");
-    const stars = ratingContainer.querySelectorAll("input[name='rating']");
-    const commentTextarea = document.getElementById("comment");
-    const submitButton = document.getElementById("submitBtn");
-    const ratingErrorMessage = document.getElementById("rating-error-message");
-    const commentErrorMessage = document.getElementById("comment-error-message");
-    let lastChecked = null;
-
-    stars.forEach(star => {
-        star.addEventListener("click", function() {
-            if (this === lastChecked) {
-                this.checked = false;
-                lastChecked = null;
-                ratingContainer.querySelector("input[value='0']").checked = true;
-            } else {
-                lastChecked = this;
-            }
-        });
-    });
-
-    commentTextarea.addEventListener("focus", function() {
-        const selectedRating = ratingContainer.querySelector("input[name='rating']:checked").value;
-        if (selectedRating === "0") {
-            ratingErrorMessage.style.display = "block";
-            commentTextarea.blur();
-        } else {
-            ratingErrorMessage.style.display = "none";
-        }
-    });
-
-    document.getElementById("ratingForm").addEventListener("submit", function(event) {
-        const selectedRating = ratingContainer.querySelector("input[name='rating']:checked").value;
+    document.getElementById("commentForm").addEventListener("submit", function(event) {
+        const commentTextarea = document.getElementById("comment");
         const commentContent = commentTextarea.value.trim();
-
-        let valid = true;
-
-        if (selectedRating === "0") {
-            ratingErrorMessage.style.display = "block";
-            valid = false;
-        } else {
-            ratingErrorMessage.style.display = "none";
-        }
+        const commentErrorMessage = document.getElementById("comment-error-message");
 
         if (commentContent === "") {
             commentErrorMessage.style.display = "block";
-            valid = false;
+            event.preventDefault();
         } else {
             commentErrorMessage.style.display = "none";
-        }
-
-        if (!valid) {
-            event.preventDefault();
         }
     });
 </script>
 {% endblock %}
-

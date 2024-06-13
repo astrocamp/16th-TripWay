@@ -17,8 +17,8 @@ def article(request, blog_id):
     blog = get_object_or_404(Blog, pk=blog_id)
     comments = BlogComment.objects.filter(blog=blog)
     if request.method == 'POST':
-        comment = BlogComment.objects.create(blog=blog, user=request.user, content=request.POST.get("comment"), rating=request.POST.get("rating"))
-        messages.success(request, "評論已成功提交！")
+        # comment = BlogComment.objects.create(blog=blog, user=request.user, content=request.POST.get("comment"), rating=request.POST.get("rating"))
+        # messages.success(request, "評論已成功提交！")
         return redirect('blogs:article', blog_id=blog_id)
     else:
         form = BlogCommentForm()
