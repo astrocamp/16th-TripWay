@@ -12,7 +12,7 @@ from django.core.files.base import ContentFile
 
 @login_required
 def index(request):
-    blogs = Blog.objects.all()
+    blogs = Blog.objects.all().order_by('-created_at')
     return render(request, 'blogs/index.html', {'blogs': blogs, 'user': request.user})
 
 @login_required
@@ -21,7 +21,7 @@ def article(request, blog_id):
     comments = BlogComment.objects.filter(blog=blog)
     blog.views += 1
     blog.save()
-    
+
     if request.method == 'POST':
         if 'content' in request.POST:
             form = BlogCommentForm(request.POST)

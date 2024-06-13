@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
 from storages.backends.s3boto3 import S3Boto3Storage
 from django_ckeditor_5.fields import CKEditor5Field
 
@@ -20,7 +21,8 @@ class Blog(models.Model):
     content = CKEditor5Field('Text', config_name='extends', null=True, blank=True)
     image = models.ImageField(upload_to="blogs/", storage=BlogsMediaStorage())
     views = models.PositiveIntegerField(default=0)
-    
+    created_at = models.DateTimeField(auto_now_add=True)
+
     def __str__(self):
         return self.title
 
