@@ -16,3 +16,7 @@ color: black;
 input[type="radio"]:checked + label + .tab-content {
   display: block;
 }
+
+.swal2-html-container {
+  margin: 0 !important;
+}
