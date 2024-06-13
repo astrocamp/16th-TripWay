@@ -5,9 +5,9 @@ function showTab(selectedDate, selectedButtonId) {
     const tabContents = document.querySelectorAll(".tab-content");
 
     //隱藏所有日期頁籤內容
-    for (let i = 0; i < tabContents.length; i++) {
-      tabContents[i].style.display = "none";
-    }
+    tabContents.forEach(content => {
+      content.style.display = "none";
+    });
     // 顯示該日期頁籤的景點
     const dateTabContent = document.querySelector("#schedule" + selectedDate);
     if (dateTabContent) {
@@ -20,9 +20,13 @@ function showTab(selectedDate, selectedButtonId) {
     });
     
     // 添加被選中頁籤的顏色
-    const btn = document.querySelector("#" + selectedButtonId);
-    btn.classList.add("active-tab");
-  }
+    const btn = document.querySelector(`#${selectedButtonId}`);
+    if (btn) {
+      btn.classList.add("active-tab");
+    }
+    // 在顯示完內容後，更新地圖標記等相關操作
+    updateMapMarkers(tripId);
+}
 
 Alpine.data("deleteSchedule", (schedule) => {
   Swal.fire({
