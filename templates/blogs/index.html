@@ -21,16 +21,15 @@
             </div>
         </form>
     </header>
-    <div class="flex justify-center my-4">
+    <div class="flex justify-center w-full p-4 mx-auto mt-5 md:justify-end md:w-3/4">
         <a href="{% url 'blogs:new' %}" class="inline-block px-8 py-3 text-lg font-bold text-center text-white bg-blue-btn rounded-3xl hover:bg-blue-dc">
             撰寫你的旅遊心得吧!
         </a>
     </div>
-
     <div class="w-3/4 mx-auto mt-2">
         <div class="flex flex-wrap justify-start gap-4">
             {% for blog in blogs %}
-            <div class="relative w-full sm:w-[48%] lg:w-[48%] xl:w-[32%] max-w-xs mt-5 mb-1 duration-300 ease-in-out bg-white border-2 shadow-md rounded-xl hover:bg-blue-300 hover:scale-105">
+            <div class="relative w-full sm:w-[48%] lg:w-[48%] xl:w-[32%] max-w-xs mt-5 mb-1 duration-300 ease-in-out bg-white border-2 shadow-md rounded-xl hover:scale-105">
                 <div class="w-full h-[220px] overflow-hidden rounded-t-xl">
                     <a href="{% url 'blogs:article' blog.id %}">
                         <img src="{{ blog.image.url }}" class="object-cover w-full h-full" alt="">
