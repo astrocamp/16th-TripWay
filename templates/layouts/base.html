@@ -10,6 +10,8 @@
     <link href="https://unpkg.com/cropperjs/dist/cropper.min.css" rel="stylesheet">
     <script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
     <script src="https://kit.fontawesome.com/18da6810a5.js" crossorigin="anonymous"></script>
+    <script src="{% static 'scripts/output.js' %}" type="module"></script>
+    <script src="{% static 'django_ckeditor_5/dist/bundle.js' %}"></script>
     <title>
         {% block title %}
             TripWay
@@ -35,10 +37,7 @@
     {% endif %}
 
     {% include 'shared/footer.html' %}
-
-    <script src="{% static 'scripts/output.js' %}" type="module"></script>
-    <script src="{% static 'django_ckeditor_5/dist/bundle.js' %}"></script>
-    {% block script %}
-    {% endblock %}
 </body>
+{% block script %}
+{% endblock %}
 </html>
