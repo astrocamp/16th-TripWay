@@ -22,7 +22,6 @@ def index(request):
 
     return render(request, 'blogs/index.html', {'blogs': blogs, 'sort_option': sort_option})
 
-@login_required
 def article(request, blog_id):
     blog = get_object_or_404(Blog, pk=blog_id)
     comments = BlogComment.objects.filter(blog=blog)
