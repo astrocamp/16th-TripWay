@@ -24,8 +24,6 @@ function showTab(selectedDate, selectedButtonId) {
     if (btn) {
       btn.classList.add("active-tab");
     }
-    // 在顯示完內容後，更新地圖標記等相關操作
-    updateMapMarkers(tripId);
 }
 
 Alpine.data("deleteSchedule", (schedule) => {

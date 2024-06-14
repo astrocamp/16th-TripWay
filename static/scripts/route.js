@@ -69,7 +69,6 @@ function loadSchedule() {
                     showScheduleForDate(selectedDate);
                 });
             });
-            showScheduleForDate(Object.keys(scheduleData)[0]);
         });
 }
 
@@ -90,14 +89,13 @@ function updateMapMarkers() {
     const selectedDate = selectedDateButton.getAttribute("data-date");
 
     // 顯示所選日期的行程
+    console.log(selectedDate);
     showScheduleForDate(selectedDate);
-
+    
     // 重新載入地圖
     const mapElement = document.getElementById("map");
     if (mapElement) {
-        // 將其內容清空
-        mapElement.innerHTML = "";
-        initMap();
+        loadSchedule();
     }
 }
 
@@ -131,12 +129,14 @@ function centerMapToUserLocation() {
         }
         
 function showScheduleForDate(date){
-    let dayData = scheduleData[date];
     clearMarkers();
+    let dayData = scheduleData[date];
     if (!dayData) {
         centerMapToUserLocation();
         return;
     }
+
+    console.log(dayData);
 
     let waypoints = [];
     let tripMode = null;
