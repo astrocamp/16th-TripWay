@@ -28,8 +28,8 @@
     <div class="flex items-center">
 
         <!-- 電腦版 探索按鈕 -->
-        <div class="lg:flex lg:items-center hidden">
-            <ul class="flex space-x-6 pr-8">
+        <div class="hidden lg:flex lg:items-center">
+            <ul class="flex pr-8 space-x-6">
                 <li>
                     <a href="{% url 'trips:map' %}" class="flex items-center space-x-1 text-2xl font-medium hover:text-light-gray">地圖探索</a>
                 </li>
@@ -70,6 +70,9 @@
                 </li>
                 <li>
                     <a href="{% url 'about' %}" class="text-xl font-bold hover:text-light-gray">關於我們</a>
+                </li>
+                <li>
+                    <a href="{% url 'blogs:index' %}" class="text-xl font-bold hover:text-light-gray">旅遊心得</a>
                 </li>
             </ul>
         </div>
