@@ -66,12 +66,12 @@ TripWay 是一個規劃旅遊行程的網站，您可以建立專屬行程，在
   - Seed 資料庫建置  
   - Heroku 部署  
   - 多人共編功能  
-  - 行程篩選功能  
+  - 部落格文章編輯與刪除  
 
 [陳建安](https://github.com/seanchen1073 "GitHub")  
 **Email:** seanchen1073@gmail.com  
   - 評分留言功能  
-  - 部落格文章系統  
+  - 部落格系統  
   - AWS S3 串接  
   - 圖片上傳功能  
 
