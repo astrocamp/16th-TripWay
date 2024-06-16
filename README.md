@@ -1,5 +1,6 @@
 # TripWay
-[網站連結](https://tripway.cc/ "TripWay")   
+[網站連結](https://tripway.cc/ "TripWay")  
+[Demo Day 紀錄](https://youtu.be/PmcGtcTfuro?si=poJ5CWQ0jdt0ZdC0 "Demo Day")  
 
 ![image](https://github.com/astrocamp/16th-TripWay/blob/ee9bae8a83d11ba6e8f7038ebc0c52aa6d084e8d/static/img/TripWay-index.png)  
 
@@ -86,4 +87,4 @@ TripWay 是一個規劃旅遊行程的網站，您可以建立專屬行程，在
  - **雲端系統：** Amazon AWS S3  
  - **前期規劃：** Figma / Trello  
 
-*最後更新：2024/6/14*  
+*最後更新：2024/6/16*  
